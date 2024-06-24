@@ -54,6 +54,26 @@ function ConsultarCaixa($empresa, $token, $numCaixa) {
     return json_decode($apiResponse, true);
 }
 
+function ConsultarReduzidos($empresa, $natureza, $token, $numeroOp, $codReduzido) {
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $apiUrl = "{$baseUrl}/api/DetalhaTagsNumeroOPReduzido?numeroop={$numeroOp}&codreduzido={$codReduzido}&codEmpresa={$empresa}&natureza={$natureza}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["acao"])) {
@@ -69,6 +89,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $numCaixa = isset($_GET["numCaixa"]) ? $_GET["numCaixa"] : "";
             header('Content-Type: application/json');
             echo json_encode(ConsultarCaixa($empresa, $token, $numCaixa));
+
+        } elseif($acao == 'Consultar_Reduzido'){
+            $natureza = isset($_GET["natureza"]) ? $_GET["natureza"] : "";
+            $codReduzido = isset($_GET["codReduzido"]) ? $_GET["codReduzido"] : "";
+            $numeroOp = isset($_GET["numeroOp"]) ? $_GET["numeroOp"] : "";
+            header('Content-Type: application/json');
+            echo json_encode(ConsultarReduzidos($empresa, $natureza, $token, $numeroOp, $codReduzido));
 
         }
     }
