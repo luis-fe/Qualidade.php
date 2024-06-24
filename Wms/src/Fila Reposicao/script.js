@@ -62,7 +62,40 @@ const ConsultaCaixa = (numCaixa) => {
 
         },
     });
-}
+};
+
+const ConsultaTagsReduzido = (codReduzido, numeroOp) => {
+    $('#loadingModal').modal('show');
+    console.log(codReduzido)
+    console.log(numeroOp)
+    $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+            acao: 'Consultar_Reduzido',
+            natureza: $('#SelectNatureza').val(),
+            codReduzido: codReduzido,
+            numeroOp: numeroOp
+        },
+        success: async (data) => {
+            console.log(data);
+            $('#loadingModal').modal('hide');
+            await CriarTabelaModal2(data);
+            
+            $('#dataModal2').modal('show');
+            $('#fixed-header').css({
+                'position': 'sticky',
+                'top': '0',
+                'z-index': '1000'
+            });
+            $('#dataModalLabel2').text(`Detalhamento Reduzido: ${codReduzido}`)
+
+        },
+    });
+};
+
+
 
 function CriarTabelaModal(data) {
     const tbody = $('#dataTable tbody');
@@ -75,6 +108,22 @@ function CriarTabelaModal(data) {
                         <td>${item.codreduzido}</td>
                         <td>${item.epc}</td>
                         <td>${item.nome}</td>
+                    </tr>`;
+        tbody.append(row);
+    });
+}
+
+function CriarTabelaModal2(data) {
+    const tbody = $('#dataTable2 tbody');
+    tbody.empty(); // Clear existing data
+
+    data.forEach(item => {
+        const row = `<tr>
+                        <td>${item.DataHora}</td>
+                        <td>${item.codbarrastag}</td>
+                        <td>${item.codreduzido}</td>
+                        <td>${item.epc}</td>
+                        <td>${item.numeroop}</td>
                     </tr>`;
         tbody.append(row);
     });
@@ -120,13 +169,16 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
                     } else {
                         return data.split(',').map(item => {
                             let [numero, valor] = item.split(':');
-                            return `<span class="clickable-number" data-numero="${numero}" data-valor="${valor}"><span class="numero" style="text-decoration: underline; color: blue; cursor: pointer;">${numero}</span> - ${valor} pçs</span>`;
+                            return `<span class="numeroCaixaClicado" data-numero="${numero}" data-valor="${valor}"><span class="numero" style="text-decoration: underline; color: blue; cursor: pointer;">${numero}</span> - ${valor} pçs</span>`;
                         }).join(', ');
                     }
                 }
             },
             {
-                data: 'codreduzido'
+                data: 'codreduzido',
+                render: function(data, type, row) {
+                    return `<span class="codReduzidoClicado" data-codreduzido="${data}" data-numeroop="${row.numeroop}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                }
             },
             {
                 data: 'descricao'
@@ -173,11 +225,16 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
     });
 
     // Adicionar evento de clique aos números clicáveis após o desenho da tabela
-    $('#TableFila').on('click', '.clickable-number', function() {
+    $('#TableFila').on('click', '.numeroCaixaClicado', function() {
         let numero = $(this).data('numero');
         ConsultaCaixa(parseInt(numero));
-        console.log(parseInt(numero))
 
+    });
+
+    $('#TableFila').on('click', '.codReduzidoClicado', function() {
+        const codreduzido = $(this).data('codreduzido');
+        const numeroop = $(this).data('numeroop');
+        ConsultaTagsReduzido(codreduzido, numeroop);
     });
 }
 
