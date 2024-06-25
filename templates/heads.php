@@ -95,9 +95,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             Pré-Faturamento
                         </a>
                         <ul id="PreFaturamento" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <!-- <li class="sidebar-item sidebar-item-2">
+                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Monitor Pedidos" class="sidebar-link">Monitor de Pedidos</a>
-                            </li> -->
+                            </li>
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/ReservaPedidos" class="sidebar-link">Reserva de Pedidos</a>
                             </li>
