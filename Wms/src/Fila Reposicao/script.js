@@ -189,6 +189,12 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
             {
                 data: 'pcs'
             },
+            {
+                data: 'SaldoEnderecos'
+            },
+            {
+                data: 'estoqueCsw'
+            },
             {data: 'descOP'},
             {data: 'dataFim'}
         ],
