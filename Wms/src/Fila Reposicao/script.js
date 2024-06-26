@@ -180,23 +180,27 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
                     return `<span class="codReduzidoClicado" data-codreduzido="${data}" data-numeroop="${row.numeroop}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
                 }
             },
-            {
-                data: 'descricao'
-            },
-            {
-                data: 'numeroop'
-            },
-            {
-                data: 'pcs'
-            },
-            {
-                data: 'SaldoEnderecos'
-            },
-            {
-                data: 'estoqueCsw'
-            },
-            {data: 'descOP'},
-            {data: 'dataFim'}
+           {
+                    data: 'descricao'
+                },
+                {
+                    data: 'numeroop'
+                },
+                {
+                    data: 'pcs'
+                },
+                {
+                    data: 'SaldoEnderecos'
+                },
+                {
+                    data: 'estoqueCsw'
+                },
+                {
+                    data: 'descOP'
+                },
+                {
+                    data: 'dataFim'
+                }
         ],
         language: {
             paginate: {
