@@ -161,26 +161,26 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
             }
         ],
         columns: [
-            {
-                data: 'caixas',
-                render: function(data, type, row) {
-                    if (data === '-') {
-                        return '-';
-                    } else {
-                        return data.split(',').map(item => {
-                            let [numero, valor] = item.split(':');
-                            return `<span class="numeroCaixaClicado" data-numero="${numero}" data-valor="${valor}"><span class="numero" style="text-decoration: underline; color: blue; cursor: pointer;">${numero}</span> - ${valor} pçs</span>`;
-                        }).join(', ');
-                    }
-                }
-            },
-            {
-                data: 'codreduzido',
-                render: function(data, type, row) {
-                    return `<span class="codReduzidoClicado" data-codreduzido="${data}" data-numeroop="${row.numeroop}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
-                }
-            },
            {
+                    data: 'caixas',
+                    render: function(data, type, row) {
+                        if (data === '-') {
+                            return '-';
+                        } else {
+                            return data.split(',').map(item => {
+                                let [numero, valor] = item.split(':');
+                                return `<span class="numeroCaixaClicado" data-numero="${numero}" data-valor="${valor}"><span class="numero" style="text-decoration: underline; color: blue; cursor: pointer;">${numero}</span> - ${valor} pçs</span>`;
+                            }).join(', ');
+                        }
+                    }
+                },
+                {
+                    data: 'codreduzido',
+                    render: function(data, type, row) {
+                        return `<span class="codReduzidoClicado" data-codreduzido="${data}" data-numeroop="${row.numeroop}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                    }
+                },
+                {
                     data: 'descricao'
                 },
                 {
