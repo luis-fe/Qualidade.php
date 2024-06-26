@@ -541,7 +541,7 @@ async function ApiGetUsuarios() {
                 linhaCabecalho.insertCell().textContent = 'Cores';
 
                 // Defina a ordem desejada para os tamanhos
-                const ordemTamanhos = ['2', '4', '6', '8', '10', '12', 'PP', 'P', 'M', 'G', 'GG', 'XG', 'XGG', 'G1', 'G2', 'G3', 'UNI'];
+                const ordemTamanhos = ['2', '4', '6', '8', '10', '12', '14', 'PP', 'P', 'M', 'G', 'GG', 'XG', 'XGG', 'G1', 'G2', 'G3', 'UNI'];
 
                 ordemTamanhos.forEach(tamanho => {
                     const th = document.createElement('th');
