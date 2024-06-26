@@ -57,8 +57,8 @@ include_once("../../../templates/Loading.php")
                         <th scope="col">Descrição</th>
                         <th scope="col">Numero Op</th>
                         <th scope="col">Pçs</th>
-                        <th scope="col">Estoque Csw</th>
                         <th scope="col">Estoque Endereçado</th>
+                        <th scope="col">Estoque Csw</th>
                         <th scope="col">Descrição Lote</th>
                         <th scope="col">Data Entrada Op</th>
                     </tr>
