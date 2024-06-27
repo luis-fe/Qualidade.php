@@ -22,9 +22,6 @@
     <script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.colVis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-
-   
-   
-
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </script>
