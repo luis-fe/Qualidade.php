@@ -21,9 +21,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.2.1/css/fixedHeader.dataTables.css">
@@ -95,7 +96,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             Pré-Faturamento
                         </a>
                         <ul id="PreFaturamento" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                             <li class="sidebar-item sidebar-item-2">
+                            <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Monitor Pedidos" class="sidebar-link">Monitor de Pedidos</a>
                             </li>
                             <li class="sidebar-item sidebar-item-2">
@@ -126,9 +127,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             </li>
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Prioridade Reposicao" class="sidebar-link">Prioridade de Reposição</a>
-                            </li>
-                            <li class="sidebar-item sidebar-item-2">
-                                <a href="../../../Wms/src/TagsEmConferencia" class="sidebar-link">Tag's em Conferência</a>
                             </li>
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Tags_X_Fisico" class="sidebar-link">Tag's x Físico</a>
@@ -177,7 +175,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                     <button class="btn menu-btn" type="button" title="Menu">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <label for="text" id="NomeRotina" style="color: white; font-size: 30px">Início</label>
+                    <label for="text" id="NomeRotina" style="color: white; font-size: 30px"></label>
                 </div>
             </nav>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
