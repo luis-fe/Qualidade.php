@@ -129,6 +129,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                                 <a href="../../../Wms/src/Prioridade Reposicao" class="sidebar-link">Prioridade de Reposição</a>
                             </li>
                             <li class="sidebar-item sidebar-item-2">
+                                <a href="../../../Wms/src/TagsEmConferencia" class="sidebar-link">Tag's em Conferência</a>
+                            </li>
+                            <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Tags_X_Fisico" class="sidebar-link">Tag's x Físico</a>
                             </li>
                         </ul>
@@ -202,7 +205,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
         var itensParaEsconder = [
             "Fila de Reposição",
             "QR CODE DAS CAIXAS",
-            "Análise de Substitutos"
+            "Análise de Substitutos",
+            "Tag's em Conferência"
         ];
 
         itensParaEsconder.forEach(function(itemText) {
