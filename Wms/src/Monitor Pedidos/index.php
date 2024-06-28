@@ -423,6 +423,7 @@ include("../../../templates/Loading.php");
                                 <th scope="col">Cód. Fase Atual</th>
                                 <th scope="col">Nome da Fase</th>
                                 <th scope="col">Quantidade em Pedidos</th>
+                                <th scope="col">Necessidade em Peças</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -928,6 +929,9 @@ include("../../../templates/Loading.php");
                 },
                 {
                     data: 'Ocorrencia Pedidos'
+                },
+                {
+                    data: 'AtendePçs'
                 },
 
             ],
