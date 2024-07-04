@@ -32,6 +32,7 @@ const ConsultaFila = () => {
             CriarTabelaFila(data[0]['2.0- Detalhamento']);
             $('#TotalPcsFila').text(Number(parseInt(data[0]['1.0- Total Peças Fila'])).toLocaleString('pt-BR'));
             $('#TotalCaixasFila').text(Number(data[0]['1.1- Total Caixas na Fila']).toLocaleString('pt-BR'));
+            $('#LabelAtualizacao').text(`Última Atualização: ${data[0]['1.2- Ultima Atualizacao']}`)
             $('#loadingModal').modal('hide');
         },
     });
@@ -51,7 +52,7 @@ const ConsultaCaixa = (numCaixa) => {
             console.log(data);
             $('#loadingModal').modal('hide');
             await CriarTabelaModal(data);
-            
+
             $('#dataModal').modal('show');
             $('#fixed-header').css({
                 'position': 'sticky',
@@ -60,6 +61,24 @@ const ConsultaCaixa = (numCaixa) => {
             });
             $('#dataModalLabel').text(`Detalhamento Caixa: ${numCaixa}`)
 
+        },
+    });
+};
+
+const AtualizaFila = () => {
+    $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+            acao: 'Atualizar_Fila',
+        },
+        success: async (data) => {
+            console.log(data);
+            $('#Atualizar').removeClass('d-none');
+            $('#Atualizando').addClass('d-none');
+            ConsultaFila();
+            $('#loadingModal').modal('hide');
         },
     });
 };
@@ -82,7 +101,7 @@ const ConsultaTagsReduzido = (codReduzido, numeroOp) => {
             console.log(data);
             $('#loadingModal').modal('hide');
             await CriarTabelaModal2(data);
-            
+
             $('#dataModal2').modal('show');
             $('#fixed-header').css({
                 'position': 'sticky',
@@ -103,12 +122,12 @@ function CriarTabelaModal(data) {
 
     data.forEach(item => {
         const row = `<tr>
-                        <td>${item.DataReposicao}</td>
-                        <td>${item.codbarrastag}</td>
-                        <td>${item.codreduzido}</td>
-                        <td>${item.epc}</td>
-                        <td>${item.nome}</td>
-                    </tr>`;
+                    <td>${item.DataReposicao}</td>
+                    <td>${item.codbarrastag}</td>
+                    <td>${item.codreduzido}</td>
+                    <td>${item.epc}</td>
+                    <td>${item.nome}</td>
+                </tr>`;
         tbody.append(row);
     });
 }
@@ -119,12 +138,12 @@ function CriarTabelaModal2(data) {
 
     data.forEach(item => {
         const row = `<tr>
-                        <td>${item.DataHora}</td>
-                        <td>${item.codbarrastag}</td>
-                        <td>${item.codreduzido}</td>
-                        <td>${item.epc}</td>
-                        <td>${item.numeroop}</td>
-                    </tr>`;
+                    <td>${item.DataHora}</td>
+                    <td>${item.codbarrastag}</td>
+                    <td>${item.codreduzido}</td>
+                    <td>${item.epc}</td>
+                    <td>${item.numeroop}</td>
+                </tr>`;
         tbody.append(row);
     });
 }
@@ -160,48 +179,46 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
                 className: 'ButtonVisibilidade'
             }
         ],
-        columns: [
-           {
-                    data: 'caixas',
-                    render: function(data, type, row) {
-                        if (data === '-') {
-                            return '-';
-                        } else {
-                            return data.split(',').map(item => {
-                                let [numero, valor] = item.split(':');
-                                return `<span class="numeroCaixaClicado" data-numero="${numero}" data-valor="${valor}"><span class="numero" style="text-decoration: underline; color: blue; cursor: pointer;">${numero}</span> - ${valor} pçs</span>`;
-                            }).join(', ');
-                        }
+        columns: [{
+                data: 'caixas',
+                render: function(data, type, row) {
+                    if (data === '-') {
+                        return '-';
+                    } else {
+                        return data.split(',').map(item => {
+                            let [numero, valor] = item.split(':');
+                            return `<span class="numeroCaixaClicado" data-numero="${numero}" data-valor="${valor}"><span class="numero" style="text-decoration: underline; color: blue; cursor: pointer;">${numero}</span> - ${valor} pçs</span>`;
+                        }).join(', ');
                     }
-                },
-                {
-                    data: 'codreduzido',
-                    render: function(data, type, row) {
-                        return `<span class="codReduzidoClicado" data-codreduzido="${data}" data-numeroop="${row.numeroop}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
-                    }
-                },
-                {
-                    data: 'descricao'
-                },
-                {
-                    data: 'numeroop'
-                },
-                {
-                    data: 'pcs'
-                },
-                {
-                    data: 'estoqueCsw'
-                    
-                },
-                {
-                    data: 'SaldoEnderecos'
-                },
-                {
-                    data: 'descOP'
-                },
-                {
-                    data: 'dataFim'
                 }
+            },
+            {
+                data: 'codreduzido',
+                render: function(data, type, row) {
+                    return `<span class="codReduzidoClicado" data-codreduzido="${data}" data-numeroop="${row.numeroop}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                }
+            },
+            {
+                data: 'descricao'
+            },
+            {
+                data: 'numeroop'
+            },
+            {
+                data: 'pcs'
+            },
+            {
+                data: 'SaldoEnderecos'
+            },
+            {
+                data: 'estoqueCsw'
+            },
+            {
+                data: 'descOP'
+            },
+            {
+                data: 'dataFim'
+            }
         ],
         language: {
             paginate: {
@@ -248,4 +265,3 @@ function CriarTabelaFila(ListaFila, itensPorPagina) {
         ConsultaTagsReduzido(codreduzido, numeroop);
     });
 }
-
