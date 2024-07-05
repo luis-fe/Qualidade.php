@@ -114,7 +114,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                                 <a href="../../../Wms/src/AnaliseSubstitutos" class="sidebar-link">Análise de Substitutos</a>
                             </li>
                             <li class="sidebar-item sidebar-item-2">
-                                <a href="../../../Wms/src/ConsultaEstoque" class="sidebar-link">Consumo de Estoque</a>
+                                <a href="../../../Wms/src/ConsultaEstoque" class="sidebar-link">Consulta de Estoque</a>
                             </li>
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/ConsumoEmbalagens" class="sidebar-link">Consumo de Embalagens</a>
