@@ -58,6 +58,28 @@ function ConsultarOps($empresa, $dataInicio, $dataFim)
     return json_decode($apiResponse, true);
 }
 
+function DetalharOp($empresa, $numeroOp)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/DelhalamentoMonitorOP?numeroOP={$numeroOp}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -78,7 +100,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $dataFim = $_GET['dataFim'];
             header('Content-Type: application/json');
             echo json_encode(ConsultarOps($empresa, $dataInicio, $dataFim));
-        
+        } elseif ($acao == 'Detalhar_Op'){
+            $numeroOp = $_GET['numeroOp'];
+            header('Content-Type: application/json');
+            echo json_encode(DetalharOp($empresa, $numeroOp));
         }
     }
 } else {
