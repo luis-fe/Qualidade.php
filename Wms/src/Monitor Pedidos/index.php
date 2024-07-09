@@ -421,7 +421,7 @@ include("../../../templates/Loading.php");
                             <tr>
                                 <th scope="col">Numero Op</th>
                                 <th scope="col">Engenharia</th>
-                                 <th scope="col">Descrição</th>
+                                <th scope="col">Descrição</th>
                                 <th scope="col">Cód. Fase Atual</th>
                                 <th scope="col">Nome da Fase</th>
                                 <th scope="col">Quantidade em Pedidos</th>
@@ -465,6 +465,41 @@ include("../../../templates/Loading.php");
                                 <th>Cor</th>
                                 <th>Quantidade de Peças</th>
                                 <th>Necessidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dataModalPedidos" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataModalLabelPedidos"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dataTablePedidos">
+                        <thead id="fixed-header-pedidos">
+                            <tr>
+                                <th>Engenharia</th>
+                                <th>Cor</th>
+                                <th>Código Reduzido</th>
+                                <th>Descrição</th>
+                                <th>Saldo Pedido</th>
+                                <th>Em Estoque</th>
+                                <th>Situação</th>
+                                <th>Numero Op</th>
                             </tr>
                         </thead>
                         <tbody>
