@@ -521,6 +521,7 @@ const tabela = $('#TableOps').DataTable({
             }
         },
         { data: 'codItemPai' },
+        { data: 'descricao' },
         { data: 'codFaseAtual' },
         { data: 'nome' },
         { data: 'Ocorrencia Pedidos' },
