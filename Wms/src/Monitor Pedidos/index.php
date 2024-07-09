@@ -305,7 +305,7 @@ include("../../../templates/Loading.php");
                 <div class="row d-none" id="Filtros">
                     <div class="col-12 col-md-3 mb-3">
                         <div id="search-container">
-                            <input type="text" id="searchFila" class="form-control" placeholder="Pesquisar...">
+                            <input type="text" id="searchMonitorPedidos" class="form-control" placeholder="Pesquisar...">
                         </div>
                     </div>
                     <div class="col-12 col-md-3 mb-3">
@@ -396,7 +396,7 @@ include("../../../templates/Loading.php");
                 <div class="row text-center align-items-end" id="Filtros">
                     <div class="col-12 col-md-2 mb-3 text-center justify-content-center">
                         <div id="search-container">
-                            <input type="text" id="searchFila" class="form-control" placeholder="Pesquisar...">
+                            <input type="text" id="searchMonitorOp" class="form-control" placeholder="Pesquisar...">
                         </div>
                     </div>
                     <div class="col-12 col-md-2 mb-3 text-center justify-content-center">
@@ -420,10 +420,13 @@ include("../../../templates/Loading.php");
                         <thead>
                             <tr>
                                 <th scope="col">Numero Op</th>
+                                <th scope="col">Engenharia</th>
                                 <th scope="col">Cód. Fase Atual</th>
                                 <th scope="col">Nome da Fase</th>
                                 <th scope="col">Quantidade em Pedidos</th>
                                 <th scope="col">Necessidade em Peças</th>
+                                <th scope="col">Prioridade</th>
+                                <th scope="col">Previsão de Término</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -442,553 +445,39 @@ include("../../../templates/Loading.php");
     </div>
 </div>
 
+<div class="modal fade" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dataTable">
+                        <thead id="fixed-header">
+                            <tr>
+                                <th>Engenharia</th>
+                                <th>Código Reduzido</th>
+                                <th>Tipo de Op</th>
+                                <th>Tamanho</th>
+                                <th>Cor</th>
+                                <th>Quantidade de Peças</th>
+                                <th>Necessidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include_once("../../../templates/footer.php"); ?>
-<script>
-    let PriorizacaoSelecionado = "";
-    let TipoDataSelecionado = "";
-    let DadosPedidos = "";
-    let DadosOps = "";
-
-    $(document).ready(function() {
-        $('#itensPorPagina').change(function() {
-            const itensPorPagina = $(this).val();
-            $('#TablePedidos').DataTable().page.len(itensPorPagina).draw();
-        });
-
-        $('#itensPorPaginaOp').change(function() {
-            const itensPorPaginaOp = $(this).val();
-            $('#TableOps').DataTable().page.len(itensPorPaginaOp).draw();
-        });
-        $("#accordion").accordion({
-            collapsible: true
-        });
-
-        $("#accordion2").accordion({
-            collapsible: true
-        });
-
-        $("#accordion2").accordion({
-            active: false
-        });
-
-        $('#NomeRotina').text('Monitor de Pedidos');
-
-        $('input[name="TipoPriorizacao"]').change(function() {
-            PriorizacaoSelecionado = $('input[name="TipoPriorizacao"]:checked').val();
-            console.log(PriorizacaoSelecionado);
-        });
-
-        $('input[name="TipoData"]').change(function() {
-            TipoDataSelecionado = $('input[name="TipoData"]:checked').val();
-            console.log(TipoDataSelecionado);
-        });
-
-        const dataAtual = new Date();
-        const dataFormatada = getdataFormatada(dataAtual);
-        $('#data-inicio-pedido').val(dataFormatada);
-        $('#data-fim-pedido').val(dataFormatada);
-        $('#data-inicio-ops').val(dataFormatada);
-        $('#data-fim-ops').val(dataFormatada);
-
-        $('#searchInputPedidos').on('keyup', function() {
-            var searchText = $(this).val().toLowerCase();
-            var $container = $('#checkboxContainerPedidos');
-            $container.find('.filtro').closest('label').each(function() {
-                var $label = $(this);
-                var labelText = $label.text().toLowerCase();
-                if (labelText.includes(searchText)) {
-                    $label.show().prependTo($container);
-                } else {
-                    $label.hide();
-                }
-            });
-        });
-
-        $('#searchInputMarca').on('keyup', function() {
-            var searchText = $(this).val().toLowerCase();
-            var $container = $('#checkboxContainerMarca');
-            $container.find('.filtro').closest('label').each(function() {
-                var $label = $(this);
-                var labelText = $label.text().toLowerCase();
-                if (labelText.includes(searchText)) {
-                    $label.show().prependTo($container);
-                } else {
-                    $label.hide();
-                }
-            });
-        });
-
-        $('.dropdown-toggle').on('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            $(this).next('.dropdown-menu').toggle();
-        });
-
-        let today = new Date().toISOString().split('T')[0];
-        $('#dataInicio').val(today);
-        $('#dataFim').val(today);
-
-    });
-
-    function getdataFormatada(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    function formatarMoeda(valor) {
-        return parseFloat(valor).toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        });
-    }
-
-    function formatarDados(data) {
-        return data.map(item => {
-            return {
-                '01-MARCA': item['01-MARCA'],
-                '02-Pedido': item['02-Pedido'],
-                '03-tipoNota': item['03-tipoNota'],
-                '04-PrevOriginal': item['04-Prev.Original'],
-                '05-PrevAtualiz': item['05-Prev.Atualiz'],
-                '06-codCliente': item['06-codCliente'],
-                '08-vlrSaldo': formatarMoeda(item['08-vlrSaldo']),
-                '09-Entregas Solic': item['09-Entregas Solic'],
-                '10-Entregas Fat': item['10-Entregas Fat'],
-                '11-ultimo fat': item['11-ultimo fat'],
-                '12-qtdPecas Fat': item['12-qtdPecas Fat'],
-                '13-Qtd Atende': item['13-Qtd Atende'],
-                '14- Qtd Saldo': item['14- Qtd Saldo'],
-                '15-Qtd Atende p/Cor': item['15-Qtd Atende p/Cor'],
-                '18-Sugestao(Pedido)': item['18-Sugestao(Pedido)'],
-                '21-Qnt Cor(Distrib)': item['21-Qnt Cor(Distrib.)'],
-                '22-Valor Atende por Cor(Distrib)': formatarMoeda(item['22-Valor Atende por Cor(Distrib.)']),
-                '23-% qtd cor': item['23-% qtd cor'],
-                '16-Valor Atende por Cor': formatarMoeda(item['16-Valor Atende por Cor']),
-                'Saldo +Sugerido': item['Saldo +Sugerido'],
-                'dataEmissao': item['dataEmissao'],
-                'Agrupamento': item['Agrupamento'],
-            };
-        });
-    }
-
-    const ConsultaPedidos = async () => {
-        try {
-            $('#loadingModal').modal('show');
-            const iniVenda = $('#data-inicio-pedido').val();
-            const finalVenda = $('#data-fim-pedido').val();
-            const tipoNota = '1,2,3,4';
-            const parametroClassificacao = TipoDataSelecionado;
-            const tipoData = PriorizacaoSelecionado;
-
-            const response = await $.ajax({
-                type: 'GET',
-                url: 'requests.php',
-                dataType: 'json',
-                data: {
-                    acao: 'Consultar_Pedidos',
-                    iniVenda: iniVenda,
-                    finalVenda: finalVenda,
-                    tipoNota: tipoNota,
-                    parametroClassificacao: parametroClassificacao,
-                    tipoData: tipoData
-                }
-            });
-
-            console.log(response);
-            $('#checkboxContainerPedidos').empty();
-            $('#checkboxContainerMarca').empty();
-            response[0]['6 -Detalhamento'].forEach(item => {
-                $('#checkboxContainerPedidos').append(`<label><input type="checkbox" class="filtro" value="${item["02-Pedido"]}"> ${item["02-Pedido"]}</label>`);
-            });
-            $('#checkboxContainerMarca').append(`<label><input type="checkbox" class="filtro" value="PACO"> PACO</label>`);
-            $('#checkboxContainerMarca').append(`<label><input type="checkbox" class="filtro" value="M.POLLO"> M.POLLO</label>`);
-
-            $("#Filtros").removeClass('d-none');
-            $("#ItensPagina").removeClass('d-none');
-            $(".table-responsive").removeClass('d-none');
-            $("#accordion").accordion({
-                active: false
-            });
-
-            const DadosFormatados = formatarDados(response[0]['6 -Detalhamento']);
-            DadosPedidos = DadosFormatados;
-            criarTabelaPedidos(DadosPedidos);
-        } catch (error) {
-            console.log('Erro:', error);
-        } finally {
-        }
-    }
-
-
-
-    const ConsultaOpsInicio = async () => {
-        try {
-            const dataInicioPedido = $('#data-inicio-pedido').val(); // Valor da input #data-inicio-pedido
-
-            // Setando o valor da input de tipo data com o mesmo valor da #data-inicio-pedido
-            $('#data-inicio-ops').val(dataInicioPedido);
-
-            const dataFimPedido = $('#data-fim-pedido').val(); // Valor da input #data-fim-pedido
-
-            // Setando o valor da input de tipo data com o mesmo valor da #data-fim-pedido
-            $('#data-fim-ops').val(dataFimPedido);
-
-            const response = await $.ajax({
-                type: 'GET',
-                url: 'requests.php',
-                dataType: 'json',
-                data: {
-                    acao: 'Consultar_Ops',
-                    dataInicio: dataInicioPedido,
-                    dataFim: dataFimPedido,
-                }
-            });
-
-            DadosOps = response[0]['6 -Detalhamento'];
-            criarTabelaOps(DadosOps);
-        } catch (error) {
-            console.error('Erro:', error);
-        } finally {
-            $('#loadingModal').modal('hide');
-        }
-    }
-
-    const ConsultaOps = async () => {
-        try {
-            $('#loadingModal').modal('show');
-            const dataInicio = $('#data-inicio-ops').val();
-
-            const dataFim = $('#data-fim-ops').val();
-
-            const response = await $.ajax({
-                type: 'GET',
-                url: 'requests.php',
-                dataType: 'json',
-                data: {
-                    acao: 'Consultar_Ops',
-                    dataInicio: dataInicio,
-                    dataFim: dataFim,
-                }
-            });
-
-            DadosOps = response[0]['6 -Detalhamento'];
-            criarTabelaOps(DadosOps);
-            $('#loadingModal').modal('hide');
-        } catch (error) {
-            console.error('Erro:', error);
-            $('#loadingModal').modal('hide');
-        } finally {
-            $('#loadingModal').modal('hide');
-        }
-    }
-
-
-    async function consultarDados() {
-
-        await ConsultaPedidos();
-        await ConsultaOpsInicio();
-
-    }
-    $('#BtnOps').on('click', function() {
-        $('#CampoOps').removeClass('d-none');
-        $('#campoPedidos').addClass('d-none');
-        $('#NomeRotina').text("Monitor de Op's");
-    });
-
-    $('#BtnPedidos').on('click', function() {
-        $('#CampoOps').addClass('d-none');
-        $('#campoPedidos').removeClass('d-none');
-    });
-
-
-    function criarTabelaPedidos(listaPedidos) {
-        $('#Paginacao .dataTables_paginate').remove();
-        $('#PaginacaoOps .dataTables_paginate').remove();
-
-        listaPedidos.forEach(item => {
-            item['Diferenca_Entregas'] = item['09-Entregas Solic'] - item['10-Entregas Fat'];
-        });
-
-        if ($.fn.DataTable.isDataTable('#TablePedidos')) {
-            $('#TablePedidos').DataTable().destroy();
-        }
-
-        const tabela = $('#TablePedidos').DataTable({
-            excel: true,
-            responsive: false,
-            paging: true,
-            info: false,
-            searching: true,
-            colReorder: true,
-            data: listaPedidos,
-            lengthChange: false,
-            pageLength: 10,
-            fixedHeader: true,
-            dom: 'Bfrtip',
-            buttons: [{
-                    extend: 'excelHtml5',
-                    text: '<i class="fa-solid fa-file-excel"></i>',
-                    title: 'Fila de Reposição',
-                    className: 'ButtonExcel'
-                },
-                {
-                    extend: 'colvis',
-                    text: 'Visibilidade das Colunas',
-                    className: 'ButtonVisibilidade'
-                }
-            ],
-            columns: [{
-                    data: '02-Pedido'
-                },
-                {
-                    data: '01-MARCA'
-                },
-                {
-                    data: '03-tipoNota'
-                },
-                {
-                    data: '06-codCliente'
-                },
-                {
-                    data: 'dataEmissao'
-                },
-                {
-                    data: '04-PrevOriginal'
-                },
-                {
-                    data: '11-ultimo fat'
-                },
-                {
-                    data: '05-PrevAtualiz'
-                },
-                {
-                    data: '09-Entregas Solic'
-                },
-                {
-                    data: '10-Entregas Fat'
-                },
-                {
-                    data: 'Diferenca_Entregas'
-                },
-                {
-                    data: '12-qtdPecas Fat'
-                },
-                {
-                    data: '08-vlrSaldo'
-                },
-                {
-                    data: '16-Valor Atende por Cor'
-                },
-                {
-                    data: '22-Valor Atende por Cor(Distrib)'
-                },
-                {
-                    data: 'Saldo +Sugerido'
-                },
-                {
-                    data: '15-Qtd Atende p/Cor'
-                },
-                {
-                    data: '21-Qnt Cor(Distrib)'
-                },
-                {
-                    data: '18-Sugestao(Pedido)'
-                },
-                {
-                    data: '23-% qtd cor',
-                    render: function(data, type, row) {
-                        // Adiciona o símbolo de porcentagem apenas durante a exibição
-                        if (type === 'display') {
-                            return data + '%'; // Adiciona o símbolo de porcentagem ao valor
-                        }
-                        return data; // Retorna o valor original para outras operações (por exemplo, ordenação)
-                    }
-                },
-                {
-                    data: 'Agrupamento'
-                },
-            ],
-            language: {
-                paginate: {
-                    first: 'Primeira',
-                    previous: '<',
-                    next: '>',
-                    last: 'Última',
-                },
-            },
-        });
-
-        //--Criando a paginação da tabela
-        $('.dataTables_paginate').appendTo('#Paginacao');
-
-        $('#Paginacao .paginate_button.previous').on('click', function() {
-            tabela.page('previous').draw('page');
-        });
-
-        $('#Paginacao .paginate_button.next').on('click', function() {
-            tabela.page('next').draw('page');
-        });
-
-        const paginaInicial = 1;
-        tabela.page(paginaInicial - 1).draw('page');
-
-        $('#Paginacao .paginate_button').on('click', function() {
-            $('#Paginacao .paginate_button').removeClass('current');
-            $(this).addClass('current');
-        });
-
-        $('#selectAllMarca').on('change', function() {
-            let isChecked = $(this).is(':checked');
-            $('#checkboxContainerMarca .filtro:visible').prop('checked', isChecked);
-            atualizarFiltroMarca();
-        });
-
-        // Evento de mudança no checkbox "Selecionar Todos" de Pedidos
-        $('#selectAllPedidos').on('change', function() {
-            let isChecked = $(this).is(':checked');
-            $('#checkboxContainerPedidos .filtro:visible').prop('checked', isChecked);
-            atualizarFiltroPedido();
-        });
-
-        $('#checkboxContainerMarca').on('change', '.filtro', function() {
-            let todosMarcados = $('#checkboxContainerMarca .filtro:visible').length === $('#checkboxContainerMarca .filtro:visible:checked').length;
-            $('#selectAllMarca').prop('checked', todosMarcados);
-            atualizarFiltroMarca();
-        });
-
-        $('#checkboxContainerPedidos').on('change', '.filtro', function() {
-            let todosMarcados = $('#checkboxContainerPedidos .filtro:visible').length === $('#checkboxContainerPedidos .filtro:visible:checked').length;
-            $('#selectAllPedidos').prop('checked', todosMarcados);
-            atualizarFiltroPedido();
-        });
-
-        function atualizarFiltroMarca() {
-            var filtros = [];
-            $('#checkboxContainerMarca .filtro:checked').each(function() {
-                filtros.push($(this).val());
-            });
-            tabela.column(1).search(filtros.join('|'), true, false).draw();
-        }
-
-        function atualizarFiltroPedido() {
-            var filtros = [];
-            $('#checkboxContainerPedidos .filtro:checked').each(function() {
-                filtros.push($(this).val());
-            });
-            tabela.column(0).search(filtros.join('|'), true, false).draw();
-        }
-        //-- Pesquisa qualquer palavra na tabela
-        $('#searchFila').on('keyup', function() {
-            tabela.search(this.value).draw();
-        });
-    }
-
-    function criarTabelaOps(listaOps) {
-        console.log(listaOps)
-        $('#Paginacao .dataTables_paginate').remove();
-        $('#PaginacaoOps .dataTables_paginate').remove();
-
-        if ($.fn.DataTable.isDataTable('#TableOps')) {
-            $('#TableOps').DataTable().destroy();
-        }
-
-        const tabela = $('#TableOps').DataTable({
-            excel: true,
-            responsive: false,
-            paging: true,
-            info: false,
-            searching: true,
-            colReorder: true,
-            data: listaOps,
-            lengthChange: false,
-            pageLength: 10,
-            fixedHeader: true,
-            dom: 'Bfrtip',
-            buttons: [{
-                    extend: 'excelHtml5',
-                    text: '<i class="fa-solid fa-file-excel"></i>',
-                    title: 'Fila de Reposição',
-                    className: 'ButtonExcel'
-                },
-                {
-                    extend: 'colvis',
-                    text: 'Visibilidade das Colunas',
-                    className: 'ButtonVisibilidade'
-                }
-            ],
-            columns: [{
-                    data: 'numeroop'
-                },
-                {
-                    data: 'codFaseAtual'
-                },
-                {
-                    data: 'nome'
-                },
-                {
-                    data: 'Ocorrencia Pedidos'
-                },
-                {
-                    data: 'AtendePçs'
-                },
-
-            ],
-            language: {
-                paginate: {
-                    first: 'Primeira',
-                    previous: '<',
-                    next: '>',
-                    last: 'Última',
-                },
-            },
-        });
-
-        $('.dataTables_paginate').appendTo('#PaginacaoOps');
-
-        $('#PaginacaoOps .paginate_button.previous').on('click', function() {
-            tabela.page('previous').draw('page');
-        });
-
-        $('#PaginacaoOps .paginate_button.next').on('click', function() {
-            tabela.page('next').draw('page');
-        });
-
-        const paginaInicial = 1;
-        tabela.page(paginaInicial - 1).draw('page');
-
-        $('#PaginacaoOps .paginate_button').on('click', function() {
-            $('#PaginacaoOps .paginate_button').removeClass('current');
-            $(this).addClass('current');
-        });
-
-
-        //-- Pesquisa qualquer palavra na tabela
-        $('#searchFila').on('keyup', function() {
-            tabela.search(this.value).draw();
-        });
-    }
-
-    //------------------------------------------CRIAÇAO DOS FILTROS ESPECIAIS---------------------------------------//
-    let Clientes = [];
-
-    $('#Cliente').on('keypress', function(event) {
-        if (event.which === 13) {
-
-            event.preventDefault();
-
-            let cliente = $(this).val().trim();
-
-            if (cliente !== '') {
-                if (Clientes.includes(cliente)) {
-                    alert('O código do cliente já foi adicionado.');
-                } else {
-                    Clientes.push(cliente);
-                    $(this).val('');
-                    console.log('Clientes:', Clientes);
-                }
-            }
-        }
-    });
-</script>
+<script src="script.js"></script>
