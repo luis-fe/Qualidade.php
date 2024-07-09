@@ -80,7 +80,27 @@ function DetalharOp($empresa, $numeroOp)
     return json_decode($apiResponse, true);
 }
 
+function DetalharPedido($empresa, $numeroPedido)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/DetalhaPedidoMonitor?codPedido={$numeroPedido}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
 
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["acao"])) {
@@ -92,18 +112,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $tipoNota = $_GET['tipoNota'];
             $parametroClassificacao = $_GET['parametroClassificacao'];
             $tipoData = $_GET['tipoData'];
-        
+
             header('Content-Type: application/json');
             echo json_encode(ConsultarPedidos($empresa, $token, $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData));
-        } elseif ($acao == 'Consultar_Ops'){
+        } elseif ($acao == 'Consultar_Ops') {
             $dataInicio = $_GET['dataInicio'];
             $dataFim = $_GET['dataFim'];
             header('Content-Type: application/json');
             echo json_encode(ConsultarOps($empresa, $dataInicio, $dataFim));
-        } elseif ($acao == 'Detalhar_Op'){
+        } elseif ($acao == 'Detalhar_Op') {
             $numeroOp = $_GET['numeroOp'];
             header('Content-Type: application/json');
             echo json_encode(DetalharOp($empresa, $numeroOp));
+        } elseif ($acao == 'Detalhar_Pedido') {
+            $numeroPedido = $_GET['numeroPedido'];
+            header('Content-Type: application/json');
+            echo json_encode(DetalharPedido($empresa, $numeroPedido));
         }
     }
 } else {
