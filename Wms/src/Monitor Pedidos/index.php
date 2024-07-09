@@ -421,6 +421,7 @@ include("../../../templates/Loading.php");
                             <tr>
                                 <th scope="col">Numero Op</th>
                                 <th scope="col">Engenharia</th>
+                                 <th scope="col">Descrição</th>
                                 <th scope="col">Cód. Fase Atual</th>
                                 <th scope="col">Nome da Fase</th>
                                 <th scope="col">Quantidade em Pedidos</th>
