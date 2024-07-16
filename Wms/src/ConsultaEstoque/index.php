@@ -71,7 +71,7 @@ include("../../../templates/Loading.php");
                 </div>
             </div>
             <div class="col-12 col-md-1 text-center mt-3 mt-md-1 d-flex justify-content-end align-items-end">
-                <button type="button" id="ButtonAtualizar" class="btn btn-primary col-12">Atualizar</button>
+                <button type="button" id="ButtonAtualizar" onclick="ConsultaEstoques()" class="btn btn-primary col-12">Atualizar</button>
             </div>
         </div>
         <div class="row mt-3">
