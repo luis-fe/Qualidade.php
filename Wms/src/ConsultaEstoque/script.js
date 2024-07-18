@@ -72,12 +72,39 @@ function criarTabelaEstoque(listaEstoque) {
             }
         ],
         columns: [
-            { data: 'Rua' },
-            { data: 'Modulo' },
-            { data: 'Posicao' },
-            { data: 'engenharia' },
-            { data: 'codreduzido' },
-            { data: 'saldo' },
+            {
+                    data: 'Rua',
+                    visible: false
+                },
+                {
+                    data: 'Modulo',
+                    visible: false
+                },
+                {
+                    data: 'Posicao',
+                    visible: false
+                },
+                {
+                    data: 'Endereco'
+                },
+                {
+                    data: 'engenharia'
+                },
+                {
+                    data: 'desc_tam'
+                },
+                {
+                    data: 'desc_cor'
+                },
+                {
+                    data: 'codreduzido'
+                },
+                {
+                    data: 'nome'
+                },
+                {
+                    data: 'saldo'
+                },
         ],
         language: {
             paginate: {
