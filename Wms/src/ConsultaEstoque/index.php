@@ -90,13 +90,17 @@ include("../../../templates/Loading.php");
             <table class="table table-bordered" id="TableEstoques">
                 <thead class="fixed-header">
                     <tr>
-                        <th scope="col">Rua</th>
-                        <th scope="col">Módulo</th>
-                        <th scope="col">Posição</th>
-                        <th scope="col">Engenharia</th>
-                        <th scope="col">Reduzido</th>
-                        <th scope="col">Saldo</th>
-                    </tr>
+                                <th scope="col">Rua</th>
+                                <th scope="col">Módulo</th>
+                                <th scope="col">Posição</th>
+                                <th scope="col">Endereço</th>
+                                <th scope="col">Engenharia</th>
+                                <th scope="col">Tamanho</th>
+                                <th scope="col">Cor</th>
+                                <th scope="col">Reduzido</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Saldo</th>
+                            </tr>
                 </thead>
                 <tbody>
                     <!-- Tabela preenchida via JavaScript -->
