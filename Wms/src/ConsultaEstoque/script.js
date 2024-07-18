@@ -136,7 +136,7 @@ function criarTabelaEstoque(listaEstoque) {
 
     // Adiciona evento de busca para cada campo
     $('#searchEngenharia').on('keyup change', function() {
-        tabela.column(3).search(this.value).draw();
+        tabela.column(4).search(this.value).draw();
     });
     $('#searchRua').on('keyup change', function() {
         tabela.column(0).search(this.value).draw();
@@ -148,6 +148,6 @@ function criarTabelaEstoque(listaEstoque) {
         tabela.column(2).search(this.value).draw();
     });
     $('#searchCodReduzido').on('keyup change', function() {
-        tabela.column(4).search(this.value).draw();
+        tabela.column(7).search(this.value).draw();
     });
 }
