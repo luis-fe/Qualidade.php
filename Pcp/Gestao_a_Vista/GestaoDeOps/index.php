@@ -165,7 +165,7 @@ include("../../../templates/LoadingGestao.php");
         <div class="modal-content" style="text-align: left;">
             <div class="modal-header">
                 <h5 class="modal-title" id="NumeroOP">Justificativa</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#ModalJustificativa').modal('show')">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#ModalJustificativa').modal('hide')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
