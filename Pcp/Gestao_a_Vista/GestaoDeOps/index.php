@@ -101,9 +101,9 @@ include("../../../templates/LoadingGestao.php");
                 </div>
             </div>
         </div>
-        <div class="row col-12" style="height: 80vh; max-height: 80vh; background-color: lightgray; border: 1px solid black; border-bottom: none; width: 100%; min-width: 100%">
+       <div class="row col-12" style="height: 68vh; max-height: 68vh; background-color: lightgray; border: 1px solid black; border-radius: 10px; width: 100%; min-width: 100%">
             <h2>Lista de Op's</h2>
-            <div class="row" id="Corpo" style="height: 99%; max-height: 99%; min-height: 99%; overflow: auto">
+            <div class="row" id="Corpo" style="height: 61vh; max-height: 61vh; min-height: 61vh; overflow: auto">
             </div>
         </div>
 
