@@ -4,41 +4,6 @@ include_once("../../../templates/headsGestao.php");
 include("../../../templates/LoadingGestao.php");
 ?>
 <link rel="stylesheet" href="style.css">
-<style>
-    #checkboxContainerColecao label {
-        display: block;
-        margin: 0;
-        padding: 0;
-    }
-
-    .Corpo {
-        width: 100%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
-        overflow: auto;
-        background-color: var(--branco);
-        padding: 20px;
-        height: calc(100% - 50px);
-        min-height: calc(97% - 50px);
-        max-height: calc(97% - 50px);
-    }
-
-    .chart-container {
-        margin: 20px 0;
-    }
-
-    .detalha-fila {
-        position: absolute;
-        background-color: lightgray;
-        border: 1px solid #ddd;
-        padding: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        display: none;
-        max-height: 50vh;
-        overflow-y: auto;
-    }
-</style>
 
 <div class="container-fluid" id="form-container">
     <div class="Corpo auto-height d-flex flex-wrap">
