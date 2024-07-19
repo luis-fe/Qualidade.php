@@ -70,7 +70,7 @@ include("../../../templates/LoadingGestao.php");
                     <label for="" style="cursor:pointer">CLAUDINO</label>
                 </div>
                 <div class="card legenda blink col-1 Avista d-none" id="legenda" onclick="Prioridade1 = 'A VISTA ANTECIPADO'; FiltrarDadosPrioridade()">
-                    <label for="" style="cursor:pointer">ANTECIPADO</label>
+                    <label for="" style="cursor:pointer">A VISTA</label>
                 </div>
                 <div class="card legenda blink col-1 FatAtrasado d-none" id="legenda" onclick="Prioridade1 = 'FAT ATRASADO'; FiltrarDadosPrioridade()">
                     <label for="" style="cursor:pointer">FAT ATRASADO</label>
