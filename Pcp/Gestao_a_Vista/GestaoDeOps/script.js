@@ -8,6 +8,7 @@
         $('#NomeRotina').text("Gestão de Op's");
 
         await ConsultaOps('', '', '');
+        await ConsultaOps('', '', '');
         ConsultaColecoes()
     });
 
