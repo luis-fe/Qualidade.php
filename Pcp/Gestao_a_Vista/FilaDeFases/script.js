@@ -1,423 +1,355 @@
-$(document).ready(async () => {
-    $('#NomeRotina').text('Início');
-    $('#loadingModal').modal('show');
-    await Promise.all([
-        ConsultarDadosEstoque(),
-        ConsultarDadosPedidos(),
-        ConsultarDadosEndereco()
-    ]);
-    await Grafico1();
-    await Grafico2();
-    await Grafico3();
-    await Grafico4();
-    $('#loadingModal').modal('hide');
-});
+$(document).ready(() => {
+        ConsultaColecao();
 
-let PecasEstoque = '';
-let PecasRepostas = '';
-let TotalPecasPedidos = "";
-let TotalPecasPedidosRepostas = "";
-let TotalPedidosRetorna = "";
-let TotalPedidosFechados = "";
-let TotalDeEnderecos = "";
-let TotalEnderecosDisponives = "";
 
-const ConsultarDadosEstoque = () => {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consultar_Dados_Estoque'
-            },
-            success: (data) => {
-                PecasEstoque = parseInt(data[0]['1.1-Total de Peças Nat. 5'].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                PecasRepostas = parseInt(data[0]['1.3-Peçs Repostas'].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                TotalPecasPedidos = parseInt(data[0]['2.1- Total de Skus nos Pedidos em aberto '].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                TotalPecasPedidosRepostas = parseInt(data[0]['2.3-Qtd de Enderecos OK Reposto nos Pedido'].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                resolve();
-            },
-            error: (xhr, status, error) => {
-                reject(error);
+        $('#searchInputColecao').on('keyup', function() {
+            var searchText = $(this).val().toLowerCase();
+            var $container = $('#checkboxContainerColecao');
+            $container.find('.filtro').closest('label').each(function() {
+                var $label = $(this);
+                var labelText = $label.text().toLowerCase();
+                if (labelText.includes(searchText)) {
+                    $label.show().prependTo($container);
+                } else {
+                    $label.hide();
+                }
+            });
+        });
+
+        $('#NomeRotina').text('Fila das Fases')
+
+        function fecharDropdowns() {
+            $('.dropdown-menu').hide();
+        }
+
+        // Evento de clique no documento para fechar dropdowns ao clicar fora
+        $(document).click(function(event) {
+            var $target = $(event.target);
+            if (!$target.closest('.dropdown').length) {
+                fecharDropdowns();
             }
         });
-    });
-}
 
-const ConsultarDadosPedidos = () => {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consultar_Dados_Pedidos'
-            },
-            success: (data) => {
-                TotalPedidosRetorna = parseInt(data[0]["1. Total de Pedidos no Retorna"].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                TotalPedidosFechados = parseInt(data[0]["2. Total de Pedidos fecham 100%"].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                resolve();
-            },
-            error: (xhr, status, error) => {
-                reject(error);
-            }
+        // Evento de clique nos botões de dropdown
+        $('.dropdown-toggle').click(function(event) {
+            event.stopPropagation();
+            var $this = $(this);
+            var $dropdownMenu = $this.next('.dropdown-menu');
+
+            // Fechar todos os outros dropdowns
+            $('.dropdown-menu').not($dropdownMenu).hide();
+
+            // Toggle do dropdown clicado
+            $dropdownMenu.toggle();
         });
-    });
-}
 
-const ConsultarDadosEndereco = () => {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consultar_Dados_Enderecos',
-                natureza: '5',
-            },
-            success: (data) => {
-                TotalDeEnderecos = parseInt(data[0]['1- Total de Enderecos Natureza '].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                TotalEnderecosDisponives = parseInt(data[0]['2- Total de Enderecos Disponiveis'].replace(/\./g, '').replace(/\ pçs/, '')).toLocaleString('pt-BR');
-                resolve();
-            },
-            error: (xhr, status, error) => {
-                reject(error);
-            }
+    });
+
+    async function ConsultarFila(Colecoes) {
+        $('#loadingModal').modal('show');
+        try {
+            const dados = {
+                Colecao: Colecoes
+            };
+
+            var requestData = {
+                acao: "Consultar_Fila_Fases",
+                dados: dados
+            };
+
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+            console.log(response);
+            criarGraficos(response);
+            DetalhaFila();
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    }
+
+    const ConsultaColecao = async () => {
+        $('#loadingModal').modal('show');
+        try {
+            const response = await $.ajax({
+                type: 'GET',
+                url: 'requests.php',
+                dataType: 'json',
+                data: {
+                    acao: 'Consultar_Colecao'
+                }
+            });
+            console.log(response)
+            const ColecoesFiltradas = response.filter(item => item.COLECAO !== '-');
+            $('#checkboxContainerColecao').empty();
+            ColecoesFiltradas.forEach(item => {
+                $('#checkboxContainerColecao').append(`<label><input type="checkbox" class="filtro" value="${item["COLECAO"]}"> ${item["COLECAO"]}</label>`);
+            });
+        } catch (error) {
+            console.error('Erro ao consultar chamados:', error);
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    }
+
+
+
+    async function DetalhaFila() {
+        try {
+            let timeoutId;
+            $('.chart-container').hover(function() {
+                clearTimeout(timeoutId);
+                const index = $(this).index('.chart-container');
+                const detalhaInfo = $('#detalha-info');
+                const containerTop = $(this).offset().top;
+                const windowTop = $(window).scrollTop();
+
+                // Verifica se a modal ultrapassaria o topo da página
+                if (containerTop - detalhaInfo.outerHeight() < windowTop) {
+                    // Se sim, posiciona a modal abaixo da div
+                    detalhaInfo.css({
+                        display: 'block',
+                        top: containerTop + $(this).outerHeight(),
+                        left: $(this).offset().left
+                    });
+                } else {
+                    // Se não, posiciona a modal acima da div
+                    detalhaInfo.css({
+                        display: 'block',
+                        top: containerTop - detalhaInfo.outerHeight(),
+                        left: $(this).offset().left
+                    });
+                }
+                const faseAtual = $(this).find('h5').text(); // Obtém o título da fase atual
+                ConsultarFilaFases(faseAtual); // Chama a função de consulta passando o título da fase
+
+            }, function() {
+                timeoutId = setTimeout(() => {
+                    $('#detalha-info').css('display', 'none');
+                }, 500);
+            });
+
+            $('#detalha-info').hover(function() {
+                clearTimeout(timeoutId);
+            }, function() {
+                $('#detalha-info').css('display', 'none');
+            });
+
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+        } finally {}
+    }
+
+
+    async function ConsultarFilaFases(faseAtual) {
+        try {
+            const dados = {
+                nomeFase: faseAtual
+            };
+
+            var requestData = {
+                acao: "Consultar_Detalha_Fila",
+                dados: dados
+            };
+
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            criarGraficosHover(response, faseAtual); // Chama a função para criar o modal com base na resposta
+
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+        } finally {}
+    }
+
+    function criarGraficos(dados) {
+        const divGraficos = document.getElementById('Graficos');
+        divGraficos.innerHTML = '';
+
+        dados.forEach((item, index) => {
+            const chartContainer = document.createElement('div');
+            chartContainer.className = 'chart-container d-flex col-12 mb-4 align-items-center justify-content-center';
+            chartContainer.style.cursor = 'pointer';
+            chartContainer.style.border = '1px solid black';
+            chartContainer.id = 'chart' + index;
+
+            const faseTitulo = document.createElement('h5');
+            faseTitulo.className = 'col-2 text-center';
+            faseTitulo.style.fontSize = '15px';
+            faseTitulo.textContent = item.fase;
+            chartContainer.appendChild(faseTitulo);
+
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'col-10';
+            chartContainer.appendChild(chartDiv);
+
+            divGraficos.appendChild(chartContainer);
+
+            var options = {
+                series: [{
+                    name: 'Fila',
+                    data: [item.Fila]
+                }, {
+                    name: 'Carga Atual',
+                    data: [item['Carga Atual']]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 90,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: true,
+                        barHeight: '100%',
+                        dataLabels: {
+                            position: 'top',
+                        },
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetX: 10,
+                    style: {
+                        fontSize: '14px',
+                        colors: ['#000']
+                    },
+                    formatter: function(val) {
+                        return val;
+                    }
+                },
+                stroke: {
+                    show: true,
+                    width: 1,
+                    colors: ['#fff']
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false
+                },
+                xaxis: {
+                    categories: ['Fila'],
+                    labels: {
+                        show: false
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            };
+
+            var chart = new ApexCharts(chartDiv, options);
+            chart.render();
         });
-    });
-}
-
-async function Grafico1() {
-    let PecasNaoRepostas = (PecasEstoque - PecasRepostas).toLocaleString('pt-BR');
-    PecasNaoRepostas = PecasNaoRepostas.replace(/\,/g, '.')
-    if (!isNaN(PecasEstoque) && !isNaN(PecasRepostas)) {
-        const PercentualReposto = (PecasRepostas / PecasEstoque) * 100;
-        const PercentualNaoReposto = 100 - PercentualReposto;
-        console.log(PercentualReposto);
-        console.log(PercentualNaoReposto)
-        const options = {
-            chart: {
-                type: 'donut',
-                height: '50%'
-            },
-            title: {
-                text: 'Taxa de Peças Repostas',
-                align: 'center',
-                style: {
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                    color: '#333'
-                }
-            },
-            series: [PercentualReposto, PercentualNaoReposto],
-            labels: [`Total De Peças no Estoque: <b>${PecasEstoque}</b>`, `Total de Peças Repostas: <b>${PecasRepostas}</b>`, `Diferença: ${PecasNaoRepostas}`],
-            colors: ['#008FFB', '#112d7e', 'red'],
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: '200px'
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }],
-            plotOptions: {
-                pie: {
-                    donut: {
-                        labels: {
-                            show: true,
-                            name: {
-                                show: true
-                            },
-                            value: {
-                                show: true,
-                                formatter: function (val) {
-                                    return val.toFixed(2) + "%"; // Mostra o valor com duas casas decimais
-                                }
-                            },
-                            total: {
-                                show: true,
-                                formatter: function () {
-                                    return PercentualReposto.toFixed(2) + '%'; // Exibe o percentual de endereços ocupados no centro do donut
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: true,
-                position: 'bottom',
-                fontSize: '15px'
-            }
-        };
-
-        const chart1 = new ApexCharts(document.querySelector("#chart1"), options);
-        chart1.render();
-    } else {
-        throw new Error('Valores inválidos para criar o gráfico');
     }
-}
 
-async function Grafico2() {
-    let totalEnderecosOcupados = parseInt(TotalDeEnderecos.replace(/\./g, '')) - parseInt(TotalEnderecosDisponives.replace(/\./g, ''));
-    let totalEnderecosOcupados2 = (parseInt(TotalDeEnderecos.replace(/\./g, '')) - parseInt(TotalEnderecosDisponives.replace(/\./g, ''))).toLocaleString('pt-BR');;
-    if (!isNaN(totalEnderecosOcupados)) {
-        const PercentualEnderecosOcupados = (totalEnderecosOcupados / parseInt(TotalDeEnderecos.replace(/\./g, ''))) * 100;
-        const PercentualEnderecosDisponiveis = 100 - PercentualEnderecosOcupados;
+    function criarGraficosHover(dados, faseAtual) {
+        console.log(dados)
+        const divGraficos2 = document.getElementById('Graficos2');
+        divGraficos2.innerHTML = '';
+        const titulo = document.createElement('h2');
+        titulo.textContent = faseAtual;
 
-        const options = {
-            chart: {
-                type: 'donut',
-                height: '50%'
-            },
-            title: {
-                text: 'Taxa de Ocupação dos Endereços',
-                align: 'center',
-                style: {
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                    color: '#333'
-                }
-            },
-            series: [PercentualEnderecosOcupados, PercentualEnderecosDisponiveis],
-            labels: [`Enderecos Totais: <b>${TotalDeEnderecos}</b>`, `Enderecos Ocupados: <b>${totalEnderecosOcupados2}</b>`, `Diferença: ${TotalEnderecosDisponives}`],
-            colors: ['#112d7e', '#008FFB', 'red'],
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: '200px'
+        divGraficos2.append(titulo)
+
+        dados.forEach((item, index) => {
+            const chartContainer = document.createElement('div');
+            chartContainer.className = 'chart-container d-flex col-12 mb-4 align-items-center justify-content-center';
+            chartContainer.style.cursor = 'pointer';
+            chartContainer.style.border = '1px solid black';
+            chartContainer.id = 'chartHover' + index;
+
+            const faseTitulo = document.createElement('h5');
+            faseTitulo.className = 'col-2 text-center';
+            faseTitulo.style.fontSize = '15px';
+            faseTitulo.textContent = item.faseAtual;
+            chartContainer.appendChild(faseTitulo);
+
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'col-10';
+            chartContainer.appendChild(chartDiv);
+
+            divGraficos2.appendChild(chartContainer);
+
+            // Configuração do gráfico
+            var options = {
+                series: [{
+                    name: 'Quantidade de Peças',
+                    data: [item.pcs] // Utiliza a quantidade de peças do item
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 90,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: true,
+                        barHeight: '100%',
+                        dataLabels: {
+                            position: 'top',
+                        },
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetX: 10,
+                    style: {
+                        fontSize: '14px',
+                        colors: ['#000']
                     },
-                    legend: {
-                        position: 'bottom'
+                    formatter: function(val) {
+                        return val;
                     }
-                }
-            }],
-            plotOptions: {
-                pie: {
-                    donut: {
-                        labels: {
-                            show: true,
-                            name: {
-                                show: true
-                            },
-                            value: {
-                                show: true,
-                                formatter: function (val) {
-                                    return val.toFixed(2) + "%"; // Mostra o valor com duas casas decimais
-                                }
-                            },
-                            total: {
-                                show: true,
-                                formatter: function () {
-                                    return PercentualEnderecosOcupados.toFixed(2) + '%'; // Exibe o percentual de endereços ocupados no centro do donut
-                                }
-                            }
-                        }
+                },
+                stroke: {
+                    show: true,
+                    width: 1,
+                    colors: ['#fff']
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false
+                },
+                xaxis: {
+                    categories: ['Quantidade'],
+                    labels: {
+                        show: false
                     }
+                },
+                legend: {
+                    show: false
                 }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: true,
-                position: 'bottom',
-                fontSize: '15px'
-            }
-        };
+            };
 
-        const chart2 = new ApexCharts(document.querySelector("#chart2"), options);
-        chart2.render();
-
-    } else {
-        throw new Error('Valores inválidos para criar o gráfico');
+            // Criação do gráfico
+            var chart = new ApexCharts(chartDiv, options);
+            chart.render(); // Renderiza o gráfico dentro do elemento chartDiv
+        });
     }
-}
 
-async function Grafico3() {
-    // Parse os valores como números inteiros removendo pontos e espaços
-    TotalPedidosRetorna = parseInt(TotalPedidosRetorna.replace(/\./g, '').replace(/\ pçs/, ''));
-    TotalPedidosFechados = parseInt(TotalPedidosFechados.replace(/\./g, '').replace(/\ pçs/, ''));
 
-    // Calcule o total de pedidos que não fecham
-    let TotalPedidosNaoFecham = (TotalPedidosRetorna - TotalPedidosFechados).toLocaleString('pt-BR');
 
-    // Verifique se os valores são números válidos
-    if (!isNaN(TotalPedidosRetorna) && !isNaN(TotalPedidosFechados)) {
-        // Calcule os percentuais
-        const PercentualPedidosFecham = (TotalPedidosFechados / TotalPedidosRetorna) * 100;
-        const PercentualPedidosNaoFecham = 100 - PercentualPedidosFecham;
 
-        // Defina as opções do gráfico
-        const options = {
-            chart: {
-                type: 'donut',
-                height: '50%'
-            },
-            title: {
-                text: 'Taxa de Pedidos 100%',
-                align: 'center',
-                style: {
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                    color: '#333'
-                }
-            },
-            series: [PercentualPedidosFecham, PercentualPedidosNaoFecham],
-            labels: [
-                `Pedidos no Retorna: <b>${TotalPedidosRetorna.toLocaleString('pt-BR')}</b>`, 
-                `Pedidos 100% Repostos: <b>${TotalPedidosFechados.toLocaleString('pt-BR')}</b>`, 
-                `Diferença: ${TotalPedidosNaoFecham}`
-            ],
-            colors: ['#112d7e', '#008FFB', 'red'],
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: '200px'
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }],
-            plotOptions: {
-                pie: {
-                    donut: {
-                        labels: {
-                            show: true,
-                            name: {
-                                show: true
-                            },
-                            value: {
-                                show: true,
-                                formatter: function (val) {
-                                    return val.toFixed(2) + "%"; // Mostra o valor com duas casas decimais
-                                }
-                            },
-                            total: {
-                                show: true,
-                                formatter: function () {
-                                    return PercentualPedidosFecham.toFixed(2) + '%'; // Exibe o percentual de endereços ocupados no centro do donut
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: true,
-                position: 'bottom',
-                fontSize: '15px'
-            }
-        };
 
-        // Renderize o gráfico
-        const chart3 = new ApexCharts(document.querySelector("#chart3"), options);
-        chart3.render();
+    async function Filtrar() {
+        var selectedItems = [];
+        $('#checkboxContainerColecao .filtro:checked').each(function() {
+            selectedItems.push($(this).val());
+        });
+        ConsultarFila(selectedItems)
 
-    } else {
-        throw new Error('Valores inválidos para criar o gráfico');
     }
-}
-
-
-async function Grafico4() {
-     TotalPecasPedidos = parseInt(TotalPecasPedidos.replace(/\./g, '').replace(/\ pçs/, ''));
-     TotalPecasPedidosRepostas = parseInt(TotalPecasPedidosRepostas.replace(/\./g, '').replace(/\ pçs/, ''));
-
-    let TotalPecasNaoRepostas = TotalPecasPedidos - TotalPecasPedidosRepostas;
-
-    // Verifique se os valores são números válidos
-    if (!isNaN(TotalPecasPedidos) && !isNaN(TotalPecasPedidosRepostas)) {
-        // Calcule os percentuais
-        const PercentualReposto = (TotalPecasPedidosRepostas / TotalPecasPedidos) * 100;
-        const PercentualNaoReposto = 100 - PercentualReposto;
-
-        // Defina as opções do gráfico
-        const options = {
-            chart: {
-                type: 'donut',
-                height: '50%'
-            },
-            title: {
-                text: 'Taxa de Peças Disponiveis para Separação',
-                align: 'center',
-                style: {
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                    color: '#333'
-                }
-            },
-            series: [PercentualReposto, PercentualNaoReposto],
-            labels: [
-                `Total de Peças nos Pedidos: <b>${TotalPecasPedidos.toLocaleString('pt-BR')}</b>`, 
-                `Total de Peças Repostas: <b>${TotalPecasPedidosRepostas.toLocaleString('pt-BR')}</b>`, 
-                `Diferença: ${TotalPecasNaoRepostas.toLocaleString('pt-BR')}`
-            ],
-            colors: ['#112d7e', '#008FFB', 'red'],
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: '200px'
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }],
-            plotOptions: {
-                pie: {
-                    donut: {
-                        labels: {
-                            show: true,
-                            name: {
-                                show: true
-                            },
-                            value: {
-                                show: true,
-                                formatter: function (val) {
-                                    return val.toFixed(2) + "%"; // Mostra o valor com duas casas decimais
-                                }
-                            },
-                            total: {
-                                show: true,
-                                formatter: function () {
-                                    return PercentualReposto.toFixed(2) + '%'; // Exibe o percentual de endereços ocupados no centro do donut
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: true,
-                position: 'bottom',
-                fontSize: '15px'
-            }
-        };
-
-        // Renderize o gráfico
-        const chart4 = new ApexCharts(document.querySelector("#chart4"), options);
-        chart4.render();
-
-    } else {
-        throw new Error('Valores inválidos para criar o gráfico');
-    }
-}
-
