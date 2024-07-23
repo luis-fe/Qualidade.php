@@ -181,6 +181,6 @@ include_once("../../templates/loading1.php");
 
 
 
-<?php include_once("../../templates/footer.php"); ?>
+<?php include_once("../../templates/footer1.php"); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
