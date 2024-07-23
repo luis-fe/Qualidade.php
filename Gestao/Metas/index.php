@@ -67,3 +67,4 @@ include_once("../../templates/loading1.php");
 </div>
 
 <?php include_once("../../templates/footer1.php"); ?>
+<script src="script.js"></script>
