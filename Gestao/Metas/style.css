@@ -1,0 +1,119 @@
+.container-tabela {
+    width: 100%;
+    max-height: 80%;
+    overflow: auto;
+    background-color: white;
+    margin-left: -12px;
+}
+
+.select2-dropdown {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.table {
+    width: 100%;
+    border: none;
+}
+
+.table th,
+.table td {
+    white-space: nowrap;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+    font-size: 1.2rem;
+}
+
+.table tbody tr:hover {
+    background-color: lightblue;
+}
+
+.table th {
+    background-color: var(--CorMenu);
+    color: var(--Branco);
+    text-align: center;
+}
+
+.table tbody td {
+    color: var(--Preto);
+    font-weight: 600;
+}
+
+.table-custom td:nth-child(2),
+.table-custom th:nth-child(2) {
+    min-width: 100px;
+    max-width: 100px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+
+.table-custom td:nth-child(3),
+.table-custom th:nth-child(3),
+.table-custom td:nth-child(4),
+.table-custom th:nth-child(4),
+.table-custom td:nth-child(5),
+.table-custom th:nth-child(5),
+.table-custom td:nth-child(6),
+.table-custom th:nth-child(6) {
+    min-width: 100px;
+    max-width: 100px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+#fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+}
+
+.selected-row {
+    background-color: lightblue !important;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+    background-color: white;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid lightgray;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: 1px solid var(--CorMenu);
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 5px;
+    color: black;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--CorMenu);
+    color: white;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    display: none;
+}
+
+.ButtonExcel,
+.ButtonVisibilidade {
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.ButtonExcel i {
+    color: green;
+    font-size: 25px;
+}
+
+.ButtonModal i,
+.ButtonVisibilidade i {
+    font-size: 25px;
+    color: var(--CorMenu);
+}
