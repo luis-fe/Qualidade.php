@@ -24,7 +24,7 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="../../templates/style.css">
+    <link rel="stylesheet" href="../../templates/style1.css">
 </head>
 
 <body>
