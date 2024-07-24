@@ -363,7 +363,7 @@ async function ExportarExcel() {
     $('#loadingModal').modal('show');
     try {
         const dados = {
-            "empresa": empresaAtual,
+            "empresa": 1,
             "filtro": '',
             "classificar": '',
             "colecao": ''
