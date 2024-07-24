@@ -382,7 +382,7 @@ async function ExportarExcel() {
         });
 
         const DetalhamentoApi = response[0]['3 -Detalhamento'];
-        const colunasDesejadas = ['numeroOP', 'codProduto', 'descricao', 'Qtd Pcs', 'codFase', 'nomeFase', 'dias na Fase', 'responsavel', 'prioridade', 'justificativa', 'COLECAO', 'categoria', 'status']; // substitua com os nomes das colunas desejadas
+        const colunasDesejadas = ['numeroOP', 'codProduto', 'descricao', 'Qtd Pcs', 'codFase', 'nomeFase', 'dias na Fase', 'responsavel', 'prioridade', 'justificativa', 'COLECAO', 'categoria', 'status', 'detalhado']; // substitua com os nomes das colunas desejadas
 
         // Filtrar dados para incluir apenas as colunas desejadas
         const dadosFiltrados = DetalhamentoApi.map(item => {
