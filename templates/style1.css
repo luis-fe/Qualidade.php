@@ -55,7 +55,6 @@ h4 {
     max-height: 100vh;
     overflow: auto;
     border-right: 1px solid gray;
-    margin-left: -380px; /* Sidebar starts collapsed */
 }
 
 .main {
@@ -164,7 +163,7 @@ a.sidebar-link .sidebar-link[data-bs-toggle="collapse"]::after {
 @media (max-width:767.98px) {
 
     .js-sidebar {
-        margin-left: -380px;
+        margin-left: 0;
     }
 
 
@@ -182,7 +181,7 @@ a.sidebar-link .sidebar-link[data-bs-toggle="collapse"]::after {
     }
 
     #sidebar.collapsed {
-        margin-left: 0;
+        margin-left: -380px;
     }
 
     .navbar,
