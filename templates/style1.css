@@ -55,6 +55,7 @@ h4 {
     max-height: 100vh;
     overflow: auto;
     border-right: 1px solid gray;
+    margin-left: -380px; /* Sidebar starts collapsed */
 }
 
 .main {
