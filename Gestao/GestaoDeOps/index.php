@@ -3,7 +3,33 @@ include_once("../../templates/header1.php");
 include_once("../../templates/loading1.php");
 ?>
 <link rel="stylesheet" href="style.css">
+<style>
+    @media (max-width: 1100px) {
 
+        #cards,
+        #cardsPrioridades {
+            display: block;
+            flex-direction: column;
+            margin-bottom: 10px;
+            align-items: center !important;
+        }
+
+        #card,
+        .legenda,
+        #Botoes {
+            min-width: 80% !important;
+            margin-bottom: 5px;
+        }
+
+        #Botoes{
+            text-align: center;
+            justify-content: center;
+            align-items: center !important;
+        }
+
+
+    }
+</style>
 
 <label for="" style="font-size: 30px; font-weight: 700; color: black;">Fila de Fases</label>
 <div class="container" style="background-color: rgb(179, 179, 179); border-radius: 5px; height: calc(100vh - 160px); max-height: calc(100vh - 160px); overflow: auto; width: 100%; min-width: 100%; padding-top: 25px; padding-left: 30px;">
@@ -57,49 +83,47 @@ include_once("../../templates/loading1.php");
         </div>
 
     </div>
-   <div class="row col-12 mb-2">
+   <div class="row col-12 mb-2 d-flex justify-content-center align-items-center" id="cardsPrioridades">
         <!-- Container para o filtro e botões -->
-        <div class="d-flex flex-wrap align-items-center mb-2">
-            <i class="fa-solid fa-filter col-12 col-sm-4 col-md-1 mb-2 mb-sm-0" id="BotaoFiltros" title="Filtros" style="font-size: 30px; cursor: pointer;" onclick="$('#modalFiltros').modal('show');"></i>
-            <div class="d-flex col-12 col-sm-8 col-md-2 mb-2 mb-md-0">
-                <i class="fa-solid fa-download col-6" id="BotaoExcel" title="Exportar Excel" style="font-size: 30px; cursor: pointer;" onclick="ExportarExcel()"></i>
-                <i class="fa-solid fa-ban col-6" title="Remover Filtro de Prioridade" style="font-size: 30px; cursor: pointer;" onclick="Prioridade1 = ''; Prioridade2 = ''; Status = ''; FiltrarDadosPrioridade()"></i>
-            </div>
+        <div class="d-flex flex-wrap align-items-center col-12 mb-2 col-md-2" id="Botoes">
+            <i class="fa-solid fa-filter mr-3" id="BotaoFiltros" title="Filtros" style="font-size: 30px; cursor: pointer;" onclick="$('#modalFiltros').modal('show');"></i>
+            <i class="fa-solid fa-download mr-3" id="BotaoExcel" title="Exportar Excel" style="font-size: 30px; cursor: pointer;" onclick="ExportarExcel()"></i>
+            <i class="fa-solid fa-ban mr-3" title="Remover Filtro de Prioridade" style="font-size: 30px; cursor: pointer;" onclick="Prioridade1 = ''; Prioridade2 = ''; Status = ''; FiltrarDadosPrioridade()"></i>
         </div>
 
         <!-- Container para os cards -->
-        <div class="d-flex flex-wrap col-12">
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'CLAUDINO'; FiltrarDadosPrioridade()">
+        <div class="d-flex flex-wrap col-12 col-md-10 justify-content-center" id="cardsPrioridades">
+            <div class="card legenda blink d-none col-1 Claudino align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'CLAUDINO'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">CLAUDINO</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'A VISTA ANTECIPADO'; FiltrarDadosPrioridade()">
+            <div class="card legenda blink d-none col-1 Avista align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'A VISTA ANTECIPADO'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">A VISTA</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'FAT ATRASADO'; FiltrarDadosPrioridade()">
+            <div class="card legenda blink d-none col-1 FatAtrasado align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'FAT ATRASADO'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">FAT ATRASADO</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" style="background-color: red;" onclick="Prioridade1 = 'P/FAT.'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" style="background-color: red;" onclick="Prioridade1 = 'P/FAT.'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">P/ FAT.</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" style="background-color: red;" onclick="Prioridade1 = 'URGENTE'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" style="background-color: red;" onclick="Prioridade1 = 'URGENTE'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">URGENTE</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM1'; Prioridade2 = 'QP1'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM1'; Prioridade2 = 'QP1'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">QM1/QP1</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM2'; Prioridade2 = 'QP2'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM2'; Prioridade2 = 'QP2'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">QM2/QP2</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM3'; Prioridade2 = 'QP3'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM3'; Prioridade2 = 'QP3'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">QM3/QP3</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM4'; Prioridade2 = 'QP4'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM4'; Prioridade2 = 'QP4'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">QM4/QP4</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM5'; Prioridade2 = 'QP5'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM5'; Prioridade2 = 'QP5'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">QM5/QP5</label>
             </div>
-            <div class="card legenda col-6 col-sm-4 col-md-2 mb-2 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM6'; Prioridade2 = 'QP6'; FiltrarDadosPrioridade()">
+            <div class="card legenda col-1 d-flex align-items-center justify-content-center" id="legenda" onclick="Prioridade1 = 'QM6'; Prioridade2 = 'QP6'; FiltrarDadosPrioridade()">
                 <label for="" style="cursor:pointer">QM6/QP6</label>
             </div>
         </div>
