@@ -1,127 +1,252 @@
-$(document).ready(() => {
+const Consulta_Planos_Disponiveis = async () => {
+        $('#loadingModal').modal('show');
+        try {
+            const data = await $.ajax({
+                type: 'GET',
+                url: 'requests.php',
+                dataType: 'json',
+                data: {
+                    acao: 'Consulta_Planos_Disponiveis',
+                }
+            });
+            await Tabela_Planos(data);
+            $('#ModalPlanosDisponiveis').modal('show')
+        } catch (error) {
+            console.error('Erro ao consultar chamados:', error);
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    };
 
-    $('#NomeRotina').text('Metas');
-    $('#loadingModal').modal('hide')
-    // $('#table thead th').on('click', '.no-sort', function(event) {
-    //     event.stopPropagation();
-    //     console.log('Ícone clicado');
-    // });
-});
+    function FormatarData(date) {
+        const parts = date.split('/');
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
 
-async function ConsultarMetas() {
-    $('#loadingModal').modal('show');
-    try {
-        const dados = {
-            codigoPlano: $('#codigoPlano').val(),
-            arrayCodLoteCsw: [$('#SelectLote').val()]
-        };
+    const Consulta_Cronograma_Fase = async (codPlano, codFase) => {
+        $('#loadingModal').modal('show');
+        try {
+            const data = await $.ajax({
+                type: 'GET',
+                url: 'requests.php',
+                dataType: 'json',
+                data: {
+                    acao: 'Consulta_Cronograma_Fase',
+                    codPlano: codPlano,
+                    codFase: codFase
+                }
+            });
+            console.log(data[0]['DataInicio'])
+            $('#data-inicial-cronograma').val(FormatarData(data[0]['DataInicio']));
+            $('#data-final-cronograma').val(FormatarData(data[0]['DataFim']));
+            $('#modalCronogramas').modal('show')
+        } catch (error) {
+            console.error('Erro ao consultar chamados:', error);
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    };
 
-        const requestData = {
-            acao: "Consultar_Metas",
-            dados: dados
-        };
+    function Tabela_Planos(listaPlanos) {
+        if ($.fn.DataTable.isDataTable('#table-planos-disponiveis')) {
+            $('#table-planos-disponiveis').DataTable().destroy();
+        }
 
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
+        const tabela = $('#table-planos-disponiveis').DataTable({
+            searching: true,
+            paging: false,
+            lengthChange: false,
+            info: false,
+            pageLength: 10,
+            data: listaPlanos,
+            columns: [{
+                    data: '01- Codigo Plano'
+                },
+                {
+                    data: '02- Descricao do Plano'
+                },
+                {
+                    data: null,
+                    render: function(data, type, row) {
+                        return `
+                        <div" style="display: flex; justify-content: space-around; align-items: center; height: 100%;">
+                            <button class="btn" style="background-color: var(--CorMenu); color: var(--Branco);" onclick="$('#codigoPlano').val('${row['01- Codigo Plano']}'); ConsultaLote(); $('#ModalPlanosDisponiveis').modal('hide')">Selecionar</button>
+                        </div>
+                    `;
+                    }
+                }
+            ],
+            language: {
+                emptyTable: "Nenhum dado disponível na tabela",
+                zeroRecords: "Nenhum registro encontrado"
+            },
         });
-        console.log(response);
-        CriarTabelaMetas(response[0]['1-Detalhamento']);
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
-}
 
-function CriarTabelaMetas(listaMetas) {
-    if ($.fn.DataTable.isDataTable('#table')) {
-        $('#table').DataTable().destroy();
+        // Associar a busca ao campo de pesquisa do modal
+        $('#search-planos').on('keyup', function() {
+            tabela.search(this.value).draw();
+        });
     }
 
-    const tabela = $('#table').DataTable({
-        paging: false,
-        info: false,
-        searching: true,
-        colReorder: true,
-        data: listaMetas,
-        lengthChange: false,
-        pageLength: 10,
-        fixedHeader: true,
-        ordering: false,
-        columns: [{
-                data: 'apresentacao',
-                visible: false
-            },
-            {
-                data: 'codFase',
-                visible: false
-            },
-            {
-                data: 'nomeFase'
-            },
-            {
-                data: 'previsao',
-                render: function(data) {
-                    return parseInt(data).toLocaleString();
-                }
-            },
-            {
-                data: 'FaltaProgramar',
-                render: function(data) {
-                    return parseInt(data).toLocaleString();
-                }
-            },
-            {
-                data: 'Carga Atual',
-                render: function(data) {
-                    return parseInt(data).toLocaleString();
-                }
-            },
-            {
-                data: 'Fila',
-                render: function(data) {
-                    return parseInt(data).toLocaleString();
-                }
-            },
-            {
-                data: 'Falta Produzir',
-                render: function(data) {
-                    return parseInt(data).toLocaleString();
-                }
-            },
-            {
-                data: 'dias'
-            },
-            {
-                data: 'Meta Dia',
-                render: function(data) {
-                    return parseInt(data).toLocaleString();
-                }
-            },
+    $(document).ready(() => {
 
-        ],
-        language: {
-            paginate: {
-                first: 'Primeira',
-                previous: '<',
-                next: '>',
-                last: 'Última',
-            },
-        },
-
+        $('#NomeRotina').text('Metas');
+        $('#loadingModal').modal('hide')
+        const hoje = new Date().toISOString().split('T')[0];
+        document.getElementById('data-inicial').value = hoje;
+        document.getElementById('data-final').value = hoje;
     });
-    $('#search').on('keyup', function() {
-        tabela.search(this.value).draw();
-    });
-}
 
-async function ConsultaLote(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
 
+    async function ConsultarMetas() {
+        $('#loadingModal').modal('show');
+        try {
+            const dados = {
+                codigoPlano: $('#codigoPlano').val(),
+                arrayCodLoteCsw: [$('#SelectLote').val()],
+                dataMovFaseIni: $('#data-inicial').val(),
+                dataMovFaseFim: $('#data-final').val()
+            };
+
+            const requestData = {
+                acao: "Consultar_Metas",
+                dados: dados
+            };
+
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+            console.log(response);
+            CriarTabelaMetas(response[0]['1-Detalhamento']);
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    }
+
+    function CriarTabelaMetas(listaMetas) {
+        if ($.fn.DataTable.isDataTable('#table')) {
+            $('#table').DataTable().destroy();
+        }
+
+        const tabela = $('#table').DataTable({
+            paging: false,
+            info: false,
+            searching: true,
+            colReorder: true,
+            data: listaMetas,
+            lengthChange: false,
+            pageLength: 10,
+            fixedHeader: true,
+            ordering: false,
+            dom: 'Bfrtip',
+            buttons: [{
+                text: '<i class="fa-solid fa-filter"></i>',
+                className: 'ButtonModal',
+                action: function(e, dt, node, config) {
+                    $('#filtrosModal').modal('show');
+                },
+                attr: {
+                    title: 'Filtros'
+                }
+            }],
+            columns: [{
+                    data: 'apresentacao',
+                    visible: false
+                },
+                {
+                    data: 'codFase',
+                    visible: false
+                },
+                {
+                    data: 'nomeFase'
+                },
+                {
+                    data: 'previsao',
+                    render: function(data) {
+                        return parseInt(data).toLocaleString();
+                    }
+                },
+                {
+                    data: 'FaltaProgramar',
+                    render: function(data) {
+                        return parseInt(data).toLocaleString();
+                    }
+                },
+                {
+                    data: 'Carga Atual',
+                    render: function(data) {
+                        return parseInt(data).toLocaleString();
+                    }
+                },
+                {
+                    data: 'Fila',
+                    render: function(data) {
+                        return parseInt(data).toLocaleString();
+                    }
+                },
+                {
+                    data: 'Falta Produzir',
+                    render: function(data) {
+                        return parseInt(data).toLocaleString();
+                    }
+                },
+                {
+                    data: 'dias',
+                    render: function(data, type, row) {
+                        return `<span class="diasClicado" data-fase="${row.codFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                    }
+                },
+                {
+                    data: 'Meta Dia',
+                    render: function(data) {
+                        return parseInt(data).toLocaleString();
+                    }
+                },
+                {
+                    data: 'Realizado',
+                    render: function(data, type, row) {
+                        const realizado = parseInt(data);
+                        const meta = parseInt(row['Meta Dia']);
+                        let icon = '';
+
+                        if (realizado < meta) {
+                            icon = ' <i class="fas fa-arrow-down" style="color: red; float: right;"></i>';
+                        } else if (realizado > meta) {
+                            icon = ' <i class="fas fa-arrow-up" style="color: green; float: right;"></i>';
+                        }
+
+                        return realizado.toLocaleString() + icon;
+                    }
+                }
+            ],
+            language: {
+                paginate: {
+                    first: 'Primeira',
+                    previous: '<',
+                    next: '>',
+                    last: 'Última',
+                },
+            },
+        });
+
+        $('#search').on('keyup', function() {
+            tabela.search(this.value).draw();
+        });
+
+        $('#table').on('click', '.diasClicado', function() {
+            const codFase = $(this).data('fase');
+            console.log(codFase)
+            Consulta_Cronograma_Fase($('#codigoPlano').val(), codFase);
+        });
+    }
+
+
+    async function ConsultaLote() {
         if ($('#codigoPlano').val() === '') {
             Mensagem('Campo Vazio', 'warning')
         } else {
@@ -160,14 +285,13 @@ async function ConsultaLote(event) {
             }
         }
     }
-}
 
 
 
-function SelecaoLote() {
+    function SelecaoLote() {
 
-    ConsultarMetas();
-    $('#table').removeClass('d-none');
-    $('#campo-search').removeClass('d-none');
+        ConsultarMetas();
+        $('#table').removeClass('d-none');
+        $('#campo-search').removeClass('d-none');
 
-}
+    }
