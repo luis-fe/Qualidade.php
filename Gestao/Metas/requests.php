@@ -27,6 +27,53 @@ function ConsultaLotes($plano)
     return json_decode($apiResponse, true);
 }
 
+function ConsultaPlanosDisponiveis($empresa, $token)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/Plano";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultaCronogramaFase($empresa, $token, $codPlano, $codFase)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/ConsultaCronogramaFasePlanoFase?codigoPlano={$codPlano}&codFase={$codFase}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+
+
 function ConsultaMetas($dados)
 {
     $baseUrl = 'http://192.168.0.183:8000/pcp';
@@ -109,6 +156,15 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultaLotes($plano));
                     break;
+                case 'Consulta_Planos_Disponiveis':
+                    jsonResponse(ConsultaPlanosDisponiveis('1', 'a44pcp22'));
+                    break;
+                case 'Consulta_Cronograma_Fase':
+                    $codPlano = $_GET['codPlano'];
+                    $codFase = $_GET['codFase'];
+                    jsonResponse(ConsultaCronogramaFase('1', 'a44pcp22', $codPlano, $codFase));
+                    break;
+
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
