@@ -291,7 +291,7 @@ const Consulta_Planos_Disponiveis = async () => {
 
     function SelecaoLote() {
 
-        ConsultarMetas();
+        ConsultarMetas(false);
         $('#table').removeClass('d-none');
         $('#campo-search').removeClass('d-none');
 
