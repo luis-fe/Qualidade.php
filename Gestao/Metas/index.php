@@ -125,7 +125,7 @@ include_once("../../templates/loading1.php");
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" onclick="$('#filtrosModal').modal('hide'); ConsultarMetas()">Aplicar Filtros</button>
+                <button type="button" class="btn btn-primary" onclick="$('#filtrosModal').modal('hide'); ConsultarMetas(true)">Aplicar Filtros</button>
             </div>
         </div>
     </div>
