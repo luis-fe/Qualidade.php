@@ -98,14 +98,15 @@ const Consulta_Planos_Disponiveis = async () => {
     });
 
 
-    async function ConsultarMetas() {
+    async function ConsultarMetas(congelado) {
         $('#loadingModal').modal('show');
         try {
             const dados = {
                 codigoPlano: $('#codigoPlano').val(),
                 arrayCodLoteCsw: [$('#SelectLote').val()],
                 dataMovFaseIni: $('#data-inicial').val(),
-                dataMovFaseFim: $('#data-final').val()
+                dataMovFaseFim: $('#data-final').val(),
+                congelado: congelado
             };
 
             const requestData = {
