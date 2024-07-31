@@ -622,12 +622,13 @@ include("../../../templates/Loading.php");
         });
     }
 
-    function marcarLinhasDuplicadas() {
+   function marcarLinhasDuplicadas() {
         const valoresContados = {};
         const colunaDesejada = 9;
 
+        // Primeira passagem para contar os valores
         $('#TablePedidos tr').each(function(index) {
-            if (index > 0) {
+            if (index > 0) { // Ignorar o cabeçalho
                 const colunaValor = $(this).find(`td:eq(${colunaDesejada})`);
                 const valor = colunaValor.text().trim();
 
@@ -635,12 +636,25 @@ include("../../../templates/Loading.php");
             }
         });
 
+        // Segunda passagem para marcar as linhas
         $('#TablePedidos tr').each(function(index) {
-            if (index > 0) {
+            if (index > 0) { // Ignorar o cabeçalho
                 const colunaValor = $(this).find(`td:eq(${colunaDesejada})`);
                 const valor = colunaValor.text().trim();
+                const texto = colunaValor.text().toLowerCase();
+                console.log(texto)
+                const linhaContemMkt = texto.includes('mkt');
+                console.log(linhaContemMkt)
 
-                $(this).css('background-color', valoresContados[valor] > 1 ? 'yellow' : '');
+                if (linhaContemMkt) {
+                    $(this).css('background-color', '#9370DB');
+                } else if (valoresContados[valor] > 1 && linhaContemMkt) {
+                    $(this).css('background-color', '#9370DB');
+                } else if (valoresContados[valor] > 1) {
+                    $(this).css('background-color', 'yellow');
+                } else {
+                    $(this).css('background-color', '');
+                }
             }
         });
     }
