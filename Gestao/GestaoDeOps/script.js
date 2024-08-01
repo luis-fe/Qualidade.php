@@ -8,7 +8,11 @@ $(document).ready(async () => {
     $('#NomeRotina').text("Gestão de Op's");
 
     await ConsultaOps('', '', '');
-    ConsultaColecoes()
+    ConsultaColecoes();
+
+    setTimeout(async () => {
+        await ConsultaOps('', '', '');
+    }, 900000); // 15 minutos em milissegundos
 });
 
 
@@ -524,4 +528,3 @@ function atualizarJustificativaCard(op, fase, justificativa) {
     }
 }
 
-setInterval(aplicarFiltros(), 900000);
