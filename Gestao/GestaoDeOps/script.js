@@ -523,3 +523,5 @@ function atualizarJustificativaCard(op, fase, justificativa) {
         console.error('Card não encontrado.');
     }
 }
+
+setInterval(aplicarFiltros(), 900000);
