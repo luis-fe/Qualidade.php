@@ -10,9 +10,9 @@ $(document).ready(async () => {
     await ConsultaOps('', '', '');
     ConsultaColecoes();
 
-    setTimeout(async () => {
+    setInterval(async () => {
         await ConsultaOps('', '', '');
-    }, 900000); // 15 minutos em milissegundos
+    }, 900000); // 14 minutos em milissegundos
 });
 
 
