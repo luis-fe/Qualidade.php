@@ -283,7 +283,7 @@ include("../../../templates/Loading.php");
                         </div>
                             <div class="form-group col-6 col-md-4 col-lg-3 text-start d-flex align-items-end">
                             <div class="w-100">
-                                <label for="data-emissao-final">Data de Emissão Inicial</label>
+                                <label for="data-emissao-final">Data de Emissão Final</label>
                                 <input type="date" class="form-control" id="data-emissao-final">
                             </div>
                         </div>
