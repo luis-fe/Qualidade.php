@@ -42,6 +42,7 @@ let PriorizacaoSelecionado = "";
         $('#data-inicio-pedido').val(dataFormatada);
         $('#data-fim-pedido').val(dataFormatada);
         $('#data-emissao-inicial').val(dataFormatada);
+        $('#data-emissao-final').val(dataFormatada);
         $('#data-inicio-ops').val(dataFormatada);
         $('#data-fim-ops').val(dataFormatada);
 
@@ -134,6 +135,7 @@ let PriorizacaoSelecionado = "";
             const iniVenda = $('#data-inicio-pedido').val();
             const finalVenda = $('#data-fim-pedido').val();
             const emissaoinicial = $('#data-emissao-inicial').val();
+            const emissaofinal = $('#data-emissao-final').val();
             const tipoNota = '1,2,3,4';
             const parametroClassificacao = TipoDataSelecionado;
             const tipoData = PriorizacaoSelecionado;
@@ -149,7 +151,8 @@ let PriorizacaoSelecionado = "";
                     tipoNota: tipoNota,
                     parametroClassificacao: parametroClassificacao,
                     tipoData: tipoData,
-                    FiltrodataEmissaoInicial: emissaoinicial
+                    FiltrodataEmissaoInicial: emissaoinicial,
+                    FiltrodataEmissaoFinal: emissaofinal
                 }
             });
 
