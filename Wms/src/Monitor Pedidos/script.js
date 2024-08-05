@@ -132,6 +132,7 @@ let PriorizacaoSelecionado = "";
             $('#loadingModal').modal('show');
             const iniVenda = $('#data-inicio-pedido').val();
             const finalVenda = $('#data-fim-pedido').val();
+            const emissaoinicial = $('#data-emissao-inicial').val();
             const tipoNota = '1,2,3,4';
             const parametroClassificacao = TipoDataSelecionado;
             const tipoData = PriorizacaoSelecionado;
@@ -146,7 +147,8 @@ let PriorizacaoSelecionado = "";
                     finalVenda: finalVenda,
                     tipoNota: tipoNota,
                     parametroClassificacao: parametroClassificacao,
-                    tipoData: tipoData
+                    tipoData: tipoData,
+                    FiltrodataEmissaoInicial: emissaoinicial
                 }
             });
 
