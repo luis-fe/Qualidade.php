@@ -220,50 +220,68 @@ include("../../../templates/Loading.php");
                 <div id="accordion" style="margin-bottom: 15px">
                     <h3>Filtros de Cálculo</h3>
                     <div class="row">
-                        <div class="form-group col-sm-6 col-md-2 text-center">
-                            <label for="data-inicio">Data Início</label>
-                            <input type="date" class="form-control" id="data-inicio-pedido">
-                        </div>
-                        <div class="form-group col-sm-6 col-md-2 text-center">
-                            <label for="data-fim">Data Fim</label>
-                            <input type="date" class="form-control" id="data-fim-pedido">
-                        </div>
-                        <div class="form-group col-sm-6 col-md-3 text-center">
-                            <label for="tipo-data">Tipo de Data</label>
-                            <div>
-                                <input type="radio" id="TipoDeData1" name="TipoData" value="DataEmissao">
-                                <label for="TipoDeData1">Data Emissão</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="TipoDeData2" name="TipoData" value="DataPrevOri">
-                                <label for="TipoDeData2">Data Previsão Original</label>
+                        <div class="row justify-content-center">
+                        <div class="form-group col-6 col-md-4 col-lg-3 text-start d-flex align-items-end">
+                            <div class="w-100">
+                                <label for="data-inicio">Data Início</label>
+                                <input type="date" class="form-control" id="data-inicio-pedido">
                             </div>
                         </div>
-                        <div class="form-group col-sm-6 col-md-3 text-center">
-                            <label for="tipo-priorizacao">Priorizar</label>
-                            <div>
-                                <input type="radio" id="Priorizacao1" name="TipoPriorizacao" value="DataPrevisao">
-                                <label for="Priorizacao1">Data Previsão</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="Priorizacao2" name="TipoPriorizacao" value="Faturamento">
-                                <label for="Priorizacao2">Faturamento</label>
+                        <div class="form-group col-6 col-md-4 col-lg-3 text-start d-flex align-items-end">
+                            <div class="w-100">
+                                <label for="data-fim">Data Fim</label>
+                                <input type="date" class="form-control" id="data-fim-pedido">
                             </div>
                         </div>
-                        <div class="form-group col-sm-6 col-md-2 text-center">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle w-100" style="border: 1px solid lightgray" type="button" id="filtroTipoDeNota" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Tipos de Nota
-                                </button>
-                                <div class="dropdown-menu p-3 w-100" aria-labelledby="filtroDropdownTipoDeNotas">
-                                    <input type="text" id="searchInputNotas" class="form-control mb-2" placeholder="Pesquisar...">
-                                    <label><input type="checkbox" id="selectAllNotas"> Selecionar Todos</label><br>
-                                    <div id="checkboxContainerNotas">
-                                        <!-- Checkboxes para Pedidos serão adicionados aqui -->
+                        <div class="form-group col-6 col-md-4 col-lg-3 text-center d-flex align-items-end">
+                            <div class="w-100">
+                                <label for="tipo-data">Tipo de Data</label>
+                                <div>
+                                    <input type="radio" id="TipoDeData1" name="TipoData" value="DataEmissao">
+                                    <label for="TipoDeData1">Data Emissão</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="TipoDeData2" name="TipoData" value="DataPrevOri">
+                                    <label for="TipoDeData2">Data Previsão Original</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6 col-md-4 col-lg-3 text-center d-flex align-items-end">
+                            <div class="w-100">
+                                <label for="tipo-priorizacao">Priorizar</label>
+                                <div>
+                                    <input type="radio" id="Priorizacao1" name="TipoPriorizacao" value="DataPrevisao">
+                                    <label for="Priorizacao1">Data Previsão</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="Priorizacao2" name="TipoPriorizacao" value="Faturamento">
+                                    <label for="Priorizacao2">Faturamento</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6 col-md-4 col-lg-2 text-center d-flex align-items-end">
+                            <div class="w-100">
+                                <div class="dropdown">
+                                    <button class="btn btn-custom dropdown-toggle w-100" style="border: 1px solid lightgray" type="button" id="filtroTipoDeNota" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Tipos de Nota
+                                    </button>
+                                    <div class="dropdown-menu p-3 w-100" aria-labelledby="filtroDropdownTipoDeNotas">
+                                        <input type="text" id="searchInputNotas" class="form-control mb-2" placeholder="Pesquisar..." style="font-size: 0.9rem;">
+                                        <label><input type="checkbox" id="selectAllNotas"> Selecionar Todos</label><br>
+                                        <div id="checkboxContainerNotas">
+                                            <!-- Checkboxes para Pedidos serão adicionados aqui -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group col-6 col-md-4 col-lg-3 text-start d-flex align-items-end">
+                            <div class="w-100">
+                                <label for="data-emissao-inicial">Data de Emissão Inicial</label>
+                                <input type="date" class="form-control" id="data-emissao-inicial">
+                            </div>
+                        </div>
+                    </div>
                         <div id="accordion2" style="margin-bottom: 10px">
                             <h3>Filtros Especiais</h3>
                             <div class="row">
