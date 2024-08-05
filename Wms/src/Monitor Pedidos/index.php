@@ -281,6 +281,12 @@ include("../../../templates/Loading.php");
                                 <input type="date" class="form-control" id="data-emissao-inicial">
                             </div>
                         </div>
+                            <div class="form-group col-6 col-md-4 col-lg-3 text-start d-flex align-items-end">
+                            <div class="w-100">
+                                <label for="data-emissao-final">Data de Emissão Inicial</label>
+                                <input type="date" class="form-control" id="data-emissao-final">
+                            </div>
+                        </div>
                     </div>
                         <div id="accordion2" style="margin-bottom: 10px">
                             <h3>Filtros Especiais</h3>
