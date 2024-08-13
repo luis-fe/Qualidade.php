@@ -262,8 +262,8 @@ a.sidebar-link:hover {
                 </div>
                 <ul class="sidebar-nav">
 
-                    <li class="sidebar-item">
-                        <a href="../../Gestao/FilaDeFases" class="sidebar-link">
+                   <li class="sidebar-item">
+                        <a href="../../Gestao/FilaDeFases/" class="sidebar-link">
                             <span>
                                 <i class="fa-regular fa-circle pe-4" style="font-size: 10px;"></i>
                                 Fila de Fases
@@ -271,7 +271,7 @@ a.sidebar-link:hover {
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="../../Gestao/GestaoDeOps" class="sidebar-link">
+                        <a href="../../Gestao/GestaoDeOps/" class="sidebar-link">
                             <span>
                                 <i class="fa-regular fa-circle pe-4" style="font-size: 10px;"></i>
                                 Gestão de Op's
@@ -279,10 +279,18 @@ a.sidebar-link:hover {
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="../../Gestao/Metas" class="sidebar-link">
+                        <a href="../../Gestao/Metas/" class="sidebar-link">
                             <span>
                                 <i class="fa-regular fa-circle pe-4" style="font-size: 10px;"></i>
                                 Meta dos Departamentos
+                            </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="../../Gestao/MetasTerceirizados/" class="sidebar-link">
+                            <span>
+                                <i class="fa-regular fa-circle pe-4" style="font-size: 10px;"></i>
+                                Meta dos Terceirizados
                             </span>
                         </a>
                     </li>
