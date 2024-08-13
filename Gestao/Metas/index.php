@@ -159,7 +159,7 @@ include_once("../../templates/loading1.php");
     </div>
 </div>
 
-<?php include_once("../../templates/footer.php"); ?>
+<?php include_once("../../templates/footer1.php"); ?>
 <script>
     const Consulta_Planos_Disponiveis = async () => {
         $('#loadingModal').modal('show');
