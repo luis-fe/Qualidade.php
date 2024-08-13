@@ -191,4 +191,4 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 <?php include_once("../../templates/footer.php"); ?>
 
-<script src="script"></script>
+<script src="script.js"></script>
