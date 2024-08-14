@@ -87,7 +87,7 @@ const Consulta_Faccionistas = async () => {
         $select.append('<option value="">Selecione o Faccionista (csw):</option>');
 
         data.forEach(item => {
-            $select.append(`<option value="${item.codFaccionista}">${item.codFaccionista - item.nomeFaccionista}</option>`);
+            $select.append(`<option value="${item.codFaccionista}">${item.codFaccionista} - ${item.nomeFaccionista}</option>`);
         });
         // Ativar o Select2 para o elemento
         $('#select-faccionista').select2({
