@@ -451,7 +451,7 @@ include("../../../templates/Loading.php");
             tabela.search(this.value).draw();
         });
 
-        async function VerificarPedidosSelecionados() {
+         async function VerificarPedidosSelecionados() {
             // Limpar a array de PedidosSelecionados
             PedidosSelecionados.length = 0;
 
@@ -459,13 +459,16 @@ include("../../../templates/Loading.php");
                 const checkbox = $(this.node()).find('.rowCheckbox');
                 if (checkbox.is(':checked')) {
                     const row = this.data();
-                    const codigoPedido = row['01-CodPedido'];
+                    const codigosPedidos = row['14-AgrupamentosPedido'].split(',');
 
-                    // Verificar se o código do pedido já existe na array PedidosSelecionados
-                    if (!PedidosSelecionados.includes(codigoPedido)) {
-                        // Se não existir, adicione à array PedidosSelecionados
-                        PedidosSelecionados.push(codigoPedido);
-                    }
+                    codigosPedidos.forEach(codigoPedido => {
+                        codigoPedido = codigoPedido.trim(); // Remover espaços em branco
+                        // Verificar se o código do pedido já existe na array PedidosSelecionados
+                        if (!PedidosSelecionados.includes(codigoPedido)) {
+                            // Se não existir, adicione à array PedidosSelecionados
+                            PedidosSelecionados.push(codigoPedido);
+                        }
+                    });
                 }
             });
 
@@ -477,7 +480,7 @@ include("../../../templates/Loading.php");
                     timer: 3000,
                 });
             }
-        };
+        }
 
 
         $('#Usuarios').off('change').change(async function() {
