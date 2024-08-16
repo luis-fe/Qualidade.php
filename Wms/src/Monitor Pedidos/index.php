@@ -211,6 +211,19 @@ include("../../../templates/Loading.php");
             margin: 5px 0;
         }
     }
+
+      .btn-custom {
+            background-color: var(--CorMenu);
+            color: white;
+            border: none;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .btn-custom:hover {
+            background-color: rgb(37, 112, 251);
+            color: var(--Preto);
+        }
 </style>
 
 <div class="container-fluid" id="form-container">
@@ -432,11 +445,14 @@ include("../../../templates/Loading.php");
                         <input type="date" class="form-control" id="data-fim-ops">
                     </div>
                     <div class="col-12 col-md-2 mb-3 text-center justify-content-center">
-                        <button class="btn" id="BtnFiltrar" onclick="ConsultaOps()">Filtrar Op's</button>
+                        <button class="btn btn-custom" id="BtnFiltrar" onclick="ConsultaOps()">Filtrar Op's</button>
                     </div>
                     <div class="col-12 col-md-2 mb-3 text-center justify-content-center">
-                        <button class="btn" id="BtnPedidos">Monitor de Pedidos</button>
+                        <button class="btn btn-custom" id="BtnPedidos">Monitor de Pedidos</button>
                     </div>
+                    <div class="col-12 col-md-2 mb-3 text-center justify-content-center">
+                    <button class="btn btn-custom" id="BtnProdutos" onclick="Consulta_Sem_Op()">Produtos sem Op</button>
+                </div>
                 </div>
 
                 <div class="table-responsive">
@@ -524,6 +540,36 @@ include("../../../templates/Loading.php");
                                 <th>Em Estoque</th>
                                 <th>Situação</th>
                                 <th>Numero Op</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be appended here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-ops-faltando" tabindex="-1" aria-labelledby="modal-ops-faltando" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="max-height: 80vh; overflow: auto">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 75vh; overflow: auto">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dataTable">
+                        <thead id="fixed-header">
+                            <tr>
+                                <th>Engenharia</th>
+                                <th>Descrição</th>
+                                <th>Qtd. em Pedidos</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1272,6 +1318,85 @@ include("../../../templates/Loading.php");
         }
     });
 }
+
+        async function TabelaFaltaOps(data) {
+        // Destrua a DataTable existente, se já estiver inicializada
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().clear().destroy();
+        }
+
+        // Limpe o corpo da tabela
+        const tbody = $('#dataTable tbody');
+        tbody.empty();
+
+        // Adicione as novas linhas
+        data.forEach(item => {
+            const row = `<tr>
+            <td>${item['codEngenharia']}</td>
+            <td>${item['nomeSKU']}</td>
+            <td>${item['QtdSaldo']}</td>
+        </tr>`;
+            tbody.append(row);
+        });
+
+        // Inicialize a DataTable
+        $('#dataTable').DataTable({
+            excel: true,
+            paging: false,
+            searching: false,
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'excelHtml5',
+                text: '<i class="fa-solid fa-file-excel"></i>',
+                title: 'Produtos sem Op',
+                className: 'ButtonExcel'
+            }, ],
+            order: [
+                [0, 'asc']
+            ], // Ordenar pela primeira coluna por padrão
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
+            }
+        });
+    }
+
+
+    async function Consulta_Sem_Op() {
+        $('#loadingModal').modal('show');
+        const dados = {
+            "dataInico": $('#data-inicio-pedido').val(),
+            "dataFim": $('#data-fim-pedido').val()
+        }
+
+        var requestData = {
+            acao: "Consulta_Sem_Op",
+            dados: dados
+        };
+
+        try {
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+            console.log(response['resposta'])
+            await TabelaFaltaOps(response['resposta']);
+            $('#modal-ops-faltando').modal('show');
+            $('#fixed-header').css({
+                'position': 'sticky',
+                'top': '0',
+                'z-index': '1000'
+            });
+            $('#dataModalLabel').text(`Produtos sem Op's`)
+            $('#loadingModal').modal('hide');
+
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error); // Exibir erro se ocorrer
+            $('#loadingModal').modal('hide');
+        }
+    }
+
 
 
 
