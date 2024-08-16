@@ -169,11 +169,6 @@ include("../../../templates/Loading.php");
         min-width: 100%;
     }
 
-    #BtnOps,
-    #BtnPedidos,
-    #BtnFiltrar {
-        border: 1px solid lightGray
-    }
 
 
     @media (max-width: 768px) {
@@ -213,7 +208,7 @@ include("../../../templates/Loading.php");
     }
 
       .btn-custom {
-            background-color: var(--CorMenu);
+            background-color: var(--corBase);
             color: white;
             border: none;
             transition: background-color 0.3s, color 0.3s;
@@ -374,7 +369,7 @@ include("../../../templates/Loading.php");
                         </div>
                     </div>
                     <div class="col-12 col-md-3 mb-3">
-                        <button class="btn" id="BtnOps">Monitor de Op's</button>
+                        <button class="btn btn-custom" id="BtnOps">Monitor de Op's</button>
                     </div>
                 </div>
                 <div class="table-responsive d-none">
