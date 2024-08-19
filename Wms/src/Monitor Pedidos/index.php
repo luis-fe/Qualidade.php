@@ -1348,10 +1348,7 @@ include("../../../templates/Loading.php");
             }, ],
             order: [
                 [0, 'asc']
-            ], // Ordenar pela primeira coluna por padrão
-            language: {
-                "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
-            }
+            ],
         });
     }
 
