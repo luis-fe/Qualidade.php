@@ -11,7 +11,7 @@ $(document).ready(async () => {
     ConsultaColecoes();
 
     setInterval(async () => {
-        await ConsultaOps('', '', '');
+        await aplicarFiltros();
     }, 900000); // 14 minutos em milissegundos
 });
 
