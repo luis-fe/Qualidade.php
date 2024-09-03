@@ -77,6 +77,8 @@
     top: 0;
     z-index: 1000;
     background-color: white;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .ButtonExcel,
