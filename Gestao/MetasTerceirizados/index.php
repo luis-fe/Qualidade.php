@@ -50,8 +50,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             <th scope="col">Falta<p>Prog.</p></th>
                             <th scope="col">Fila</th>
                             <th scope="col">Carga</th>
-                            <th scope="col">Falta Produzir</th>
-                            <th scope="col">Dias úteis</th>
+                            <th scope="col">Falta<p>Produzir</p></th>
+                            <th scope="col">Dias<p>úteis</p></th>
                             <th scope="col">Meta Dia</th>
                             <th scope="col">Realizado</th>
                         </tr>
