@@ -46,13 +46,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                         <tr>
                             <th scope="col">Faccionista</th>
                             <th scope="col">Categoria</th>
-                            <th scope="col">Capac. Dia</th>
+                            <th scope="col">Capac.<p>Dia</p></th>
                             <th scope="col">Falta<p>Prog.</p></th>
-                            <th scope="col">Fila</th>
+                            <th scope="col"><p>Fila</p></th>
                             <th scope="col">Carga</th>
                             <th scope="col">Falta<p>Produzir</p></th>
                             <th scope="col">Dias<p>úteis</p></th>
-                            <th scope="col">Meta Dia</th>
+                            <th scope="col">Meta<p>Dia</p></th>
                             <th scope="col">Realizado</th>
                         </tr>
                     </thead>
