@@ -9,7 +9,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
     include_once("../../templates/loading1.php");
 }
 ?>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style1.css">
 
 
 <label for="" class="d-flex flex-start col-12 titulo">Metas dos terceirizados</label>
