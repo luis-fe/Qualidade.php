@@ -199,7 +199,7 @@ async function CadastrarFaccionista() {
         console.log(response);
         if (response[0]['Status'] === true) {
             Mensagem(MensagemModal, 'success');
-            ConsultarMetasCategorias(true)
+            ConsultarMetas(true)
         } else {
             Mensagem('Erro', 'error')
         }
