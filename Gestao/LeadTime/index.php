@@ -196,7 +196,7 @@
         </div>
     </div>
     </main>
-
+<?php include_once("../../templates/footer1.php"); ?>
     <script>
         $(document).ready(async () => {
             const hoje = new Date();
