@@ -294,6 +294,14 @@ a.sidebar-link:hover {
                             </span>
                         </a>
                     </li>
+                     <li class="sidebar-item">
+                        <a href="../../Gestao/LeadTime/" class="sidebar-link">
+                            <span>
+                                <i class="fa-regular fa-circle pe-4" style="font-size: 10px;"></i>
+                                Lead Time
+                            </span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </aside>
