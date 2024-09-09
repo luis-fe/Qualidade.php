@@ -559,7 +559,7 @@ include("../../../templates/Loading.php");
             </div>
             <div class="modal-body" style="max-height: 75vh; overflow: auto">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="dataTable">
+                    <table class="table table-bordered table-striped" id="dataTable-sem-ops">
                         <thead id="fixed-header">
                             <tr>
                                 <th>Engenharia</th>
@@ -1316,7 +1316,7 @@ include("../../../templates/Loading.php");
 
         async function TabelaFaltaOps(data) {
         // Destrua a DataTable existente, se já estiver inicializada
-        if ($.fn.DataTable.isDataTable('#dataTable')) {
+        if ($.fn.DataTable.isDataTable('#dataTable-sem-ops')) {
             $('#dataTable').DataTable().clear().destroy();
         }
 
