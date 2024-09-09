@@ -1,0 +1,149 @@
+.container-tabela {
+    width: 100%;
+    overflow: auto;
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.container {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    height: calc(100vh - 170px);
+    max-height: calc(100vh - 170px);
+    overflow: auto;
+    width: 100%;
+    padding: 15px 30px;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    border-bottom: 1px solid var(--CorMenu);
+    margin-bottom: 15px;
+}
+
+.input-group {
+    font-size: 0.875rem;
+}
+
+.search-icon {
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 5px;
+}
+
+.table-wrapper {
+    max-height: 50%;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.table th,
+.table td {
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    border: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: var(--CorMenu) !important;
+    color: var(--Branco) !important;
+    text-align: center;
+}
+
+.table tbody td {
+    color: var(--Preto);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: lightblue;
+}
+
+#fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+}
+
+.ButtonExcel,
+.ButtonVisibilidade,
+.ButtonTable {
+    margin-top: 5px;
+    border-radius: 5px !important;
+}
+
+.ButtonExcel i {
+    color: green;
+    font-size: 20px;
+}
+
+.ButtonTable i,
+.ButtonVisibilidade i {
+    font-size: 20px;
+    color: var(--CorMenu);
+}
+
+.dataTables_wrapper .dataTables_filter {
+    display: none;
+}
+
+@media (max-width: 1536px) {
+    .titulo {
+        font-size: 1.25rem;
+    }
+
+    .input-group {
+        font-size: 0.75rem;
+    }
+
+    .search-icon {
+        font-size: 0.75rem;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.75rem;
+    }
+
+    .container-tabela {
+        padding: 5px;
+        min-height: 57vh;
+        max-height: 57vh;
+    }
+
+    .table-wrapper {
+        max-height: 50%;
+    }
+}
+
+@media (min-width: 1537px) {
+    .container-tabela {
+        min-height: 67vh;
+        max-height: 67vh;
+    }
+}
+
+.responsive-container {
+    height: calc(100vh - 170px);
+    max-height: calc(100vh - 170px);
+    overflow: auto;
+}
+
+.categoria-selecionada {
+    background-color: #d1e7dd;
+    /* Cor de fundo para a linha selecionada */
+}
