@@ -65,6 +65,12 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             <span>Fila de Fases</span>
                         </a>
                     </li>
+                     <li class="sidebar-item">
+                        <a href="../../../Pcp/Gestao_a_Vista/LeadTime" class="sidebar-link">
+                            <i class="fa-solid fa-house pe-2"></i>
+                            <span>Lead Time</span>
+                        </a>
+                    </li>
 
                 </ul>
             </div>
