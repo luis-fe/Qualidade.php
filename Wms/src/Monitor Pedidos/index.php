@@ -562,8 +562,10 @@ include("../../../templates/Loading.php");
                     <table class="table table-bordered table-striped" id="dataTable-sem-ops">
                         <thead id="fixed-header">
                             <tr>
-                                <th>Engenharia</th>
+                               <th>Engenharia</th>
                                 <th>Descrição</th>
+                                <th>Tamanho</th>
+                                <th>Cód. Cor</th>
                                 <th>Qtd. em Pedidos</th>
                             </tr>
                         </thead>
@@ -1327,7 +1329,9 @@ include("../../../templates/Loading.php");
         // Adicione as novas linhas
         data.forEach(item => {
             const row = `<tr>
-            <td>${item['codEngenharia']}</td>
+           <td>${item['codEngenharia']}</td>
+            <td>${item['tamanho']}</td>
+            <td>${item['codCor']}</td>
             <td>${item['nomeSKU']}</td>
             <td>${item['QtdSaldo']}</td>
         </tr>`;
