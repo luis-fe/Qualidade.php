@@ -1317,11 +1317,11 @@ include("../../../templates/Loading.php");
         async function TabelaFaltaOps(data) {
         // Destrua a DataTable existente, se já estiver inicializada
         if ($.fn.DataTable.isDataTable('#dataTable-sem-ops')) {
-            $('#dataTable').DataTable().clear().destroy();
+            $('#dataTable-sem-ops').DataTable().clear().destroy();
         }
 
         // Limpe o corpo da tabela
-        const tbody = $('#dataTable tbody');
+        const tbody = $('#dataTable-sem-ops tbody');
         tbody.empty();
 
         // Adicione as novas linhas
