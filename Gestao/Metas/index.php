@@ -351,7 +351,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
     </div>
 </div>
 
-<?php include_once("../../templates/footer.php"); ?>
+<?php include_once("../../templates/footer1.php"); ?>
 
 <!-- <script src="script.js"> -->
 
