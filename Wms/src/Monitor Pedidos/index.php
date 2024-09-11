@@ -554,7 +554,7 @@ include("../../../templates/Loading.php");
     <div class="modal-dialog modal-xl">
         <div class="modal-content" style="max-height: 80vh; overflow: auto">
             <div class="modal-header">
-                <h5 class="modal-title" id="dataModalLabel"></h5>
+                <h5 class="modal-title" id="titulo-modal"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height: 75vh; overflow: auto">
@@ -1339,7 +1339,7 @@ include("../../../templates/Loading.php");
         });
 
         // Inicialize a DataTable
-        $('#dataTable').DataTable({
+        $('#dataTable-sem-ops').DataTable({
             excel: true,
             paging: false,
             searching: false,
@@ -1384,7 +1384,7 @@ include("../../../templates/Loading.php");
                 'top': '0',
                 'z-index': '1000'
             });
-            $('#dataModalLabel').text(`Produtos sem Op's`)
+            $('#titulo-modal').text(`Produtos sem Op's`)
             $('#loadingModal').modal('hide');
 
         } catch (error) {
