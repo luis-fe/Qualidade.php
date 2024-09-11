@@ -1,25 +1,218 @@
 <?php
-include_once("../../templates/header1.php");
-include_once("../../templates/loading1.php");
+include_once('requests.php');
+
+if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
+    include_once("../../templates/header.php");
+    include_once("../../templates/loading.php");
+} else {
+    include_once("../../templates/header1.php");
+    include_once("../../templates/loading1.php");
+}
 ?>
-<link rel="stylesheet" href="style.css">
+<!-- <link rel="stylesheet" href="style.css"> -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container-tabela {
+        width: 100%;
+        max-height: 80%;
+        overflow: auto;
+        background-color: white;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .select2-dropdown {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .table {
+        width: 100%;
+        overflow: auto;
+        border: none !important;
+    }
+
+    .table th, .table td {
+        white-space: nowrap;
+        border-bottom: 1px solid var(--Cinza);
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+        font-size: 1rem;
+    }
+
+    .table tbody tr:hover {
+        background-color: lightblue;
+    }
+
+    .table th {
+        background-color: var(--CorMenu) !important;
+        color: var(--Branco) !important;
+        text-align: center;
+    }
+
+    .table td {
+        color: var(--Preto);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .table-custom td:nth-child(1),
+    .table-custom th:nth-child(1) {
+        min-width: 150px;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+    .table-custom td:nth-child(2),
+    .table-custom th:nth-child(2),
+    .table-custom td:nth-child(3),
+    .table-custom th:nth-child(3),
+    .table-custom td:nth-child(4),
+    .table-custom th:nth-child(4),
+    .table-custom td:nth-child(5),
+    .table-custom th:nth-child(5),
+    .table-custom td:nth-child(6),
+    .table-custom th:nth-child(6) {
+        min-width: 100px;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+    #fixed-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: white;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        display: none;
+    }
+
+    .selected-row {
+        background-color: lightblue !important;
+    }
+
+    .ButtonModal {
+        margin-top: 5px;
+        border-radius: 5px !important;
+    }
+
+    .ButtonModal i {
+        font-size: 20px;
+        color: var(--CorMenu);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .table th, .table td {
+            font-size: 0.8rem;
+        }
+
+        .table-custom td:nth-child(1),
+        .table-custom th:nth-child(1) {
+            min-width: 100px;
+        }
+
+        .table-custom td:nth-child(2),
+        .table-custom th:nth-child(2),
+        .table-custom td:nth-child(3),
+        .table-custom th:nth-child(3),
+        .table-custom td:nth-child(4),
+        .table-custom th:nth-child(4),
+        .table-custom td:nth-child(5),
+        .table-custom th:nth-child(5),
+        .table-custom td:nth-child(6),
+        .table-custom th:nth-child(6) {
+            min-width: 80px;
+        }
+
+        .modal-dialog {
+            max-width: 90%;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 992px) {
+        .container {
+            padding: 20px;
+        }
+
+        .table th, .table td {
+            font-size: 0.9rem;
+        }
+
+        .modal-dialog {
+            max-width: 80%;
+        }
+    }
+
+    @media (min-width: 993px) {
+        .container {
+            padding: 30px;
+        }
+
+        .table th, .table td {
+            font-size: 1rem;
+        }
+    }
+
+    /* Ajustes para TVs e telas muito grandes */
+    @media (min-width: 1200px) {
+        .container {
+            padding: 40px;
+        }
+    }
+    #fixed-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: white;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        display: none;
+    }
+
+    .selected-row {
+        background-color: lightblue !important;
+    }
 
 
-<label for="" style="font-size: 30px; font-weight: 700; color: black;">Metas</label>
-<div class="container" style="background-color: rgb(179, 179, 179); border-radius: 5px; height: calc(100vh - 160px); max-height: calc(100vh - 160px); overflow: auto; min-width: 100%; width: 100%; padding-top: 25px; padding-left: 30px;">
+    .ButtonModal {
+        margin-top: 5px;
+        border-radius: 5px !important;
+    }
+
+
+    .ButtonModal i {
+        font-size: 20px;
+        color: var(--CorMenu);
+    }
+</style>
+
+
+<label for="" style="font-size: 25px; font-weight: 700; color: black; border-bottom: 1px solid var(--CorMenu)" class="d-flex flex-start col-12">Metas</label>
+<div class="container" id="teste" style="background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); border-radius: 5px; height: calc(100vh - 170px); max-height: calc(100vh - 170px); overflow: auto; width: 100%; min-width: 100%; padding-top: 15px; padding-left: 30px;">
     <div class="row text-align-start justify-content-start mb-1">
         <div class="row mt-3 mb-3 align-items-end">
             <div class="col-12 col-md-2 d-flex align-items-center">
                 <div class="input-group">
-                    <input type="search" id="codigoPlano" class="form-control" placeholder="Plano" style="background-color: white; color: black" onkeydown="if (event.key === 'Enter') {event.preventDefault(); ConsultaLote()}">
-                    <span class="input-group-text" id="search-icon" onclick="Consulta_Planos_Disponiveis()" style="background-color: white; color: black; cursor:pointer">
+                    <input type="search" id="codigoPlano" class="form-control" placeholder="Plano" style="font-size: 0.9rem" onkeydown="if (event.key === 'Enter') {event.preventDefault(); ConsultaLote()}">
+                    <span class="input-group-text" id="search-icon" onclick="Consulta_Planos_Disponiveis()" style="font-size: 0.9rem; cursor:pointer">
                         <i class="lni lni-search-alt"></i>
                     </span>
                 </div>
             </div>
             <div class="col-12 col-md-5 d-flex align-items-center mt-3 mt-md-0">
                 <div class="input-group">
-                    <input type="search" id="DescPlano" readonly class="form-control" placeholder="Descrição" style="background-color: white; color: black">
+                    <input type="search" id="DescPlano" readonly class="form-control" placeholder="Descrição" style="font-size: 0.9rem">
                 </div>
             </div>
         </div>
@@ -28,14 +221,14 @@ include_once("../../templates/loading1.php");
         <div class="row mt-3 col-12 mb-3 align-items-end d-none" id="selects">
             <div class="col-12 col-md-3">
                 <label for="Lote" class="form-label">Lote</label>
-                <select class="form-select" id="SelectLote" onchange="SelecaoLote()">
+                <select class="form-select" id="SelectLote" style="font-size: 0.9rem" onchange="SelecaoLote()">
                 </select>
             </div>
             <div class="col-12 col-md-3"></div>
             <div class="col-12 col-md-6 d-flex justify-content-end align-items-center">
                 <div class="input-group col-12 d-none" id="campo-search">
-                    <input type="search" id="search" class="form-control" placeholder="Buscar" aria-label="Pesquisar" aria-describedby="search-icon" style="background-color: white; color: black">
-                    <span class="input-group-text" id="search-icon" onclick="document.getElementById('search').focus()" style="background-color: white; color: black">
+                    <input type="search" id="search" class="form-control" placeholder="Buscar" aria-label="Pesquisar" aria-describedby="search-icon" style="font-size: 0.9rem">
+                    <span class="input-group-text" id="search-icon" onclick="document.getElementById('search').focus()" style="font-size: 0.9rem">
                         <i class="lni lni-search-alt"></i>
                     </span>
                 </div>
@@ -56,7 +249,6 @@ include_once("../../templates/loading1.php");
                         <th scope="col">Qtd. Dias</th>
                         <th scope="col">Meta Dia</th>
                         <th scope="col">Realizado</th>
-                        <th scope="col">%</th>
                     </tr>
                 </thead>
             </table>
@@ -159,7 +351,12 @@ include_once("../../templates/loading1.php");
     </div>
 </div>
 
-<?php include_once("../../templates/footer1.php"); ?>
+<?php include_once("../../templates/footer.php"); ?>
+
+<!-- <script src="script.js"> -->
+
+</script>
+
 <script>
     const Consulta_Planos_Disponiveis = async () => {
         $('#loadingModal').modal('show');
@@ -386,19 +583,7 @@ include_once("../../templates/loading1.php");
 
                         return realizado.toLocaleString() + icon;
                     }
-                },
-                {
-                data: null, // Coluna para a porcentagem
-                render: function(data, type, row) {
-                    const realizado = parseInt(row['Realizado']);
-                    const meta = parseInt(row['Meta Dia']);
-                    if (meta === 0) {
-                        return '0%';
-                    }
-                    const percent = (realizado / meta * 100).toFixed(2);
-                    return `${percent}%`;
                 }
-            }
             ],
             language: {
                 paginate: {
@@ -449,6 +634,7 @@ include_once("../../templates/loading1.php");
                     theme: 'bootstrap4',
                     width: '100%',
                     height: '30px',
+
                 });
                 $('.select2-selection__rendered').addClass('form-control')
 
