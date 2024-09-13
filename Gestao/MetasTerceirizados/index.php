@@ -12,7 +12,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 <link rel="stylesheet" href="style1.css">
 
 
-<label for="" class="d-flex flex-start col-12 titulo">Metas dos terceirizados</label>
+<label for="" class="d-flex flex-start col-12 titulo">Metas dos Terceirizados</label>
 <div class="responsive-container" id="teste" style="background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); border-radius: 5px; padding-top: 15px; padding-left: 30px;">
     <div class="row text-align-start justify-content-start mb-1">
         <div class="row mb-1 align-items-end">
@@ -128,7 +128,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
     </div>
 </div>
 
-<div class="modal fade" id="filtrosModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+<div class="modal fade" id="" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
