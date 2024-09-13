@@ -249,6 +249,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                         <th scope="col">Qtd. Dias</th>
                         <th scope="col">Meta Dia</th>
                         <th scope="col">Realizado</th>
+                        <th scope="col">% Real.</th>
                     </tr>
                 </thead>
             </table>
