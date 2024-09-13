@@ -584,7 +584,19 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
                         return realizado.toLocaleString() + icon;
                     }
+                },
+                {
+                data: null, // Coluna para a porcentagem
+                render: function(data, type, row) {
+                    const realizado = parseInt(row['Realizado']);
+                    const meta = parseInt(row['Meta Dia']);
+                    if (meta === 0) {
+                        return '0%';
+                    }
+                    const percent = (realizado / meta * 100).toFixed(2);
+                    return `${percent}%`;
                 }
+            }
             ],
             language: {
                 paginate: {
