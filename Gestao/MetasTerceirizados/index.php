@@ -128,7 +128,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
     </div>
 </div>
 
-<div class="modal fade" id="" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+<div class="modal fade" id="filtrosModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
