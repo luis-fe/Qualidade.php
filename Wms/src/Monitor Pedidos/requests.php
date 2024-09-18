@@ -171,6 +171,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $tipoNota = $_GET['tipoNota'];
             $parametroClassificacao = $_GET['parametroClassificacao'];
             $tipoData = $_GET['tipoData'];
+            $emissaoinicial = $_GET['emissaoinicial'];
+            $emissaofinal = $_GET['emissaofinal'];
 
             header('Content-Type: application/json');
             echo json_encode(ConsultarPedidos('1', 'a40016aabcx9', $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData,$emissaoinicial,$emissaofinal));
