@@ -737,8 +737,8 @@ include("../../../templates/Loading.php");
                     tipoNota: tipoNota,
                     parametroClassificacao: parametroClassificacao,
                     tipoData: tipoData,
-                    FiltrodataEmissaoInicial: emissaoinicial,
-                    FiltrodataEmissaoFinal: emissaofinal
+                    emissaoinicial: emissaoinicial,
+                    emissaofinal: emissaofinal
                 }
             });
 
