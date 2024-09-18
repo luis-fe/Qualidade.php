@@ -14,8 +14,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 function ConsultarPedidos($empresa, $token, $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData,$emissaoinicial,$emissaofinal)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
-    $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento?empresa={$empresa}&iniVenda={$iniVenda}&finalVenda={$finalVenda}&tiponota={$tipoNota}&parametroClassificacao={$parametroClassificacao}
-    &tipoData={$tipoData}&emissaoinicial={$emissaoinicial}&emissaofinal={$emissaofinal}";
+    $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento?empresa={$empresa}&iniVenda={$iniVenda}&finalVenda={$finalVenda}&tiponota={$tipoNota}&parametroClassificacao={$parametroClassificacao}&tipoData={$tipoData}&emissaoinicial={$emissaoinicial}&emissaofinal={$emissaofinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -176,6 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
             header('Content-Type: application/json');
             echo json_encode(ConsultarPedidos('1', 'a40016aabcx9', $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData,$emissaoinicial,$emissaofinal));
+       
         } elseif ($acao == 'Consultar_Ops') {
             $dataInicio = $_GET['dataInicio'];
             $dataFim = $_GET['dataFim'];
