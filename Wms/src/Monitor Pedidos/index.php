@@ -378,15 +378,15 @@ include("../../../templates/Loading.php");
                             <tr>
                                 <th scope="col">Pedido</th>
                                 <th scope="col">Marca</th>
-                                <th scope="col">Tipo de Nota</th>
-                                <th scope="col">Cód. Cliente</th>
-                                <th scope="col">Data de Emissão</th>
+                                <th scope="col">TipoNota</th>
+                                <th scope="col">Cód.Cliente</th>
+                                <th scope="col">Data Emissão</th>
                                 <th scope="col">Previsão Inicial</th>
                                 <th scope="col">Último Faturamento</th>
-                                <th scope="col">Previsão Próximo Embarque</th>
+                                <th scope="col">Previsão Próx/Embarque</th>
                                 <th scope="col">Entregas Solicitadas</th>
-                                <th scope="col">Entregas Faturadas</th>
-                                <th scope="col">Entregas Restantes</th>
+                                <th scope="col">Entregas Fat.</th>
+                                <th scope="col">Entregas Rest.</th>
                                 <th scope="col">Qtd. Peças Faturadas</th>
                                 <th scope="col">Saldo R$</th>
                                 <th scope="col">R$ Atendido/COR</th>
