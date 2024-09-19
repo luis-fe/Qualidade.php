@@ -380,23 +380,23 @@ include("../../../templates/Loading.php");
                                 <th scope="col"><p>Marca</p></th>
                                 <th scope="col">Tipo<p>Nota</p></th>
                                 <th scope="col">Cód.<p>Cliente</p></th>
-                                <th scope="col">Data Emissão</th>
-                                <th scope="col">Previsão Inicial</th>
-                                <th scope="col">Último Faturamento</th>
-                                <th scope="col">Previsão Próx/Embarque</th>
-                                <th scope="col">Entregas Solicitadas</th>
-                                <th scope="col">Entregas Fat.</th>
+                                <th scope="col">Data<p>Emissão</p></th>
+                                <th scope="col">Previsão<p>Inicial</p></th>
+                                <th scope="col">Último<p>Faturamento</p></th>
+                                <th scope="col">Previsão<p>Próx/Embarque</p></th>
+                                <th scope="col">Entregas<p>Solicitadas</p></th>
+                                <th scope="col">Entregas <p>Fat.</p></th>
                                 <th scope="col">Entregas <p>Restante</p></th>
-                                <th scope="col">Qtd. Peças Faturadas</th>
-                                <th scope="col">Saldo R$</th>
-                                <th scope="col">R$ Atendido/COR</th>
-                                <th scope="col">R$ Atendido Distríbuido</th>
-                                <th scope="col">Qtd. Peças Saldo</th>
-                                <th scope="col">Qtd. Peças Atendidas/COR</th>
-                                <th scope="col">Qtd. Peças Distribuídas/COR</th>
-                                <th scope="col">Sugestão Pedido</th>
-                                <th scope="col">% Distribuído</th>
-                                <th scope="col">Pedidos Agrupados</th>
+                                <th scope="col">Qtd.Peças<p>Faturadas</p></th>
+                                <th scope="col">Saldo<p>R$</p></th>
+                                <th scope="col">R$<p>Atendido/COR</p></th>
+                                <th scope="col">R$<p>Atendido Distríbuido</p></th>
+                                <th scope="col">Qtd.<p>Peças Saldo</p></th>
+                                <th scope="col">Qtd.Peças<p>Atendidas/COR</p></th>
+                                <th scope="col">Qtd.Peças <p>Distribuídas/COR</p></th>
+                                <th scope="col">Sugestão<p>Pedido</p></th>
+                                <th scope="col">%<p>Distribuído</p></th>
+                                <th scope="col">Pedidos<p>Agrupados</p></th>
                             </tr>
                         </thead>
                         <tbody>
