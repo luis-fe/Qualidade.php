@@ -457,6 +457,7 @@ include("../../../templates/Loading.php");
                                 <th scope="col">Numero<p>Op<p></th>
                                 <th scope="col"><p>Engenharia</p></th>
                                 <th scope="col"><p>Descrição</p></th>
+                                <th scope ="col"><p>qtdOP</p></th>
                                 <th scope="col">Fase <p>Atual</p></th>
                                 <th scope="col">Nome <p>Fase</p></th>
                                 <th scope="col">Quantidade <p>em Pedidos</p></th>
@@ -464,7 +465,6 @@ include("../../../templates/Loading.php");
                                 <th scope="col"><p>Prioridade</p></th>
                                 <th scope="col">Previsão<p>de Término</p></th>
                                 <th scope="col">descricao<p>Lote</p></th>
-                                <th scope ="col"><p>qtdOP</p></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1159,6 +1159,9 @@ include("../../../templates/Loading.php");
                     data: 'descricao'
                 },
                 {
+                    data: 'qtdOP'
+                },
+                {
                     data: 'codFaseAtual'
                 },
                 {
@@ -1178,10 +1181,6 @@ include("../../../templates/Loading.php");
                 },
                 {
                     data: 'descricaoLote'
-                },
-                //qtdOP
-                {
-                    data: 'qtdOP'
                 },
             ],
             language: {
