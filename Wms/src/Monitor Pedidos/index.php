@@ -1175,6 +1175,9 @@ include("../../../templates/Loading.php");
                 {
                     data: 'dataPrevisaoTermino'
                 },
+                {
+                    data: 'descricaoLote'
+                },
             ],
             language: {
                 paginate: {
