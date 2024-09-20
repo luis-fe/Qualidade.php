@@ -454,15 +454,16 @@ include("../../../templates/Loading.php");
                     <table class="table table-bordered" id="TableOps">
                         <thead>
                             <tr>
-                                <th scope="col">Numero Op</th>
-                                <th scope="col">Engenharia</th>
-                                <th scope="col">Descrição</th>
-                                <th scope="col">Cód. Fase Atual</th>
-                                <th scope="col">Nome da Fase</th>
-                                <th scope="col">Quantidade em Pedidos</th>
-                                <th scope="col">Necessidade em Peças</th>
-                                <th scope="col">Prioridade</th>
-                                <th scope="col">Previsão de Término</th>
+                                <th scope="col">Numero<p>Op<p></th>
+                                <th scope="col"><p>Engenharia</p></th>
+                                <th scope="col"><p>Descrição</p></th>
+                                <th scope="col">Fase <p>Atual</p></th>
+                                <th scope="col">Nome <p>Fase</p></th>
+                                <th scope="col">Quantidade <p>em Pedidos</p></th>
+                                <th scope="col">Necessidade <p>em Peças</p></th>
+                                <th scope="col"><p>Prioridade</p></th>
+                                <th scope="col">Previsão<p>de Término</p></th>
+                                <th scope="col">descricao<p>Lote</p></th>
                             </tr>
                         </thead>
                         <tbody>
