@@ -464,6 +464,7 @@ include("../../../templates/Loading.php");
                                 <th scope="col"><p>Prioridade</p></th>
                                 <th scope="col">Previsão<p>de Término</p></th>
                                 <th scope="col">descricao<p>Lote</p></th>
+                                <th scope ="col"><p>qtdOP</p></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1177,6 +1178,10 @@ include("../../../templates/Loading.php");
                 },
                 {
                     data: 'descricaoLote'
+                },
+                //qtdOP
+                {
+                    data: 'qtdOP'
                 },
             ],
             language: {
