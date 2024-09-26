@@ -35,7 +35,7 @@ function ConsultarPedidos($empresa, $token, $iniVenda, $finalVenda, $tipoNota, $
 
 function ConsultarOps($empresa, $dataInicio, $dataFim)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.190:8000';
     $apiUrl = "{$baseUrl}/pcp/api/monitorOPs?dataInico={$dataInicio}&dataFim={$dataFim}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
