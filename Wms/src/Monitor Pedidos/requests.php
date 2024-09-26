@@ -123,7 +123,7 @@ function ConsultaTiposNotaCsw($empresa, $token)
 
 function ConsultaProdutoSemOp($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.190:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ProdutosSemOP";
 
     $ch = curl_init($apiUrl);
