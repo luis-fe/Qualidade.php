@@ -94,6 +94,27 @@ function ConsultaCronogramaFase($empresa, $token, $codPlano, $codFase)
     return json_decode($apiResponse, true);
 }
 
+function ConsultarStatus($empresa, $token)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/consultarStatusDisponiveis";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 
 
@@ -161,6 +182,38 @@ function ConsultarFaccionistas($dados)
     return json_decode($apiResponse, true);
 }
 
+function InserirStatus($dados)
+{
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $apiUrl = "{$baseUrl}/api/ApontarStatusOP";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 
 
 function jsonResponse($data)
@@ -181,10 +234,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Planos_Disponiveis':
                     jsonResponse(ConsultaPlanosDisponiveis('1', 'a44pcp22'));
                     break;
-                case 'Consulta_Cronograma_Fase':
-                    $codPlano = $_GET['codPlano'];
-                    $codFase = $_GET['codFase'];
-                    jsonResponse(ConsultaCronogramaFase('1', 'a44pcp22', $codPlano, $codFase));
+                case 'Consultar_Status':
+                    jsonResponse(ConsultarStatus('1', 'a44pcp22'));
                     break;
                 case 'Consulta_Informacoes_Plano':
                     $codPlano = $_GET['codPlano'];
@@ -212,6 +263,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(ConsultarFaccionistas($dadosObjeto));
                     break;
+                    case 'Inserir_Status':
+                        $requestData = json_decode(file_get_contents('php://input'), true);
+                        $dados = $requestData['dados'] ?? null;
+                        $dadosObjeto = (object)$dados;
+                        header('Content-Type: application/json');
+                        echo json_encode(InserirStatus($dadosObjeto));
+                        break;
+                    
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
                     break;
