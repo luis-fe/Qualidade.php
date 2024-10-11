@@ -102,7 +102,7 @@
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <span class="pe-4">João Victor</span>
+                <span class="pe-4">Teste</span>
               </a>
               <div class="dropdown-menu dropdown-menu-end">
                 <a href="#" class="dropdown-item" onclick="$('#modal-alterar-senha').modal('show');">
