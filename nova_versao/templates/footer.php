@@ -31,6 +31,8 @@
             console.log(err);
         }
     }
+
+    var Usuario = <?php echo json_encode($usuario); ?>;
 </script>
 </body>
 
