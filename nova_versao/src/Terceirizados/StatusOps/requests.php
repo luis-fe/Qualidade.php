@@ -2,10 +2,16 @@
 set_time_limit(300);
 session_start();
 if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
-    $username = $_SESSION['usuario'];
+    $usuario = $_SESSION['usuario'];
     $empresa = $_SESSION['empresa'];
     $token = $_SESSION['token'];
+} else {
+    header("Location: ../../../index.php");
 }
+
+$usuario = $_SESSION['usuario'];
+$empresa = $_SESSION['empresa'];
+$token = $_SESSION['token'];
 
 function ConsultaCategorias()
 {
@@ -263,14 +269,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(ConsultarFaccionistas($dadosObjeto));
                     break;
-                    case 'Inserir_Status':
-                        $requestData = json_decode(file_get_contents('php://input'), true);
-                        $dados = $requestData['dados'] ?? null;
-                        $dadosObjeto = (object)$dados;
-                        header('Content-Type: application/json');
-                        echo json_encode(InserirStatus($dadosObjeto));
-                        break;
-                    
+                case 'Inserir_Status':
+                    $requestData = json_decode(file_get_contents('php://input'), true);
+                    $dados = $requestData['dados'] ?? null;
+                    $dadosObjeto = (object)$dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(InserirStatus($dadosObjeto));
+                    break;
+
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
                     break;
