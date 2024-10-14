@@ -1,3 +1,4 @@
+<?php include_once("../../../templates/Loading.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="../../../templates/style2.css" />
+  <link rel="stylesheet" href="../../../templates/style1.css" />
   <title>Sidebar</title>
 </head>
 
@@ -102,13 +103,13 @@
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <span class="pe-4">Teste</span>
+                <span class="pe-4"><?php echo $usuario; ?></span>
               </a>
               <div class="dropdown-menu dropdown-menu-end">
                 <a href="#" class="dropdown-item" onclick="$('#modal-alterar-senha').modal('show');">
                   <i class="fas fa-unlock-keyhole pe-4"></i> Alterar Senha
                 </a>
-                <a href="../../templates/Logout/" class="dropdown-item">
+                <a href="../../../templates/Logout/" class="dropdown-item">
                   <i class="fas fa-arrow-right-from-bracket pe-4"></i> Sair
                 </a>
               </div>
