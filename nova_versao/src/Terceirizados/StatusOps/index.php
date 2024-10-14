@@ -1,4 +1,8 @@
-<?php include_once("../../../templates/header.php"); ?>
+<?php
+include_once("requests.php");
+include_once("../../../templates/Loading.php");
+include_once("../../../templates/header.php");
+?>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="style2.css">
@@ -113,17 +117,14 @@
 </div>
 <div class="corpo" style="text-align: left;">
     <div class="menu-tela" style="border-bottom: 1px solid lightgray; margin-top: 10px; padding-left: 10px;">
-        <button class="btn btn-menus" id="btn-ops" onclick="toggleMenu('ops')">
+        <button class="btn btn-menus" id="btn-ops" onclick="$('#btn-ops').addClass('btn-menu-clicado'); $('#btn-faccionistas').removeClass('btn-menu-clicado');">
             <i class="icon ph-bold ph-folders" style="margin-right: 5px;"></i>Por Op
-        </button>
-        <button class="btn btn-menus" id="btn-faccionistas" onclick="toggleMenu('faccionistas')">
-            <i class="icon ph-bold ph-file-minus" style="margin-right: 5px;"></i>Por Faccionista
         </button>
     </div>
     <div class="search-container">
         <form id="searchForm">
             <div class="input-group mb-3">
-                <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar Op" aria-label="Pesquisa">
+                <input type="text" id="input-search-op" class="form-control" placeholder="Pesquisar Op" aria-label="Pesquisa">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="button" id="button-qrCode">
                         <i class="icon ph-bold ph-qr-code"></i>
@@ -179,8 +180,11 @@
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
     $(document).ready(async () => {
+        $('#loadingModal').modal('show');
         await Consultar_Faccionistas();
-        Consultar_Status_Disponiveis();
+        await Consultar_Status_Disponiveis();
+        $('#loadingModal').modal('hide');
+        $('#btn-ops').addClass('btn-menu-clicado')
     });
 
     const html5QrCode = new Html5Qrcode("reader");
@@ -218,12 +222,12 @@
         $('#TituloModal').text(`${opId}`); // Preenche o título da modal
     }
 
-    $('#searchInput').on('input', function() {
+    $('#input-search-op').on('input', function() {
         const searchTerm = $(this).val().toLowerCase();
         filterOps(searchTerm);
     });
 
-    $('#searchInput').on('keydown', function(event) {
+    $('#input-search-op').on('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
             const searchTerm = $(this).val().toLowerCase();
@@ -242,7 +246,7 @@
 
         const filteredOps = allOps.filter(op =>
             op.numeroOP.toString().toLowerCase().includes(searchTerm) ||
-            op.prioridade.toString().toLowerCase().includes(searchTerm) ||
+            op.apelidofaccionista.toString().toLowerCase().includes(searchTerm) ||
             op.status.toString().toLowerCase().includes(searchTerm)
         );
 
@@ -262,7 +266,7 @@
                     }
                 },
                 (decodedText) => {
-                    $('#searchInput').val(decodedText); // Atualiza o campo de pesquisa com o QR code
+                    $('#input-search-op').val(decodedText); // Atualiza o campo de pesquisa com o QR code
                     filterOps(decodedText.toLowerCase()); // Filtra a OP correspondente
                     closeModal();
                 })
@@ -319,7 +323,7 @@
                 dados: {
                     "statusTerceirizado": $('#statusSelect').val(),
                     "numeroOP": $('#TituloModal').text(),
-                    "usuario": "Teste",
+                    "usuario": Usuario,
                     "justificativa": $('#justificativa').val(),
                 }
             };
