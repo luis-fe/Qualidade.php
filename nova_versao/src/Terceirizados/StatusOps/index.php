@@ -18,6 +18,16 @@ include_once("../../../templates/header.php");
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
 
+    .input-group .form-control {
+        height: 45px;
+        /* ajuste conforme necessário */
+    }
+
+    .input-group .btn {
+        height: 45px;
+        /* mesma altura do input */
+    }
+
     .ops-list {
         max-height: 440px;
         overflow-y: auto;
@@ -335,8 +345,8 @@ include_once("../../../templates/header.php");
                 data: JSON.stringify(requestData),
             });
             console.log(response)
-            if(response[0]['Mensagem'] === 'Apontado com sucesso'){
-                await Consultar_Faccionistas()
+            if (response[0]['Mensagem'] === 'Apontado com sucesso') {
+                await Consultar_Faccionistas
                 Mensagem('Status Apontado', 'success')
             } else {
                 Mensagem('Erro', 'error')
