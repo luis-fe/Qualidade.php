@@ -334,7 +334,13 @@ include_once("../../../templates/header.php");
                 contentType: 'application/json',
                 data: JSON.stringify(requestData),
             });
-
+            console.log(response)
+            if(response[0]['Mensagem'] === 'Apontado com sucesso'){
+                await Consultar_Faccionistas()
+                Mensagem('Status Apontado', 'success')
+            } else {
+                Mensagem('Erro', 'error')
+            }
         } catch (error) {
             console.error('Erro na solicitação AJAX:', error);
             alert('Ocorreu um erro ao buscar os dados. Tente novamente.');
