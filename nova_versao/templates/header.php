@@ -29,13 +29,13 @@
       <div id="nav">
         <div class="menu">
           <ul>
-            <li>
+            <!-- <li>
               <a href="#">
                 <i class="icon ph-bold ph-house"></i>
                 <span class="text">Home</span>
               </a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
               <a href="#">
                 <i class="icon ph-bold ph-folder-open"></i>
                 <span class="text">Cadastros</span>
@@ -47,6 +47,12 @@
                 <li><a href="#"><span class="text">Perfil</span></a></li>
                 <li><a href="#"><span class="text">Usuário</span></a></li>
               </ul>
+            </li> -->
+            <li>
+              <a href="../../Terceirizados/StatusOps">
+                <i class="icon ph-bold ph-device-mobile-camera"></i>
+                <span class="text">Apontar Status</span>
+              </a>
             </li>
             <li>
               <a href="#">
@@ -55,22 +61,8 @@
                 <i class="arrow ph-bold ph-caret-down"></i>
               </a>
               <ul class="sub-menu">
-                <li>
-                  <a href="#">Caixa</a>
-                  <ul class="sub-menu">
-                    <li><a href="#">Detalhe 1</a></li>
-                    <li><a href="#">Detalhe 2</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#">Endereço</a>
-                  <ul class="sub-menu">
-                    <li><a href="#">Detalhe A</a></li>
-                    <li><a href="#">Detalhe B</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Perfil</a></li>
-                <li><a href="#">Usuário</a></li>
+                <li><a href="#"><span class="text">Metas dos Terceirizados</span></a></li>
+                <li><a href="../../Terceirizados/GestaoStatusOps/"><span class="text">Status das Op's</span></a></li>
               </ul>
             </li>
             <li>
