@@ -113,13 +113,6 @@ include_once("../../../templates/header.php");
         width: 80%;
     }
 
-    #sidebar {
-        display: none;
-    }
-
-    #sidebar.active {
-        width: 0px;
-    }
 </style>
 
 <div class="titulo" style="padding: 10px; text-align: left; border-bottom: 1px solid black; color: black; font-size: 15px; font-weight: 600;">
