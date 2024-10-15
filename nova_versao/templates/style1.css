@@ -24,9 +24,7 @@ body {
 #container {
     display: flex;
     align-items: stretch;
-    /* Garante que a sidebar e a main ocupem a altura total */
     min-height: 100vh;
-
 }
 
 #sidebar {
@@ -46,7 +44,6 @@ body {
 
 #sidebar::-webkit-scrollbar {
     display: none;
-    /* Oculta a barra de rolagem para navegadores WebKit */
 }
 
 #sidebar .head {
@@ -80,7 +77,6 @@ body {
     text-transform: uppercase;
     margin-bottom: 10px;
 }
-
 
 .nav-geral {
     max-height: 100%;
@@ -134,8 +130,6 @@ body {
     transform: rotate(180deg);
 }
 
-
-
 .menu .sub-menu {
     display: none;
     margin-left: 20px;
@@ -158,7 +152,6 @@ body {
 .menu-btn {
     position: fixed;
     left: 240px;
-    /* Posiciona o botão fora da sidebar, ajustando conforme necessário */
     top: 3.5%;
     width: 28px;
     height: 28px;
@@ -171,9 +164,7 @@ body {
     border: 2px solid #f6f6f6;
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    /* Adiciona uma sombra para destacar o botão */
     z-index: 12;
-    /* Garante que o botão fique acima da sidebar e do conteúdo */
 }
 
 .menu-btn:hover i {
@@ -261,7 +252,6 @@ body {
     background-color: #fff;
     box-shadow: 0px 10px 8px rgba(0, 0, 0, 0.1);
     z-index: 8;
-
 }
 
 #sidebar.active .menu .sub-menu li a {
@@ -346,7 +336,6 @@ body {
     justify-content: center;
 }
 
-
 .btn-menus:hover {
     background-color: #002955;
     color: white;
@@ -355,5 +344,16 @@ body {
 .btn-menu-clicado {
     background-color: #002955;
     color: white;
+}
 
+@media (max-width: 768px) {
+    #sidebar {
+        display: none; /* Oculta a sidebar */
+    }
+}
+
+@media (min-width: 768px) {
+    #sidebar-toggle {
+        display: none; /* Oculta o botão de toggle em telas maiores */
+    }
 }
