@@ -112,7 +112,6 @@ include_once("../../../templates/header.php");
         border: 1px solid #888;
         width: 80%;
     }
-
 </style>
 
 <div class="titulo" style="padding: 10px; text-align: left; border-bottom: 1px solid black; color: black; font-size: 15px; font-weight: 600;">
@@ -202,23 +201,62 @@ include_once("../../../templates/header.php");
 
         itemsToLoad.forEach((op) => {
             const opItem = $(`
-                <div class="op-item">
-                    <button class="btn-op" data-op-id="${op.numeroOP}" onclick="const opId = this.getAttribute('data-op-id'); openStatusModal(opId)">
-                        <div class="op-details">
-                            <span class="op-number">Número Op: ${op.numeroOP}</span><br>
-                            <span class="op-number">Qtd: ${op.carga}</span><br>
-                            <span class="op-priority">Prioridade: ${op.prioridade}</span><br>
-                            <span class="op-status">Status: ${op.status}</span><br>
-                            <span class="op-number">Fac: ${op.apelidofaccionista}</span><br>
-                            <span class="op-number">Dias na fase: ${op.leadtime}</span><br>
-                        </div>
-                    </button>
-                </div>
-            `);
+            <div class="op-item">
+                <button class="btn-op" data-op-id="${op.numeroOP}" onclick="const opId = this.getAttribute('data-op-id'); openStatusModal(opId)">
+                    <div class="op-details">
+                        <span class="op-number">Número Op: ${op.numeroOP}</span><br>
+                        <span class="op-number">Qtd: ${op.carga}</span><br>
+                        <span class="op-priority">Prioridade: ${op.prioridade}</span><br>
+                        <span class="op-status">Status: ${op.status}</span><br>
+                        <span class="op-number">Fac: ${op.apelidofaccionista}</span><br>
+                        <span class="op-number">Dias na fase: ${op.leadtime}</span><br>
+                    </div>
+                </button>
+            </div>
+        `);
+
+            // Define o estilo diretamente no botão se o status for "Recolhido"
+            if (op.status === "Recolhido") {
+                opItem.find('.btn-op').css({
+                    backgroundColor: 'lightGreen', // Cor de fundo verde
+                    border: 'none', // Remover borda
+                    cursor: 'pointer' // Cursor de ponteiro
+                });
+                opItem.find('.op-priority').css({
+                    color: 'black',
+                    fontWeight: '600'
+                })
+                opItem.find('.op-status').css({
+                    color: 'black',
+                    fontWeight: '600'
+                })
+
+            }
+
+            if (op.status === "Nao Iniciada") {
+                opItem.find('.btn-op').css({
+                    backgroundColor: '#D2691E',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: 'white'
+                });
+                opItem.find('.op-priority').css({
+                    color: 'white',
+                    fontWeight: '600'
+                })
+                opItem.find('.op-status').css({
+                    color: 'white',
+                    fontWeight: '600'
+                })
+
+            }
+
             opsList.append(opItem);
             currentOffset++;
         });
     }
+
+
 
     function openStatusModal(opId) {
         $('#statusModal').modal('show'); // Mostra a modal
