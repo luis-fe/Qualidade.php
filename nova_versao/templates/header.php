@@ -49,6 +49,12 @@
               </ul>
             </li> -->
             <li>
+              <a href="../../Terceirizados/Dashboards">
+                <i class="icon ph-bold ph-speedometer"></i>
+                <span class="text">Dashboards</span>
+              </a>
+            </li>
+            <li>
               <a href="../../Terceirizados/StatusOps">
                 <i class="icon ph-bold ph-device-mobile-camera"></i>
                 <span class="text">Apontar Status</span>
