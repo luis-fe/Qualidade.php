@@ -56,19 +56,15 @@
               </a>
               <ul class="sub-menu">
                 <li><a href="#"><span class="text">Estrutura de Produtos</span></a></li>
-                <li><a href="#"><span class="text">Status das Op's</span></a></li>
               </ul>
               <ul class="sub-menu">
                 <li><a href="#"><span class="text">Itens Substitutos</span></a></li>
-                <li><a href="#"><span class="text">Status das Op's</span></a></li>
               </ul>
               <ul class="sub-menu">
-                <li><a href="#"><span class="text">Monitor de Pedidos</span></a></li>
-                <li><a href="../../pcp/MonitorPedidos/"><span class="text">Status das Op's</span></a></li>
+                <li><a href="../../pcp/MonitorPedidos/"><span class="text">Monitor de Pedidos</span></a></li>
               </ul>
               <ul class="sub-menu">
-                <li><a href="#"><span class="text">Plano de Produção</span></a></li>
-                <li><a href="../../pcp/PlanoDeProducao/"><span class="text">Status das Op's</span></a></li>
+                <li><a href="../../pcp/PlanoDeProducao/"><span class="text">Plano de Produção</span></a></li>
               </ul>
             </li>
             <li>
