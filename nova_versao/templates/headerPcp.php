@@ -103,7 +103,7 @@
                 <a href="#" class="dropdown-item" onclick="$('#modal-alterar-senha').modal('show');">
                   <i class="fas fa-unlock-keyhole pe-4"></i> Alterar Senha
                 </a>
-                <a href="../../../templates/Logout/" class="dropdown-item">
+                <a href="../../../templates/Logout/indexPcp.php" class="dropdown-item">
                   <i class="fas fa-arrow-right-from-bracket pe-4"></i> Sair
                 </a>
               </div>
