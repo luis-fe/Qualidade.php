@@ -1,4 +1,6 @@
 import pandas as pd
+
+import ConexaoPostgreMPL
 from connection import WmsConnectionClass as conexao
 
 class Usuario:
@@ -42,16 +44,16 @@ class Usuario:
         """
         sqlGetUsuarios = """
             SELECT
-                us."matricula" AS codigo,
+                us."codigo" AS codigo,
                 us.funcao,
                 us.nome,
                 us.login,
                 us.situacao
             FROM
-                "WMS"."Wms".usuario us
+                "Reposicao"."Reposicao".cadusuarios us
         """
         try:
-            with conexao.WmsConnectionClass().conectar() as conn:
+            with ConexaoPostgreMPL.conexao() as conn:
                 with conn.cursor() as curr:
                     curr.execute(sqlGetUsuarios)
                     usuarios = curr.fetchall()

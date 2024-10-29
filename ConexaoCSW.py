@@ -2,10 +2,6 @@ import jaydebeapi
 import pandas as pd
 import models.configuracoes.empresaConfigurada
 
-
-
-
-
 empresa = models.configuracoes.empresaConfigurada.EmpresaEscolhida()
 print(empresa)
 
