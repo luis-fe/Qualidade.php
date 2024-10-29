@@ -1,7 +1,7 @@
 <?php
 include_once("requests.php");
 include_once("../../../templates/Loading.php");
-include_once("../../../templates/header.php");
+include_once("../../../templates/headerPcp.php");
 ?>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
