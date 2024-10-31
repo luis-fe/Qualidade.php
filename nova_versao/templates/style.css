@@ -323,7 +323,7 @@ body {
 }
 
 .btn-menus {
-    border: none;
+    border: 1px solid white;
     background-color: lightgray;
     padding: 10px;
     border-top-left-radius: 10px;
@@ -348,12 +348,60 @@ body {
 
 @media (max-width: 768px) {
     #sidebar {
-        display: none; /* Oculta a sidebar */
+        display: none;
+        /* Oculta a sidebar */
     }
 }
 
 @media (min-width: 768px) {
     #sidebar-toggle {
-        display: none; /* Oculta o botão de toggle em telas maiores */
+        display: none;
+        /* Oculta o botão de toggle em telas maiores */
     }
+}
+
+.btn-close-custom {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: darkred;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.btn-close-custom::before,
+.btn-close-custom::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 70%;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.btn-close-custom::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+
+.dropdown-checkbox {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.dropdown:hover {
+    color: black;
+}
+
+.dropdown-toggle:active,
+.dropdown-toggle:focus {
+    color: black;
 }
