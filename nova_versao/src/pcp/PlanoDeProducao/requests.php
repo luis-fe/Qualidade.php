@@ -7,7 +7,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
     $empresa = $_SESSION['empresa'];
     $token = $_SESSION['token'];
 } else {
-    header("Location: ../../../index.php");
+    header("Location: ../../../indexPcp.php");
 }
 
 $usuario = $_SESSION['usuario'];
