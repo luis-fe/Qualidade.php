@@ -23,16 +23,18 @@ $(document).ready(async () => {
 function AtualizarDados() {
     const checkbox_faccionista = $('.option-checkbox-faccionista:checked').val();
     const checkbox_categoria = $('.option-checkbox-categoria:checked').val();
+
     if (!checkbox_faccionista && !checkbox_categoria) {
-
         Consultar_Dados(true, "", "", "barras");
+    } else if (checkbox_faccionista && !checkbox_categoria) {
+        Consultar_Dados(true, "especial", checkbox_faccionista, "barras");
     } else {
-        // Continua com a função normal se pelo menos uma checkbox estiver selecionada
         Consultar_Dados(true, checkbox_categoria || "", checkbox_faccionista || "", "empilhado");
-
-        $('#modal-filtros').modal('hide');
     }
+
+    $('#modal-filtros').modal('hide');
 }
+
 
 
 
