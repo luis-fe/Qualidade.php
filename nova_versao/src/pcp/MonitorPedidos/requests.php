@@ -275,7 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo ConsultaProdutoSemOp('1', 'a44pcp22', $dados);
         } else if ($acao == 'Filtro_Monitor_Ops') {
             header('Content-Type: application/json');
-            echo FiltrosOps('1', 'a44pcp22', $dados);
+            echo FiltrosOps('1', $dados);
         } else {
             header('Content-Type: application/json');
             echo json_encode(['status' => false, 'message' => 'Ação não reconhecida.']);
