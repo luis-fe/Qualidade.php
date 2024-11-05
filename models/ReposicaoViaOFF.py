@@ -137,7 +137,7 @@ class ReposicaoViaOFF():
         '''Metodo que retorna a data e hora atual'''
 
         fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
-        agora = datetime.datetime.now(fuso_horario)
+        agora = datetime.now(fuso_horario)
         hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
 
         return hora_str
