@@ -134,12 +134,13 @@ class ReposicaoViaOFF():
         return consulta
 
     def dataHora(self):
+        '''Metodo que retorna a data e hora atual'''
 
-            fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
-            agora = datetime.datetime.now(fuso_horario)
-            hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
+        fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+        agora = datetime.datetime.now(fuso_horario)
+        hora_str = agora.strftime('%Y-%m-%d %H:%M:%S')
 
-            return hora_str
+        return hora_str
 
 
 ## Funcao que insere os dados na tabela "Reposicao".off.reposicao_qualidade , persistindo os dados com as tags bipada na caixa
