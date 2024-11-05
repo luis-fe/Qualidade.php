@@ -1,3 +1,4 @@
+import gc
 from datetime import datetime
 import pandas as pd
 import pytz
@@ -19,16 +20,20 @@ class ReposicaoViaOFF():
 
 
     def apontarTagCaixa(self):
+        '''Metodo criado para apontar a tag x Caixa x Ncarrinho '''
 
         usuario = self.usuario.strip()
 
         #2 - Validar se a Tag ja está sincronizada com o banco WMS
         pesquisa = self.consultaTagOFFWMS()
 
-        if pesquisa.empty and self.estornar == False:
+
+        #3 - retornando if de acordo com a respostas:
+
         ## Caso nao for encontrado tag, é feito uma pesquisada direto do CSW para recuperar a tag , porem ela deve estar nas situacoes 0 ou 9:
+        if pesquisa.empty and self.estornar == False:
             conn2 = ConexaoCSW.Conexao()
-            consultaCsw = pd.read_sql(self.SqlBuscaTags(), conn2)
+            consultaCsw = self.buscarTagCsw()
 
             if not consultaCsw.empty:
 
@@ -98,8 +103,11 @@ class ReposicaoViaOFF():
         # Retorna os dados consultados
         return pesquisa
 
-    def SqlBuscaTags(self):
-            consulta = """
+    def buscarTagCsw(self):
+        '''Metodo utilizado para buscar a tag direto do Csw'''
+
+
+        consulta = """
             SELECT 
                 p.codBarrasTag as codbarrastag , 
                 p.codReduzido as codreduzido, 
@@ -114,7 +122,16 @@ class ReposicaoViaOFF():
             WHERE 
                 p.codEmpresa = '""" + self.empresa + """' and situacao in (0, 9) and codbarrastag = """+ self.codbarrasPesquisa
 
-            return consulta
+        with ConexaoCSW.Conexao2() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(consulta)
+                colunas = [desc[0] for desc in cursor.description]
+                rows = cursor.fetchall()
+                consulta = pd.DataFrame(rows, columns=colunas)
+        del rows
+        gc.collect()
+
+        return consulta
 
     def dataHora(self):
 
