@@ -205,7 +205,7 @@ class ReposicaoViaOFF():
     def EstornarTag(self):
         conn = ConexaoPostgreMPL.conexao()
         delete = 'delete from "off".reposicao_qualidade ' \
-                 'where codbarrastag  = ' + self.codbarrastag
+                 'where codbarrastag  = ' + self.codbarrasPesquisa
         cursor = conn.cursor()
         cursor.execute(delete, )
         conn.commit()
