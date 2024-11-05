@@ -38,7 +38,7 @@ from .AutomacaoCsw.ReservaPreFat import ReservaPreFaturamento_routes
 from  .AutomacaoCsw.AtualizaSku import InformacosPCPServicos_routes
 from .AutomacaoCsw.SubstitutosSku import AtualizaSubstitutosSku_routes
 from .ConfiguracaoRevisaoAPI import ConfRevisao_routes
-
+from .ReposicaoViaOFFApi import ReposicaoViaOFF_routes
 
 # Registre as rotas nos blueprints
 routes_blueprint.register_blueprint(usuarios_routes)
@@ -71,3 +71,4 @@ routes_blueprint.register_blueprint(ReservaPreFaturamento_routes)
 routes_blueprint.register_blueprint(InformacosPCPServicos_routes)
 routes_blueprint.register_blueprint(AtualizaSubstitutosSku_routes)
 routes_blueprint.register_blueprint(ConfRevisao_routes)
+routes_blueprint.register_blueprint(ReposicaoViaOFF_routes)
