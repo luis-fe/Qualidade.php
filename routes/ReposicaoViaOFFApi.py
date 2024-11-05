@@ -76,7 +76,7 @@ def ReporCaixaLivreTeste():
 
 
 
-        FilaReposicaoOP = ReposicaoViaOFF.ReposicaoViaOFF(codbarras,NCaixa,empresa,usuario,natureza, estornar,NCarrinho).consultaTagOFFWMS()
+        FilaReposicaoOP = ReposicaoViaOFF.ReposicaoViaOFF(codbarras,NCaixa,empresa,usuario,natureza, estornar,NCarrinho).apontarTagCaixa()
         # Obtém os nomes das colunas
         column_names = FilaReposicaoOP.columns
         # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
