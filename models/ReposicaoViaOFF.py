@@ -357,7 +357,7 @@ class ReposicaoViaOFF():
             "Ncarrinho" ,
             caixa,
             numeroop,
-            count(codbarrastag)as qtdPcas
+            count(codbarrastag)as "qtdPcas"
         from
             "off".reposicao_qualidade rq
         where
