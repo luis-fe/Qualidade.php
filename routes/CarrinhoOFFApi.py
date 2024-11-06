@@ -36,3 +36,17 @@ def get_consultarCarrinhos():
     return jsonify(pedidos_data)
 
 
+@CarrinhoOFF_routes.route('/api/imprimirCodCarrinho', methods=['POST'])
+@token_required
+def post_imprimirCodCarrinho():
+    # Obtém os dados do corpo da requisição (JSON)
+    datas = request.get_json()
+    NCarrinho = datas['NCarrinho']
+    empresa = datas['empresa']
+
+    pdf = CarrinhoOFF.Carrinho(NCarrinho,empresa).gerarEtiquetaCarrinho(f'carrinho.pdf')
+    #imprimirEtiquetaModel.imprimir_pdf(f'impressao.pdf')
+
+    return jsonify({'message': f'Imprimido o carrinho  com sucesso', 'status':True})
+
+
