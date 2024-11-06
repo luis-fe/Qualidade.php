@@ -236,6 +236,7 @@ class ReposicaoViaOFF():
             codempresa = consultarCAIXA['codempresa'][0]
             self.codreduzido = consultarCAIXA['codreduzido'][0]
             descricao = consultarCAIXA['descricao'][0]
+            self.Ncarrinho = consultarCAIXA['Ncarrinho'][0]
             cor = consultarCAIXA['cor'][0]
             eng = consultarCAIXA['engenharia'][0]
             tam = consultarCAIXA['tamanho'][0]
@@ -252,6 +253,7 @@ class ReposicaoViaOFF():
             data = {
 
                 '0- mensagem ': 'Caixa Cheia',
+                '001-NCarrinho':str(self.Ncarrinho),
                 '01- status': False,
                 '02- Empresa': codempresa,
                 '03- numeroOP': self.numeroOP,
