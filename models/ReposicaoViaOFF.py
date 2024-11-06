@@ -221,7 +221,7 @@ class ReposicaoViaOFF():
         
         conn = ConexaoPostgreMPL.conexao()
         consultarCAIXA = pd.read_sql('select rq.codbarrastag , rq.codreduzido, rq.engenharia, rq.descricao, rq.natureza, rq.NCarrinho, '
-                                ', rq.codempresa, rq.cor, rq.tamanho, rq.numeroop, rq.usuario, rq."DataReposicao"  from "off".reposicao_qualidade rq  '
+                                'rq.codempresa, rq.cor, rq.tamanho, rq.numeroop, rq.usuario, rq."DataReposicao"  from "off".reposicao_qualidade rq  '
                                 "where rq.caixa = %s ", conn, params=(self.Ncaixa,))
         conn.close()
         if consultarCAIXA.empty:
