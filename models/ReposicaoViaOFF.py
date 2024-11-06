@@ -222,7 +222,7 @@ class ReposicaoViaOFF():
         conn = ConexaoPostgreMPL.conexao()
         consultarCAIXA = pd.read_sql('select rq.codbarrastag , rq.codreduzido, rq.engenharia, rq.descricao, rq.natureza, rq."Ncarrinho", '
                                 'rq.codempresa, rq.cor, rq.tamanho, rq.numeroop, rq.usuario, rq."DataReposicao"  from "off".reposicao_qualidade rq  '
-                                "where rq.caixa = %s ", conn, params=(self.Ncaixa,))
+                                " where rq.caixa = %s ", conn, params=(self.Ncaixa,))
         conn.close()
         if consultarCAIXA.empty:
             return pd.DataFrame({'mensagem': ['caixa vazia'], 'codbarrastag': '', 'numeroop': '', 'status': True})
@@ -282,7 +282,7 @@ class ReposicaoViaOFF():
         #3 filtrar as OPs especificadas para obter a quantidade:
             conn = ConexaoPostgreMPL.conexaoPCP()
             get = pd.read_sql('SELECT  codreduzido, total_pcs '
-                              'FROM "PCP".pcp.ordemprod o'
+                              'FROM "PCP".pcp.ordemprod o '
                               "WHERE numeroop IN " + resultado, conn)
             conn.close()
 
