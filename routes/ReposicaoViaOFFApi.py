@@ -58,9 +58,9 @@ def get_buscarTagCsw():
     return jsonify(pedidos_data)
 
 
-@ReposicaoViaOFF_routes.route('/api/ReporCaixaLivreTeste', methods=['POST'])
+@ReposicaoViaOFF_routes.route('/api/ReporCaixaLivre', methods=['POST'])
 @token_required
-def ReporCaixaLivreTeste():
+def ReporCaixaLivre():
     #try:
         # Obtenha os dados do corpo da requisição
         novo_usuario = request.get_json()
