@@ -7,7 +7,7 @@ import ConexaoPostgreMPL
 
 class ReposicaoViaOFF():
     """Classe do WMS responsavel pela reposicao via OFF (antes das tag entrar em estoque), atribuindo tag a um Ncaixa e a NCarrinho """
-    def __init__(self, codbarrastag, Ncaixa = None, empresa = None, usuario = None, natureza = None, estornar = False, Ncarrinho = ''):
+    def __init__(self, codbarrastag, Ncaixa = None, empresa = None, usuario = None, natureza = None, estornar = False, Ncarrinho = '', numeroOP = None):
         self.codbarrastag = str(codbarrastag)
         self.codbarrasPesquisa = "'" + self.codbarrastag + "'"
 
@@ -17,6 +17,7 @@ class ReposicaoViaOFF():
         self.usuario = usuario
         self.natureza = natureza
         self.estornar = estornar
+        self.numeroOP = numeroOP
 
 
     def apontarTagCaixa(self):
@@ -213,3 +214,107 @@ class ReposicaoViaOFF():
         conn.close()
 
         return pd.DataFrame([{'status': True, 'Mensagem': 'tag estornada! '}])
+
+    def consultaCaixa(self):
+        '''Metodo utilizado para detalhar uma caixa em especifico '''
+        
+        
+        conn = ConexaoPostgreMPL.conexao()
+        consultarCAIXA = pd.read_sql('select rq.codbarrastag , rq.codreduzido, rq.engenharia, rq.descricao, rq.natureza, rq.NCarrinho, '
+                                ', rq.codempresa, rq.cor, rq.tamanho, rq.numeroop, rq.usuario, rq."DataReposicao"  from "off".reposicao_qualidade rq  '
+                                "where rq.caixa = %s ", conn, params=(self.Ncaixa,))
+        conn.close()
+        if consultarCAIXA.empty:
+            return pd.DataFrame({'mensagem': ['caixa vazia'], 'codbarrastag': '', 'numeroop': '', 'status': True})
+        else:
+
+            #Obtenod a quantidade de peças por reduzido e o Total Geral
+            consultarCAIXA, totalOP = self.get_quantidadeOP_Sku(consultarCAIXA)
+
+            #Organizando as informacoes
+            self.numeroOP = consultarCAIXA['numeroop'][0]
+            codempresa = consultarCAIXA['codempresa'][0]
+            self.codreduzido = consultarCAIXA['codreduzido'][0]
+            descricao = consultarCAIXA['descricao'][0]
+            cor = consultarCAIXA['cor'][0]
+            eng = consultarCAIXA['engenharia'][0]
+            tam = consultarCAIXA['tamanho'][0]
+            consultarCAIXA.fillna('Nao Iniciado', inplace=True)
+            totalPcSku = consultarCAIXA['total_pcs'][0]
+
+            consultarCAIXA.drop(['numeroop', 'codempresa', 'codreduzido', 'descricao', 'cor', 'engenharia', 'tamanho',
+                            'total_pcs']
+                           , axis=1, inplace=True)
+
+
+            totalbipagemOP, totalbipagemSku = self.totalBipado(True)
+
+            data = {
+
+                '0- mensagem ': 'Caixa Cheia',
+                '01- status': False,
+                '02- Empresa': codempresa,
+                '03- numeroOP': self.numeroOP,
+                '04- totalOP': totalOP,
+                '05- totalOPBipado': totalbipagemOP,
+                '06- engenharia': eng,
+                '07- codreduzido': self.codreduzido,
+                '08- descricao': descricao,
+                '09- cor': cor,
+                '10- tamanho': tam,
+                '11- totalpçsSKU': totalPcSku,
+                '12- totalpcsSkuBipado': totalbipagemSku,
+                '13- Tags da Caixa ': consultarCAIXA.to_dict(orient='records')
+            }
+            return [data]
+
+    def get_quantidadeOP_Sku(self, dataFrame):
+
+
+        #1 - Especifica no DataFrame a coluna numeroOP e em seguida remover as duplicadas
+            novo = dataFrame[['numeroop']]
+            novo = novo.drop_duplicates(subset=['numeroop'])
+
+        #2: Transformar o dataFrame em lista
+            resultado = '({})'.format(', '.join(["'{}'".format(valor) for valor in novo['numeroop']]))
+
+
+        #3 filtrar as OPs especificadas para obter a quantidade:
+            conn = ConexaoPostgreMPL.conexaoPCP()
+            get = pd.read_sql('SELECT  codreduzido, total_pcs '
+                              'FROM "PCP".pcp.ordemprod o'
+                              "WHERE numeroop IN " + resultado, conn)
+            conn.close()
+
+            totalGeral = get["total_pcs"].sum()
+            totalGeral = int(totalGeral)
+            get = pd.merge(dataFrame, get, on='codreduzido', how='left')
+
+            return get, totalGeral
+
+    def totalBipado(self,agrupado):
+
+        conn = ConexaoPostgreMPL.conexao()
+        consulta = pd.read_sql(
+            'select numeroop, rq.codreduzido, rq.cor as  "codSortimento", tamanho, count(codreduzido) as "Qtbipado"  from "Reposicao"."off".reposicao_qualidade rq '
+            'where rq.codempresa  = %s and numeroop = %s group by numeroop, codreduzido, cor, tamanho',
+            conn, params=(self.empresa, self.numeroOP,))
+        conn.close()
+
+        # Totaliza o total de OPs bipada
+        totalBipadoOP = consulta['numeroop'].count()
+
+        if agrupado == True:
+            totalSku = consulta[consulta['codreduzido'] == self.codreduzido]
+            totalSku = totalSku['Qtbipado'].sum()
+
+            return totalBipadoOP, totalSku
+        else:
+
+            consulta['codSortimento'] = consulta['codSortimento'].str.split('-').str[0]
+            consulta['sortimentosCores'] = consulta['codSortimento']
+            consulta.drop('codSortimento'
+                          , axis=1, inplace=True)
+
+            return consulta, totalBipadoOP
+
