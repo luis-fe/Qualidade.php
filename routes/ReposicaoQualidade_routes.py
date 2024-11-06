@@ -6,7 +6,7 @@
 import models.configuracoes.empresaConfigurada
 import models.configuracoes.SkusSubstitutos
 from models import ReposicaoQualidade, controle
-from models.Processo_Reposicao_OFF import RecarregarEndereco, ApontarTag
+from models.Processo_Reposicao_OFF import RecarregarEndereco
 from flask import Blueprint, jsonify, request
 from functools import wraps
 import pandas as pd
