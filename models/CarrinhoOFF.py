@@ -136,12 +136,12 @@ class Carrinho():
             # Título centralizado
             title = 'Carrinho:'
             c.setFont("Helvetica-Bold", 10)
-            c.drawString(0.1 * cm, 1 * cm, title)
+            c.drawString(0.1 * cm, 1.7 * cm, title)
 
 
             title = str(self.NCarrinho)
-            c.setFont("Helvetica-Bold", 34)
-            c.drawString(0.15 * cm, 0.60 * cm, title)
+            c.setFont("Helvetica-Bold", 38)
+            c.drawString(0.15 * cm, 0.80 * cm, title)
 
 
 
@@ -150,7 +150,7 @@ class Carrinho():
             qr.make(fit=True)
             qr_img = qr.make_image(fill_color="black", back_color="white")
             qr_img.save(qr_filename)  # Salvar a imagem do QR code no arquivo temporário
-            c.drawImage(qr_filename, 5.2 * cm, 0.13 * cm, width=1.85 * cm, height= 1.50 * cm)
+            c.drawImage(qr_filename, 5.4 * cm, 0.05 * cm, width=1.55 * cm, height= 1.55 * cm)
 
 
             c.save()
