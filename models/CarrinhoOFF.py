@@ -38,7 +38,7 @@ class Carrinho():
         # Pesquisando se o carrinho ja existe
         verificar = self.pesquisarCarrinhoEspecifico()
 
-        if verificar.empty:
+        if not verificar.empty:
             return pd.DataFrame([{'status':False,'mensagem':'Carrinho ja existe'}])
 
         else:
