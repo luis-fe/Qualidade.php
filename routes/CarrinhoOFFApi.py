@@ -74,3 +74,24 @@ def post_NovoCarrinho():
     return jsonify(pedidos_data)
 
 
+@CarrinhoOFF_routes.route('/api/ExcluirCarrinho', methods=['DELETE'])
+@token_required
+def post_ExcluirCarrinhoo():
+    # Obtém os dados do corpo da requisição (JSON)
+    datas = request.get_json()
+    NCarrinho = datas['NCarrinho']
+    empresa = datas['empresa']
+
+    carrinho = CarrinhoOFF.Carrinho(NCarrinho,empresa)
+
+    consulta = carrinho.excluirCarrinho()
+    # Obtém os nomes das colunas
+    column_names = consulta.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    pedidos_data = []
+    for index, row in consulta.iterrows():
+        pedidos_dict = {}
+        for column_name in column_names:
+            pedidos_dict[column_name] = row[column_name]
+        pedidos_data.append(pedidos_dict)
+    return jsonify(pedidos_data)
