@@ -44,9 +44,33 @@ def post_imprimirCodCarrinho():
     NCarrinho = datas['NCarrinho']
     empresa = datas['empresa']
 
-    pdf = CarrinhoOFF.Carrinho(NCarrinho,empresa).gerarEtiquetaCarrinho(f'carrinho.pdf')
-    #imprimirEtiquetaModel.imprimir_pdf(f'impressao.pdf')
+    pdf = CarrinhoOFF.Carrinho(NCarrinho,empresa)
+    pdf.gerarEtiquetaCarrinho(f'carrinho.pdf')
+    pdf.imprimir_pdfCarrinho(f'carrinho.pdf')
 
     return jsonify({'message': f'Imprimido o carrinho  com sucesso', 'status':True})
+
+
+@CarrinhoOFF_routes.route('/api/NovoCarrinho', methods=['POST'])
+@token_required
+def post_NovoCarrinho():
+    # Obtém os dados do corpo da requisição (JSON)
+    datas = request.get_json()
+    NCarrinho = datas['NCarrinho']
+    empresa = datas['empresa']
+
+    carrinho = CarrinhoOFF.Carrinho(NCarrinho,empresa)
+
+    consulta = carrinho.cadastrarCarrinho()
+    # Obtém os nomes das colunas
+    column_names = consulta.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    pedidos_data = []
+    for index, row in consulta.iterrows():
+        pedidos_dict = {}
+        for column_name in column_names:
+            pedidos_dict[column_name] = row[column_name]
+        pedidos_data.append(pedidos_dict)
+    return jsonify(pedidos_data)
 
 

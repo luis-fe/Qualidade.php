@@ -1,10 +1,8 @@
 import cups
-import os
 from reportlab.lib.pagesizes import landscape
 from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
 import tempfile
-from reportlab.graphics import barcode
 import qrcode
 import ConexaoPostgreMPL
 import pandas as pd
@@ -154,6 +152,16 @@ class Carrinho():
 
 
             c.save()
+
+    def imprimir_pdfCarrinho(self,pdf_file):
+        conn = cups.Connection()
+        # printers = conn.getPrinters()
+        # printer_name = list(printers.keys())[0]
+        printer_name = "ZM400"  # Aqui teremos que criar uma funcao para imprimir as etiquetas de cianorte
+        job_id = conn.printFile(printer_name, pdf_file, "Etiqueta",
+                                {'PageSize': 'Custom.10x0.25cm', 'FitToPage': 'True', 'Scaling': '100',
+                                 'Orientation': '3'})
+        print(f"ID {job_id} enviado para impressão")
 
 
 
