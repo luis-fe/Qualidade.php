@@ -332,7 +332,7 @@ class ReposicaoViaOFF():
         from
 	        "off".reposicao_qualidade rq
 	    where 
-	        rq.codempresa  = %s
+	        rq.codempresa  = %s and (rq."statusNCarrinho" <> 'liberado' or rq."statusNCarrinho" is null)
         group by 
             "Ncarrinho" 
         order by 
@@ -361,7 +361,7 @@ class ReposicaoViaOFF():
         from
             "off".reposicao_qualidade rq
         where
-            rq."Ncarrinho" = %s and rq.codempresa = %s
+            rq."Ncarrinho" = %s and rq.codempresa = %s and (rq."statusNCarrinho" <> 'liberado' or rq."statusNCarrinho" is null)
         group by
             "Ncarrinho" ,
             caixa,
@@ -397,6 +397,26 @@ class ReposicaoViaOFF():
 
             }
             return pd.DataFrame([dados])
+
+    def liberarCarrinho(self):
+        '''Metodo utilizado para liberar o carrinho'''
+
+        update = """
+        update 
+            "off".reposicao_qualidade 
+        set 
+            "statusNCarrinho" = 'liberado'
+        where
+            rq."Ncarrinho" = %s and rq.codempresa = %s 
+        """
+
+        with ConexaoPostgreMPL.conexao() as conn:
+            with conn.cursor() as curr:
+                curr.execute(update, (self.Ncarrinho, self.empresa))
+                conn.commit()
+
+                return pd.DataFrame([{'status': True, 'mensagem': 'Carrinho liberado com sucesso'}])
+
 
 
 

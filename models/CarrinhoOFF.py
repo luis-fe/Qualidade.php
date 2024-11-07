@@ -69,7 +69,7 @@ class Carrinho():
 
         conn = ConexaoPostgreMPL.conexaoEngine()
 
-        consulta = pd.read_sql(consulta, conn, params=(self.empresa, self.NCarrinho))
+        consulta = pd.read_sql(consulta, conn, params=(str(self.empresa), self.NCarrinho))
 
         return consulta
 
@@ -110,7 +110,7 @@ class Carrinho():
         from
             "off".reposicao_qualidade rq
         where
-            rq."Ncarrinho" = %s and rq.codempresa = %s and rq."statusNCarrinho" <> 'liberado'
+            rq."Ncarrinho" = %s and rq.codempresa = %s and (rq."statusNCarrinho" <> 'liberado' or rq."statusNCarrinho" is null)
         """
 
 

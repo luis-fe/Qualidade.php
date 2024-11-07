@@ -95,3 +95,5 @@ def post_ExcluirCarrinhoo():
             pedidos_dict[column_name] = row[column_name]
         pedidos_data.append(pedidos_dict)
     return jsonify(pedidos_data)
+
+
