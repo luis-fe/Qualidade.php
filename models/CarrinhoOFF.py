@@ -140,7 +140,7 @@ class Carrinho():
 
 
             title = str(self.NCarrinho)
-            c.setFont("Helvetica-Bold", 42)
+            c.setFont("Helvetica-Bold", 48)
             c.drawString(0.15 * cm, 0.09 * cm, title)
 
 
