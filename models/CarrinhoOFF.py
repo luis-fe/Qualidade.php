@@ -44,7 +44,7 @@ class Carrinho():
         else:
 
             inserir = """
-            insert into ("NCarrinho","empresa") values (%s , %s)
+            insert into "off"."Carrinho" ("NCarrinho","empresa") values (%s , %s)
             """
 
             #Inserindo
