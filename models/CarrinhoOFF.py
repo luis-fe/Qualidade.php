@@ -150,7 +150,6 @@ class Carrinho():
             qr_img.save(qr_filename)  # Salvar a imagem do QR code no arquivo temporário
             c.drawImage(qr_filename, 5.0 * cm, 0.09 * cm, width=1.52 * cm, height= 1.52 * cm)
 
-
             c.save()
 
     def imprimir_pdfCarrinho(self,pdf_file):
