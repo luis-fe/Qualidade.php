@@ -148,7 +148,7 @@ class Carrinho():
             qr.make(fit=True)
             qr_img = qr.make_image(fill_color="black", back_color="white")
             qr_img.save(qr_filename)  # Salvar a imagem do QR code no arquivo temporário
-            c.drawImage(qr_filename, 5.4 * cm, 0.09 * cm, width=1.55 * cm, height= 1.55 * cm)
+            c.drawImage(qr_filename, 5.0 * cm, 0.09 * cm, width=1.52 * cm, height= 1.52 * cm)
 
 
             c.save()
