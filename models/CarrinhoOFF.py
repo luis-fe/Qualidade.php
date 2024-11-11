@@ -134,7 +134,7 @@ class Carrinho():
             # Título centralizado
             title = 'Carrinho:'
             c.setFont("Helvetica-Bold", 10)
-            c.drawString(0.1 * cm, 1.5 * cm, title)
+            c.drawString(0.10 * cm, 1.5 * cm, title)
 
 
             title = str(self.NCarrinho)
