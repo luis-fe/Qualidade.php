@@ -438,10 +438,11 @@ class ReposicaoViaOFF():
                 usuario||'-'||c.nome as "nomeRepositor"  
             from 
                 "off".reposicao_qualidade R
-            where
-                r."Ncarrinho" = %s and empresa = %s
             inner join 
             	"Reposicao"."Reposicao".cadusuarios c on C.codigo::VARCHAR = R.usuario 
+            where
+                r."Ncarrinho" = %s and empresa = %s
+
         limit 1
         '''
 
