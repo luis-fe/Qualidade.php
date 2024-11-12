@@ -364,17 +364,21 @@ class ReposicaoViaOFF():
         sql = """
         select
             "Ncarrinho" ,
+            c.nome,
             caixa,
             numeroop,
             count(codbarrastag)as "qtdPcas"
         from
             "off".reposicao_qualidade rq
+        INNER JOIN 
+	        "Reposicao"."Reposicao".cadusuarios c on C.codigo::VARCHAR = RQ.usuario 
         where
             rq."Ncarrinho" = %s and rq.codempresa = %s and (rq."statusNCarrinho" <> 'liberado' or rq."statusNCarrinho" is null)
         group by
             "Ncarrinho" ,
             caixa,
-            numeroop
+            numeroop,
+            c.nome
         """
 
 
@@ -382,8 +386,6 @@ class ReposicaoViaOFF():
         consulta = pd.read_sql(sql,conn, params=(self.Ncarrinho, self.empresa))
         consulta.fillna('-',inplace=True)
 
-        nomeRepositor= self.nomeUsuarioCarrinho()
-        consulta['nomeRepositor'] = nomeRepositor
 
 
         if not consulta.empty:
