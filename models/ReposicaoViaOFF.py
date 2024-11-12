@@ -342,6 +342,12 @@ class ReposicaoViaOFF():
         conn = ConexaoPostgreMPL.conexaoEngine()
         consulta = pd.read_sql(sql,conn, params=(self.empresa,))
         consulta.fillna('-',inplace=True)
+        nomeRepositor= self.nomeUsuarioCarrinho()
+        consulta['nomeRepositor'] = nomeRepositor
+
+
+
+
         return consulta
 
     def consulaDetalharCarrinho(self):
@@ -372,6 +378,10 @@ class ReposicaoViaOFF():
         conn = ConexaoPostgreMPL.conexaoEngine()
         consulta = pd.read_sql(sql,conn, params=(self.Ncarrinho, self.empresa))
         consulta.fillna('-',inplace=True)
+
+        nomeRepositor= self.nomeUsuarioCarrinho()
+        consulta['nomeRepositor'] = nomeRepositor
+
 
         if not consulta.empty:
 
@@ -416,6 +426,32 @@ class ReposicaoViaOFF():
                 conn.commit()
 
                 return pd.DataFrame([{'status': True, 'mensagem': 'Carrinho liberado com sucesso'}])
+
+
+
+
+    def nomeUsuarioCarrinho(self):
+        '''Metodo que verifica o usuario do carrinho'''
+
+        sql = '''
+            select 
+                usuario||'-'||c.nome as "nomeRepositor"  
+            from 
+                "off".reposicao_qualidade R
+            where
+                r."Ncarrinho" = %s and empresa = %s
+            inner join 
+            	"Reposicao"."Reposicao".cadusuarios c on C.codigo::VARCHAR = R.usuario 
+        limit 1
+        '''
+
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        consulta = pd.read_sql(sql,conn, params=(self.Ncarrinho, self.empresa))
+        consulta.fillna('-',inplace=True)
+
+        return consulta
+
 
 
 
