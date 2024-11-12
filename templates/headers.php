@@ -49,6 +49,7 @@
                     <li><a  href="ListaOps.php">LISTA DE OP'S</a></li>
                     <li><a  href="#">2ª QUALIDADE</a></li>
                     <li><a  href="TelaCaixas.php">GERENCIAMENTO DE CAIXAS</a></li>
+                    <li><a  href="Carrinhos.php">GERENCIAMENTO DE CARRINHOS</a></li>
                     <li><a  href="DashboardProdutividade.php">DASHBOARD PRODUTIVIDADE</a></li>
                 </ul>
             </li>
