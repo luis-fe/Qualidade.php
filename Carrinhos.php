@@ -535,7 +535,7 @@ style="width: 50px; text-align: center; margin-left: 3px; margin-right: 3px">
 
 
 
-        function criarTabelaGrades(dados) {
+       function criarTabelaGrades(dados) {
             const tabela = document.getElementById('TabelaGrades');
             tabela.innerHTML = '';
 
@@ -574,7 +574,7 @@ style="width: 50px; text-align: center; margin-left: 3px; margin-right: 3px">
                 ordemTamanhos.forEach(tamanho => {
                     if (tamanhosPresentes.has(tamanho)) {
                         const celulaQuantidade = linha.insertCell();
-                        const tamanhoQuant = item['tamanhos-PcBipadas/Total'].find(t => t.startsWith(tamanho)); // Encontra o tamanho correspondente
+                        const tamanhoQuant = item['tamanhos-PcBipadas/Total'].find(t => t.startsWith(tamanho + ' :')); // Adiciona ": " após o tamanho para precisão
 
                         if (tamanhoQuant) {
                             const quantidade = tamanhoQuant.split(':')[1].trim();
