@@ -67,7 +67,7 @@ include_once("./templates/headers.php");
         <div class="modal-dialog modal-dialog-top modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="customModalLabel" style="color: black;">Conferência de Carrinho<label for="" id="numeroOp"></label></h5>
+                    <h5 class="modal-title" id="customModalLabel" style="color: black;">Conferência de Carrinho<br><label for="" id="numeroOp"></label><br><label for="" id="pcsCarrinho"></label></h5>
                     <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
@@ -172,7 +172,8 @@ include_once("./templates/headers.php");
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data);
-                     $('#numeroOp').text(`OP: ${data[0]['numeroop']}`)
+                     $('#numeroOp').text(`OP: ${data[0]['numeroop']}`);
+                     $('#pcsCarrinho').text(`Peças no Carrinho: ${data[0]['totalPcCarrinho']}`)
                     criarTabelaGrades(data);
                 } else {
                     throw new Error('Erro no retorno');
