@@ -563,6 +563,50 @@ include("../../../templates/Loading.php");
             });
         });
 
+         $('#LimparSeparacao').off('click').click(async () => {
+        $('#loadingModal').modal('show');
+        await VerificarPedidosSelecionados();
+        if (PedidosSelecionados.length === 0) {
+            Swal.fire({
+                title: "Nenhum Pedido Selecionado",
+                icon: "warning",
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        } else {
+            const Dados = {
+                pedidos: PedidosSelecionados,
+            };
+            console.log(Dados)
+            $.ajax({
+                type: 'PUT',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    acao: 'Limpar_Separacao',
+                    dados: Dados
+                }),
+                success: async function (response) {
+                    console.log(response);
+                    $('#loadingModal').modal('hide');
+                    if(response.status === true){
+                        Swal.fire({
+                            title: "Pedidos Limpados",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro na solicitação:', status, error);
+                    console.error('Resposta completa:', xhr.responseText);
+                    $('#loadingModal').modal('show');
+                }
+            });
+        }
+    });
+
         $('#PriorizarPedidos').off('click').click(async () => {
     await VerificarPedidosSelecionados();
     const Dados = {
