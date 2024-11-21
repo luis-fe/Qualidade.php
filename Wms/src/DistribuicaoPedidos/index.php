@@ -204,7 +204,9 @@ include("../../../templates/Loading.php");
             <div class="col-12 col-md-2 mb-3">
                 <button class="btn btn-primary w-100" id="AtualiarPedidos" onclick="RecarregarPedidos()">Atualizar Pedidos</button>
             </div>
-
+            <div class="col-12 col-md-2 mb-3">
+                <button class="btn btn-custom w-100" id="LimparSeparacao" style="background-color: var(--CorMenu); color: var(--Branco)" onclick="">Limpar Separação</button>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered" id="TablePedidos">
