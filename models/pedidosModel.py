@@ -368,5 +368,34 @@ WHERE codigopedido = %s;
 
 
 
+def limparPedido(pedidos):
+
+    tamanho = len(pedidos)
+
+    if tamanho >= 0:
+        conn = ConexaoPostgreMPL.conexao()
+        for i in range(tamanho):
+            update = """
+                update
+                        "Reposicao"."Reposicao".pedidossku
+                    set
+                        necessidade = qtdesugerida
+                    where
+            	codpedido = %s
+                """
+            cursor = conn.cursor()
+            cursor.execute(update, (pedidos,))
+            conn.commit()
+            cursor.close()
+        conn.close()
+        return True
+    else:
+        return False
+
+
+
+
+
+
 
 

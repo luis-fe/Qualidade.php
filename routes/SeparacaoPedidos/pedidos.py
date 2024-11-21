@@ -195,3 +195,25 @@ def Prioriza():
 
     except Exception as e:
         return jsonify({'message': 'Ocorreu um erro interno.', 'error': str(e)}), 500
+
+
+@pedidos_routes.route('/api/LimparPedido', methods=['PUT'])
+@token_required
+def put_limparPedido():
+    try:
+        # Obtém os dados do corpo da requisição (JSON)
+        datas = request.get_json()
+        pedidos = datas['pedidos']
+
+        Endereco_det = pedidosModel.limparPedido(pedidos)
+        if Endereco_det == True:
+            return jsonify({'message': f'pedidos priorizados com sucesso', 'status': True}), 200
+        else:
+            return jsonify({'message': f'pedidos nao encontrados', 'status': False}), 200
+
+
+    except KeyError as e:
+        return jsonify({'message': 'Erro nos dados enviados.', 'error': str(e)}), 400
+
+    except Exception as e:
+        return jsonify({'message': 'Ocorreu um erro interno.', 'error': str(e)}), 500
