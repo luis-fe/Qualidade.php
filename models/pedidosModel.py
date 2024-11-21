@@ -375,6 +375,8 @@ def limparPedido(pedidos):
     if tamanho >= 0:
         conn = ConexaoPostgreMPL.conexao()
         for i in range(tamanho):
+            pedido = str(pedidos[i])
+
             update = """
                 update
                         "Reposicao"."Reposicao".pedidossku
@@ -384,7 +386,7 @@ def limparPedido(pedidos):
             	codpedido = %s
                 """
             cursor = conn.cursor()
-            cursor.execute(update, (i,))
+            cursor.execute(update, (pedido,))
             conn.commit()
             cursor.close()
         conn.close()
