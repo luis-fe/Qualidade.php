@@ -175,6 +175,44 @@ function alterarPrioridade($empresa, $token, $dados) {
     return json_decode($apiResponse, true);
 }
 
+function LimparSeparacao($empresa, $token, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $apiUrl = "{$baseUrl}/api/LimparPedido";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "PUT",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: {$token}",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    if ($httpCode >= 400) {
+        error_log("Erro na API: Código HTTP {$httpCode}");
+        return false;
+    }
+
+    return json_decode($apiResponse, true);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["acao"])) {
         $acao = $_GET["acao"];
@@ -250,6 +288,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Erro ao alterar prioridade']);
         }
+    } elseif ($acao == 'Limpar_Separacao'){
+        $dadosObjeto = (object)$dados;
+        header('Content-Type: application/json');
+        echo json_encode(LimparSeparacao($empresa, $token, $dadosObjeto));
     } else {
         header('Content-Type: application/json');
         echo json_encode(['error' => 'Ação não reconhecida.']);
