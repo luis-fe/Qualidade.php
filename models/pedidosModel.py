@@ -384,7 +384,7 @@ def limparPedido(pedidos):
             	codpedido = %s
                 """
             cursor = conn.cursor()
-            cursor.execute(update, (pedidos,))
+            cursor.execute(update, (i,))
             conn.commit()
             cursor.close()
         conn.close()
