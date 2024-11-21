@@ -294,7 +294,6 @@ include("../../../templates/Loading.php");
                 acao: 'Recarregar_Pedidos'
             },
             success: (data) => {
-                console.log(data);
                 $('#loadingModal').modal('hide');
             },
         });
@@ -310,7 +309,6 @@ include("../../../templates/Loading.php");
                 acao: 'Consultar_Pedidos'
             },
             success: (data) => {
-                console.log(data);
                 const TipoNotaFiltrado = data.filter(item => item["03-TipoNota"] !== "39 - BN MPLUS");
 
                 TipoNotaFiltrado.forEach(item => {
@@ -342,7 +340,6 @@ include("../../../templates/Loading.php");
             },
             success: (data) => {
                 const UsuariosAtivos = data.filter(item => item["situacao"] !== "INATIVO");
-                console.log(UsuariosAtivos);
                 const usuariosSelect = $('#Usuarios');
                 usuariosSelect.empty();
                 usuariosSelect.append('<option disabled selected>Selecione um usuário para Atribuição!</option>');
@@ -495,7 +492,6 @@ include("../../../templates/Loading.php");
                 pedidos: PedidosSelecionados,
                 data: currentDateTime
             };
-            console.log(Dados)
             $.ajax({
                 type: 'POST',
                 url: 'requests.php',
@@ -505,7 +501,6 @@ include("../../../templates/Loading.php");
                     dados: Dados
                 }),
                 success: async function(response) {
-                    console.log(response);
                     Swal.fire({
                             title: "Pedidos Atribuídos",
                             icon: "success",
@@ -537,7 +532,6 @@ include("../../../templates/Loading.php");
                     CodPedido: PedidosSelecionados
                 },
                 success: (data) => {
-                    console.log(data);
                     $('#ModalFaltantesLabel').text(`Peças Faltantes: ${PedidosSelecionados}`);
                     $('#ListaPeçasFaltantes').empty();
 
@@ -579,7 +573,6 @@ include("../../../templates/Loading.php");
             const Dados = {
                 pedidos: PedidosSelecionados,
             };
-            console.log(Dados)
             $.ajax({
                 type: 'PUT',
                 url: 'requests.php',
@@ -589,7 +582,6 @@ include("../../../templates/Loading.php");
                     dados: Dados
                 }),
                 success: async function (response) {
-                    console.log(response);
                     $('#loadingModal').modal('hide');
                     if(response.status === true){
                         Swal.fire({
@@ -623,7 +615,6 @@ include("../../../templates/Loading.php");
             dados: Dados
         }),
         success: async function(response) {
-            console.log(response);
             if(response['status'] == true){
                 Swal.fire({
                     title: "Priorização Alterada",
@@ -691,9 +682,7 @@ include("../../../templates/Loading.php");
                 const colunaValor = $(this).find(`td:eq(${colunaDesejada})`);
                 const valor = colunaValor.text().trim();
                 const texto = colunaValor.text().toLowerCase();
-                console.log(texto)
                 const linhaContemMkt = texto.includes('mkt');
-                console.log(linhaContemMkt)
 
                 if (linhaContemMkt) {
                     $(this).css('background-color', '#9370DB');
