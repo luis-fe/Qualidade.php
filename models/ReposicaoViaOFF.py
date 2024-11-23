@@ -10,7 +10,7 @@ class ReposicaoViaOFF():
     """Classe do WMS responsavel pela reposicao via OFF (antes das tag entrar em estoque), atribuindo tag a um Ncaixa e a NCarrinho """
 
     def __init__(self, codbarrastag, Ncaixa=None, empresa=None, usuario=None, natureza=None, estornar=False,
-                 Ncarrinho='', numeroOP=None,codreduzido =None):
+                 Ncarrinho='', numeroOP=None, codreduzido=None):
         self.codbarrastag = str(codbarrastag)
         self.codbarrasPesquisa = "'" + self.codbarrastag + "'"
 
@@ -337,7 +337,7 @@ class ReposicaoViaOFF():
         consulta = pd.read_sql(sql, conn, params=(self.empresa,))
         consulta.fillna('-', inplace=True)
         nomeCarrinho = self.nomeUsuarioCarrinho()
-        consulta = pd.merge(consulta,nomeCarrinho,on='Ncarrinho',how='left')
+        consulta = pd.merge(consulta, nomeCarrinho, on='Ncarrinho', how='left')
         consulta.fillna('-', inplace=True)
 
         return consulta
@@ -371,7 +371,7 @@ class ReposicaoViaOFF():
         consulta.fillna('-', inplace=True)
 
         nomeCarrinho = self.nomeUsuarioCarrinho()
-        consulta = pd.merge(consulta,nomeCarrinho,on='Ncarrinho',how='left')
+        consulta = pd.merge(consulta, nomeCarrinho, on='Ncarrinho', how='left')
         consulta.fillna('-', inplace=True)
 
         if not consulta.empty:
@@ -450,50 +450,49 @@ class ReposicaoViaOFF():
 
     def registrarTagsOFArray(self, arrayTags):
         '''Metodo para registrar na Reposicao OFF as tags via Array'''
-        pesquisa = pd.DataFrame(arrayTags, columns=['codbarrastag'])  # Define o nome da coluna como 'Tag'
 
-        pesquisa['usuario'] = self.usuario
-        pesquisa['caixa'] = self.Ncaixa
-        pesquisa['natureza'] = self.natureza
-        pesquisa['DataReposicao'] = self.dataHora()
-        pesquisa['Ncarrinho'] = self.Ncarrinho
-        pesquisa['codempresa'] = self.empresa
+        try:
+            pesquisa = pd.DataFrame(arrayTags, columns=['codbarrastag'])  # Define o nome da coluna como 'Tag'
 
+            pesquisa['usuario'] = self.usuario
+            pesquisa['caixa'] = self.Ncaixa
+            pesquisa['natureza'] = self.natureza
+            pesquisa['DataReposicao'] = self.dataHora()
+            pesquisa['Ncarrinho'] = self.Ncarrinho
+            pesquisa['codempresa'] = self.empresa
 
+            ## Removendo duplicatas do dataframe:
+            pesquisa = pesquisa.drop_duplicates(subset=['codbarrastag'])  ## Elimando as possiveis duplicatas
 
+            conn = ConexaoPostgreMPL.conexao()
 
-        ## Removendo duplicatas do dataframe:
-        pesquisa = pesquisa.drop_duplicates(subset=['codbarrastag'])  ## Elimando as possiveis duplicatas
+            cursor = conn.cursor()  # Crie um cursor para executar a consulta SQL
+            insert = """
+                        insert into off.reposicao_qualidade 
+                            (
+                            codbarrastag, 
+                            natureza, 
+                            codempresa, 
+                            caixa, 
+                            usuario, 
+                            "DataReposicao", 
+                            "Ncarrinho")
+                         values 
+                            (  %s, %s, %s, %s, %s, %s, %s )"""
 
-        conn = ConexaoPostgreMPL.conexao()
+            values = [(row['codbarrastag']
+                       , row['natureza'], row['codempresa'], row['caixa'],
+                       row['usuario'], row['DataReposicao'], row['Ncarrinho']) for index, row in
+                      pesquisa.iterrows()]
+            cursor.executemany(insert, values)
+            conn.commit()  # Faça o commit da transação
+            cursor.close()  # Feche o cursor
 
-        cursor = conn.cursor()  # Crie um cursor para executar a consulta SQL
-        insert = """
-                    insert into off.reposicao_qualidade 
-                        (
-                        codbarrastag, 
-                        natureza, 
-                        codempresa, 
-                        caixa, 
-                        usuario, 
-                        "DataReposicao", 
-                        "Ncarrinho")
-                     values 
-                        (  %s, %s, %s, %s, %s, %s, %s )"""
+            conn.close()
 
-        values = [(row['codbarrastag']
-                   , row['natureza'], row['codempresa'],   row['caixa'],
-                   row['usuario'], row['DataReposicao'],  row['Ncarrinho']) for index, row in
-                  pesquisa.iterrows()]
-        cursor.executemany(insert, values)
-        conn.commit()  # Faça o commit da transação
-        cursor.close()  # Feche o cursor
-
-        conn.close()
-
-        return pd.DataFrame([{'Mensagem':'Tags Registradas com sucesso','status':True}])
-
-
+            return pd.DataFrame([{'Mensagem': 'Tags Registradas com sucesso', 'status': True}])
+        except:
+            return pd.DataFrame([{'Mensagem': 'Tags ja possuem registro', 'status': False}])
 
     def consultarTags_OP_rdz(self):
         '''Metodo utilizado para obter as tags e o reduzido '''
@@ -510,10 +509,9 @@ class ReposicaoViaOFF():
         """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
-        consulta = pd.read_sql(sql,conn,params=(self.numeroOP, self.empresa, self.codreduzido,))
+        consulta = pd.read_sql(sql, conn, params=(self.numeroOP, self.empresa, self.codreduzido,))
 
         return consulta
-
 
     def obterOPReduzido(self):
         '''Metodo utilizado para consultar o reduzido e a OP apartir da primeira tag'''
@@ -533,7 +531,7 @@ class ReposicaoViaOFF():
         """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
-        consulta = pd.read_sql(sql,conn,params=(self.codbarrastag,))
+        consulta = pd.read_sql(sql, conn, params=(self.codbarrastag,))
 
         return consulta
 
