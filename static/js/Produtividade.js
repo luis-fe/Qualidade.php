@@ -93,7 +93,7 @@ async function DadosFaturamento(dataInicio, dataFim) {
             const ProntaEntrega = data[0]['Pç Pronta Entrega'];
             const ProntaEntregaR$ = data[0]['Retorna ProntaEntrega'];
             const FaturadoPecas = data[0]['qtdePecas Faturado'];
-            document.getElementById("FaturadoPeças1").textContent = `Pçs Faturadas R$: ${parseInt(FaturadoPecas).toLocaleString()}`;
+            document.getElementById("FaturadoPeças1").textContent = `Pçs Faturadas: ${parseInt(FaturadoPecas).toLocaleString('pt-BR')}`;
             document.getElementById("FaturadoR$").textContent = `Faturado R$: ${Faturado}`  ;
             document.getElementById("RetornaPcs").textContent = `Retorna Pçs: ${RetornaPecas}`;
             document.getElementById("RetornaValor").textContent = `Retorna R$: ${formatarMoeda(Retorna)}`;
