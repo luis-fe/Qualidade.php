@@ -54,6 +54,7 @@ def Buscar_Caixas():
 
     return query
 def finalizarPedido(pedido, TamCaixa, quantidade):
+    """
     conn = ConexaoPostgreMPL.conexao()
     datafinalizacao = obterHoraAtual()
 
@@ -86,7 +87,7 @@ def finalizarPedido(pedido, TamCaixa, quantidade):
     cursor.execute(query, (TamCaixa1, quantidade1, datafinalizacao, TamCaixa2, quantidade2, TamCaixa3, quantidade3, TamCaixa4, quantidade4, pedido,))
     conn.commit()
     conn.close()
-
+    """
     data = {
         'Status':
         True,
