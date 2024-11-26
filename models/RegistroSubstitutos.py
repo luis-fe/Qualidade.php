@@ -25,11 +25,23 @@ class RegistroSubstitutos():
             conn = ConexaoPostgreMPL.conexao()
 
             consultar = pd.read_sql(
-                'Select categoria as "1-categoria", numeroop as "2-numeroOP", codproduto as "3-codProduto", cor as "4-cor", databaixa_req as "5-databaixa", '
-                '"coodigoPrincipal" as "6-codigoPrinc", '
-                'nomecompontente as "7-nomePrinc",'
-                '"coodigoSubs" as "8-codigoSub",'
-                'nomesub as "9-nomeSubst", aplicacao as "10-aplicacao", considera from "Reposicao"."SubstitutosSkuOP" ',
+                """Select 
+                        categoria as "1-categoria", 
+                        s.numeroop as "2-numeroOP", 
+                        codproduto as "3-codProduto", 
+                        s.cor as "4-cor", 
+                        databaixa_req as "5-databaixa",
+                        "coodigoPrincipal" as "6-codigoPrinc", 
+                        nomecompontente as "7-nomePrinc",
+                        "coodigoSubs" as "8-codigoSub",
+                        nomesub as "9-nomeSubst", 
+                        aplicacao as "10-aplicacao", 
+                        rs.considera
+                    from 
+                        "Reposicao"."SubstitutosSkuOP" s
+                    left join
+                    	(select distinct numeroop, cor, 'sim' as considera from "Reposicao"."RegistroSubstituto") rs 
+                    	on rs.numeroop = s.numeroop and rs.cor = s.cor  """,
                 conn)
 
             conn.close()
@@ -46,11 +58,26 @@ class RegistroSubstitutos():
             conn = ConexaoPostgreMPL.conexao()
 
             consultar = pd.read_sql(
-                'Select categoria as "1-categoria", numeroop as "2-numeroOP", codproduto as "3-codProduto", cor as "4-cor", databaixa_req as "5-databaixa", '
-                '"coodigoPrincipal" as "6-codigoPrinc", '
-                'nomecompontente as "7-nomePrinc",'
-                '"coodigoSubs" as "8-codigoSub",'
-                'nomesub as "9-nomeSubst",aplicacao as "10-aplicacao",  considera from "Reposicao"."SubstitutosSkuOP" where categoria = %s ',
+                """Select 
+                        categoria as "1-categoria", 
+                        s.numeroop as "2-numeroOP", 
+                        codproduto as "3-codProduto", 
+                        s.cor as "4-cor", 
+                        databaixa_req as "5-databaixa",
+                        "coodigoPrincipal" as "6-codigoPrinc", 
+                        nomecompontente as "7-nomePrinc",
+                        "coodigoSubs" as "8-codigoSub",
+                        nomesub as "9-nomeSubst", 
+                        aplicacao as "10-aplicacao", 
+                        rs.considera
+                    from 
+                        "Reposicao"."SubstitutosSkuOP" s
+                    left join
+                    	(select distinct numeroop, cor, 'sim' as considera from "Reposicao"."RegistroSubstituto") rs 
+                    	on rs.numeroop = s.numeroop and rs.cor = s.cor  
+                    where
+                        s.categoria = %s	
+                    	""",
                 conn, params=(self.aplicarFiltroCategoria,))
 
             conn.close()
