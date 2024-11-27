@@ -103,6 +103,7 @@ class RegistroSubstitutos():
             dataHora = self.obterHoraAtual()
 
             insert = 'insert into "Reposicao"."RegistroSubstituto" (numeroop, cor, usuario, "dataHoraRegistro", empresa) values (%s, %s, %s, %s, %s)'
+            update = """update "Reposicao"."RegistroSubstituto" set considera = 'sim' and consideracao = 'sim' where numeroop = %s and cor =%s  """
 
             cursor = conn.cursor()
 
@@ -110,9 +111,16 @@ class RegistroSubstitutos():
                 cursor.execute(insert, (self.numeroop , self.cor, self.usurio, dataHora, self.empresa))
                 conn.commit()
 
+                cursor.execute(update,(self.numeroop, self.cor))
+                conn.commit()
+
+
             else:
                 delete = '''delete from "Reposicao"."RegistroSubstituto" where "numeroop" = %s and empresa = %s and cor = %s  '''
                 cursor.execute(delete, (self.numeroop , self.empresa, self.cor))
+                conn.commit()
+
+                cursor.execute(update,(self.numeroop, self.cor))
                 conn.commit()
 
 
