@@ -194,7 +194,7 @@ class Usuario:
         left join 
             "Reposicao"."Pefil" p 
         on perfil::varchar = "codPerfil"
-        order by nome
+        order by c.nome asc
 
         """
 
