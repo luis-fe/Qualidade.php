@@ -165,8 +165,7 @@ class Usuario:
         """
 
         perfil = Perfil.Perfil('', nomePerfil)
-        perfil.descobrircodPerfil()
-        self.perfil = perfil.codPerfil
+        self.perfil = perfil.descobrircodPerfil()
 
         if self.perfil == None:
 
