@@ -86,15 +86,22 @@ def criar_usuario():
     funcao = novo_usuario.get('funcao')
     nome = novo_usuario.get('nome')
     senha = novo_usuario.get('senha')
-    situacao = novo_usuario.get('situacao')
+    situacao = novo_usuario.get('situacao','ATIVO')
+    perfil = novo_usuario.get('perfil')
+    login = novo_usuario.get('login',codigo)
+
     emp = empresaConfigurada.EmpresaEscolhida()
     empresa = novo_usuario.get('empresa',emp)
     # inserir o novo usuário no banco de dados
-    c, n, f, g = usuariosModel.PesquisarUsuariosCodigo(codigo)
-    if c != 0:
+
+    # Instanciando o objeto usuario
+    usuario = UsuarioClassWms.Usuario(codigo, login,nome,situacao,funcao,senha,perfil)
+
+    a, b, c, d, e = usuario.consultaUsuario()
+    if a != 0:
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 201
     else:
-        usuariosModel.InserirUsuario(codigo, funcao, nome, senha, situacao, empresa)
+        usuario.inserirUsuario()
         # Retorne uma resposta indicando o sucesso da operação
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 201
 
@@ -138,3 +145,43 @@ def check_user_password():
     else:
         return jsonify({"status": False,
                         "message": f'Usuário ou senha não existe'}), 401
+
+@usuarios_routes.route('/api/incluirPerfilUsuario', methods=['POST'])
+@token_required
+def post_incluirPerfilUsuario():
+
+        # Obtenha os dados do corpo da requisição
+        novo_Tela = request.get_json()
+        # Extraia os valores dos campos do novo usuário
+        codUsuario = novo_Tela.get('codUsuario')
+        nomePerfil = novo_Tela.get('nomePerfil')
+
+        consulta = UsuarioClassWms.Usuario(codUsuario).inserirPerfilUsuario(nomePerfil)
+        # Obtém os nomes das colunas
+        column_names = consulta.columns
+        # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+        consulta_data = []
+        for index, row in consulta.iterrows():
+            consulta_dict = {}
+            for column_name in column_names:
+                consulta_dict[column_name] = row[column_name]
+            consulta_data.append(consulta_dict)
+        return jsonify(consulta_data)
+
+
+@usuarios_routes.route('/api/rotasAutorizadasUsuarios', methods=['GET'])
+@token_required
+def get_rotasAutorizadasUsuarios():
+
+
+        consulta = UsuarioClassWms.Usuario().rotasAutorizadasUsuarios()
+        # Obtém os nomes das colunas
+        column_names = consulta.columns
+        # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+        consulta_data = []
+        for index, row in consulta.iterrows():
+            consulta_dict = {}
+            for column_name in column_names:
+                consulta_dict[column_name] = row[column_name]
+            consulta_data.append(consulta_dict)
+        return jsonify(consulta_data)
