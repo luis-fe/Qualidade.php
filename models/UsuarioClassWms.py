@@ -221,6 +221,9 @@ class Usuario:
             'nomeTela': lambda x: list(x.dropna().astype(str).unique())
         }).reset_index()
 
+        grouped = grouped.sort_values(by='nome', ascending=False,
+                                              ignore_index=True)  # escolher como deseja classificar
+
         return grouped
 
 
