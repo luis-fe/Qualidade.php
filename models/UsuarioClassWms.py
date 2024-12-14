@@ -238,6 +238,17 @@ class Usuario:
 
         return usuario
 
+    def inserirArrayPefilUsuario(self, arrayUsuario, arrayNomePerfil):
+        '''Metodo para inserir via array os perfil aos usuarios'''
+
+        # Correção do for utilizando zip para iterar sobre ambas as listas
+        for a, p in zip(arrayUsuario, arrayNomePerfil):
+            self.codigo = a
+            self.inserirPerfilUsuario(p)
+
+        return pd.DataFrame([{'status': True, 'Mensagem': 'Perfis inseridos com sucesso'}])
+
+
 
 
 
