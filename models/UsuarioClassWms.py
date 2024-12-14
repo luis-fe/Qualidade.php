@@ -234,7 +234,7 @@ class Usuario:
 
         todos = self.rotasAutorizadasUsuarios()
 
-        usuario = todos[todos['codigo'] ==self.codigo].reset_index()
+        usuario = todos[todos['codigo'] ==int(self.codigo)].reset_index()
 
         return usuario
 
