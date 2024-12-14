@@ -229,7 +229,14 @@ class Usuario:
         return grouped
 
 
+    def rotasAutorizadasPORUsuario(self):
+        '''Metodo que retorna as rotas altorizadas para o usuario em especifico '''
 
+        todos = self.rotasAutorizadasUsuarios()
+
+        usuario = todos[todos['codigo'] ==self.codigo].reset_index()
+
+        return usuario
 
 
 
