@@ -127,7 +127,7 @@ class Usuario:
                        perfil, 
                        login 
                 from 
-                    "Reposicao"."cadusuarios" c'
+                    "Reposicao"."cadusuarios" c
                 where 
                     codigo = %s
                        """, (codigo,))
