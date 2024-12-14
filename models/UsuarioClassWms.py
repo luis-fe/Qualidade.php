@@ -208,7 +208,7 @@ class Usuario:
             inner join "Reposicao"."TelaAcesso" t
             on tp."nomeTela" = t."nomeTela"
             where 
-                "nomeTela" ='teste'
+                tp."nomeTela" ='teste'
         """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
