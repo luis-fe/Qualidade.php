@@ -222,7 +222,7 @@ class Usuario:
 
         # Agrupa mantendo todas as colunas do DataFrame planos e transforma lotes e nomelote em arrays
         grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
-            'urlTela': lambda x: list(x.dropna().astype(str).unique())
+            'urlTela': lambda x: list(x.dropna().astype(str))
         }).reset_index()
 
         grouped = grouped.sort_values(by='nome', ascending=True,
