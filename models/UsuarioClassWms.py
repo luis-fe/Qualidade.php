@@ -167,8 +167,8 @@ class Usuario:
 
         perfil = Perfil.Perfil('', nomePerfil)
         self.perfil = perfil.descobrircodPerfil()
-        print(self.perfil)
-        if self.perfil == None:
+        validador = self.perfil
+        if validador != None:
 
             with ConexaoPostgreMPL.conexao() as conn:
                 with conn.cursor() as curr:
