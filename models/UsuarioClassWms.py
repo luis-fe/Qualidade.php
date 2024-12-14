@@ -167,7 +167,7 @@ class Usuario:
 
         perfil = Perfil.Perfil('', nomePerfil)
         self.perfil = perfil.descobrircodPerfil()
-
+        print(self.perfil)
         if self.perfil == None:
 
             with ConexaoPostgreMPL.conexao() as conn:
