@@ -206,7 +206,7 @@ class Usuario:
             from 
                 "Reposicao"."TelaAcessoPerfil" tp
             inner join "Reposicao"."TelaAcesso" t
-            on tp."nomeTela" = t."urlTela"
+            on tp."nomeTela" = t."nomeTela"
             where 
                 "nomeTela" ='teste'
         """
