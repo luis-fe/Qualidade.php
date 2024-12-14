@@ -142,7 +142,7 @@ class Perfil():
         ''' metodo utilizado para encontrar o nome do perfil '''
 
         sql = """
-                        select
+                select
         	        "codPerfil",
         	        "nomePerfil"
                 from
@@ -159,7 +159,7 @@ class Perfil():
         else:
             self.codPerfil = consulta['codPerfil'][0]
 
-        return self.codPerfil
+        return consulta['codPerfil'][0]
 
 
 
