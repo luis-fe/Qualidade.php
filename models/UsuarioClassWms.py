@@ -178,7 +178,7 @@ class Usuario:
             return pd.DataFrame([{'status': True, 'Mensagem': 'Salvo com sucesso'}])
 
         else:
-            return pd.DataFrame([{'status': False, 'Mensagem': f'{nomePerfil} nao encontrado '}])
+            return pd.DataFrame([{'status': False, 'Mensagem': f'{self.perfil}-{nomePerfil} nao encontrado '}])
 
     def rotasAutorizadasUsuarios(self):
         '''Metodo que retorna as rotas altorizadas para os usuarios '''
