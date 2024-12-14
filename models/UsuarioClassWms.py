@@ -201,12 +201,13 @@ class Usuario:
         sql2 = """
                     select 
                 "codPerfil",
-                "nomeTela",
+                tp."nomeTela",
                 t."urlTela"
             from 
                 "Reposicao"."TelaAcessoPerfil" tp
-            inner join "Reposicao"."TelaAcesso" t
-            on tp."nomeTela" = t."nomeTela"
+            inner join 
+                "Reposicao"."TelaAcesso" t
+                on tp."nomeTela" = t."nomeTela"
             where 
                 tp."nomeTela" ='teste'
         """
