@@ -138,8 +138,8 @@ class Usuario:
             return 0, 0, 0, 0, 0, 0, 0
         else:
             self.perfil = usuarios[0][6]
-            return usuarios[0][1], usuarios[0][2], usuarios[0][3], usuarios[0][4], usuarios[0][5], usuarios[0][6], \
-            usuarios[0][7]
+            return usuarios[0][0], usuarios[0][1], usuarios[0][2], usuarios[0][3], usuarios[0][4], usuarios[0][5], \
+            usuarios[0][6]
 
     def PesquisarSenha(self):
         '''Api usada para restricao de pesquisa de senha dos usuarios '''
