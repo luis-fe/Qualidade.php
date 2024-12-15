@@ -57,7 +57,7 @@ def post_cadastrarOuAtualizarPerfil():
     return jsonify(consulta_data)
 
 
-@Perfil_routes.route('/api/escluirPerfil', methods=['DELETE'])
+@Perfil_routes.route('/api/excluirPerfil', methods=['DELETE'])
 @token_required
 def post_excluirPerfil():
 
