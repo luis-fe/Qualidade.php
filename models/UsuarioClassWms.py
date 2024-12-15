@@ -135,7 +135,7 @@ class Usuario:
         cursor.close()
         conn.close()
         if not usuarios:
-            return 0, 0, 0, 0, 0
+            return 0, 0, 0, 0, 0, 0, 0
         else:
             self.perfil = usuarios[0][6]
             return usuarios[0][1], usuarios[0][2], usuarios[0][3], usuarios[0][4], usuarios[0][5], usuarios[0][6], \

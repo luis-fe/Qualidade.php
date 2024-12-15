@@ -131,7 +131,6 @@ def check_user_password():
 
         # Verifica se foram encontradas informações adicionais do usuário
         if nome != 0:
-            usuariosModel.RegistroLog(codigo)
             # Retorna as informações adicionais do usuário
             return jsonify({
                 "status": True,
