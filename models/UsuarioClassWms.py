@@ -104,7 +104,7 @@ class Usuario:
             codigo = %s AND senha = %s
         """
         try:
-            with conexao.WmsConnectionClass().conectar() as conn:
+            with ConexaoPostgreMPL.conexao() as conn:
                 with conn.cursor() as cursor:
                     cursor.execute(query, (self.codigo, self.senha))
                     result = cursor.fetchone()[0]
