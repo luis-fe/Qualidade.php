@@ -40,7 +40,7 @@ def get_usuarios():
 @usuarios_routes.route('/api/UsuarioSenhaRestricao', methods=['GET'])
 @token_required
 def get_usuariosRestricao():
-    usuarios = usuariosModel.PesquisarSenha()
+    usuarios = UsuarioClassWms.Usuario().PesquisarSenha()
 
     # Obtém os nomes das colunas
     column_names = ['codigo', 'nome ', 'senha']
