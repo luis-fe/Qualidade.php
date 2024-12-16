@@ -248,6 +248,21 @@ class Usuario:
 
         return pd.DataFrame([{'status': True, 'Mensagem': 'Perfis inseridos com sucesso'}])
 
+    def AtualizarInformacoes(self):
+        conn = ConexaoPostgreMPL.conexao()
+        cursor = conn.cursor()
+        cursor.execute("""
+                        UPDATE "Reposicao"."cadusuarios" 
+                            SET nome=%s, funcao=%s, situacao= %s, login = %s, perfil = %s
+                        WHERE codigo=%s """,
+                       (self.nome, self.funcaoWMS, self.situacao, self.login, self.perfil, self.codigo))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return self.nome
+
+
 
 
 
