@@ -202,7 +202,7 @@ class Usuario:
                     select 
                 "codPerfil",
                 tp."nomeTela",
-                t."urlTela"
+                t.menu||'/'||t."urlTela" as "urlTela"
             from 
                 "Reposicao"."TelaAcessoPerfil" tp
             inner join 
