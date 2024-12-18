@@ -181,7 +181,7 @@ class Usuario:
             return pd.DataFrame([{'status': False, 'Mensagem': f'{self.perfil}-{nomePerfil} nao encontrado '}])
 
     def rotasAutorizadasUsuarios(self):
-        '''Metodo que retorna as rotas autorizadas para os usuarios'''
+        '''Metodo que retorna as rotas altorizadas para os usuarios '''
 
         sql1 = """
         select  
@@ -195,10 +195,10 @@ class Usuario:
             "Reposicao"."Pefil" p 
         on perfil::varchar = "codPerfil"
         order by c.nome asc
+
         """
 
         sql2 = """
-            select 
                 "codPerfil",
                 tp."nomeTela",
                 t.menu,
@@ -214,32 +214,25 @@ class Usuario:
         consulta1 = pd.read_sql(sql1, conn)
         consulta2 = pd.read_sql(sql2, conn)
 
-        # Combina as duas consultas com base na coluna 'codPerfil'
+        agrupamento2 = consulta2.groupby(['codPerfil', 'menu']).agg({
+            'urlTela': lambda x: list(x.dropna().astype(str).unique())
+        }).reset_index()
+
+
         consulta = pd.merge(consulta1, consulta2, on='codPerfil', how='left')
 
         consulta.fillna('-', inplace=True)
 
-        # Agrupa por menu e monta uma estrutura hierárquica de URLs por menu
-        consulta['menuUrls'] = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])['urlTela'] \
-            .transform(lambda x: list(x.dropna().unique()))
-
-        consulta = consulta.drop_duplicates(subset=['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])
-
-        # Agrupa novamente por usuário e organiza os menus
+        # Agrupa mantendo todas as colunas do DataFrame planos e transforma lotes e nomelote em arrays
         grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
-            'menu': lambda x: list(x.dropna().unique()),
-            'menuUrls': lambda x: [{menu: urls} for menu, urls in zip(x, consulta.loc[x.index, 'menuUrls'])]
+            'urlTela': lambda x: list(x.dropna().astype(str).unique())
         }).reset_index()
 
-        grouped['urlTela'] = grouped.apply(
-            lambda row: {menu: urls for menu, urls in zip(row['menu'], row['menuUrls'])},
-            axis=1
-        )
-        grouped = grouped.drop(columns=['menu', 'menuUrls'])
+        grouped = grouped.sort_values(by='nome', ascending=True,
+                                              ignore_index=True)  # escolher como deseja classificar
 
-        grouped = grouped.sort_values(by='nome', ascending=True, ignore_index=True)
+        return agrupamento2
 
-        return grouped
 
     def rotasAutorizadasPORUsuario(self):
         '''Metodo que retorna as rotas altorizadas para o usuario em especifico '''
