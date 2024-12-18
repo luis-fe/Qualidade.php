@@ -242,6 +242,7 @@ class Usuario:
 
         return grouped
 
+
     def rotasAutorizadasPORUsuario(self):
         '''Metodo que retorna as rotas altorizadas para o usuario em especifico '''
 
