@@ -37,20 +37,28 @@ class TelaAcesso ():
 
         if verifica.empty:
 
+            menu = self.opcoesMenu()
+            verifica2 =  menu[menu['menu']==self.menu]
 
-            insert = """
-            insert into 
-                "Reposicao"."TelaAcesso" ("urlTela","nomeTela", "menu")
-            values
-                (%s, %s, %s)
-            """
+            if not verifica2.empty:
 
-            with ConexaoPostgreMPL.conexao() as conn:
-                with conn.cursor() as curr:
-                    curr.execute(insert,(self.urlTela, self.nomeTela, self.menu))
-                    conn.commit()
+                insert = """
+                insert into 
+                    "Reposicao"."TelaAcesso" ("urlTela","nomeTela", "menu")
+                values
+                    (%s, %s, %s)
+                """
 
-            return pd.DataFrame([{'status':True,"Mensagem":'Tela cadastrada com sucesso'}])
+                with ConexaoPostgreMPL.conexao() as conn:
+                    with conn.cursor() as curr:
+                        curr.execute(insert,(self.urlTela, self.nomeTela, self.menu))
+                        conn.commit()
+
+                return pd.DataFrame([{'status':True,"Mensagem":'Tela cadastrada com sucesso'}])
+
+            else:
+                return pd.DataFrame([{'status': False, "Mensagem": f'Menu {self.menu} nao  existe !'}])
+
 
         else:
             return pd.DataFrame([{'status':False,"Mensagem":f'Tela {self.nomeTela }ja existe'}])
@@ -114,3 +122,17 @@ class TelaAcesso ():
 
         return consulta
 
+    def opcoesMenu(self):
+        '''Metodo que retorna as opçoes de Menu'''
+
+        sql = """
+        select  
+            "menu"
+        from
+          "Reposicao"."Menu"  
+        """
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        consulta = pd.read_sql(sql, conn)
+
+        return consulta
