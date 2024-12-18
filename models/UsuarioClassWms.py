@@ -199,6 +199,7 @@ class Usuario:
         """
 
         sql2 = """
+        select
                 "codPerfil",
                 tp."nomeTela",
                 t.menu,
