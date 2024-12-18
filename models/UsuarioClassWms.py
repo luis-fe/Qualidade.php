@@ -219,26 +219,22 @@ class Usuario:
 
         consulta.fillna('-', inplace=True)
 
-        # Agrupa URLs por menu
-        consulta['menuUrls'] = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])['urlTela'] \
+        # Organiza os dados em dicionários de URLs por menu
+        consulta['menuDict'] = consulta.groupby(['codigo', 'nome', 'codPerfil', 'nomePerfil', 'menu'])['urlTela'] \
             .transform(lambda x: list(x.dropna().unique()))
 
-        consulta = consulta.drop_duplicates(subset=['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])
+        consulta = consulta.drop_duplicates(subset=['codigo', 'nome', 'codPerfil', 'nomePerfil', 'menu'])
 
-        # Organiza as URLs em um dicionário por menu
-        consulta['menuDict'] = consulta.apply(
-            lambda row: {row['menu']: row['menuUrls']},
-            axis=1
-        )
-
-        # Agrupa por usuário e une os dicionários de menus
-        grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
-            'menuDict': lambda x: {k: v for d in x for k, v in d.items()}
-        }).reset_index()
-
-        # Renomeia para 'urlTela' e ordena
-        grouped.rename(columns={'menuDict': 'urlTela'}, inplace=True)
-        grouped = grouped.sort_values(by='nome', ascending=True, ignore_index=True)
+        # Cria um dicionário final para todos os menus e URLs
+        grouped = consulta.groupby(['codigo', 'nome', 'codPerfil', 'nomePerfil']).apply(
+            lambda df: {
+                'codigo': df['codigo'].iloc[0],
+                'nome': df['nome'].iloc[0],
+                'codPerfil': df['codPerfil'].iloc[0],
+                'nomePerfil': df['nomePerfil'].iloc[0],
+                'urlTela': {menu: urls for menu, urls in zip(df['menu'], df['menuDict'])}
+            }
+        ).tolist()
 
         return grouped
 
