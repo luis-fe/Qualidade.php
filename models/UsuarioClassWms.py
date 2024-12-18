@@ -219,24 +219,25 @@ class Usuario:
 
         consulta.fillna('-', inplace=True)
 
-        # Agrupa por menu e monta uma estrutura hierárquica de URLs por menu
+        # Agrupa URLs por menu
         consulta['menuUrls'] = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])['urlTela'] \
             .transform(lambda x: list(x.dropna().unique()))
 
         consulta = consulta.drop_duplicates(subset=['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])
 
-        # Agrupa novamente por usuário e organiza os menus
-        grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
-            'menu': lambda x: list(x.dropna().unique()),
-            'menuUrls': lambda x: [{menu: urls} for menu, urls in zip(x, consulta.loc[x.index, 'menuUrls'])]
-        }).reset_index()
-
-        grouped['urlTela'] = grouped.apply(
-            lambda row: {menu: urls for menu, urls in zip(row['menu'], row['menuUrls'])},
+        # Organiza as URLs em um dicionário por menu
+        consulta['menuDict'] = consulta.apply(
+            lambda row: {row['menu']: row['menuUrls']},
             axis=1
         )
-        grouped = grouped.drop(columns=['menu', 'menuUrls'])
 
+        # Agrupa por usuário e une os dicionários de menus
+        grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
+            'menuDict': lambda x: {k: v for d in x for k, v in d.items()}
+        }).reset_index()
+
+        # Renomeia para 'urlTela' e ordena
+        grouped.rename(columns={'menuDict': 'urlTela'}, inplace=True)
         grouped = grouped.sort_values(by='nome', ascending=True, ignore_index=True)
 
         return grouped
