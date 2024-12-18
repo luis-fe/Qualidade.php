@@ -219,8 +219,15 @@ class Usuario:
             'urlTela': lambda x: list(x.dropna().astype(str).unique())
         }).reset_index()
 
+        # Transformação para o formato desejado
+        agrupamento2 = (
+            agrupamento2.groupby("codPerfil")
+            .apply(lambda x: list(zip(x["menu"], x["URL"])))
+            .reset_index(name="URL")
+        )
 
-        consulta = pd.merge(consulta1, consulta2, on='codPerfil', how='left')
+
+        consulta = pd.merge(consulta1, agrupamento2, on='codPerfil', how='left')
 
         consulta.fillna('-', inplace=True)
 
