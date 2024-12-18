@@ -219,33 +219,34 @@ class Usuario:
 
         consulta.fillna('-', inplace=True)
 
-        # Organiza os dados em dicionários de URLs por menu
-        consulta['menuDict'] = consulta.groupby(['codigo', 'nome', 'codPerfil', 'nomePerfil', 'menu'])['urlTela'] \
+        # Agrupa por menu e monta uma estrutura hierárquica de URLs por menu
+        consulta['menuUrls'] = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])['urlTela'] \
             .transform(lambda x: list(x.dropna().unique()))
 
-        consulta = consulta.drop_duplicates(subset=['codigo', 'nome', 'codPerfil', 'nomePerfil', 'menu'])
+        consulta = consulta.drop_duplicates(subset=['codigo', 'nome', "codPerfil", "nomePerfil", 'menu'])
 
-        # Cria um dicionário final para todos os menus e URLs
-        grouped = consulta.groupby(['codigo', 'nome', 'codPerfil', 'nomePerfil']).apply(
-            lambda df: {
-                'codigo': df['codigo'].iloc[0],
-                'nome': df['nome'].iloc[0],
-                'codPerfil': df['codPerfil'].iloc[0],
-                'nomePerfil': df['nomePerfil'].iloc[0],
-                'urlTela': {menu: urls for menu, urls in zip(df['menu'], df['menuDict'])}
-            }
-        ).tolist()
+        # Agrupa novamente por usuário e organiza os menus
+        grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
+            'menu': lambda x: list(x.dropna().unique()),
+            'menuUrls': lambda x: [{menu: urls} for menu, urls in zip(x, consulta.loc[x.index, 'menuUrls'])]
+        }).reset_index()
+
+        grouped['urlTela'] = grouped.apply(
+            lambda row: {menu: urls for menu, urls in zip(row['menu'], row['menuUrls'])},
+            axis=1
+        )
+        grouped = grouped.drop(columns=['menu', 'menuUrls'])
+
+        grouped = grouped.sort_values(by='nome', ascending=True, ignore_index=True)
 
         return grouped
-
 
     def rotasAutorizadasPORUsuario(self):
         '''Metodo que retorna as rotas altorizadas para o usuario em especifico '''
 
         todos = self.rotasAutorizadasUsuarios()
 
-        usuario = [item for item in todos if item['codigo'] == int(self.codigo)]
-
+        usuario = todos[todos['codigo'] ==int(self.codigo)].reset_index()
 
         return usuario
 
