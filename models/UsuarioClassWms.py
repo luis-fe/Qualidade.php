@@ -231,15 +231,12 @@ class Usuario:
 
         consulta.fillna('-', inplace=True)
 
-        # Agrupa mantendo todas as colunas do DataFrame planos e transforma lotes e nomelote em arrays
-        grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
-            'urlTela': lambda x: list(x.dropna().astype(str).unique())
-        }).reset_index()
 
-        grouped = grouped.sort_values(by='nome', ascending=True,
+
+        consulta = consulta.sort_values(by='nome', ascending=True,
                                               ignore_index=True)  # escolher como deseja classificar
 
-        return agrupamento2
+        return consulta
 
 
     def rotasAutorizadasPORUsuario(self):
