@@ -228,7 +228,7 @@ class Usuario:
         # Agrupa novamente por usuário e organiza os menus
         grouped = consulta.groupby(['codigo', 'nome', "codPerfil", "nomePerfil"]).agg({
             'menu': lambda x: list(x.dropna().unique()),
-            'menuUrls': lambda x: [{menu: urls} for menu, urls in zip(x, consulta.loc[x.index, 'menuUrls'])]
+            'menuUrls': lambda x: [{urls} for menu, urls in zip(x, consulta.loc[x.index, 'menuUrls'])]
         }).reset_index()
 
         grouped['urlTela'] = grouped.apply(
