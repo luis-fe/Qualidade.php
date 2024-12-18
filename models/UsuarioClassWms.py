@@ -222,8 +222,8 @@ class Usuario:
         # Transformação para o formato desejado
         agrupamento2 = (
             agrupamento2.groupby("codPerfil")
-            .apply(lambda x: list(zip(x["menu"], x["URL"])))
-            .reset_index(name="URL")
+            .apply(lambda x: list(zip(x["menu"], x["urlTela"])))
+            .reset_index(name="urlTela")
         )
 
 
