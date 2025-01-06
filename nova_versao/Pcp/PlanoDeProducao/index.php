@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/header.php');
+include_once('../../templates/headerPcp.php');
 ?>
 <link rel="stylesheet" href="style.css">
 <style>
@@ -526,7 +526,7 @@ include_once('../../templates/header.php');
 </div>
 
 <?php
-include_once('../../templates/footer.php');
+include_once('../../templates/footerPcp.php');
 ?>
 
 <script src="script.js"></script>
