@@ -1,123 +1,222 @@
-<?php
-    include_once("./requests.php");
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        $username = $_POST["usuario"];
-        $password = $_POST["senha"];
-        $empresa = $_POST["empresa"];
-        
-    
-        $Resposta = fazerChamadaApi($username, $password, $empresa);
-
-        if ($Resposta['status'] == true) {
-            $nome = $Resposta['nome'];
-            session_start();
-            $_SESSION['usuario'] = $nome;
-            $_SESSION['empresa'] = $empresa;
-            $_SESSION['funcao'] = $Resposta['funcao'];
-            $_SESSION['token'] = "a40016aabcx9";
-            if($Resposta['funcao'] == "ADMINISTRADOR"){
-                header("Location: ./src/pcp/MonitorPedidos/index.php");
-            };            
-            exit();
-        } else {
-            $mensagemErro = "Usuário inválido. Tente novamente.";
-        }
-    }
-?>
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grupo Mpl</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-    <link rel="shortcut icon" type="image/png" href="./templates/ImagemMplSemFundo.png">
-    <link rel="stylesheet" href="./css/styleLogin.css">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Estilos adicionais podem ser colocados aqui */
         body {
-            background-color: #f0f0f0; /* Cor de fundo */
-        }
-        .main-container {
+            background: lightgray;
+            color: #fff;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: right;
             height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
         }
-        .card {
+
+        .login-box {
+            background: #001f3f;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+            height: 100vh;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box input {
+            background: #ffffff;
+            color: #333;
             border: none;
             border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            transition: 0.3s;
+            min-width: 100%;
         }
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
+
+        .login-box label {
+            color: black;
         }
-        .logo-small {
-            width: 150px; /* Ajuste conforme necessário */
+
+        .input-group {
+            position: relative;
         }
-        .form-floating {
-            margin-bottom: 20px;
+
+        .input-group-text {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #00509e;
+            position: absolute;
+            right: 0;
+            top: 21px;
+            z-index: 10;
+        }
+
+        .login-box .btn-primary {
+            background: #00509e;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .login-box .btn-primary:hover {
+            background: #0066cc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-box .forgot {
+            color: #66b2ff;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .login-box .forgot:hover {
+            color: #ffffff;
         }
     </style>
 </head>
 
 <body>
-    <main class="container-fluid main-container">
-        <div class="card">
-            <div class="card-body">
-                <div class="logo-container">
-                    <img src="./templates/ImagemMplSemFundo.png" alt="Logo" class="logo-small">
-                </div>
-                <h2 class="text-center mb-4">Login</h2>
-                <form action="" method="POST" class="was-validated">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" name="usuario" id="usuario" placeholder=" " required>
-                        <label for="usuario">Matrícula</label>
-                    </div>
-                    <div class="form-floating">
-                        <input type="password" class="form-control" name="senha" id="senha" placeholder=" " required>
-                        <label for="senha">Senha</label>
-                    </div>
-                    <div class="form-floating">
-                        <select class="form-select" id="empresa" name="empresa" required>
-                            <option value="" disabled selected>Selecione a Empresa</option>
-                            <option value="1">Matriz</option>
-                            <option value="4">Cianorte</option>
-                        </select>
-                        <label for="empresa">Empresa</label>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary btn-lg w-100">ENTRAR</button>
-                    </div>
-                </form>
-                <?php if (isset($mensagemErro)) : ?>
-                    <div class="alert alert-danger mt-3" role="alert">
-                        <?php echo $mensagemErro; ?>
-                    </div>
-                <?php endif; ?>
+    <div class="login-box">
+        <h2 class="mb-4">Login</h2>
+        <form onsubmit="enviarDados(event)">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usuario" placeholder="Usuário" required>
+                <label for="usuario">Usuário</label>
             </div>
-        </div>
-    </main>
+            <div class="mb-3 input-group">
+                <div class="form-floating flex-grow-1">
+                    <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                    <label for="senha">Senha</label>
+                </div>
+                <span class="input-group-text" onclick="IconePassword()">
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                </span>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" id="empresa" name="empresa" required>
+                    <option value="" disabled selected>Selecione a Empresa</option>
+                    <option value="1">Matriz</option>
+                    <option value="4">Cianorte</option>
+                </select>
+                <label for="empresa">Empresa</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('#usuario').focus()
+        })
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-vw85IePz0yrakp6BtdLWCP4MUL1Lh7A5i+M4fzJN1XSSZfz7/QJ5sFEocLT1Gma5"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-KpQ1q3X98ndJb11TgbJ1DEtM8VmVGSyK5vjJ6m/YjEA=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+        function IconePassword() {
+            const inputPassword = document.getElementById('senha');
+            const iconePassword = document.getElementById('toggleIcon');
+            if (inputPassword.type === 'password') {
+                inputPassword.type = 'text';
+                iconePassword.classList.remove('fa-eye');
+                iconePassword.classList.add('fa-eye-slash');
+            } else {
+                inputPassword.type = 'password';
+                iconePassword.classList.remove('fa-eye-slash');
+                iconePassword.classList.add('fa-eye');
+            }
+        }
+
+        async function enviarDados(event) {
+            event.preventDefault();
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Fazer_Login',
+                        username: document.getElementById('usuario').value,
+                        password: document.getElementById('senha').value,
+                        empresa: document.getElementById('empresa').value
+                    }
+                });
+                console.log(response);
+                if (response['status'] === true) {
+                    await Swal.fire({
+                        title: 'Login Realizado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        backdrop: false, // Desativa o backdrop para evitar scroll
+                    });
+                    Rotinas_Usuarios()
+                    window.location.href = "teste.php";
+                    
+                } else {
+                    await Swal.fire({
+                        title: 'Login Inválido',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        backdrop: false, // Desativa o backdrop para evitar scroll
+                    });
+                    $('#usuario').val('');
+                    $('#senha').val('');
+                    $('#empresa').val('');
+
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+        const Rotinas_Usuarios = async () => {
+            // $('#loadingModal').modal('show');
+            try {
+                const data = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Rotinas_Usuarios',
+                        codigo: document.getElementById('usuario').value,
+                    }
+                });
+            } catch (error) {
+                console.error('Erro ao consultar chamados:', error);
+            } finally {
+                // $('#loadingModal').modal('hide');
+            }
+        }
+
+
+        
+    </script>
 </body>
 
 </html>
