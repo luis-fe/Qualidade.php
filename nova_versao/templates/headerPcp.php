@@ -1,8 +1,3 @@
-<?php
-session_start();
-$urlTelas = isset($_SESSION['urlTela']) ? $_SESSION['urlTela'] : [];
-
-?>
 
 <!DOCTYPE html>
 <html lang="pt-Br">
