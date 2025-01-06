@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/header.php');
+include_once('../../templates/headerPcp.php');
 ?>
 <!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -68,6 +68,6 @@ include_once('../../templates/header.php');
 </div>
 
 <?php
-include_once('../../templates/footer.php');
+include_once('../../templates/footerPcp.php');
 ?>
 <script src="script.js"></script>
