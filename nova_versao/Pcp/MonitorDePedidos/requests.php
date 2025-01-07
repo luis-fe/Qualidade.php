@@ -1,11 +1,12 @@
 <?php
-// session_start();
-// if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
-//     $username = $_SESSION['username'];
-//     $empresa = $_SESSION['empresa'];
-// } else {
-//     header("Location: ../../index.php");
-// }
+session_start();
+if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
+    $username = $_SESSION['username'];
+    $empresa = $_SESSION['empresa'];
+} else {
+    header("Location: ../../login.php");
+}
+
 
 
 function jsonResponse($data)
