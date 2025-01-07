@@ -1,11 +1,12 @@
 <?php
-// session_start();
-// if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
-//     $username = $_SESSION['username'];
-//     $empresa = $_SESSION['empresa'];
-// } else {
-//     header("Location: ../../index.php");
-// }
+session_start();
+if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
+    $username = $_SESSION['username'];
+    $empresa = $_SESSION['empresa'];
+} else {
+    header("Location: ../../login.php");
+}
+
 
 
 function jsonResponse($data)
@@ -23,6 +24,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Planos':
                     jsonResponse(ConsultarPlanos('1'));
                     break;
+                case 'Consulta_Abc_Plano':
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultaAbcPlano('1', $plano));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -39,6 +44,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaTendencias('1', $dadosObjeto));
+                    break;
+                case 'Simular_Programacao':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(Simular_Programacao('1', $dadosObjeto));
                     break;
 
                 default:
@@ -88,10 +98,64 @@ function ConsultarPlanos($empresa)
     return json_decode($apiResponse, true);
 }
 
+function ConsultaAbcPlano($empresa, $plano)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/consultaPlanejamentoABC_plano?codPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 function ConsultaTendencias($empresa, $dados)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/tendenciaSku";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function Simular_Programacao($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/simulacaoProgramacao";
 
     $ch = curl_init($apiUrl);
 
