@@ -176,7 +176,7 @@
                         backdrop: false, // Desativa o backdrop para evitar scroll
                     });
                     Rotinas_Usuarios()
-                    window.location.href = "teste.php";
+                    window.location.href = "Pcp/PlanoDeProducao/";
                     
                 } else {
                     await Swal.fire({
