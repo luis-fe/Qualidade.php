@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/headerPcp.php');
+include_once('../../templates/header.php');
 ?>
 <link rel="stylesheet" href="style.css">
 <div class="titulo-tela">
@@ -91,7 +91,28 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+<div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Editar Meta</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                <div id="inputs-container" style="justify-content: center; align-items: center; text-align: center"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-salvar" onclick="Simular_Programacao()">
+                    <span><i class="bi bi-floppy"></i></span>
+                    Simular
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
-include_once('../../templates/footerPcp.php');
+include_once('../../templates/footer.php');
 ?>
 <script src="script.js"></script>
