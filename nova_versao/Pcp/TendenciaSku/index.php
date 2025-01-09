@@ -76,6 +76,7 @@ include_once('../../templates/headerPcp.php');
                     <th id="totalEmProcesso"></th>
                     <th id="totalFaltaProg"></th>
                     <th id="totalDisponivel"></th>
+                    <th id="prevSobra"></th>
                     <th></th>
                 </tr>
             </tfoot>
