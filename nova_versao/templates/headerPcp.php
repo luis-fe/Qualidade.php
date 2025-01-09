@@ -431,10 +431,6 @@
             font-size: 1rem;
         }
 
-        .paginate_button:hover {
-            background-color: green;
-        }
-
         .table th input {
             margin-top: 5px;
             width: 100%;
@@ -575,6 +571,9 @@
                     </a>
                     <a href="../../Pcp/AcompanhamentoVendas/" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Acompanhamento Vendas <!-- PCP -->
+                    </a>
+                    <a href="../../Pcp/Abc_Referencia/" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Análise de Necessidade <!-- PCP -->
                     </a>
                     <!-- <a href="#" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Análise de Substitutos PCP
