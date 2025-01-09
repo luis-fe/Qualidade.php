@@ -688,5 +688,3 @@ function DeleteColecoes($empresa, $dados)
     return json_encode($response);
 }
 
-    return json_decode($apiResponse, true);
-}
