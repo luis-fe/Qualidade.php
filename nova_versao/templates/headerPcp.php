@@ -572,7 +572,7 @@
                     <a href="../../Pcp/AcompanhamentoVendas/" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Acompanhamento Vendas <!-- PCP -->
                     </a>
-                    <a href="../../Pcp/Abc_Referencia/" class="nav-link submenu-item">
+                    <a href="../../Pcp/AnaliseNecessidade/" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Análise de Necessidade <!-- PCP -->
                     </a>
                     <!-- <a href="#" class="nav-link submenu-item">
