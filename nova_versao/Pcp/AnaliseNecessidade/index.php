@@ -38,7 +38,7 @@ include_once('../../templates/headerPcp.php');
     </form>
 </div>
 
-<div class="col-12 div-analise" style="background-color: lightgray; border-radius: 8px;">
+<div class="col-12 div-analise d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered table-striped" id="table-analise" style="width: 100%;">
             <thead>
