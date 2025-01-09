@@ -61,6 +61,7 @@ async function Analise_Materiais() {
             data: JSON.stringify(requestData),
         });
         TabelaAnalise(response);
+        $('.div-analise').removeClass('d-none');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
