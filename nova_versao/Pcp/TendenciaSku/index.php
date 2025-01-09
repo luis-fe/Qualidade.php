@@ -57,6 +57,7 @@ include_once('../../templates/headerPcp.php');
                     <th>Qtd. em Processo<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Falta Programar<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Disponível<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Prev. Sobra<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Status Afv<br><input type="search" class="search-input search-input-tendencia"></th>
                 </tr>
             </thead>
