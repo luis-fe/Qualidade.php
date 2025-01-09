@@ -108,6 +108,33 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             }
         }
         break;
+    case "DELETE":
+        $requestData = json_decode(file_get_contents('php://input'), true);
+        $acao = $requestData['acao'] ?? null;
+        $dados = $requestData['dados'] ?? null;
+
+        switch ($acao) {
+            case 'Deletar_Notas':
+                $dadosObjeto = (object)$dados;
+                header('Content-Type: application/json');
+                echo DeleteNotas("1", $dadosObjeto);
+                break;
+            case 'Deletar_Lotes':
+                $dadosObjeto = (object)$dados;
+                header('Content-Type: application/json');
+                echo DeleteLotes("1", $dadosObjeto);
+                break;
+            case 'Deletar_Colecoes':
+                $dadosObjeto = (object)$dados;
+                header('Content-Type: application/json');
+                echo DeleteColecoes("1", $dadosObjeto);
+                break;
+            default:
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Ação não reconhecida.']);
+                break;
+        }
+        break;
     default:
         jsonResponse(['status' => false, 'message' => 'Método de requisição não suportado.']);
         break;
@@ -540,6 +567,126 @@ function VincularNotas($empresa, $dados)
         error_log("Erro na API: Código HTTP {$httpCode}");
         return false;
     }
+
+    return json_decode($apiResponse, true);
+}
+
+function DeleteNotas($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/DesvincularNotasPlano";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
+    }
+
+    curl_close($ch);
+
+    return json_encode($response);
+}
+
+function DeleteLotes($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/DesvincularLotesPlano";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
+    }
+
+    curl_close($ch);
+
+    return json_encode($response);
+}
+
+function DeleteColecoes($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/DesvincularColecoesPlano";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
+    }
+
+    curl_close($ch);
+
+    return json_encode($response);
+}
 
     return json_decode($apiResponse, true);
 }
