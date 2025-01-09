@@ -4,7 +4,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
     $username = $_SESSION['username'];
     $empresa = $_SESSION['empresa'];
 } else {
-    header("Location: ../../loginPcp.php");
+    header("Location: ../../indexPcp.php");
 }
 
 
