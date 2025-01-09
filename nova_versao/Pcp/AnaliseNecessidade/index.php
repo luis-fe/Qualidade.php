@@ -43,19 +43,19 @@ include_once('../../templates/header.php');
         <table class="table table-bordered table-striped" id="table-analise" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Código<br><input type="search" class="search-input form-control"></th>
-                    <th>Descrição<br><input type="search" class="search-input form-control"></th>
-                    <th>Código red.<br><input type="search" class="search-input form-control"></th>
-                    <th>Necessidade<br><input type="search" class="search-input form-control"></th>
-                    <th>Estoque Atual<br><input type="search" class="search-input form-control"></th>
-                    <th>Compra<br><input type="search" class="search-input form-control"></th>
-                    <th>Requisições<br><input type="search" class="search-input form-control"></th>
-                    <th>Fornecedor Principal<br><input type="search" class="search-input form-control"></th>
-                    <th>Medida<br><input type="search" class="search-input form-control"></th>
-                    <th>Lote Mínimo<br><input type="search" class="search-input form-control"></th>
-                    <th>Lote Múltiplo<br><input type="search" class="search-input form-control"></th>
-                    <th>Lead Time<br><input type="search" class="search-input form-control"></th>
-                    <th>Fator de Conversão<br><input type="search" class="search-input form-control"></th>
+                    <th>Código<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Código red.<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Necessidade<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Estoque Atual<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Compra<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Requisições<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Fornecedor Principal<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Medida<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Lote Mínimo<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Lote Múltiplo<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Lead Time<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Fator de Conversão<br><input type="search" class="search-input search-input-analise"></th>
                 </tr>
             </thead>
             <tbody>
