@@ -98,7 +98,7 @@ include_once('../../templates/headerPcp.php');
     <div class="modal-dialog modal-dialog-top">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Editar Meta</h5>
+                <h5 class="modal-title" style="color: black;">Simulação</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
