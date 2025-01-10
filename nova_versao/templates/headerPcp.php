@@ -446,19 +446,18 @@
             padding: 1px;
         }
 
-        .btn-table {
-            background-color: white;
-            border: 1px solid black;
-            font-size: 1.2rem;
-            border-radius: 6px;
-            color: white;
-            padding: 2px 7px;
-            font-weight: 900;
+        .btn-tabelas {
+            padding: 4px 10px !important;
+            border: 1px solid black !important;
+            background-color: white !important;
+            margin-left: 5px !important;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 30px !important;
         }
 
-        .btn-table:hover {
-            background-color: lightgray;
-            color: black;
+        .btn-tabelas:hover {
+            transform: scale(1.05);
         }
 
         .dataTables_filter {
