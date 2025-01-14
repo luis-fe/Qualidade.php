@@ -23,6 +23,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Planos':
                     jsonResponse(ConsultarPlanos('1'));
                     break;
+                case 'Consulta_Naturezas':
+                    jsonResponse(ConsultarNaturezas('1'));
+                    break;
+                case 'Consulta_Comprometidos':
+                    jsonResponse(ConsultarComprometidos('1'));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -88,6 +94,52 @@ function ConsultarPlanos($empresa)
     return json_decode($apiResponse, true);
 }
 
+function ConsultarNaturezas($empresa)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/naturezaEstoqueComponentes";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultarComprometidos($empresa)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/comprometidoOP";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+
 function AnaliseMateriais($empresa, $dados)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
@@ -119,3 +171,4 @@ function AnaliseMateriais($empresa, $dados)
 
     return json_decode($apiResponse, true);
 }
+
