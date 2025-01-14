@@ -38,9 +38,9 @@ include_once('../../templates/headerPcp.php');
     </form>
 </div>
 
-<div class="col-12 div-analise d-none" style="background-color: lightgray; border-radius: 8px;">
+<div class="col-12 mt-4 mb-4 div-analise d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered table-striped" id="table-analise" style="width: 100%;">
+        <table class="table table-bordered" id="table-analise" style="width: 100%;">
             <thead>
                 <tr>
                     <th>Código<br><input type="search" class="search-input search-input-analise"></th>
@@ -59,7 +59,7 @@ include_once('../../templates/headerPcp.php');
                 </tr>
             </thead>
             <tbody>
-                <!-- Aqui vão os dados da tabela -->
+                <!-- Dados da tabela -->
             </tbody>
         </table>
     </div>
@@ -73,8 +73,63 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+<div class="row gx-3">
+    <div class="col-12 col-md-6 div-naturezas d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+        <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+            <table class="table table-bordered" id="table-naturezas" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Código<br><input type="search" class="search-input search-input-naturezas"></th>
+                        <th>Descrição<br><input type="search" class="search-input search-input-naturezas"></th>
+                        <th>Natureza<br><input type="search" class="search-input search-input-naturezas"></th>
+                        <th>Estoque<br><input type="search" class="search-input search-input-naturezas"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados da tabela -->
+                </tbody>
+            </table>
+        </div>
+        <div class="custom-pagination-container pagination-naturezas d-md-flex col-12 text-center text-md-start">
+            <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
+                <label for="text">Itens por página</label>
+                <input id="itens-naturezas" class="input-itens" type="text" value="10" min="1">
+            </div>
+            <div id="pagination-naturezas" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 div-comprometido d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+        <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+            <table class="table table-bordered" id="table-comprometido" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Código<br><input type="search" class="search-input search-input-comprometido"></th>
+                        <th>Descrição<br><input type="search" class="search-input search-input-comprometido"></th>
+                        <th>Op<br><input type="search" class="search-input search-input-comprometido"></th>
+                        <th>Em requisição<br><input type="search" class="search-input search-input-comprometido"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados da tabela -->
+                </tbody>
+            </table>
+        </div>
+        <div class="custom-pagination-container pagination-comprometido d-md-flex col-12 text-center text-md-start">
+            <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
+                <label for="text">Itens por página</label>
+                <input id="itens-comprometido" class="input-itens" type="text" value="10" min="1">
+            </div>
+            <div id="pagination-comprometido" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script1.js"></script>
+<script src="script2.js"></script>
