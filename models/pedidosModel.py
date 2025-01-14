@@ -209,6 +209,7 @@ def InformacaoPedidoViaTag(codbarras):
     Informa2 = pd.read_sql('select codigopedido as codpedido, codcliente, desc_cliente, desc_tiponota  from "Reposicao".filaseparacaopedidos',conn)
 
     Informa = pd.merge(Informa,Informa2,on='codpedido',how='left')
+    Informa.fillna('-', inplace=True)
 
     return Informa
 
