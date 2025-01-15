@@ -45,7 +45,8 @@ include_once('../../templates/headerPcp.php');
                     <th>Código<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Código red.<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Necessidade<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Necessidade Calculada<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Necessidade Ajustada<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Estoque Atual<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Compra<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Requisições<br><input type="search" class="search-input search-input-analise"></th>
