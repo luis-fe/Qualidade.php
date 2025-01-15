@@ -169,12 +169,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                         </ul>
                     </li> -->
                 </ul>
-                <div class="sidebar-footer" style="position: absolute; bottom: 0; width: 320px">
-                    <a href="../../../templates/Logout" class="sidebar-link">
-                        <span>Logout</span>
-                        <i class="fa-solid fa-arrow-right-from-bracket float-end"></i>
-                    </a>
-                </div>
             </div>
         </aside>
 
