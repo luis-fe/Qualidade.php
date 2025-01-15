@@ -137,6 +137,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Tags_X_Fisico" class="sidebar-link">Tag's x Físico</a>
                             </li>
+                            <li class="sidebar-item sidebar-item-2">
+                                <a href="../../../Wms/src/VerificaTag" class="sidebar-link">Verificar Tag</a>
+                            </li>
                         </ul>
                     </li>
                     <!-- <li class="sidebar-header">
