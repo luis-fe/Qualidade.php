@@ -15,32 +15,31 @@ $(document).ready(async () => {
     $('#btn-vendas').addClass('btn-menu-clicado')
 });
 
-function Consulta_Planos() {
+const Consulta_Planos = async () => {
     $('#loadingModal').modal('show');
-    $.ajax({
-        type: 'GET',
-        url: 'requests.php',
-        dataType: 'json',
-        data: {
-            acao: 'Consulta_Planos',
-        },
-        success: function (data) {
-            $('#select-plano').empty();
-            $('#select-plano').append('<option value="" disabled selected>Selecione um plano...</option>');
-            data.forEach(function (plano) {
-                $('#select-plano').append(`
+    try {
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Planos'
+            },
+        });
+        $('#select-plano').empty();
+        $('#select-plano').append('<option value="" disabled selected>Selecione um plano...</option>');
+        response.forEach(function (plano) {
+            $('#select-plano').append(`
                         <option value="${plano['01- Codigo Plano']}">
                             ${plano['01- Codigo Plano']} - ${plano['02- Descricao do Plano']}
                         </option>
                     `);
-            });
-            $('#loadingModal').modal('hide');
-        },
-        error: function (xhr, status, error) {
-            console.error('Erro ao consultar planos:', error);
-            $('#loadingModal').modal('hide');
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Erro:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
 };
 
 const Consulta_Naturezas = async () => {
@@ -79,6 +78,27 @@ const Consulta_Comprometidos = async () => {
     }
 };
 
+const Consulta_Comprometidos_Compras = async () => {
+    try {
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Comprometidos_Compras'
+            },
+        });
+        TabelaComprometidoCompras(response);
+        $('.div-comprometido-compras').removeClass('d-none');
+    } catch (error) {
+        console.error('Erro:', error);
+    } finally {
+    }
+};
+
+
+
+
 async function Analise_Materiais() {
     $('#loadingModal').modal('show');
     try {
@@ -100,7 +120,36 @@ async function Analise_Materiais() {
         await $('.div-analise').removeClass('d-none');
         await TabelaAnalise(response);
         await Consulta_Naturezas();
-        Consulta_Comprometidos();
+        await Consulta_Comprometidos();
+        Consulta_Comprometidos_Compras();
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+async function Detalha_Necessidade(codReduzido) {
+    $('#loadingModal').modal('show');
+    try {
+        const requestData = {
+            acao: "Detalha_Necessidade",
+            dados: {
+                "codPlano": $('#select-plano').val(),
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "codComponente": codReduzido
+            }
+        };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+        TabelaDetalhamento(response);
+        $('#modal-detalhamento').modal('show')
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
@@ -137,30 +186,53 @@ async function TabelaAnalise(listaAnalise) {
             data: '03-descricaoComponente'
         },
         {
-            data: '01-codReduzido'
+            data: '01-codReduzido',
+            render: function (data, type, row) {
+                return `<span class="codReduzido" data-codigoReduzido="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+            }
         },
         {
             data: '10-Necessidade Compra (Tendencia)',
             render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+                if (type === 'display') {
+                    // Exibe os dados formatados com separador de milhares
+                    return data.toLocaleString('pt-BR');
+                }
+                // Para ordenação e outros tipos, retorna o número bruto
+                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
             }
         },
         {
             data: '08-estoqueAtual',
             render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+                if (type === 'display') {
+                    // Exibe os dados formatados com separador de milhares
+                    return data.toLocaleString('pt-BR');
+                }
+                // Para ordenação e outros tipos, retorna o número bruto
+                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
             }
         },
         {
             data: '09-SaldoPedCompras',
             render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+                if (type === 'display') {
+                    // Exibe os dados formatados com separador de milhares
+                    return data.toLocaleString('pt-BR');
+                }
+                // Para ordenação e outros tipos, retorna o número bruto
+                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
             }
         },
         {
             data: '07-EmRequisicao',
             render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+                if (type === 'display') {
+                    // Exibe os dados formatados com separador de milhares
+                    return data.toLocaleString('pt-BR');
+                }
+                // Para ordenação e outros tipos, retorna o número bruto
+                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
             }
         },
         {
@@ -214,9 +286,13 @@ async function TabelaAnalise(listaAnalise) {
         }
     });
 
-    $('#table-analise tbody').on('click', 'tr', function () {
-        const isSelected = $(this).hasClass('selected');
+    $('#table-analise tbody').on('click', 'tr', function (event) {
+        // Verifica se o clique foi em um hiperlink
+        if ($(event.target).hasClass('codReduzido')) {
+            return; // Não executa o código para seleção de linha
+        }
 
+        const isSelected = $(this).hasClass('selected');
         $('#table-analise tbody tr').removeClass('selected');
 
         if (!isSelected) {
@@ -230,6 +306,12 @@ async function TabelaAnalise(listaAnalise) {
         }
     });
 
+    // Clique no hiperlink "codReduzido"
+    $('#table-analise').on('click', '.codReduzido', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codigoReduzido');
+        Detalha_Necessidade(codReduzido);
+    });
 }
 
 
@@ -279,6 +361,13 @@ function TabelaNaturezas(listaNaturezas) {
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
             });
             $('.dataTables_paginate').hide();
+        }
+    });
+
+    $('#itens-naturezas').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
         }
     });
 
@@ -336,20 +425,214 @@ function TabelaComprometido(listaComprometido) {
         }
     });
 
+    $('#itens-comprometido').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
     $('.search-input-comprometido').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
 
+function TabelaComprometidoCompras(listaComprometido) {
+    if ($.fn.DataTable.isDataTable('#table-comprometido-compras')) {
+        $('#table-comprometido-compras').DataTable().destroy();
+    }
+
+    const tabela = $('#table-comprometido-compras').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: listaComprometido,
+        columns: [{
+            data: 'CodComponente'
+        },
+        {
+            data: 'nome'
+        },
+        {
+            data: 'numero'
+        },
+        {
+            data: 'tipo'
+        },
+        {
+            data: 'SaldoPedCompras',
+            render: function (data, type) {
+                if (type === 'display') {
+                    // Formata o número para o formato brasileiro com separadores de milhares
+                    return data.toLocaleString('pt-BR');
+                }
+                // Para ordenação e outras operações, retorna o número diretamente
+                return data;
+            }
+        },
+        {
+            data: 'dataPrevisao'
+        },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-comprometido-compras').html($('.dataTables_paginate').html());
+            $('#pagination-comprometido-compras span').remove();
+            $('#pagination-comprometido-compras a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    $('#itens-comprometido-compras').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
+    $('.search-input-comprometido-compras').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+}
+
+function TabelaDetalhamento(listaDetalhes) {
+    if ($.fn.DataTable.isDataTable('#table-detalhamento')) {
+        $('#table-detalhamento').DataTable().destroy();
+    }
+
+    const tabela = $('#table-detalhamento').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: listaDetalhes,
+        columns: [{
+            data: '01-codEngenharia'
+        },
+        {
+            data: '04-tam'
+        },
+        {
+            data: '05-codCor'
+        },
+        {
+            data: '03-nome'
+        },
+        {
+            data: '02-codReduzido'
+        },
+        {
+            data: '07-Ocorrencia em Pedidos',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: '09-previcaoVendas',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: '06-qtdePedida',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: '10-faltaProg (Tendencia)',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: 'class'
+        },
+        {
+            data: 'classCategoria'
+        },
+        {
+            data: '08-statusAFV'
+        },
+        {
+            data: '11-CodComponente'
+        },
+        {
+            data: '12-unid'
+        },
+        {
+            data: '13-consumoUnit'
+        },
+        {
+            data: '14-Necessidade faltaProg (Tendencia)',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-detalhamento').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamento span').remove();
+            $('#pagination-detalhamento a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    $('#itens-detalhamento').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
+    $('.search-input-detalhamento').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+}
 
 function filtrarTabelas(filtro) {
     const TabelaNaturezas = $('#table-naturezas').DataTable();
     const tabelaComprometido = $('#table-comprometido').DataTable();
+    const tabelaCompras = $('#table-comprometido-compras').DataTable();
+    
     if (filtro === '') {
         TabelaNaturezas.column(0).search('').draw();
         tabelaComprometido.column(0).search('').draw();
+        tabelaCompras.column(0).search('').draw();
     } else {
         TabelaNaturezas.column(0).search(`^${filtro}$`, true, false).draw();
         tabelaComprometido.column(0).search(`^${filtro}$`, true, false).draw();
+        tabelaCompras.column(0).search(`^${filtro}$`, true, false).draw();
     }
+
+
 }
+
