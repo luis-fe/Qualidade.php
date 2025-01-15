@@ -29,6 +29,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Comprometidos':
                     jsonResponse(ConsultarComprometidos('1'));
                     break;
+                case 'Consulta_Comprometidos_Compras':
+                    jsonResponse(ConsultarComprometidoCompras('1'));
+                    break;
+
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -45,6 +49,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(AnaliseMateriais('1', $dadosObjeto));
+                    break;
+                case 'Detalha_Necessidade':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(DetalhaNecessidade('1', $dadosObjeto));
                     break;
 
                 default:
@@ -138,6 +147,60 @@ function ConsultarComprometidos($empresa)
     return json_decode($apiResponse, true);
 }
 
+function ConsultarComprometidoCompras($empresa)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/comprometidoCompras";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function DetalhaNecessidade($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/DetalhaNecessidade";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 
 function AnaliseMateriais($empresa, $dados)
