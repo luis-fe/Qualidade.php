@@ -203,6 +203,17 @@ async function TabelaAnalise(listaAnalise) {
             }
         },
         {
+            data: '12-Necessidade Ajustada Compra (Tendencia)',
+            render: function (data, type) {
+                if (type === 'display') {
+                    // Exibe os dados formatados com separador de milhares
+                    return data.toLocaleString('pt-BR');
+                }
+                // Para ordenação e outros tipos, retorna o número bruto
+                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
+            }
+        },
+        {
             data: '08-estoqueAtual',
             render: function (data, type) {
                 if (type === 'display') {
