@@ -1,6 +1,9 @@
+import os
+
 import jaydebeapi
 import pandas as pd
 import models.configuracoes.empresaConfigurada
+from dotenv import load_dotenv, dotenv_values
 
 empresa = models.configuracoes.empresaConfigurada.EmpresaEscolhida()
 print(empresa)
@@ -17,11 +20,16 @@ def Conexao():
 
 
 def ConexaoCianorte():
-   # try:
+        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+        host = os.getenv('CSW_HOST')
+        senha = os.getenv('CSW_PASSWORD')
+        user = os.getenv('CSW_USER')
+
+    # try:
         conn = jaydebeapi.connect(
     'com.intersys.jdbc.CacheDriver',
-    'jdbc:Cache://187.32.10.129:1972/CONSISTEM',
-    {'user': '_system', 'password': 'ccscache'},
+    f'jdbc:Cache://{host}/CONSISTEM',
+    {'user': f'{user}', 'password': f'{senha}'},
     'CacheDB_root.jar'
     )
         return conn
@@ -30,30 +38,44 @@ def ConexaoCianorte():
 
 # Função de conectar com o CSW, com 2 opções de conexao:
 def ConexaoInternoMPL():
+        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+        host = os.getenv('CSW_HOST')
+        senha = os.getenv('CSW_PASSWORD')
+        user = os.getenv('CSW_USER')
 
         conn = jaydebeapi.connect(
             'com.intersys.jdbc.CacheDriver',
-            'jdbc:Cache://187.32.10.129:1972/CONSISTEM',
-            {'user': '_system', 'password': 'ccscache'},
+            f'jdbc:Cache://{host}/CONSISTEM',
+            {'user': f'{user}', 'password': f'{senha}'},
             'CacheDB_root.jar'
         )
         return conn
 
 def Conexao2():
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+    host = os.getenv('CSW_HOST')
+    senha = os.getenv('CSW_PASSWORD')
+    user = os.getenv('CSW_USER')
+
     conn = jaydebeapi.connect(
-    'com.intersys.jdbc.CacheDriver',
-    'jdbc:Cache://187.32.10.129:1972/CONSISTEM',
-    {'user': 'root', 'password': 'ccscache'},
-    'CacheDB_root.jar'
-)
+        'com.intersys.jdbc.CacheDriver',
+        f'jdbc:Cache://{host}/CONSISTEM',
+        {'user': f'{user}', 'password': f'{senha}'},
+        'CacheDB_root.jar'
+    )
     return conn
 def ConexaoExterna2():
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+    host = os.getenv('CSW_HOST')
+    senha = os.getenv('CSW_PASSWORD')
+    user = os.getenv('CSW_USER')
+
     conn = jaydebeapi.connect(
-    'com.intersys.jdbc.CacheDriver',
-    'jdbc:Cache://187.32.10.129:1972/CONSISTEM?loginTimeout=10',
-    {'user': 'root', 'password': 'ccscache'},
-    'CacheDB_root.jar'
-)
+        'com.intersys.jdbc.CacheDriver',
+        f'jdbc:Cache://{host}/CONSISTEM',
+        {'user': f'{user}', 'password': f'{senha}'},
+        'CacheDB_root.jar'
+    )
     return conn
 
 def obter_notaCsw():
@@ -64,13 +86,18 @@ def obter_notaCsw():
     return data
 
 def VerificarConexao():
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+    host = os.getenv('CSW_HOST')
+    senha = os.getenv('CSW_PASSWORD')
+    user = os.getenv('CSW_USER')
+
     try:
         connPrincipal = jaydebeapi.connect(
-                                    'com.intersys.jdbc.CacheDriver',
-                                    'jdbc:Cache://187.32.10.129:1972/CONSISTEM?loginTimeout=10',
-                                    {'user': '_SYSTEM', 'password': 'ccscache'},
-                                    'CacheDB.jar'
-                                    )
+        'com.intersys.jdbc.CacheDriver',
+        f'jdbc:Cache://{host}/CONSISTEM',
+        {'user': f'{user}', 'password': f'{senha}'},
+        'CacheDB_root.jar'
+    )
         teste = pd.read_sql(" select t.codigo ,t.descricao  from Fat.TipoDeNotaPadrao t ", connPrincipal)
         data = pd.DataFrame([{'Mensagem':'Conexao com CSW normal com o servidor 187.32.10.129:1972 _system ','teste':'csw'}])
     except:
