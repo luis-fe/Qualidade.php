@@ -6,10 +6,9 @@ from sqlalchemy import create_engine
 from models.configuracoes import  empresaConfigurada
 from dotenv import load_dotenv, dotenv_values
 
-load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
 def conexao():
-
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
     db_name = os.getenv('POSTGRE_NAME')
     db_user = os.getenv('POSTGRE_USER')
@@ -25,6 +24,8 @@ def conexao():
     return psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=host, port=portbanco)
 
 def Funcao_Inserir (df_tags, tamanho,tabela, metodo):
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
     # Configurações de conexão ao banco de dados
     database = os.getenv('POSTGRE_NAME')
     user = "postgres"
@@ -46,6 +47,8 @@ def Funcao_Inserir (df_tags, tamanho,tabela, metodo):
         df_tags.iloc[i:i + chunksize].to_sql(tabela, engine, if_exists=metodo, index=False , schema='Reposicao')
 
 def Funcao_InserirOFF (df_tags, tamanho,tabela, metodo):
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
     # Configurações de conexão ao banco de dados
     database = os.getenv('POSTGRE_NAME')
     user = "postgres"
@@ -65,6 +68,8 @@ def Funcao_InserirOFF (df_tags, tamanho,tabela, metodo):
     for i in range(0, len(df_tags), chunksize):
         df_tags.iloc[i:i + chunksize].to_sql(tabela, engine, if_exists=metodo, index=False , schema='off')
 def conexaoEngine():
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
     db_name = os.getenv('POSTGRE_NAME')
     db_user = "postgres"
     db_password = os.getenv('POSTGRE_PASSWORD')
@@ -78,6 +83,8 @@ def conexaoEngine():
     return create_engine(connection_string)
 
 def conexaoPCP():
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
     db_name = "PCP"
     db_user = "postgres"
     db_password = os.getenv('POSTGRE_PASSWORD')
@@ -87,6 +94,8 @@ def conexaoPCP():
     return psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host, port=portbanco)
 
 def Funcao_InserirPCP (df_tags, tamanho,tabela, metodo):
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
     # Configurações de conexão ao banco de dados
     database = "PCP"
     user = "postgres"
