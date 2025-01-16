@@ -7,11 +7,12 @@ from dotenv import load_dotenv, dotenv_values
 
 
 def conexaoEngine():
-    load_dotenv('db.env')
-    db_name = os.getenv('host_')
-    db_user = "postgres"
-    db_password = os.getenv('db_name_WMS_Password')
-    host = os.getenv('db_name_WMS_Password')
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
+    db_name = os.getenv('POSTGRE_NAME')
+    db_user = os.getenv('POSTGRE_USER')
+    db_password = os.getenv('POSTGRE_PASSWORD')
+    host = 'localhost'
     portbanco = "5432"
 
     connection_string = f"postgresql://{db_user}:{db_password}@{host}:{portbanco}/{db_name}"
@@ -19,12 +20,12 @@ def conexaoEngine():
 
 
 def conexaoInsercao():
-    load_dotenv('db.env')
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
-    db_name = os.getenv('host_')
-    db_user = "postgres"
-    db_password = os.getenv('db_name_WMS_Password')
-    db_host = os.getenv('host_')
+    db_name = os.getenv('POSTGRE_NAME')
+    db_user = os.getenv('POSTGRE_USER')
+    db_password = os.getenv('POSTGRE_PASSWORD')
+    db_host = 'localhost'
 
     portbanco = "5432"
 
