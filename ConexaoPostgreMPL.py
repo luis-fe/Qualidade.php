@@ -1,14 +1,20 @@
 import gc
+import os
+
 import psycopg2
 from sqlalchemy import create_engine
 from models.configuracoes import  empresaConfigurada
+from dotenv import load_dotenv, dotenv_values
 
+load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
 def conexao():
 
-    db_name = "Reposicao"
-    db_user = "postgres"
-    db_password = "Master100"
+
+    db_name = os.getenv('POSTGRE_NAME')
+    db_user = os.getenv('POSTGRE_USER')
+    db_password = os.getenv('POSTGRE_PASSWORD')
+
     if empresaConfigurada.EmpresaEscolhida() == '1':
         host = "localhost"
     else:
@@ -20,9 +26,9 @@ def conexao():
 
 def Funcao_Inserir (df_tags, tamanho,tabela, metodo):
     # Configurações de conexão ao banco de dados
-    database = "Reposicao"
+    database = os.getenv('POSTGRE_NAME')
     user = "postgres"
-    password = "Master100"
+    password = os.getenv('POSTGRE_PASSWORD')
 
     if empresaConfigurada.EmpresaEscolhida() == '1':
         host = "localhost"
@@ -41,9 +47,9 @@ def Funcao_Inserir (df_tags, tamanho,tabela, metodo):
 
 def Funcao_InserirOFF (df_tags, tamanho,tabela, metodo):
     # Configurações de conexão ao banco de dados
-    database = "Reposicao"
+    database = os.getenv('POSTGRE_NAME')
     user = "postgres"
-    password = "Master100"
+    password = os.getenv('POSTGRE_PASSWORD')
     if empresaConfigurada.EmpresaEscolhida() == '1':
         host = "localhost"
     else:
@@ -59,9 +65,9 @@ def Funcao_InserirOFF (df_tags, tamanho,tabela, metodo):
     for i in range(0, len(df_tags), chunksize):
         df_tags.iloc[i:i + chunksize].to_sql(tabela, engine, if_exists=metodo, index=False , schema='off')
 def conexaoEngine():
-    db_name = "Reposicao"
+    db_name = os.getenv('POSTGRE_NAME')
     db_user = "postgres"
-    db_password = "Master100"
+    db_password = os.getenv('POSTGRE_PASSWORD')
     if empresaConfigurada.EmpresaEscolhida() == '1':
         host = "localhost"
     else:
@@ -74,7 +80,7 @@ def conexaoEngine():
 def conexaoPCP():
     db_name = "PCP"
     db_user = "postgres"
-    db_password = "Master100"
+    db_password = os.getenv('POSTGRE_PASSWORD')
     db_host = "localhost"
     portbanco = "5432"
 
@@ -84,7 +90,7 @@ def Funcao_InserirPCP (df_tags, tamanho,tabela, metodo):
     # Configurações de conexão ao banco de dados
     database = "PCP"
     user = "postgres"
-    password = "Master100"
+    password = os.getenv('POSTGRE_PASSWORD')
     host = "localhost"
     port = "5432"
 
