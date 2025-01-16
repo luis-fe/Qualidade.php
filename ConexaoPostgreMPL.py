@@ -28,7 +28,7 @@ def Funcao_Inserir (df_tags, tamanho,tabela, metodo):
 
     # Configurações de conexão ao banco de dados
     database = os.getenv('POSTGRE_NAME')
-    user = "postgres"
+    user = os.getenv('POSTGRE_USER')
     password = os.getenv('POSTGRE_PASSWORD')
 
     if empresaConfigurada.EmpresaEscolhida() == '1':
@@ -51,7 +51,7 @@ def Funcao_InserirOFF (df_tags, tamanho,tabela, metodo):
 
     # Configurações de conexão ao banco de dados
     database = os.getenv('POSTGRE_NAME')
-    user = "postgres"
+    user = os.getenv('POSTGRE_USER')
     password = os.getenv('POSTGRE_PASSWORD')
     if empresaConfigurada.EmpresaEscolhida() == '1':
         host = "localhost"
@@ -71,7 +71,7 @@ def conexaoEngine():
     load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
     db_name = os.getenv('POSTGRE_NAME')
-    db_user = "postgres"
+    db_user = os.getenv('POSTGRE_USER')
     db_password = os.getenv('POSTGRE_PASSWORD')
     if empresaConfigurada.EmpresaEscolhida() == '1':
         host = "localhost"
@@ -86,7 +86,7 @@ def conexaoPCP():
     load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
     db_name = "PCP"
-    db_user = "postgres"
+    db_user = os.getenv('POSTGRE_USER')
     db_password = os.getenv('POSTGRE_PASSWORD')
     db_host = "localhost"
     portbanco = "5432"
@@ -98,7 +98,7 @@ def Funcao_InserirPCP (df_tags, tamanho,tabela, metodo):
 
     # Configurações de conexão ao banco de dados
     database = "PCP"
-    user = "postgres"
+    user = os.getenv('POSTGRE_USER')
     password = os.getenv('POSTGRE_PASSWORD')
     host = "localhost"
     port = "5432"
