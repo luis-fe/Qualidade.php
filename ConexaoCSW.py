@@ -43,7 +43,6 @@ def ConexaoInternoMPL():
         senha = os.getenv('CSW_PASSWORD')
         user = os.getenv('CSW_USER')
 
-        print(f'usuario {host}-{senha}')
 
         conn = jaydebeapi.connect(
             'com.intersys.jdbc.CacheDriver',
