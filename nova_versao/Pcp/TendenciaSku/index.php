@@ -48,6 +48,8 @@ include_once('../../templates/headerPcp.php');
                     <th>Descrição<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Reduzido<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Categoria<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Abc<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Abc Categoria<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Qtd. de Pedidos<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Valor Vendido<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Previsão de Vendas<br><input type="search" class="search-input search-input-tendencia"></th>
