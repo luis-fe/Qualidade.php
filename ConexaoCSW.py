@@ -138,6 +138,11 @@ def pesquisaTagCSW(codbarras):
 
 
 ####### TESTE NO INICIO DA APLICACAO,
+load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+host = os.getenv('CSW_HOST')
+senha = os.getenv('CSW_PASSWORD')
+user = os.getenv('CSW_USER')
+print('Teste variavel de ambiente: '+host)
 
 try:
     teste = obter_notaCsw()
