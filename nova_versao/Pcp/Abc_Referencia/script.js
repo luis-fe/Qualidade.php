@@ -83,6 +83,14 @@ function TabelaAbc(listaAbc) {
         info: false,
         pageLength: 10,
         data: listaAbc,
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+            title: 'Abc por Referência',
+            className: 'btn-tabelas',
+        },
+        ],
         columns: [{
                 data: 'marca'
             },
