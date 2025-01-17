@@ -143,7 +143,6 @@ host = os.getenv('CSW_HOST')
 senha = os.getenv('CSW_PASSWORD')
 user = os.getenv('CSW_USER')
 print(f'Teste variavel {host}')
-
 try:
     teste = obter_notaCsw()
     print(f' {teste}')
