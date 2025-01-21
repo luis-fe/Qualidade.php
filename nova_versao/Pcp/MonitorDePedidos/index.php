@@ -73,8 +73,8 @@ include_once('../../templates/headerPcp.php');
         <div class="mb-3 d-flex justify-content-end align-items-end" style="width: 200px;">
             <select id="select-priorizacao" class="form-select">
                 <option></option>
-                <option value="DataEmissao">Data Previsão</option>
-                <option value="DataPrevOri">Faturamento</option>
+                <option value="DataPrevisao">Data Previsão</option>
+                <option value="Faturamento">Faturamento</option>
             </select>
         </div>
         <div class="custom-dropdown mb-3 d-flex justify-content-end align-items-end" style="width: 300px;">
