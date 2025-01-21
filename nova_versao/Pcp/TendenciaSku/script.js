@@ -184,7 +184,18 @@ function TabelaTendencia(listaTendencia) {
             extend: 'excelHtml5',
             text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
             title: 'Tendências de Vendas',
-            className: 'btn-tabelas'
+            className: 'btn-tabelas',
+            exportOptions: {
+                columns: ':visible',
+                format: {
+                    body: function (data, row, column, node) {
+                        if (typeof data === 'string') {
+                            return data.replace(/\./g, '').replace(',', '.');
+                        }
+                        return data;
+                    }
+                }
+            }
         },
         {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Simulação',
