@@ -1,17 +1,39 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/headerPcp.php');
+include_once('../../templates/header.php');
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
+<style>
+    .form-label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .inputs-percentuais {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px 15px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .inputs-percentuais:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        background-color: #fff;
+    }
+</style>
 <div class="titulo-tela">
     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas
 </div>
 
 
-<div class="mt-3 row justify-content-center" id="selecao-plano">
-    <form id="form-vendas" class="row" onsubmit="Consulta_Tendencias(); return false;">
-        <div class="col-12 col-md-6">
+<div class="mt-3 row justify-content-center" id="selecao-plano" style="max-width: 100%; overflow:auto">
+    <form id="form-vendas" class="d-block d-md-flex" onsubmit="Consulta_Tendencias(); return false;">
+        <div class="" style="min-width: 300px; margin-right: 20px;">
             <div class="select text-start">
                 <label for="select-plano" class="form-label">Selecionar plano</label>
                 <select id="select-plano" class="form-select" required>
@@ -19,9 +41,9 @@ include_once('../../templates/headerPcp.php');
             </div>
         </div>
 
-        <div class="col-12 col-md-4">
+        <div class="" style="min-width: 300px; margin-right: 20px">
             <div class="select text-start">
-                <label for="select-pedidos-bloqueados" class="form-label">Considera pedidos bloqueados?</label>
+                <label for="select-pedidos-bloqueados" class="form-label" style="flex-wrap: nowrap;">Pedidos bloqueados?</label>
                 <select id="select-pedidos-bloqueados" class="form-select" required>
                     <option></option>
                     <option value="sim">Sim</option>
@@ -30,12 +52,22 @@ include_once('../../templates/headerPcp.php');
             </div>
         </div>
 
-        <div class="col-12 col-md-2 d-flex align-items-end justify-content-center">
+        <div class="" style="min-width: 300px; margin-right: 20px">
+            <div class="select text-start">
+                <label for="select-simulacao" class="form-label">Simulação</label>
+                <select id="select-simulacao" class="form-select">
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-end justify-content-center" style="min-width: 150px; margin-right: 20px">
             <button type="submit" class="btn btn-geral w-100" style="margin-top: 32px;">Consultar</button>
+        </div>
+        <div class="d-flex align-items-end justify-content-center" style="min-width: 200px;">
+            <button type="button" class="btn btn-geral w-100" style="margin-top: 32px;" onclick="async function modal_simulacoes (){await Consulta_Abc(); $('#modal-simulacao').modal('show'); $('#descricao-simulacao').val('')}; modal_simulacoes();">Nova Simulação</button>
         </div>
     </form>
 </div>
-
 <div class="col-12 div-tendencia mt-3 d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-tendencia" style="width: 100%;">
@@ -95,28 +127,57 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top">
+<div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Simulação</h5>
+                <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
-                <div id="inputs-container" style="justify-content: center; align-items: center; text-align: center"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-salvar" onclick="Simular_Programacao()">
-                    <span><i class="bi bi-floppy"></i></span>
-                    Simular
-                </button>
-            </div>
+            <form id="form-simulacao" onsubmit="async function simulacao (){await Cadastro_Simulacao(); await Consulta_Simulacoes(); await Simular_Programacao(); $('#descricao-simulacao').removeAttr('disabled'); $('#modal-simulacao').modal('hide');}; simulacao(); return false;">
+                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                    <div class="mb-4 col-12">
+                        <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
+                        <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
+                    </div>
+                    <div class="mb-4 col-12">
+                        <h6 class="fw-bold">MARCA</h6>
+                        <div class="row">
+                            <div class="col-12 col-md-3">
+                                <label class="fw-bold">M.POLLO</label>
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca col-12" placeholder="%" />
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <label class="fw-bold">PACO</label>
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca col-12" placeholder="%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 col-12">
+                        <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
+                        <div id="inputs-container" class="row">
+                        </div>
+                    </div>
+                    <div class="mt-5 col-12">
+                        <h6 class="fw-bold">CATEGORIAS</h6>
+                        <div id="inputs-container-categorias" class="row">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-salvar">
+                        <span><i class="bi bi-floppy"></i></span>
+                        Salvar e Simular
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+
+
 <?php
-include_once('../../templates/footerPcp.php');
+include_once('../../templates/footer.php');
 ?>
-<script src="script.js"></script>
+<script src="script1.js"></script>
