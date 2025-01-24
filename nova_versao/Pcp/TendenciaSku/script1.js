@@ -106,8 +106,8 @@ async function Consulta_Tendencias() {
         });
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
-        $('#campo-simualacao').removeClass('d-none');
-        $('#salvar-simulacao').removeClass('d-none');
+        $('#campo-simulacao').removeClass('d-none');
+        $('#nova-simulacao').removeClass('d-none');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
