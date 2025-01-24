@@ -420,6 +420,12 @@ function TabelaTendencia(listaTendencia) {
             data: 'categoria'
         },
         {
+            data: 'class'
+        },       
+        {
+            data: 'classCategoria'
+        },
+        {
             data: 'Ocorrencia em Pedidos',
             render: function (data, type) {
                 return type === 'display' ? data.toLocaleString('pt-BR') : data;
