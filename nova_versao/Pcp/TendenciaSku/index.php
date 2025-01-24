@@ -124,7 +124,7 @@ include_once('../../templates/header.php');
             </div>
             <form id="form-simulacao" onsubmit="async function simulacao (){await Cadastro_Simulacao(); await Consulta_Simulacoes(); await Simular_Programacao(); $('#descricao-simulacao').removeAttr('disabled'); $('#modal-simulacao').modal('hide');}; simulacao(); return false;">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
-                    <div class="select text-start d-none" id="campo-simulacao">
+                    <div class="select mb-4 text-start d-none" id="campo-simulacao">
                         <label for="select-simulacao" class="form-label">Simulação</label>
                         <select id="select-simulacao" class="form-select">
                         </select>
