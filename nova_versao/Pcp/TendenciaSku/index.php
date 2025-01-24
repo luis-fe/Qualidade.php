@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/headerPcp.php');
+include_once('../../templates/header.php');
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
@@ -52,22 +52,12 @@ include_once('../../templates/headerPcp.php');
             </div>
         </div>
 
-        <div class="d-none" style="min-width: 300px; margin-right: 20px" id="campo-simulacao">
-            <div class="select text-start">
-                <label for="select-simulacao" class="form-label">Simulação</label>
-                <select id="select-simulacao" class="form-select">
-                </select>
-            </div>
-        </div>
-
         <div class="d-flex align-items-end justify-content-center" style="min-width: 150px; margin-right: 20px">
             <button type="submit" class="btn btn-geral w-100" style="margin-top: 32px;">Consultar</button>
         </div>
-        <div class="d-flex align-items-end justify-content-center d-none" style="min-width: 200px;" id="nova-simulacao">
-            <button type="button" class="btn btn-geral w-100" style="margin-top: 32px;" onclick="async function modal_simulacoes (){await Consulta_Abc(); $('#modal-simulacao').modal('show'); $('#descricao-simulacao').val('')}; modal_simulacoes();">Nova Simulação</button>
-        </div>
     </form>
 </div>
+
 <div class="col-12 div-tendencia mt-3 d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-tendencia" style="width: 100%;">
@@ -80,8 +70,6 @@ include_once('../../templates/headerPcp.php');
                     <th>Descrição<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Reduzido<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Categoria<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Abc<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Abc Categoria<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Qtd. de Pedidos<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Valor Vendido<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Previsão de Vendas<br><input type="search" class="search-input search-input-tendencia"></th>
@@ -136,11 +124,16 @@ include_once('../../templates/headerPcp.php');
             </div>
             <form id="form-simulacao" onsubmit="async function simulacao (){await Cadastro_Simulacao(); await Consulta_Simulacoes(); await Simular_Programacao(); $('#descricao-simulacao').removeAttr('disabled'); $('#modal-simulacao').modal('hide');}; simulacao(); return false;">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
-                    <div class="mb-4 col-12">
+                    <div class="select text-start d-none" id="campo-simulacao">
+                        <label for="select-simulacao" class="form-label">Simulação</label>
+                        <select id="select-simulacao" class="form-select">
+                        </select>
+                    </div>
+                    <div class="mb-4 col-12 d-none" id="campo-desc-descricao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
-                    <div class="mb-4 col-12">
+                    <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
                             <div class="col-12 col-md-3">
@@ -178,6 +171,6 @@ include_once('../../templates/headerPcp.php');
 
 
 <?php
-include_once('../../templates/footerPcp.php');
+include_once('../../templates/footer.php');
 ?>
-<script src="script1.js"></script>
+<script src="script.js"></script>
