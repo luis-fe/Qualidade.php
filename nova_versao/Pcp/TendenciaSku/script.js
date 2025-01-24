@@ -406,10 +406,12 @@ function TabelaTendencia(listaTendencia) {
                 if (simulacaoValue === "") {
                     $('#inputs-container-categorias').empty();
                     $('#inputs-container').empty();
+                    $('#inputs-container-marcas').addClass('d-none')
                 } else {
                         await Consulta_Abc_Plano();
                         await Consulta_Categorias();
                         await Consulta_Simulacao_Especifica();
+                        $('#inputs-container-marcas').removeClass('d-none')
                 }
             }
         },
