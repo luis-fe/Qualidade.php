@@ -17,7 +17,7 @@ $(document).ready(async () => {
     });
 
     $('#select-simulacao').on('change', async function () {
-        $('#inputs-container-marcas').empty();
+        $('#inputs-container-marcas').removeClass('d-none')
         await Consulta_Abc_Plano();
         await Consulta_Categorias()
         await Consulta_Simulacao_Especifica();
