@@ -52,7 +52,7 @@ include_once('../../templates/headerPcp.php');
             </div>
         </div>
 
-        <div class="" style="min-width: 300px; margin-right: 20px">
+        <div class="d-none" style="min-width: 300px; margin-right: 20px" id="campo-simulacao">
             <div class="select text-start">
                 <label for="select-simulacao" class="form-label">Simulação</label>
                 <select id="select-simulacao" class="form-select">
@@ -63,7 +63,7 @@ include_once('../../templates/headerPcp.php');
         <div class="d-flex align-items-end justify-content-center" style="min-width: 150px; margin-right: 20px">
             <button type="submit" class="btn btn-geral w-100" style="margin-top: 32px;">Consultar</button>
         </div>
-        <div class="d-flex align-items-end justify-content-center" style="min-width: 200px;">
+        <div class="d-flex align-items-end justify-content-center d-none" style="min-width: 200px;" id="nova-simulacao">
             <button type="button" class="btn btn-geral w-100" style="margin-top: 32px;" onclick="async function modal_simulacoes (){await Consulta_Abc(); $('#modal-simulacao').modal('show'); $('#descricao-simulacao').val('')}; modal_simulacoes();">Nova Simulação</button>
         </div>
     </form>
