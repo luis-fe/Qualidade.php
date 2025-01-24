@@ -1,17 +1,26 @@
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
-    Consulta_Categorias()
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
         allowClear: false,
         width: '100%'
     });
 
+    console.log('teste')
+
     $('#select-simulacao').select2({
         placeholder: "Selecione uma simulação",
         allowClear: false,
-        width: '100%'
+        width: '100%',
+        dropdownParent: $('#modal-simulacao')
+    });
+
+    $('#select-simulacao').on('change', async function () {
+        $('#inputs-container-marcas').empty();
+        await Consulta_Abc_Plano();
+        await Consulta_Categorias()
+        await Consulta_Simulacao_Especifica();
     });
 
     $('#select-pedidos-bloqueados').select2({
@@ -21,6 +30,7 @@ $(document).ready(async () => {
     });
 
     $('#btn-vendas').addClass('btn-menu-clicado');
+
 });
 
 
@@ -106,8 +116,6 @@ async function Consulta_Tendencias() {
         });
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
-        $('#campo-simulacao').removeClass('d-none');
-        $('#nova-simulacao').removeClass('d-none');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
@@ -335,8 +343,6 @@ const Consulta_Simulacao_Especifica = async () => {
             return;
         }
 
-        $('#modal-simulacao').modal('show');
-
         const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
         campos.forEach(campo => {
             if (data[0][campo]) {
@@ -391,10 +397,33 @@ function TabelaTendencia(listaTendencia) {
             title: 'Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                await Consulta_Abc_Plano();
-                await Consulta_Simulacao_Especifica();
-                $('#descricao-simulacao').val($('#select-simulacao').val());
-                $('#descricao-simulacao').attr('disabled', true);
+                $('#modal-simulacao').modal('show');
+                $('#campo-simulacao').removeClass('d-none');
+                $('#campo-desc-simulacao').addClass('d-none');
+
+                const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
+
+                if (simulacaoValue === "") {
+                    $('#inputs-container-categorias').empty();
+                    $('#inputs-container').empty();
+                } else {
+                        await Consulta_Abc_Plano();
+                        await Consulta_Categorias();
+                        await Consulta_Simulacao_Especifica();
+                }
+            }
+        },
+        {
+            text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Nova Simulação',
+            title: 'Nova Simulação',
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('#modal-simulacao').modal('show');
+                $('#campo-simulacao').addClass('d-none');
+                $('#campo-desc-simulacao').removeClass('d-none');
+                $('#inputs-container-marcas').removeClass('d-none');
+                await Consulta_Abc();
+                Consulta_Categorias();
             },
         },
         ],
