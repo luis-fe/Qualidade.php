@@ -1,7 +1,15 @@
 $(document).ready(async () => {
     Consulta_Planos();
+    Consulta_Simulacoes();
+    Consulta_Categorias()
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
+        allowClear: false,
+        width: '100%'
+    });
+
+    $('#select-simulacao').select2({
+        placeholder: "Selecione uma simulação",
         allowClear: false,
         width: '100%'
     });
@@ -12,8 +20,42 @@ $(document).ready(async () => {
         width: '100%'
     });
 
-    $('#btn-vendas').addClass('btn-menu-clicado')
+    $('#btn-vendas').addClass('btn-menu-clicado');
 });
+
+
+async function Consulta_Simulacoes() {
+    $('#loadingModal').modal('show');
+    $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+            acao: 'Consulta_Simulacoes',
+        },
+        success: function (data) {
+            $('#select-simulacao').empty();
+            $('#select-simulacao').append('<option value="" disabled selected>Selecione uma simulação...</option>');
+            data.forEach(function (item) {
+                $('#select-simulacao').append(`
+                        <option value="${item['nomeSimulacao']}">
+                            ${item['nomeSimulacao']}
+                        </option>
+                    `);
+            });
+            $('#loadingModal').modal('hide');
+            const descricao = $('#descricao-simulacao').val();
+            console.log(descricao)
+            $('#select-simulacao').val(descricao);
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Erro ao consultar planos:', error);
+            $('#loadingModal').modal('hide');
+        }
+    });
+}
+
 
 function Consulta_Planos() {
     $('#loadingModal').modal('show');
@@ -48,10 +90,12 @@ async function Consulta_Tendencias() {
     try {
         const requestData = {
             acao: "Consulta_Tendencias",
+
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
             }
+
         };
 
         const response = await $.ajax({
@@ -62,7 +106,6 @@ async function Consulta_Tendencias() {
         });
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
-        Consulta_Abc_Plano()
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
@@ -71,66 +114,109 @@ async function Consulta_Tendencias() {
     }
 };
 
-let arraySimulaAbc = [];
-
 async function Simular_Programacao() {
     $('#loadingModal').modal('show');
-
-    // Inicializando os arrays para labels e valores
-    let labelsArray = [];
-    let valuesArray = [];
-
     try {
-        // Iterando sobre os inputs dentro de #inputs-container
-        $('#inputs-container .mb-3').each(function () {
-            const label = $(this).find('label').text().trim(); // Texto da label
-            let value = $(this).find('input').val(); // Valor da input (com máscara de %)
-
-            // Remover o símbolo '%' e espaços extras
-            value = value.replace('%', '').trim();
-
-            // Substituir a vírgula por ponto, caso exista
-            value = value.replace(',', '.');
-
-            // Converter para número decimal
-            value = parseFloat(value);
-
-            // Adicionar ao array apenas se o valor for válido
-            if (!isNaN(value) && value !== null && value !== undefined) {
-                labelsArray.push(label);           // Adiciona o label no array de labels
-                valuesArray.push(Number(value.toFixed(1))); // Adiciona o valor formatado no array de valores
-            }
-        });
-
-        // Estruturar os dados no formato requerido pela API
         const requestData = {
             acao: "Simular_Programacao",
+
             dados: {
-                codPlano: $('#select-plano').val(),
-                consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
-                arraySimulaAbc: [labelsArray, valuesArray] // Formato correto do arraySimulaAbc
+                "codPlano": $('#select-plano').val(),
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "nomeSimulacao": $('#select-simulacao').val()
             }
+
         };
 
-        // Enviar os dados para a API
         const response = await $.ajax({
             type: 'POST',
             url: 'requests.php',
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-
-        // Manipular a resposta da API
         TabelaTendencia(response);
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error');
+        Mensagem_Canto('Erro', 'error')
     } finally {
         $('#loadingModal').modal('hide');
     }
-}
+};
 
+async function Cadastro_Simulacao() {
+    $('#loadingModal').modal('show');
+    try {
+        const categorias = [];
+        const percentuais_categorias = [];
 
+        $('.input-categoria').each(function () {
+            const categoria = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (categoria && !isNaN(percentual)) {
+                categorias.push(categoria);
+                percentuais_categorias.push(percentual);
+            }
+        });
+
+        const abcs = [];
+        const percentuais_abc = [];
+
+        $('.input-abc').each(function () {
+            const abc = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (abc && !isNaN(percentual)) {
+                abcs.push(abc);
+                percentuais_abc.push(percentual);
+            }
+        });
+
+        const marcas = [];
+        const percentuais_marca = [];
+
+        $('.input-marca').each(function () {
+            const marca = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (marca && !isNaN(percentual)) {
+                marcas.push(marca);
+                percentuais_marca.push(percentual);
+            }
+        });
+
+        const requestData = {
+            acao: "Cadastro_Simulacao",
+            dados: {
+                "nomeSimulacao": $('#descricao-simulacao').val(),
+                arrayAbc: [
+                    abcs,
+                    percentuais_abc
+
+                ],
+                arrayCategoria: [
+                    categorias,
+                    percentuais_categorias
+                ],
+                arrayMarca: [
+                    marcas,
+                    percentuais_marca
+                ]
+            }
+        };
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
 
 const Consulta_Abc_Plano = async () => {
     try {
@@ -144,21 +230,122 @@ const Consulta_Abc_Plano = async () => {
             }
         });
 
-        // Limpar o contêiner antes de adicionar novos inputs
         const inputsContainer = $('#inputs-container');
         inputsContainer.empty();
 
-        data[0]['3- Detalhamento:'].forEach((item, index) => {
+        data[0]['3- Detalhamento:'].forEach((item) => {
             const inputHtml = `
-                <div class="mb-3 d-flex align-items-center justify-content-center">
-                    <label for="input-${item.nomeABC}" class="form-label" style="color: black; margin-bottom: 0; margin-right: 10px"> ${item.nomeABC}</label>
-                    <input type="text" class="form-control w-50 input-abc" id="input-abc">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}">
                 </div>
-                    `;
+            `;
             inputsContainer.append(inputHtml);
         });
+
         $('.input-abc').mask("##0,00%", {
             reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Abc = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Abc',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
+                </div>
+            `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-abc').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Categorias = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Categorias',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container-categorias');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">${item.nomeCategoria}</label>
+                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
+                    </div>
+                `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-categoria').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Simulacao_Especifica = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Simulacao_Especifica',
+                simulacao: $('#select-simulacao').val()
+            }
+        });
+
+        if (!data) {
+            Mensagem_Canto('Não possui simulação para editar', 'warning');
+            $('#modal-simulacao').modal('hide');
+            return;
+        }
+
+        $('#modal-simulacao').modal('show');
+
+        const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
+        campos.forEach(campo => {
+            if (data[0][campo]) {
+                data[0][campo].forEach(item => {
+                    const key = item.class || item.categoria || item.marca;
+                    const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
+                    if (input.length) {
+                        input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
+                    }
+                });
+            }
         });
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
@@ -202,7 +389,10 @@ function TabelaTendencia(listaTendencia) {
             title: 'Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-simulacao').modal('show')
+                await Consulta_Abc_Plano();
+                await Consulta_Simulacao_Especifica();
+                $('#descricao-simulacao').val($('#select-simulacao').val());
+                $('#descricao-simulacao').attr('disabled', true);
             },
         },
         ],
@@ -227,12 +417,6 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'categoria'
         },
-        {
-            data: 'class'
-        },
-        {
-            data: 'classCategoria'
-        },    
         {
             data: 'Ocorrencia em Pedidos',
             render: function (data, type) {
