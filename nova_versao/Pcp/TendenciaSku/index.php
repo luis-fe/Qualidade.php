@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/header.php');
+include_once('../../templates/headerPcp.php');
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
@@ -171,6 +171,6 @@ include_once('../../templates/header.php');
 
 
 <?php
-include_once('../../templates/footer.php');
+include_once('../../templates/footerPcp.php');
 ?>
 <script src="script.js"></script>
