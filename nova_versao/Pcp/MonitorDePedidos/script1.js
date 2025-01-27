@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     $('#btn-pedidos').addClass('btn-menu-clicado')
     const dataAtual = new Date();
@@ -10,7 +10,7 @@ $(function() {
     $('#inicio-emissao').val(data);
     $('#final-emissao').val(data);
 
-    $("#dropdownToggle").on("click", function(event) {
+    $("#dropdownToggle").on("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -31,12 +31,12 @@ $(function() {
         }
     });
 
-    $menu.on("click", function(event) {
+    $menu.on("click", function (event) {
         event.stopPropagation();
     });
 
     // Fecha o menu ao clicar fora
-    $(document).on("click", function() {
+    $(document).on("click", function () {
         $menu.hide();
     });
 
@@ -100,7 +100,7 @@ function Consulta_Notas() {
         data: {
             acao: 'Consulta_Notas',
         },
-        success: function(data) {
+        success: function (data) {
             const $menu = $("#menu-notas");
             $menu.empty();
 
@@ -117,7 +117,7 @@ function Consulta_Notas() {
                 $menu.append($option); // Adiciona a opção ao dropdown
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Erro ao consultar planos:', error);
         }
     });
@@ -160,7 +160,7 @@ const ConsultaPedidos = async () => {
         const emissaoinicial = $('#inicio-emissao').val();
         const emissaofinal = $('#final-emissao').val();
         const tipoNota = $('#menu-notas input[type="checkbox"]:checked')
-            .map(function() {
+            .map(function () {
                 return $(this).val();
             })
             .get()
@@ -197,7 +197,7 @@ const ConsultaPedidos = async () => {
         }
     } catch (error) {
         console.log('Erro:', error);
-    } finally {}
+    } finally { }
 }
 
 const Consultar_Ops = async (datainicio, datafim) => {
@@ -302,12 +302,9 @@ async function Filtro_Monitor_Ops(Pedidos) {
             $('#modal-filtros').modal('hide');
             PedidosSelecionados = [];
         } else {
-            await TabelaOps(response['resposta'][0]['6 -Detalhamento']);
-            Consultar_Skus(Pedidos);
-
+            TabelaOps(response['resposta'][0]['6 -Detalhamento']);
+            Consultar_Skus_Pedidos(Pedidos);
         }
-
-
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
     } finally {
@@ -315,7 +312,7 @@ async function Filtro_Monitor_Ops(Pedidos) {
     }
 }
 
-async function Consultar_Skus(Pedidos) {
+async function Consultar_Skus_Pedidos(Pedidos) {
     $('#loadingModal').modal('show');
     const dados = {
         "dataInico": $('#inicio-venda').val(),
@@ -323,6 +320,32 @@ async function Consultar_Skus(Pedidos) {
         "arrayPedidos": Pedidos
     }
 
+    var requestData = {
+        acao: "Consultar_Skus_Pedidos",
+        dados: dados
+    };
+    try {
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+        TabelaSkus(response['resposta'][0]['6 -Detalhamento']);
+        $('#modal-filtros').modal('hide');
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+async function Consultar_Skus() {
+    $('#loadingModal').modal('show');
+    const dados = {
+        "dataInico": $('#inicio-venda').val(),
+        "dataFim": $('#final-venda').val(),
+    }
     var requestData = {
         acao: "Consultar_Skus",
         dados: dados
@@ -334,7 +357,7 @@ async function Consultar_Skus(Pedidos) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-        await TabelaSkus(response['resposta'][0]['6 -Detalhamento']);
+        TabelaSkus(response['resposta'][0]['6 -Detalhamento']);
         $('#modal-filtros').modal('hide');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
@@ -366,10 +389,10 @@ function TabelaPedidos(listaPedidos) {
             text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
             title: 'Fila de Reposição',
             className: 'btn-tabelas'
-        }, ],
+        },],
         columns: [{
             data: '02-Pedido',
-            render: function(data, type, row) {
+            render: function (data, type, row) {
                 return `<span class="codPedidoClicado" data-codigoPedido="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
         }, {
@@ -410,7 +433,7 @@ function TabelaPedidos(listaPedidos) {
             data: '18-Sugestao(Pedido)'
         }, {
             data: '23-% qtd cor',
-            render: function(data) {
+            render: function (data) {
                 return data + '%'; // Adiciona o símbolo de porcentagem
             }
         }, {
@@ -425,14 +448,14 @@ function TabelaPedidos(listaPedidos) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        drawCallback: function() {
+        drawCallback: function () {
             const paginateHtml = $('.dataTables_paginate').html();
 
             $('#pagination-pedidos').html(paginateHtml);
 
             $('#pagination-pedidos span').remove();
 
-            $('#pagination-pedidos a').off('click').on('click', function(e) {
+            $('#pagination-pedidos a').off('click').on('click', function (e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('previous') && tabela.page() > 0) {
@@ -442,7 +465,7 @@ function TabelaPedidos(listaPedidos) {
                 }
             });
 
-            $('#itens-pedidos').on('input', function() {
+            $('#itens-pedidos').on('input', function () {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
@@ -453,17 +476,17 @@ function TabelaPedidos(listaPedidos) {
         }
     });
 
-    $('.search-input').off('keyup change').on('keyup change', function() {
+    $('.search-input').off('keyup change').on('keyup change', function () {
         const columnIndex = $(this).closest('th').index();
         const searchTerm = $(this).val();
         tabela.column(columnIndex).search(searchTerm).draw();
     });
 
-    $('.search-input').on('click', function(e) {
+    $('.search-input').on('click', function (e) {
         e.stopPropagation();
     });
 
-    $('.search-input').on('keydown', function(e) {
+    $('.search-input').on('keydown', function (e) {
         if (e.key === "Enter") {
             e.preventDefault();
             e.stopPropagation();
@@ -486,61 +509,61 @@ function TabelaOps(listaOps) {
         data: listaOps,
         dom: 'Bfrtip',
         buttons: [{
-                extend: 'excelHtml5',
-                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-                title: 'Fila de Reposição',
-                className: 'btn-tabelas'
-            },
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+            title: 'Fila de Reposição',
+            className: 'btn-tabelas'
+        },
 
-            {
-                text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Filtrar Pedidos',
-                title: 'Filtrar Pedidos',
-                className: 'btn-tabelas',
-                action: async function(e, dt, node, config) {
-                    Consultar_Lista_Pedidos();
-                    $('#modal-filtros').modal('show')
-                },
+        {
+            text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Filtrar Pedidos',
+            title: 'Filtrar Pedidos',
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                Consultar_Lista_Pedidos();
+                $('#modal-filtros').modal('show')
             },
-            {
-                text: "<i class='bi bi-arrow-return-left' style='margin-right: 5px;'></i> Sku's",
-                title: "Sku's",
-                className: 'btn-tabelas',
-                action: async function(e, dt, node, config) {
-                    $('.div-tabela-2').removeClass('d-none');
-                    $('.div-tabela-1').addClass('d-none');
-                },
+        },
+        {
+            text: "<i class='bi bi-arrow-return-left' style='margin-right: 5px;'></i> Sku's",
+            title: "Sku's",
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('.div-tabela-2').removeClass('d-none');
+                $('.div-tabela-1').addClass('d-none');
             },
+        },
         ],
         columns: [{
-                data: 'numeroop',
-                render: function(data, type) {
-                    return `<span class="codOpClicado" data-codigoOp="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
-                }
-            },
-            {
-                data: 'codItemPai'
-            },
-            {
-                data: 'descricao'
-            },
-            {
-                data: 'codFaseAtual'
-            },
-            {
-                data: 'nome'
-            },
-            {
-                data: 'Ocorrencia Pedidos'
-            },
-            {
-                data: 'AtendePçs'
-            },
-            {
-                data: 'prioridade'
-            },
-            {
-                data: 'dataPrevisaoTermino'
+            data: 'numeroop',
+            render: function (data, type) {
+                return `<span class="codOpClicado" data-codigoOp="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
+        },
+        {
+            data: 'codItemPai'
+        },
+        {
+            data: 'descricao'
+        },
+        {
+            data: 'codFaseAtual'
+        },
+        {
+            data: 'nome'
+        },
+        {
+            data: 'Ocorrencia Pedidos'
+        },
+        {
+            data: 'AtendePçs'
+        },
+        {
+            data: 'prioridade'
+        },
+        {
+            data: 'dataPrevisaoTermino'
+        }
         ],
         language: {
             paginate: {
@@ -551,14 +574,14 @@ function TabelaOps(listaOps) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        drawCallback: function() {
+        drawCallback: function () {
             const paginateHtml = $('.dataTables_paginate').html();
 
             $('#pagination-ops').html(paginateHtml);
 
             $('#pagination-ops span').remove();
 
-            $('#pagination-ops a').off('click').on('click', function(e) {
+            $('#pagination-ops a').off('click').on('click', function (e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('previous') && tabela.page() > 0) {
@@ -568,7 +591,7 @@ function TabelaOps(listaOps) {
                 }
             });
 
-            $('#itens-ops').on('input', function() {
+            $('#itens-ops').on('input', function () {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
@@ -579,17 +602,17 @@ function TabelaOps(listaOps) {
         }
     });
 
-    $('.search-input-ops').off('keyup change').on('keyup change', function() {
+    $('.search-input-ops').off('keyup change').on('keyup change', function () {
         const columnIndex = $(this).closest('th').index();
         const searchTerm = $(this).val();
         tabela.column(columnIndex).search(searchTerm).draw();
     });
 
-    $('.search-input-ops').on('click', function(e) {
+    $('.search-input-ops').on('click', function (e) {
         e.stopPropagation();
     });
 
-    $('.search-input-ops').on('keydown', function(e) {
+    $('.search-input-ops').on('keydown', function (e) {
         if (e.key === "Enter") {
             e.preventDefault();
             e.stopPropagation();
@@ -616,22 +639,22 @@ function TabelaSemOps(listaSemOps) {
             text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
             title: 'Fila de Reposição',
             className: 'btn-tabelas'
-        }, ],
+        },],
         columns: [{
-                data: 'codEngenharia'
-            },
-            {
-                data: 'tamanho'
-            },
-            {
-                data: 'codCor'
-            },
-            {
-                data: 'nomeSKU'
-            },
-            {
-                data: 'QtdSaldo'
-            },
+            data: 'codEngenharia'
+        },
+        {
+            data: 'tamanho'
+        },
+        {
+            data: 'codCor'
+        },
+        {
+            data: 'nomeSKU'
+        },
+        {
+            data: 'QtdSaldo'
+        },
         ],
         language: {
             paginate: {
@@ -642,14 +665,14 @@ function TabelaSemOps(listaSemOps) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        drawCallback: function() {
+        drawCallback: function () {
             const paginateHtml = $('.dataTables_paginate').html();
 
             $('#pagination-sem-ops').html(paginateHtml);
 
             $('#pagination-sem-ops span').remove();
 
-            $('#pagination-sem-ops a').off('click').on('click', function(e) {
+            $('#pagination-sem-ops a').off('click').on('click', function (e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('previous') && tabela.page() > 0) {
@@ -659,7 +682,7 @@ function TabelaSemOps(listaSemOps) {
                 }
             });
 
-            $('#itens-sem-ops').on('input', function() {
+            $('#itens-sem-ops').on('input', function () {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
@@ -670,17 +693,17 @@ function TabelaSemOps(listaSemOps) {
         }
     });
 
-    $('.search-input-sem-ops').off('keyup change').on('keyup change', function() {
+    $('.search-input-sem-ops').off('keyup change').on('keyup change', function () {
         const columnIndex = $(this).closest('th').index();
         const searchTerm = $(this).val();
         tabela.column(columnIndex).search(searchTerm).draw();
     });
 
-    $('.search-input-sem-ops').on('click', function(e) {
+    $('.search-input-sem-ops').on('click', function (e) {
         e.stopPropagation();
     });
 
-    $('.search-input-sem-ops').on('keydown', function(e) {
+    $('.search-input-sem-ops').on('keydown', function (e) {
         if (e.key === "Enter") {
             e.preventDefault();
             e.stopPropagation();
@@ -707,30 +730,30 @@ function ListaPedidos(listaPedidos) {
             text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
             title: 'Fila de Reposição',
             className: 'btn-tabelas'
-        }, ],
+        },],
         columns: [{
-                data: null,
-                render: function(row) {
-                    return `<div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
+            data: null,
+            render: function (row) {
+                return `<div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
                     <input type="checkbox" class="row-checkbox" value="${row.codLote}">
                 </div>`;
-                }
-            },
-            {
-                data: 'codPedido'
-            },
-            {
-                data: 'dataEmissao'
-            },
-            {
-                data: 'codCliente'
-            },
-            {
-                data: 'nome_cli'
-            },
-            {
-                data: 'codTipoNota'
-            },
+            }
+        },
+        {
+            data: 'codPedido'
+        },
+        {
+            data: 'dataEmissao'
+        },
+        {
+            data: 'codCliente'
+        },
+        {
+            data: 'nome_cli'
+        },
+        {
+            data: 'codTipoNota'
+        },
         ],
         language: {
             paginate: {
@@ -741,14 +764,14 @@ function ListaPedidos(listaPedidos) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        drawCallback: function() {
+        drawCallback: function () {
             const paginateHtml = $('.dataTables_paginate').html();
 
             $('#pagination-lista-pedidos').html(paginateHtml);
 
             $('#pagination-lista-pedidos span').remove();
 
-            $('#pagination-lista-pedidos a').off('click').on('click', function(e) {
+            $('#pagination-lista-pedidos a').off('click').on('click', function (e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('previous') && tabela.page() > 0) {
@@ -758,7 +781,7 @@ function ListaPedidos(listaPedidos) {
                 }
             });
 
-            $('#itens-lista-pedidos').on('input', function() {
+            $('#itens-lista-pedidos').on('input', function () {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
@@ -769,17 +792,17 @@ function ListaPedidos(listaPedidos) {
         }
     });
 
-    $('.search-input-lista-pedidos').off('keyup change').on('keyup change', function() {
+    $('.search-input-lista-pedidos').off('keyup change').on('keyup change', function () {
         const columnIndex = $(this).closest('th').index();
         const searchTerm = $(this).val();
         tabela.column(columnIndex).search(searchTerm).draw();
     });
 
-    $('.search-input-lista-pedidos').on('click', function(e) {
+    $('.search-input-lista-pedidos').on('click', function (e) {
         e.stopPropagation();
     });
 
-    $('.search-input-lista-pedidos').on('keydown', function(e) {
+    $('.search-input-lista-pedidos').on('keydown', function (e) {
         if (e.key === "Enter") {
             e.preventDefault();
             e.stopPropagation();
@@ -791,7 +814,7 @@ function ListaPedidos(listaPedidos) {
 
     async function VerificaPedidosSelecionados() {
         PedidosSelecionados.length = 0;
-        table.rows().every(function() {
+        table.rows().every(function () {
             const checkbox = $(this.node()).find('.row-checkbox');
             if (checkbox.is(':checked')) {
                 const row = this.data();
@@ -842,55 +865,64 @@ function TabelaSkus(listaSkus) {
         data: listaSkus,
         dom: 'Bfrtip',
         buttons: [{
-                extend: 'excelHtml5',
-                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-                title: 'Fila de Reposição',
-                className: 'btn-tabelas'
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+            title: 'Fila de Reposição',
+            className: 'btn-tabelas'
+        },
+        {
+            text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Filtrar Pedidos',
+            title: 'Filtrar Pedidos',
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                Consultar_Lista_Pedidos();
+                $('#modal-filtros').modal('show')
             },
-            {
-                text: "<i class='bi bi-arrow-return-left' style='margin-right: 5px;'></i> Voltar",
-                title: "Voltar",
-                className: 'btn-tabelas',
-                action: async function(e, dt, node, config) {
-                    $('.div-tabela-2').addClass('d-none');
-                    $('.div-tabela-1').removeClass('d-none');
+        },
+        {
+            text: "<i class='bi bi-arrow-return-left' style='margin-right: 5px;'></i> Op's",
+            title: "Voltar",
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('.div-tabela-2').addClass('d-none');
+                $('.div-tabela-1').removeClass('d-none');
 
-                },
             },
+        },
         ],
         columns: [{
-                data: 'numeroop'
-            },
-            {
-                data: null,
-                render: function(data, type, row) {
-                    return `${row['codItemPai']}.${row['seqTamanho']}.${row['codCor']}`;
-                }
-            },
-            {
-                data: 'codreduzido'
-            },
-            {
-                data: 'descricao'
-            },
-            {
-                data: 'Ocorrencia Pedidos'
-            },
-            {
-                data: 'AtendePçs'
-            },
-            {
-                data: 'qtdOP'
-            },
-            {
-                data: 'codFaseAtual'
-            },
-            {
-                data: 'nome'
-            },
-            {
-                data: 'prioridade'
-            },
+            data: 'numeroop'
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                return `${row['codItemPai']}.${row['seqTamanho']}.${row['codCor']}`;
+            }
+        },
+        {
+            data: 'codreduzido'
+        },
+        {
+            data: 'descricao'
+        },
+        {
+            data: 'Ocorrencia Pedidos'
+        },
+        {
+            data: 'AtendePçs'
+        },
+        {
+            data: 'qtdOP'
+        },
+        {
+            data: 'codFaseAtual'
+        },
+        {
+            data: 'nome'
+        },
+        {
+            data: 'prioridade'
+        },
 
         ],
         language: {
@@ -902,14 +934,14 @@ function TabelaSkus(listaSkus) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        drawCallback: function() {
+        drawCallback: function () {
             const paginateHtml = $('.dataTables_paginate').html();
 
             $('#pagination-skus').html(paginateHtml);
 
             $('#pagination-skus span').remove();
 
-            $('#pagination-skus a').off('click').on('click', function(e) {
+            $('#pagination-skus a').off('click').on('click', function (e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('previous') && tabela.page() > 0) {
@@ -919,7 +951,7 @@ function TabelaSkus(listaSkus) {
                 }
             });
 
-            $('#itens-skus').on('input', function() {
+            $('#itens-skus').on('input', function () {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
@@ -930,17 +962,17 @@ function TabelaSkus(listaSkus) {
         }
     });
 
-    $('.search-input-lista-skus').off('keyup change').on('keyup change', function() {
+    $('.search-input-lista-skus').off('keyup change').on('keyup change', function () {
         const columnIndex = $(this).closest('th').index();
         const searchTerm = $(this).val();
         tabela.column(columnIndex).search(searchTerm).draw();
     });
 
-    $('.search-input-lista-skus').on('click', function(e) {
+    $('.search-input-lista-skus').on('click', function (e) {
         e.stopPropagation();
     });
 
-    $('.search-input-lista-skus').on('keydown', function(e) {
+    $('.search-input-lista-skus').on('keydown', function (e) {
         if (e.key === "Enter") {
             e.preventDefault();
             e.stopPropagation();
