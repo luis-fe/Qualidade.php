@@ -7,8 +7,6 @@ if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
     header("Location: ../../indexPcp.php");
 }
 
-
-
 function jsonResponse($data)
 {
     header('Content-Type: application/json');
@@ -69,6 +67,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consultar_Skus':
                     header('Content-Type: application/json');
                     echo (ConsultaSkus('1', $dados));
+                    break;
+                case 'Consultar_Skus_Pedidos':
+                    header('Content-Type: application/json');
+                    echo (ConsultaSkusPedido('1', $dados));
                     break;
 
                 default:
@@ -266,10 +268,49 @@ function FiltrosOps($empresa, $dados)
 }
 
 
-function ConsultaSkus($empresa, $dados)
+function ConsultaSkusPedido($empresa, $dados)
 {
     $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Op_tam_corPedidos";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
+    }
+
+    curl_close($ch);
+
+    return json_encode($response);
+}
+
+function ConsultaSkus($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/Op_tam_cor";
 
     $ch = curl_init($apiUrl);
 
