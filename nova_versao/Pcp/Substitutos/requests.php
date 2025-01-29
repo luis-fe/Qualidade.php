@@ -4,9 +4,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
     $username = $_SESSION['username'];
     $empresa = $_SESSION['empresa'];
 } else {
-    header("Location: ../../index_.php");
+    header("Location: ../../indexPcp.php");
 }
-
 
 function jsonResponse($data)
 {
