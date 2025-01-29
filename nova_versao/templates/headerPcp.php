@@ -510,6 +510,9 @@
                     <a href="../../Pcp/PlanoDeProducao/" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Plano de Produção <!-- PCP -->
                     </a>
+                    <a href="../../Pcp/Substitutos/" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Substitutos <!-- PCP -->
+                    </a>
                     <!-- <a href="#" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> QR CODE das caixas WMS
                     </a> -->
