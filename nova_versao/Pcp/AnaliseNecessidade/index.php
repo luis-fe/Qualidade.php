@@ -56,6 +56,9 @@ include_once('../../templates/headerPcp.php');
                     <th>Lote Múltiplo<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Lead Time<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Fator de Conversão<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Item Substituto<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Saldo<br><input type="search" class="search-input search-input-analise"></th>
                 </tr>
             </thead>
             <tbody>
@@ -75,6 +78,7 @@ include_once('../../templates/headerPcp.php');
 
 <div class="row mt-3">
     <div class="col-12 col-md-6 div-naturezas d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+        <p class="fs-4 fw-bold text-dark">Naturezas</p>
         <div class="div-tabela" style="max-width: 100%; overflow: auto;">
             <table class="table table-bordered" id="table-naturezas" style="width: 100%;">
                 <thead>
@@ -101,6 +105,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 
     <div class="col-12 col-md-6 div-comprometido d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+        <p class="fs-4 fw-bold text-dark">Comprometido com Requisições</p>
         <div class="div-tabela" style="max-width: 100%; overflow: auto;">
             <table class="table table-bordered" id="table-comprometido" style="width: 100%;">
                 <thead>
@@ -128,6 +133,7 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 <div class="col-12 mt-3 div-comprometido-compras d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+    <p class="fs-4 fw-bold text-dark">Solicitações e Pedidos de Compra</p>
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-comprometido-compras" style="width: 100%;">
             <thead>
@@ -208,4 +214,4 @@ include_once('../../templates/headerPcp.php');
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script.js"></script>
+<script src="script1.js"></script>
