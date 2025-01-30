@@ -449,32 +449,56 @@ function TabelaPedidos(listaPedidos) {
             zeroRecords: "Nenhum registro encontrado"
         },
         drawCallback: function () {
-            const paginateHtml = $('.dataTables_paginate').html();
-
-            $('#pagination-pedidos').html(paginateHtml);
-
+            $('#pagination-pedidos').html($('.dataTables_paginate').html());
             $('#pagination-pedidos span').remove();
-
             $('#pagination-pedidos a').off('click').on('click', function (e) {
                 e.preventDefault();
-
-                if ($(this).hasClass('previous') && tabela.page() > 0) {
-                    tabela.page(tabela.page() - 1).draw('page');
-                } else if ($(this).hasClass('next') && tabela.page() < tabela.page.info().pages - 1) {
-                    tabela.page(tabela.page() + 1).draw('page');
-                }
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
             });
-
             $('#itens-pedidos').on('input', function () {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
                 }
             });
-
             $('.dataTables_paginate').hide();
-        }
+        },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            // Helper para converter strings para número
+            const intVal = (i) => {
+                if (typeof i === 'string') {
+                    // Remover "R$", pontos e substituir vírgula por ponto
+                    return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
+                } else if (typeof i === 'number') {
+                    return i;
+                }
+                return 0;
+            };
+
+            // Colunas que precisam de total
+            const columnsToSum = ['12-qtdPecas Fat', '08-vlrSaldo', '16-Valor Atende por Cor', '22-Valor Atende por Cor(Distrib)', 'Saldo +Sugerido', '15-Qtd Atende p/Cor', '21-Qnt Cor(Distrib)'];
+
+            columnsToSum.forEach((columnName, idx) => {
+                const colIndex = idx + 11; // Índice da coluna no DataTables
+
+                // Total considerando todos os dados após filtro
+                const total = api.column(colIndex, {
+                    filter: 'applied'
+                }).data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                // Atualizar o rodapé da coluna
+                $(api.column(colIndex).footer()).html(
+                    columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
+                );
+            });
+        },
     });
+
+
 
     $('.search-input').off('keyup change').on('keyup change', function () {
         const columnIndex = $(this).closest('th').index();
