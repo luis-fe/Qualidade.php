@@ -264,6 +264,15 @@ async function TabelaAnalise(listaAnalise) {
         {
             data: 'fatorConversao'
         },
+        {
+            data: '15-CodSubstituto'
+        },
+        {
+            data: '16-NomeSubstituto'
+        },
+        {
+            data: '17-SaldoSubs'
+        },
         ],
         language: {
             paginate: {
