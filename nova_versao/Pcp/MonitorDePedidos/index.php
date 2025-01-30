@@ -135,13 +135,13 @@ include_once('../../templates/headerPcp.php');
                     <th>Entregas Solicitadas<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Entregas Faturadas<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Entregas Restantes<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Qtd. Peças Faturadas<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Saldo R$<br><input type="search" class="search-input search-input-pedidos" style="min-width: 150px;"></th>
-                    <th>R$ Atendido/COR<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>R$ Atendido Distríbuido<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Qtd. Peças Saldo<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Qtd. Peças Atendidas/COR<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Qtd. Peças Distribuídas/COR<br><input type="search" class="search-input search-input-pedidos"></th>
+                    <th>Qtd. Peças Faturadas<br></th>
+                    <th>Saldo R$<br></th>
+                    <th>R$ Atendido/COR<br></th>
+                    <th>R$ Atendido Distríbuido<br></th>
+                    <th>Qtd. Peças Saldo<br></th>
+                    <th>Qtd. Peças Atendidas/COR<br></th>
+                    <th>Qtd. Peças Distribuídas/COR<br></th>
                     <th>Sugestão Pedido<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>% Distribuído<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Pedidos Agrupados<br><input type="search" class="search-input search-input-pedidos"></th>
@@ -150,6 +150,20 @@ include_once('../../templates/headerPcp.php');
             <tbody>
                 <!-- Aqui vão os dados da tabela -->
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th colspan="9"></th>
+                    <th id="12-qtdPecas Fat"></th>
+                    <th id="08-vlrSaldo"></th>
+                    <th id="16-Valor Atende por Cor"></th>
+                    <th id="22-Valor Atende por Cor(Distrib)"></th>
+                    <th id="Saldo +Sugerido"></th>
+                    <th id="15-Qtd Atende p/Cor"></th>
+                    <th id="21-Qnt Cor(Distrib)"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
         </table>
 
     </div>
@@ -175,8 +189,8 @@ include_once('../../templates/headerPcp.php');
                         <th>Descrição<br><input type="search" class="search-input search-input-ops"></th>
                         <th>Cód. Fase Atual<br><input type="search" class="search-input search-input-ops" style="min-width: 150px;"></th>
                         <th>Nome da Fase<br><input type="search" class="search-input search-input-ops" style="min-width: 150px;"></th>
-                        <th>Quantidade em Pedidos<br><input type="search" class="search-input search-input-ops" style="min-width: 150px;"></th>
-                        <th>Necessidade em Peças<br><input type="search" class="search-input search-input-ops"></th>
+                        <th>Quantidade em Pedidos<br></th>
+                        <th>Necessidade em Peças<br></th>
                         <th>Prioridade<br><input type="search" class="search-input search-input-ops"></th>
                         <th>Previsão de Término<br><input type="search" class="search-input search-input-ops"></th>
                     </tr>
@@ -206,9 +220,9 @@ include_once('../../templates/headerPcp.php');
                         <th>Engeharia<br><input type="search" class="search-input search-input-skus" style="min-width: 150px;"></th>
                         <th>Reduzido<br><input type="search" class="search-input search-input-skus"></th>
                         <th>Descrição<br><input type="search" class="search-input search-input-skus"></th>
-                        <th>Quantidade em Pedidos<br><input type="search" class="search-input search-input-skus" style="min-width: 150px;"></th>
-                        <th>Necessidade em Peças<br><input type="search" class="search-input search-input-skus"></th>
-                        <th>Quantidade Op<br><input type="search" class="search-input search-input-skus"></th>
+                        <th>Quantidade em Pedidos<br></th>
+                        <th>Necessidade em Peças<br></th>
+                        <th>Quantidade Op<br></th>
                         <th>Cód. Fase Atual<br><input type="search" class="search-input search-input-skus" style="min-width: 150px;"></th>
                         <th>Nome da Fase<br><input type="search" class="search-input search-input-skus" style="min-width: 150px;"></th>
                         <th>Prioridade<br><input type="search" class="search-input search-input-skus"></th>
@@ -243,7 +257,7 @@ include_once('../../templates/headerPcp.php');
                     <th>Tamanho<br><input type="search" class="search-input search-input-sem-ops" style="min-width: 150px;"></th>
                     <th>Cód. Cor<br><input type="search" class="search-input search-input-sem-ops" style="min-width: 150px;"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-sem-ops" style="min-width: 150px;"></th>
-                    <th>Quantidade em Pedidos<br><input type="search" class="search-input search-input-sem-ops"></th>
+                    <th>Quantidade em Pedidos<br></th>
                 </tr>
             </thead>
             <tbody>
@@ -307,6 +321,7 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
+
 
 <?php
 include_once('../../templates/footerPcp.php');
