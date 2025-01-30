@@ -408,10 +408,10 @@ function TabelaTendencia(listaTendencia) {
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
                 } else {
-                        await Consulta_Abc_Plano();
-                        await Consulta_Categorias();
-                        await Consulta_Simulacao_Especifica();
-                        $('#inputs-container-marcas').removeClass('d-none')
+                    await Consulta_Abc_Plano();
+                    await Consulta_Categorias();
+                    await Consulta_Simulacao_Especifica();
+                    $('#inputs-container-marcas').removeClass('d-none')
                 }
             }
         },
@@ -452,7 +452,7 @@ function TabelaTendencia(listaTendencia) {
         },
         {
             data: 'class'
-        },       
+        },
         {
             data: 'classCategoria'
         },
@@ -560,7 +560,7 @@ function TabelaTendencia(listaTendencia) {
             const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'Prev Sobra'];
 
             columnsToSum.forEach((columnName, idx) => {
-                const colIndex = idx + 8; // Índice da coluna no DataTables
+                const colIndex = idx + 10; // Índice da coluna no DataTables
 
                 // Total considerando todos os dados após filtro
                 const total = api.column(colIndex, {
