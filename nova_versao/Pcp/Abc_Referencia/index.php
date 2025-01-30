@@ -56,6 +56,15 @@ include_once('../../templates/headerPcp.php');
             <tbody>
                 <!-- Aqui vão os dados da tabela -->
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th colspan="5"></th>
+                    <th id="qtdePedida"></th>
+                    <th id="qtdeFaturada"></th>
+                    <th id="valorVendido"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <div class="custom-pagination-container pagination-venda d-md-flex col-12 text-center text-md-start">
@@ -68,8 +77,7 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
-
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script1.js"></script>
+<script src="script.js"></script>
