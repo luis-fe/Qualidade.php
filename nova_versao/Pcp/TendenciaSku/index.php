@@ -32,8 +32,8 @@ include_once('../../templates/headerPcp.php');
 
 
 <div class="mt-3 row justify-content-center" id="selecao-plano" style="max-width: 100%; overflow:auto">
-    <form id="form-vendas" class="d-block d-md-flex" onsubmit="Consulta_Tendencias(); return false;">
-        <div class="" style="min-width: 300px; margin-right: 20px;">
+    <form id="form-vendas" class="row" onsubmit="Consulta_Tendencias(); return false;">
+        <div class="col-12 col-md-6">
             <div class="select text-start">
                 <label for="select-plano" class="form-label">Selecionar plano</label>
                 <select id="select-plano" class="form-select" required>
@@ -41,9 +41,9 @@ include_once('../../templates/headerPcp.php');
             </div>
         </div>
 
-        <div class="" style="min-width: 300px; margin-right: 20px">
+        <div class="col-12 col-md-4">
             <div class="select text-start">
-                <label for="select-pedidos-bloqueados" class="form-label" style="flex-wrap: nowrap;">Pedidos bloqueados?</label>
+                <label for="select-pedidos-bloqueados" class="form-label">Considera pedidos bloqueados?</label>
                 <select id="select-pedidos-bloqueados" class="form-select" required>
                     <option></option>
                     <option value="sim">Sim</option>
@@ -52,7 +52,7 @@ include_once('../../templates/headerPcp.php');
             </div>
         </div>
 
-        <div class="d-flex align-items-end justify-content-center" style="min-width: 150px; margin-right: 20px">
+        <div class="col-12 col-md-2 d-flex align-items-end justify-content-center">
             <button type="submit" class="btn btn-geral w-100" style="margin-top: 32px;">Consultar</button>
         </div>
     </form>
@@ -63,26 +63,26 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered" id="table-tendencia" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Marca<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Referência<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Marca<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
+                    <th>Referência<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
                     <th>Tamanho<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Cor<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Cor<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Reduzido<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Categoria<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Abc<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Abc Categoria<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Qtd. de Pedidos<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Valor Vendido<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Previsão de Vendas<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Qtd. Pedida<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Qtd. Faturada<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Qtd. em Estoque<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Qtd. em Processo<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Falta Programar<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Disponível<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Prev. Sobra<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Status Afv<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Reduzido<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
+                    <th>Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
+                    <th>Abc<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
+                    <th>Abc Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
+                    <th>Qtd. de Pedidos<br></th>
+                    <th>Valor Vendido<br></th>
+                    <th>Previsão de Vendas<br></th>
+                    <th>Qtd. Pedida<br></th>
+                    <th>Qtd. Faturada<br></th>
+                    <th>Qtd. em Estoque<br></th>
+                    <th>Qtd. em Processo<br></th>
+                    <th>Falta Programar<br></th>
+                    <th>Disponível<br></th>
+                    <th>Prev. Sobra<br></th>
+                    <th>Status Afv<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -91,7 +91,7 @@ include_once('../../templates/headerPcp.php');
             <tfoot>
                 <tr>
                     <th>Total:</th>
-                    <th colspan="5"></th>
+                    <th colspan="9"></th>
                     <th id="totalValorVendido"></th>
                     <th id="totalPrevicaoVendas"></th>
                     <th id="totalQtdePedida"></th>
@@ -173,6 +173,6 @@ include_once('../../templates/headerPcp.php');
 
 
 <?php
-include_once('../../templates/footerPcp.php');
+include_once('../../templates/footer.php');
 ?>
-<script src="script.js"></script>
+<script src="script1.js"></script>
