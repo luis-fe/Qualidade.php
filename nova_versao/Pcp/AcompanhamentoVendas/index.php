@@ -55,7 +55,6 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered" id="table-vendas" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Ação</th>
                     <th>Marca<br><input type="search" class="search-input"></th>
                     <th>Meta R$<br><input type="search" class="search-input"></th>
                     <th>R$ Vendido<br><input type="search" class="search-input"></th>
@@ -68,6 +67,17 @@ include_once('../../templates/headerPcp.php');
             <tbody>
                 <!-- Aqui vão os dados da tabela -->
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th id="metaFinanceira"></th>
+                    <th id="valorVendido"></th>
+                    <th id="metaPecas"></th>
+                    <th id="qtdePedida"></th>
+                    <th id="qtdeFaturada"></th>
+                    <th id="faltaProgVendido"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <div class="custom-pagination-container pagination-venda d-md-flex col-12 text-center text-md-start">
@@ -100,6 +110,17 @@ include_once('../../templates/headerPcp.php');
             <tbody>
                 <!-- Aqui vão os dados da tabela -->
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th></th>
+                    <th id="metaFinanceira"></th>
+                    <th id="valorVendido"></th>
+                    <th id="metaPecas"></th>
+                    <th id="quantidadeVendida"></th>
+                    <th id="quantidadeFaturada"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <div class="custom-pagination-container pagination-vendas-categoria d-md-flex col-12 text-center text-md-start">
