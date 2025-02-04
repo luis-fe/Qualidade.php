@@ -254,7 +254,7 @@ class Usuario:
 
         return pd.DataFrame([{'status': True, 'Mensagem': 'Perfis inseridos com sucesso'}])
 
-    def AtualizarInformacoes(self):
+    def atualizarInformUsuario(self):
         conn = ConexaoPostgreMPL.conexao()
         cursor = conn.cursor()
         cursor.execute("""

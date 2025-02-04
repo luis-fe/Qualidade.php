@@ -54,6 +54,7 @@ def get_usuariosRestricao():
 @usuarios_routes.route('/api/Usuarios/<int:codigo>', methods=['POST'])
 @token_required
 def update_usuario(codigo):
+    '''Api para atualizar informacoes do usuario'''
 
     data = request.get_json()
     codigo_ant, nome_ant, funcao_ant, situacao_ant , empresa_ant, perfil_ant, login_ant = UsuarioClassWms.Usuario(codigo).consultaUsuario()
@@ -80,7 +81,7 @@ def update_usuario(codigo):
     else:
         perfil = perfil_ant
 
-    UsuarioClassWms.Usuario(codigo,login,nome_novo,situacao_novo,nova_funcao,'',perfil).AtualizarInformacoes()
+    UsuarioClassWms.Usuario(codigo,login,nome_novo,situacao_novo,nova_funcao,'',perfil).atualizarInformUsuario()
 
     return jsonify({'message': f'Dados do Usuário {codigo} - {nome_novo} atualizado com sucesso'})
 

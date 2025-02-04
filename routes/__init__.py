@@ -8,7 +8,7 @@ from flask import Blueprint
 routes_blueprint = Blueprint('routes', __name__)
 
 # Importe as rotas dos arquivos individuais
-from .Usuario.usuarios import usuarios_routes
+from routes.Usuario import usuarios_routes
 from .usuariosPortal import usuariosPortal_routes
 from .linhasPortal import linhas_routes
 from .inventario import inventario_routes
