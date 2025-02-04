@@ -113,7 +113,7 @@ def criar_usuario():
     else:
         usuario.inserirUsuario()
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 201
+        return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 200
 
 
 # Rota com parametros para check do Usuario e Senha
