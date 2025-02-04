@@ -75,7 +75,7 @@ class Usuario:
         INSERT INTO "Reposicao"."Reposicao".cadusuarios
             (codigo, funcao, nome, login, situacao, perfil, senha)
         VALUES
-            (%s, %s, %s, %s, %s, %s)
+            (%s, %s, %s, %s, %s, %s, %s)
         """
         with ConexaoPostgreMPL.conexao() as conn:
                 with conn.cursor() as curr:
