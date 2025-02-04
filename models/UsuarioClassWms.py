@@ -80,7 +80,7 @@ class Usuario:
         with ConexaoPostgreMPL.conexao() as conn:
                 with conn.cursor() as curr:
                     curr.execute(insert,
-                                 (self.codigo, self.funcaoWMS, self.nome, self.login, 'ATIVO', self.perfil, self.senha))
+                                 (int(self.codigo), self.funcaoWMS, self.nome, self.login, 'ATIVO', self.perfil, self.senha))
                     conn.commit()
         return True
 
