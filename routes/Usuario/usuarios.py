@@ -2,7 +2,6 @@
 # Nesse arquivo é fornecido a Api das operacoes envolvendo o login e cadastro de usuarios do WMS
 from flask import Blueprint, jsonify, request
 from functools import wraps
-from models.Usuario import usuariosModel
 from models.configuracoes import empresaConfigurada
 from  models import UsuarioClassWms
 
@@ -55,9 +54,8 @@ def get_usuariosRestricao():
 @usuarios_routes.route('/api/Usuarios/<int:codigo>', methods=['POST'])
 @token_required
 def update_usuario(codigo):
-    # Obtém os dados do corpo da requisição (JSON)
+
     data = request.get_json()
-    # Verifica se a coluna "funcao" está presente nos dados recebidos
     codigo_ant, nome_ant, funcao_ant, situacao_ant , empresa_ant, perfil_ant, login_ant = UsuarioClassWms.Usuario(codigo).consultaUsuario()
     if 'funcao' in data:
         nova_funcao = data['funcao']
@@ -90,7 +88,8 @@ def update_usuario(codigo):
 @usuarios_routes.route('/api/Usuarios', methods=['PUT'])
 @token_required
 def criar_usuario():
-    # Obtenha os dados do corpo da requisição
+    '''Api para inserir um novo usuario no WMS '''
+
     novo_usuario = request.get_json()
     # Extraia os valores dos campos do novo usuário
     codigo = novo_usuario.get('codigo')
@@ -103,13 +102,13 @@ def criar_usuario():
 
     emp = empresaConfigurada.EmpresaEscolhida()
     empresa = novo_usuario.get('empresa',emp)
-    # inserir o novo usuário no banco de dados
 
     # Instanciando o objeto usuario
     usuario = UsuarioClassWms.Usuario(codigo, login,nome,situacao,funcao,senha,perfil)
 
-    a, b, c, d, e = usuario.consultaUsuario()
-    if a != 0:
+    a_codigo, b_nome, c_funcao, d_situacao, e_empresa, f_perfil, g_login = usuario.consultaUsuario()
+
+    if a_codigo != 0:
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 201
     else:
         usuario.inserirUsuario()

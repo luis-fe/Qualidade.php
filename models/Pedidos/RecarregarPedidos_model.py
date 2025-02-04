@@ -6,6 +6,7 @@ import pandas as pd
 import pytz
 import datetime
 from psycopg2 import sql
+from models import PedidosClass
 
 '''Função para obter a Data e Hora e Minuto atual do sistema'''
 def obterHoraAtual():
@@ -27,25 +28,17 @@ def obter_notaCsw():
     return data
 
 
-'''Funcao utilizada na Api de Recarregar os Pedidos'''
 def RecarregarPedidos(empresa):
+        '''Metodo utilizado para recarregar os pedidos no WMS '''
 
-        # 1 - Acionano a funcao de Excluir os pedidos nao encontrados
+        conn = ConexaoCSW.Conexao()
+
+
+        # 2 - Acionando a funcao de Excluir os pedidos nao encontrados :
         tamanhoExclusao = ExcuindoPedidosNaoEncontrados(empresa)
 
-        # 2 - Obtendo os pedidos do csw sugestoes + pedidos mkt
-        conn = ConexaoCSW.Conexao() # Abrir conexao com o csw
-        SugestoesAbertos = pd.read_sql("SELECT codPedido||'-'||codsequencia as codPedido, codPedido as codPedido2, dataGeracao,  "
-                                       "priorizar, vlrSugestao,situacaosugestao, dataFaturamentoPrevisto  from ped.SugestaoPed  "
-                                       'WHERE codEmpresa ='+empresa+
-                                       ' and situacaoSugestao =2',conn)
-
-        PedidosMkt = pd.read_sql("""SELECT codPedido||'-Mkt' as codPedido,codPedido as codPedido2,dataemissao as datageracao,'0' as priorizar, 
-        vlrPedido as vlrSugestao, '2' as situacaosugestao,dataPrevFat as dataFaturamentoPrevisto
-        FROM ped.Pedido e
-        WHERE e.codtiponota in (1001 , 38) and situacao = 0 and codEmpresa = """+str(empresa)+"""
-        and dataEmissao > DATEADD(DAY, -120, GETDATE())""", conn)
-        SugestoesAbertos = pd.concat([SugestoesAbertos, PedidosMkt])
+        # 3 - Obtendo os pedidos do CSW, que sao  "sugestoes" + "pedidos mkt" :
+        SugestoesAbertos = PedidosClass.Pedido().get_SugestoesPedidosGeral()
 
         PedidosSituacao = pd.read_sql(
             "select DISTINCT p.codPedido||'-'||p.codSequencia as codPedido , 'Em Conferencia' as situacaopedido  FROM ped.SugestaoPedItem p "
