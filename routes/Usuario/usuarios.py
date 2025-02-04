@@ -111,9 +111,10 @@ def criar_usuario():
     if a_codigo != 0:
         return jsonify({'message': f'Novo usuário:{codigo}- {nome} ja existe'}), 201
     else:
+
         usuario.inserirUsuario()
         # Retorne uma resposta indicando o sucesso da operação
-        return jsonify({'message': f'Novo usuário:{codigo}- {nome} criado com sucesso'}), 200
+        return jsonify({'message': f'Novo usuário:{usuario.codigo}- {nome} criado com sucesso'}), 200
 
 
 # Rota com parametros para check do Usuario e Senha
