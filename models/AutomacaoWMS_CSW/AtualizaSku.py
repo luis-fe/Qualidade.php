@@ -1,7 +1,7 @@
 import gc
 import jaydebeapi
 from colorama import Fore
-import ConexaoCSW
+from connection import ConexaoCSW
 import pandas as pd
 import ConexaoPostgreMPL
 from models.AutomacaoWMS_CSW import controle

@@ -2,11 +2,11 @@
         Nesse arquivo .py é realizado a operacao de conectar ao csw para atualizar a fila de tags , 
              disponibilizando -as no WMS. 
 '''''
-import ConexaoCSW
+from connection import ConexaoCSW
 import pandas as pd
 import ConexaoPostgreMPL
 from models.configuracoes import empresaConfigurada
-import BuscasSqlCSW
+
 
 # 1 - Funcao para atualizar toda a fila da garantia
 def AtualizaFilaGarantia():

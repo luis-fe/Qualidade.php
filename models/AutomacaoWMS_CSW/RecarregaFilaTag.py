@@ -1,6 +1,6 @@
 import gc
 from psycopg2 import sql
-import ConexaoCSW
+from connection import ConexaoCSW
 import pandas as pd
 import numpy
 import datetime

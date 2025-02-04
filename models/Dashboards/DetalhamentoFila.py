@@ -1,6 +1,6 @@
 import pandas as pd
 from psycopg2 import sql
-import ConexaoCSW
+from connection import ConexaoCSW
 import ConexaoPostgreMPL
 
 

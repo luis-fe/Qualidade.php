@@ -1,7 +1,8 @@
 '''ARQUIVO .PY COM AS INFORMAÇOES REFERENTE AO MODULO DE PEDIDOS - FILA PEDIDOS , que representa os pedidos que estao em fila para ser separado'''
 
 
-import ConexaoPostgreMPL, ConexaoCSW
+import ConexaoPostgreMPL
+from connection import ConexaoCSW
 import pandas as pd
 import numpy as np
 import datetime

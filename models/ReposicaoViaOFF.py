@@ -2,7 +2,7 @@ import gc
 from datetime import datetime
 import pandas as pd
 import pytz
-import ConexaoCSW
+from connection import ConexaoCSW
 import ConexaoPostgreMPL
 
 

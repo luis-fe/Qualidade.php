@@ -1,10 +1,9 @@
-import ConexaoPostgreMPL, ConexaoCSW
+import ConexaoPostgreMPL
+from connection import ConexaoCSW
 import pandas as pd
-import numpy as np
 import datetime
 import pytz
 import locale
-from models import finalizacaoPedidoModel
 
 
 def obterHoraAtual():

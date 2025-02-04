@@ -1,7 +1,6 @@
-import ConexaoCSW
+from connection import ConexaoCSW
 import ConexaoPostgreMPL
 import pandas as pd
-import BuscasSqlCSW
 import numpy as np
 from models.configuracoes import empresaConfigurada
 

@@ -1,6 +1,6 @@
 import gc
 import pandas as pd
-import ConexaoCSW
+from connection import ConexaoCSW
 
 
 class Pedido():

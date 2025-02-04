@@ -1,4 +1,4 @@
-import ConexaoCSW
+from connection import ConexaoCSW
 import pandas as pd
 import models.configuracoes.empresaConfigurada
 

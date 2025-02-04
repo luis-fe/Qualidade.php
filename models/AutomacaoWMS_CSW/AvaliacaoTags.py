@@ -3,7 +3,7 @@ Nessa classe é feito uma avaliacao das Tag's saidas por fora do WMS, operaçõe
 que ser refletidas no wms para melhor acuracia
 """
 import gc
-import ConexaoCSW
+from connection import ConexaoCSW
 import pandas as pd
 import ConexaoPostgreMPL
 from models.AutomacaoWMS_CSW import controle

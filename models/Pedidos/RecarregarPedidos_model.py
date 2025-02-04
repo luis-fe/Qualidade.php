@@ -1,6 +1,6 @@
 '''Arquivo .py que Representa a Carga de pedidos que vem do ERP para o WMS'''
 
-import ConexaoCSW
+from connection import ConexaoCSW
 import ConexaoPostgreMPL
 import pandas as pd
 import pytz

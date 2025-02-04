@@ -2,8 +2,7 @@ import gc
 import psutil
 from colorama import Fore
 import pandas as pd
-import ConexaoPostgreMPL
-import ConexaoCSW
+from connection import ConexaoCSW
 import fastparquet as fp
 from models.AutomacaoWMS_CSW import controle
 from gevent import os

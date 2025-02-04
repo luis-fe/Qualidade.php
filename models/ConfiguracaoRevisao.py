@@ -1,4 +1,5 @@
-import ConexaoCSW, ConexaoWMS
+import ConexaoWMS
+from connection import ConexaoCSW
 import pandas as pd
 
 

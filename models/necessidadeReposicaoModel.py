@@ -1,6 +1,5 @@
 import pandas as pd
 
-import ConexaoCSW
 import ConexaoPostgreMPL
 
 

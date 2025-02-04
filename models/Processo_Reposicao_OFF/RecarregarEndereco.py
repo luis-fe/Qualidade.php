@@ -1,8 +1,7 @@
 import pandas as pd
 import ConexaoPostgreMPL
-import ConexaoCSW
+from connection import ConexaoCSW
 from models.configuracoes import  empresaConfigurada
-from models import controle
 import psycopg2
 import pytz
 import datetime

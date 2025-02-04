@@ -5,7 +5,9 @@ import ConexaoPostgreMPL
 from psycopg2 import sql
 import datetime
 import pytz
-import ConexaoCSW
+from connection import ConexaoCSW
+
+
 def obterHoraAtual():
     fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
     agora = datetime.datetime.now(fuso_horario)

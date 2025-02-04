@@ -1,4 +1,4 @@
-import ConexaoCSW
+from connection import ConexaoCSW
 import ConexaoPostgreMPL
 import pandas as pd
 import pytz

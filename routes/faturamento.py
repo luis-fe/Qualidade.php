@@ -1,7 +1,7 @@
 from models import FaturamentoCswModel
 from flask import Blueprint, jsonify, request
 from functools import wraps
-import ConexaoCSW
+from connection import ConexaoCSW
 
 faturamento_routes = Blueprint('faturamento', __name__)
 

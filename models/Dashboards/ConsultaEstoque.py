@@ -1,6 +1,5 @@
 import pandas as pd
 import ConexaoPostgreMPL
-import ConexaoCSW
 
 
 ########## Nesse arquivo é construido o relatorio de pesquisa dos skus x prateleiras repostas, a ser utlizado no portal para pesquisa e controle.

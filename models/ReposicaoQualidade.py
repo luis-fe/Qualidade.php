@@ -1,7 +1,6 @@
-import ConexaoCSW
+from connection import ConexaoCSW
 import ConexaoPostgreMPL
 import pandas as pd
-import psycopg2
 from models.configuracoes import  empresaConfigurada
 
 
