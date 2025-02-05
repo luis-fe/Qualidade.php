@@ -1,6 +1,7 @@
 import gc
 import pandas as pd
 from connection import ConexaoCSW
+import models.configuracoes.empresaConfigurada
 
 
 class Pedido():
@@ -107,7 +108,6 @@ class Pedido():
 
     def get_SugestoesPedidosGeral(self):
         '''Metodo que unifica as sugestoes + pedidos de marketin'''
-
         sugestoes = self.__sugestoesPedidosAberto_ErpCsw()
         sugestoesMkt = self.__sugestoesPedidosMKTo_ErpCsw()
 

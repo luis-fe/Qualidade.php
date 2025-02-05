@@ -38,7 +38,7 @@ def RecarregarPedidos(empresa):
         tamanhoExclusao = ExcuindoPedidosNaoEncontrados(empresa)
 
         # 3 - Obtendo os pedidos do CSW, que sao  "sugestoes" + "pedidos mkt" :
-        SugestoesAbertos = PedidosClass.Pedido().get_SugestoesPedidosGeral()
+        SugestoesAbertos = PedidosClass.Pedido(empresa).get_SugestoesPedidosGeral()
 
         PedidosSituacao = pd.read_sql(
             "select DISTINCT p.codPedido||'-'||p.codSequencia as codPedido , 'Em Conferencia' as situacaopedido  FROM ped.SugestaoPedItem p "
