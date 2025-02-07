@@ -564,6 +564,9 @@ function TabelaOps(listaOps) {
                 return `<span class="codOpClicado" data-codigoOp="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
         },
+                  {
+            data: 'qtdOP'
+        },
         {
             data: 'codItemPai'
         },
