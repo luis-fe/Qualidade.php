@@ -185,6 +185,7 @@ include_once('../../templates/headerPcp.php');
                 <thead>
                     <tr>
                         <th>Numero Op<br><input type="search" class="search-input search-input-ops" style="min-width: 150px;"></th>
+                        <th>Qtd. Op<br></th>
                         <th>Engeharia<br><input type="search" class="search-input search-input-ops" style="min-width: 150px;"></th>
                         <th>Descrição<br><input type="search" class="search-input search-input-ops"></th>
                         <th>Cód. Fase Atual<br><input type="search" class="search-input search-input-ops" style="min-width: 150px;"></th>
