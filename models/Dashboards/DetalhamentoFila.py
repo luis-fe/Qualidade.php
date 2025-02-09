@@ -170,20 +170,18 @@ def ValidandoTracoOP():
             c = pd.merge(c1, c2, on='codbarrastag')
 
             update_sql = text("""
-                UPDATE "Reposicao"."off".reposicao_qualidade
-                SET numeroop = :numeroop
-                WHERE codbarrastag = :codbarrastag
-            """)
+                                UPDATE "Reposicao"."off".reposicao_qualidade
+                                SET numeroop = :numeroop
+                                WHERE codbarrastag = :codbarrastag
+                            """)
 
             delete_sql = text("""
-                DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
-                WHERE codbarrastag IN (
-                    SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
-                )
-            """)
+                                DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
+                                WHERE codbarrastag IN (
+                                    SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
+                                )
+                            """)
 
-            # Iniciando a transação
-            transaction = conn.begin()
             for _, row in c.iterrows():
                 conn.execute(update_sql, {
                     "numeroop": row["numeroop"],
@@ -191,7 +189,6 @@ def ValidandoTracoOP():
                 })
 
             conn.execute(delete_sql)  # Executa DELETE
-            transaction.commit()  # Confirma transação
 
 
 
