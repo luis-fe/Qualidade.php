@@ -163,8 +163,8 @@ def ValidandoTracoOP():
     with engine.connect() as conn:
         with conn.begin():  # Inicia transação
 
-            c1 = pd.read_sql(sql1, conn)
-            c2 = pd.read_sql(sql2, conn)
+            c1 = pd.read_sql(sql1, conn.connection)
+            c2 = pd.read_sql(sql2, conn.connection)
 
             # Fazendo merge entre os dois DataFrames
             c = pd.merge(c1, c2, on='codbarrastag')
