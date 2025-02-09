@@ -4,6 +4,8 @@ import pandas as pd
 import pytz
 import datetime
 from psycopg2 import sql
+from sqlalchemy.sql import text
+
 
 
 def obterHoraAtual():
@@ -294,6 +296,7 @@ def DetalhandoPedidoSku(empresa, pedido):
 
 
 def AgruparPedidos():
+
     sql = """
     select 
         codcliente , 
@@ -314,20 +317,18 @@ def AgruparPedidos():
     consulta['agrupamentopedido'] = consulta.groupby('codcliente')['codigopedido'].transform(
         criar_agrupamentos)
 
-    update_sql = """
-     UPDATE 
-        "Reposicao"."Reposicao".filaseparacaopedidos
-     SET 
-        agrupamentopedido = %s
-     WHERE 
-        codigopedido = %s
-     """
+    update_sql = text("""
+        UPDATE "Reposicao"."Reposicao".filaseparacaopedidos
+        SET agrupamentopedido = :agrupamentopedido
+        WHERE codigopedido = :codigopedido
+    """)
 
     with conn.connect() as connection:
         for index, row in consulta.iterrows():
-            connection.execute(update_sql, [(row['agrupamentopedido'], row['codigopedido'])])
-
-
+            connection.execute(update_sql, {
+                "agrupamentopedido": row['agrupamentopedido'],
+                "codigopedido": row['codigopedido']
+            })
 
 
 
