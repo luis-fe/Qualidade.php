@@ -1,7 +1,8 @@
 import pandas as pd
 import ConexaoPostgreMPL
 import socket
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
+
 # Carregando as variáveis de ambiente do arquivo .env
 import os
 
@@ -25,7 +26,10 @@ def EmpresaEscolhida():
         return None
             print(f"Empresa escolhida: {EMPRESA_CODIGO}")"""
 
-    return '1'
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+    empresa = os.getenv('EMPRESA')
+
+    return empresa
 
 
 def RegraDeEnderecoParaSubstituto():
