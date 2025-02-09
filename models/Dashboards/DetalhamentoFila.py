@@ -173,13 +173,14 @@ def ValidandoTracoOP():
                 "numeroop": row["numeroop"],
                 "codbarrastag": row["codbarrastag"]
             })
+        delete_sql = text("""
+            DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
+            WHERE codbarrastag IN (
+                SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
+            )
+        """)
 
-        sql = """
-        delete from "Reposicao"."Reposicao".filareposicaoportag f 
-        where codbarrastag in (select codbarrastag  from "Reposicao"."Reposicao".tagsreposicao  f )
-        """
-
-        connection.execute(sql)
+        connection.execute(delete_sql)  # Executa DELETE
 
 
 
