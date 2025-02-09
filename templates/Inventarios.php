@@ -164,7 +164,7 @@ include_once("./templates/cabecalho.php");
     </div>
 
     <script>
-        const ApiMatriz = 'http://192.168.0.183:5000/api/RelatorioInventario?';
+        const ApiMatriz = 'http://10.162.0.190:5000/api/RelatorioInventario?';
         const ApiFilial = 'http://192.168.0.184:5000/api/RelatorioInventario?';var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
         const Token = 'a40016aabcx9';

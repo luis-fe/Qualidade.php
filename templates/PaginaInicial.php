@@ -134,9 +134,9 @@ include_once("./templates/cabecalho.php");
     <script>
 
         var empresa = '<?php echo $empresa; ?>';
-        const ApiFilaPedidos = 'http://192.168.0.183:5000/api/RelatorioTotalFila';
-        const ApiPedidosMatriz = 'http://192.168.0.183:5000/api/statuspedidos';
-        const ApiEnderecosMatriz = 'http://192.168.0.183:5000/api/DisponibilidadeEnderecos?';
+        const ApiFilaPedidos = 'http://10.162.0.190:5000/api/RelatorioTotalFila';
+        const ApiPedidosMatriz = 'http://10.162.0.190:5000/api/statuspedidos';
+        const ApiEnderecosMatriz = 'http://10.162.0.190:5000/api/DisponibilidadeEnderecos?';
         const ApiFilaPedidosFilial = 'http://192.168.0.184:5000/api/RelatorioTotalFila';
         const ApiPedidosFilial = 'http://192.168.0.184:5000/api/statuspedidos';
         const ApiEnderecosFilial = 'http://192.168.0.184:5000/api/DisponibilidadeEnderecos?';

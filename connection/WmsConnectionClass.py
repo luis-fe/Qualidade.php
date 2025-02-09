@@ -12,7 +12,7 @@ class WmsConnectionClass():
         db_password = "Master100"
 
         if self.empresa == None:
-            host = '192.168.0.183'
+            host = '10.162.0.190'
         else:
             host = ''
 

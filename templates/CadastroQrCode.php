@@ -79,7 +79,7 @@ include_once("./templates/cabecalho.php");
     </div>
 
     <script>
-        const Api = 'http://192.168.0.183:5000/api/GerarCaixa';
+        const Api = 'http://10.162.0.190:5000/api/GerarCaixa';
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
         const Token = 'a40016aabcx9';

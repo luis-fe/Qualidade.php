@@ -1,4 +1,4 @@
-const ApiDistribuicao = 'http://192.168.0.183:5000/api/FilaPedidos';
+const ApiDistribuicao = 'http://10.162.0.190:5000/api/FilaPedidos';
 const indiceExibicao = 0;
 let PedidosSelecionados = [];
 let UsuarioSelecionado;
@@ -270,7 +270,7 @@ async function CarregarDados() {
 async function AtualizarDados() {
     AbrirModalLoading();
     try {
-        const response = await fetch('http://192.168.0.183:5000/api/RecarregarPedidos?empresa=1', {
+        const response = await fetch('http://10.162.0.190:5000/api/RecarregarPedidos?empresa=1', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -294,7 +294,7 @@ async function AtualizarDados() {
 
 
         
-const ApiUsuarios = "http://192.168.0.183:5000/api/Usuarios"
+const ApiUsuarios = "http://10.162.0.190:5000/api/Usuarios"
 
 function CarregarUsuarios() {
     const selecaoUsuarios = document.getElementById('Usuarios');
@@ -465,7 +465,7 @@ function capturarItensSelecionados() {
     return PedidosSelecionados;
 }
 
-const ApiAtribuicao = 'http://192.168.0.183:5000/api/AtribuirPedidos'
+const ApiAtribuicao = 'http://10.162.0.190:5000/api/AtribuirPedidos'
 
 function AtribuicaoPedidos() {
     const PedidosSelecionados = capturarItensSelecionados();
@@ -523,7 +523,7 @@ function DefinirPrioridade() {
         pedidos: PedidosSelecionados,
     };
 
-    fetch("http://192.168.0.183:5000/api/Prioriza", {
+    fetch("http://10.162.0.190:5000/api/Prioriza", {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -559,7 +559,7 @@ comboboxUsuarios.addEventListener('change', () => {
 
 function OrdenarTabela(Coluna) {
 
-    ApiOrdenacao = `http://192.168.0.183:5000/api/FilaPedidosClassificacao?coluna=${Coluna}&tipo=${ordenacaoAscendente ? 'asc' : 'desc'}`;
+    ApiOrdenacao = `http://10.162.0.190:5000/api/FilaPedidosClassificacao?coluna=${Coluna}&tipo=${ordenacaoAscendente ? 'asc' : 'desc'}`;
 
     fetch(ApiOrdenacao, {
         method: 'GET',
@@ -636,7 +636,7 @@ function capturarPedidoVerificacao() {
 function PecasFaltantes() {
     const PedidosSelecionados = capturarPedidoVerificacao();
     AbrirModalLoading()
-    fetch(`http://192.168.0.183:5000/api/DetalharPedido?codPedido=${PedidosSelecionados}`, {
+    fetch(`http://10.162.0.190:5000/api/DetalharPedido?codPedido=${PedidosSelecionados}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -754,7 +754,7 @@ function criarTabelaInformacoes(listaInformacoes) {
     };
   
 function PassarInformacoes(){
-    fetch('http://192.168.0.183:5000/api/IndicadorDistribuicao', {
+    fetch('http://10.162.0.190:5000/api/IndicadorDistribuicao', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

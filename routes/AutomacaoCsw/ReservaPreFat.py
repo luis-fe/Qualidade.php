@@ -30,7 +30,7 @@ def AtualizaApiReservaFaruamento():
     if tempo > limite:
         controle.InserindoStatus('AtualizaApiReservaFaruamento', client_ip, datainicio)
         print('ETAPA AtualizaApiReservaFaruamento- Inicio')
-        url = 'http://192.168.0.183:8000/pcp/api/ReservaPreFaturamento'
+        url = 'http://10.162.0.190:8000/pcp/api/ReservaPreFaturamento'
 
         token = "a44pcp22"
 

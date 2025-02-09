@@ -10,7 +10,7 @@ if (Empresa === "1") {
     window.location.href = '/Login_Teste';
 }
 
-const Api = 'http://192.168.0.183:5000/api/GerarCaixa';
+const Api = 'http://10.162.0.190:5000/api/GerarCaixa';
 const Token = 'a40016aabcx9';
 const InputQuantidade = document.getElementById('InputQuantidade')
 

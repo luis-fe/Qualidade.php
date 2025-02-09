@@ -1,5 +1,5 @@
 
-const ApiDistribuicao = 'http://192.168.0.183:5000/api/FilaPedidos';
+const ApiDistribuicao = 'http://10.162.0.190:5000/api/FilaPedidos';
 
 async function criarTabelasProdutividade(listaDados, tabela, exibirColunas = false) {
     const tabelaProdutividade = document.getElementById(tabela);
@@ -75,7 +75,7 @@ function formatarMoeda(valor) {
 
 async function DadosFaturamento(dataInicio, dataFim) {
     try {
-        const response = await fetch(`http://192.168.0.183:5000/api/Faturamento?empresa=1&dataInicio=${dataInicio}&dataFim=${dataFim}`, {
+        const response = await fetch(`http://10.162.0.190:5000/api/Faturamento?empresa=1&dataInicio=${dataInicio}&dataFim=${dataFim}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ async function DadosFaturamento(dataInicio, dataFim) {
 
 async function tabelaProdutividade(Consulta, Tabela, dataIni, DataFim, NomeRecorde, QtdRecorde, Qtd, situacaoColuna) {
     try {
-        const response = await fetch(`http://192.168.0.183:5000/api/${Consulta}/Resumo?DataInicial=${dataIni}&DataFinal==${DataFim}`, {
+        const response = await fetch(`http://10.162.0.190:5000/api/${Consulta}/Resumo?DataInicial=${dataIni}&DataFinal==${DataFim}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

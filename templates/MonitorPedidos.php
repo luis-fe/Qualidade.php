@@ -286,7 +286,7 @@ include_once("./templates/cabecalho.php");
 
 
     <script>
-        const ApiDistribuicaoMatriz = 'http://192.168.0.183:8000/pcp/api/monitorPreFaturamento?empresa=1&';
+        const ApiDistribuicaoMatriz = 'http://10.162.0.190:8000/pcp/api/monitorPreFaturamento?empresa=1&';
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
         const Token = 'a44pcp22';

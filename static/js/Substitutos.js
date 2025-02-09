@@ -58,8 +58,8 @@ for (const containerKey in containers) {
     });
 }
 
-const ApiDadosSubstitutos = "http://192.168.0.183:5000/api/SubstitutosPorOP";
-const ApiDadosCategorias = "http://192.168.0.183:5000/api/CategoriasSubstitutos";
+const ApiDadosSubstitutos = "http://10.162.0.190:5000/api/SubstitutosPorOP";
+const ApiDadosCategorias = "http://10.162.0.190:5000/api/CategoriasSubstitutos";
 Token = 'a40016aabcx9';
 
 async function ObterSubstitutos() {
@@ -271,7 +271,7 @@ async function FuncaoConsultas(apiUrl, parametroResultado) {
             
             async function enviarDadosParaAPI(dados) {
                 try {
-                    const response = await fetch('http://192.168.0.183:5000/api/SalvarSubstitutos', {
+                    const response = await fetch('http://10.162.0.190:5000/api/SalvarSubstitutos', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

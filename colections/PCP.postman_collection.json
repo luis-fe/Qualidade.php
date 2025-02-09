@@ -36,7 +36,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/IntensBI",
+							"raw": "http://10.162.0.190:8000/pcp/api/IntensBI",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -81,7 +81,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/prioridadeFatBI?ini=25000&fim=50000",
+							"raw": "http://10.162.0.190:8000/pcp/api/prioridadeFatBI?ini=25000&fim=50000",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -141,7 +141,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/roteiroOP?empresa=1&like=23",
+							"raw": "http://10.162.0.190:8000/pcp/api/roteiroOP?empresa=1&like=23",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -201,7 +201,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/AvaliarTamanhoRoteiroOP",
+							"raw": "http://10.162.0.190:8000/pcp/api/AvaliarTamanhoRoteiroOP",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -253,7 +253,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/FasesBI",
+							"raw": "http://10.162.0.190:8000/pcp/api/FasesBI",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -313,7 +313,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://192.168.0.183:8000/pcp/api/metaPlano/3",
+									"raw": "http://10.162.0.190:8000/pcp/api/metaPlano/3",
 									"protocol": "http",
 									"host": [
 										"192",
@@ -368,7 +368,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://192.168.0.183:8000/pcp/api/metaPlano",
+									"raw": "http://10.162.0.190:8000/pcp/api/metaPlano",
 									"protocol": "http",
 									"host": [
 										"192",
@@ -422,7 +422,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://192.168.0.183:8000/pcp/api/metaPlano",
+									"raw": "http://10.162.0.190:8000/pcp/api/metaPlano",
 									"protocol": "http",
 									"host": [
 										"192",
@@ -472,7 +472,7 @@
 									}
 								],
 								"url": {
-									"raw": "http://192.168.0.183:8000/pcp/api/metaPlanoSemanal/3",
+									"raw": "http://10.162.0.190:8000/pcp/api/metaPlanoSemanal/3",
 									"protocol": "http",
 									"host": [
 										"192",
@@ -535,7 +535,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/upload",
+							"raw": "http://10.162.0.190:8000/pcp/api/upload",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -593,7 +593,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/get_image/1",
+							"raw": "http://10.162.0.190:8000/pcp/api/get_image/1",
 							"protocol": "http",
 							"host": [
 								"192",
@@ -644,7 +644,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://192.168.0.183:8000/pcp/api/PesquisaTipoNotas",
+							"raw": "http://10.162.0.190:8000/pcp/api/PesquisaTipoNotas",
 							"protocol": "http",
 							"host": [
 								"192",
