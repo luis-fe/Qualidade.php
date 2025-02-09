@@ -167,20 +167,24 @@ def ValidandoTracoOP():
         WHERE codbarrastag = :codbarrastag
     """)
 
+    delete_sql = text("""
+        DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
+        WHERE codbarrastag IN (
+            SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
+        )
+    """)
+
     with conn.connect() as connection:
+        transaction = connection.begin()  # Inicia transação
         for index, row in c.iterrows():
-            connection.execute(update_sql, {
-                "numeroop": row["numeroop"],
-                "codbarrastag": row["codbarrastag"]
-            })
-        delete_sql = text("""
-            DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
-            WHERE codbarrastag IN (
-                SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
-            )
-        """)
+                connection.execute(update_sql, {
+                    "numeroop": row["numeroop"],
+                    "codbarrastag": row["codbarrastag"]
+                })
 
         connection.execute(delete_sql)  # Executa DELETE
+        transaction.commit()  # Confirma transação
+
 
 
 
