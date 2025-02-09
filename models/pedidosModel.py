@@ -361,9 +361,7 @@ WHERE codigopedido = :codigopedido ;
 
     with conn.connect() as connection:
         for index, row in consulta.iterrows():
-            connection.execute(update, (
-                row["codigopedido"]
-            ))
+            connection.execute(update, {"codigopedido": row["codigopedido"]})
 
     return devolucao
 
