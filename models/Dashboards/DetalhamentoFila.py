@@ -2,6 +2,8 @@ import pandas as pd
 from psycopg2 import sql
 from connection import ConexaoCSW
 import ConexaoPostgreMPL
+from sqlalchemy.sql import text
+
 
 
 def detalhaFila(empresa, natureza):
@@ -159,18 +161,18 @@ def ValidandoTracoOP():
 
     c = pd.merge(c1,c2,on='codbarrastag')
 
-    update_sql = """
+    update_sql = text("""
     update "Reposicao"."off".reposicao_qualidade rq 
-    set numeroop = %s
-    where codbarrastag = %s
-    """
+    set numeroop :numeroop
+    where codbarrastag :codbarrastag
+    """)
 
     with conn.connect() as connection:
         for index, row in c.iterrows():
-            connection.execute(update_sql, (
-                row['numeroop'],
-                row['codbarrastag']
-                               ))
+            connection.execute(update_sql,{
+                "numeroop": row['numeroop'],
+                "codbarrastag": row['codbarrastag']
+            })
 
         sql = """
         delete from "Reposicao"."Reposicao".filareposicaoportag f 
