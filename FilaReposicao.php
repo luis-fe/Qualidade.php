@@ -89,7 +89,7 @@ include_once("./templates/cabecalho.php");
 
     <script>
         const ApiFilaMatriz = 'http://10.162.0.190:5000/api/NecessidadeReposicao';
-        const ApiFilaFilial = 'http://192.168.0.184:5000/api/NecessidadeReposicao'
+        const ApiFilaFilial = 'http://10.162.0.191:5000/api/NecessidadeReposicao'
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
         const Token = 'a40016aabcx9';

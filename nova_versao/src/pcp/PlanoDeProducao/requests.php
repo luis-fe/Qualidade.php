@@ -16,7 +16,7 @@ $token = $_SESSION['token'];
 
 function ConsultarPlanos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -38,7 +38,7 @@ function ConsultarPlanos($empresa)
 
 function ConsultaTipoNotasVinculados($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaTipoNotasVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -60,7 +60,7 @@ function ConsultaTipoNotasVinculados($empresa, $plano)
 
 function ConsultaNotasCsw($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/TipoNotasCsw";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -82,7 +82,7 @@ function ConsultaNotasCsw($empresa)
 
 function ConsultaLotesCsw($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/lotes_csw?empresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -104,7 +104,7 @@ function ConsultaLotesCsw($empresa)
 
 function ConsultaLotesVinculados($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaLotesVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -127,7 +127,7 @@ function ConsultaLotesVinculados($empresa, $plano)
 
 function CadastrarPlano($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/NovoPlano";
 
     $ch = curl_init($apiUrl);
@@ -166,7 +166,7 @@ function CadastrarPlano($empresa, $dados)
 
 function AlterarPlano($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/AlterPlano";
 
     $ch = curl_init($apiUrl);
@@ -204,7 +204,7 @@ function AlterarPlano($empresa, $dados)
 
 function VincularLote($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/VincularLotesPlano";
 
     $ch = curl_init($apiUrl);
@@ -242,7 +242,7 @@ function VincularLote($empresa, $dados)
 
 function VincularNotas($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/VincularNotasPlano";
 
     $ch = curl_init($apiUrl);

@@ -18,7 +18,7 @@ $token = $_SESSION['token'];
 
 function CadastrarEndereco($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/EnderecoAtacado";
 
     $ch = curl_init($apiUrl);
@@ -64,7 +64,7 @@ function CadastrarEndereco($empresa, $token, $dados)
 
 
 function DeletarEndereco($empresa, $token, $dados) {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/EnderecoAtacado";
 
     $ch = curl_init($apiUrl);

@@ -14,7 +14,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultarFila($empresa, $token, $natureza)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/DetalhamentoFila?empresa={$empresa}&natureza={$natureza}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -36,7 +36,7 @@ function ConsultarFila($empresa, $token, $natureza)
 
 function AtualizarFila($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/AtualizarTagsEstoque?empresa={$empresa}&IntervaloAutomacao=20";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -58,7 +58,7 @@ function AtualizarFila($empresa, $token)
 
 function ConsultarCaixa($empresa, $token, $numCaixa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/DetalharCaixa?numeroCaixa={$numCaixa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -80,7 +80,7 @@ function ConsultarCaixa($empresa, $token, $numCaixa)
 
 function ConsultarReduzidos($empresa, $natureza, $token, $numeroOp, $codReduzido)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/DetalhaTagsNumeroOPReduzido?numeroop={$numeroOp}&codreduzido={$codReduzido}&codEmpresa={$empresa}&natureza={$natureza}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

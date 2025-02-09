@@ -16,7 +16,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultarOps($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/SubstitutosPorOP";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -38,7 +38,7 @@ function ConsultarOps($empresa, $token)
 
 function ConsultarCategorias($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/CategoriasSubstitutos";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -60,7 +60,7 @@ function ConsultarCategorias($empresa, $token)
 
 function SalvarSubstitutos($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/SalvarSubstitutos";
 
     $ch = curl_init($apiUrl);

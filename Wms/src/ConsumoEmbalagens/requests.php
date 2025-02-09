@@ -13,7 +13,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 }
 
 function ConsultarEmbalagens($empresa, $token, $dataInicio, $dataFim) {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/relatorioCaixas?dataInicio={$dataInicio}&dataFim={$dataFim}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -34,7 +34,7 @@ function ConsultarEmbalagens($empresa, $token, $dataInicio, $dataFim) {
 }
 
 function CadastrarEmbalagem($empresa, $token, $dados) {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/CadastrarCaixa";
 
     $ch = curl_init($apiUrl);

@@ -3,7 +3,7 @@ session_start();
 
 function fazerLogin($username, $password, $empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/UsuarioSenha?codigo={$username}&senha={$password}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -25,7 +25,7 @@ function fazerLogin($username, $password, $empresa)
 
 function rotinasUsuarios($codigo, $empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/rotasAutorizadasPORUsuario?codigo={$codigo}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
