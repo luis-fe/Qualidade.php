@@ -295,11 +295,18 @@ def DetalhandoPedidoSku(empresa, pedido):
 
 def AgruparPedidos():
     sql = """
-    select codcliente , codigopedido  from "Reposicao"."Reposicao".filaseparacaopedidos f 
-where codcliente in (
-select codcliente from "Reposicao"."Reposicao".filaseparacaopedidos f 
-group by codcliente having count(codcliente)>1  )
-order by codcliente 
+    select 
+        codcliente , 
+        codigopedido  
+    from 
+        "Reposicao"."Reposicao".filaseparacaopedidos f 
+    where 
+        codcliente in 
+            (
+                select codcliente from "Reposicao"."Reposicao".filaseparacaopedidos f 
+                group by codcliente having count(codcliente)>1  
+            )
+    order by codcliente 
     """
 
     conn = ConexaoPostgreMPL.conexaoEngine()
@@ -308,17 +315,18 @@ order by codcliente
         criar_agrupamentos)
 
     update_sql = """
-     UPDATE "Reposicao"."Reposicao".filaseparacaopedidos
-     SET agrupamentopedido = %s
-     WHERE codigopedido = %s
+     UPDATE 
+        "Reposicao"."Reposicao".filaseparacaopedidos
+     SET 
+        agrupamentopedido = %s
+     WHERE 
+        codigopedido = %s
      """
 
     with conn.connect() as connection:
         for index, row in consulta.iterrows():
-            connection.execute(update_sql, (
-                row['agrupamentopedido'],
-                row['codigopedido']
-                               ))
+            connection.execute(update_sql, [(row['agrupamentopedido'], row['codigopedido'])])
+
 
 
 
