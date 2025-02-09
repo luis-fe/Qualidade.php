@@ -109,7 +109,7 @@ def RecarregarPedidos(empresa):
         SugestoesAbertos2.drop('codPedido2', axis=1, inplace=True)
 
         if tamanho >= 1:
-            #ConexaoPostgreMPL.Funcao_Inserir(SugestoesAbertos2, tamanho, 'filaseparacaopedidos', 'append')
+            ConexaoPostgreMPL.Funcao_Inserir(SugestoesAbertos2, tamanho, 'filaseparacaopedidos', 'append')
 
             SugestoesAbertos2 = SugestoesAbertos2.reset_index()
             SugestoesAbertos2 = SugestoesAbertos2.drop_duplicates()

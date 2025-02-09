@@ -79,7 +79,7 @@ class Pedido():
         SELECT 
             codPedido||'-Mkt' as codPedido,
             codPedido as codPedido2,
-            dataemissao as datageracao,
+            dataemissao as dataGeracao,
             '0' as priorizar, 
             vlrPedido as vlrSugestao, 
             '2' as situacaosugestao,
@@ -107,7 +107,8 @@ class Pedido():
 
 
     def get_SugestoesPedidosGeral(self):
-        '''Metodo que unifica as sugestoes + pedidos de marketin'''
+        '''Metodo que unifica as sugestoes + pedidos de marketing'''
+
         sugestoes = self.__sugestoesPedidosAberto_ErpCsw()
         sugestoesMkt = self.__sugestoesPedidosMKTo_ErpCsw()
 
