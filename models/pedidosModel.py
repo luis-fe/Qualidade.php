@@ -4,6 +4,7 @@ import pandas as pd
 import datetime
 import pytz
 import locale
+from sqlalchemy.sql import text
 
 
 def obterHoraAtual():
@@ -347,7 +348,7 @@ WHERE
     print(consulta)
 
 
-    update = """
+    update= text( """
 UPDATE "Reposicao"."Reposicao".filaseparacaopedidos
 SET prioridade = 
     CASE 
@@ -356,7 +357,7 @@ SET prioridade =
         ELSE prioridade || 'REVISAR'           
     END
 WHERE codigopedido = %s;
-    """
+    """)
 
     with conn.connect() as connection:
         for index, row in consulta.iterrows():
