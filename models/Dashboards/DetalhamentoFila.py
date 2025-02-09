@@ -161,35 +161,37 @@ def ValidandoTracoOP():
 
     # Lendo os dados com uma conexão de streaming
     with engine.connect() as conn:
-        c1 = pd.read_sql(sql1, conn)
-        c2 = pd.read_sql(sql2, conn)
+        with conn.begin():  # Inicia transação
 
-        # Fazendo merge entre os dois DataFrames
-        c = pd.merge(c1, c2, on='codbarrastag')
+            c1 = pd.read_sql(sql1, conn)
+            c2 = pd.read_sql(sql2, conn)
 
-        update_sql = text("""
-            UPDATE "Reposicao"."off".reposicao_qualidade
-            SET numeroop = :numeroop
-            WHERE codbarrastag = :codbarrastag
-        """)
+            # Fazendo merge entre os dois DataFrames
+            c = pd.merge(c1, c2, on='codbarrastag')
 
-        delete_sql = text("""
-            DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
-            WHERE codbarrastag IN (
-                SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
-            )
-        """)
+            update_sql = text("""
+                UPDATE "Reposicao"."off".reposicao_qualidade
+                SET numeroop = :numeroop
+                WHERE codbarrastag = :codbarrastag
+            """)
 
-        # Iniciando a transação
-        transaction = conn.begin()
-        for _, row in c.iterrows():
-            conn.execute(update_sql, {
-                "numeroop": row["numeroop"],
-                "codbarrastag": row["codbarrastag"]
-            })
+            delete_sql = text("""
+                DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
+                WHERE codbarrastag IN (
+                    SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
+                )
+            """)
 
-        conn.execute(delete_sql)  # Executa DELETE
-        transaction.commit()  # Confirma transação
+            # Iniciando a transação
+            transaction = conn.begin()
+            for _, row in c.iterrows():
+                conn.execute(update_sql, {
+                    "numeroop": row["numeroop"],
+                    "codbarrastag": row["codbarrastag"]
+                })
+
+            conn.execute(delete_sql)  # Executa DELETE
+            transaction.commit()  # Confirma transação
 
 
 
