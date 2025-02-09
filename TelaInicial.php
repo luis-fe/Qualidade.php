@@ -152,9 +152,9 @@ include_once("./templates/headers.php");
     </div>
 </body>
 <script>
-        const ApiMotivos = 'http://192.168.0.183:5000/api/MotivosAgrupado';
-        const ApiQualidade = 'http://192.168.0.183:5000/api/AcompanhamentoQualidade';
-        const ApiTerceirizados = 'http://192.168.0.183:5000/api/OrigemAgrupado';
+        const ApiMotivos = 'http://10.162.0.190:5000/api/MotivosAgrupado';
+        const ApiQualidade = 'http://10.162.0.190:5000/api/AcompanhamentoQualidade';
+        const ApiTerceirizados = 'http://10.162.0.190:5000/api/OrigemAgrupado';
 
         async function fetchData(apiUrl, dataInicial, dataFinal) {
             try {

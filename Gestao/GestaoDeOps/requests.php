@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 function ConsultaColecoes()
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/DistinctColecao";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -27,7 +27,7 @@ function ConsultaColecoes()
 
 function ConsultaJustificativas($op, $fase)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ConsultarJustificativa?ordemProd={$op}&fase={$fase}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -49,7 +49,7 @@ function ConsultaJustificativas($op, $fase)
 
 function ConsultaOps($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/CargaOPs";
 
     $ch = curl_init($apiUrl);
@@ -83,7 +83,7 @@ function ConsultaOps($dados)
 
 function ConsultarDetalhaFila($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/DetalhaOpFilas";
 
     $ch = curl_init($apiUrl);
@@ -116,7 +116,7 @@ function ConsultarDetalhaFila($dados)
 
 function CadastrarJustificativa($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $NomeProjeto = 'JonhField';
     $apiUrl = "{$baseUrl}/api/CadastrarJustificativa";
 

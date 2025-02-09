@@ -13,7 +13,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 }
 
 function ImprimirQrCode($empresa, $token, $dados) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/GerarCaixa";
 
     $ch = curl_init($apiUrl);

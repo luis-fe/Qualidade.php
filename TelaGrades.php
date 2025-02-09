@@ -311,10 +311,10 @@ function fecharRotina() {
 btnFecharRotina.addEventListener('click', () => {
     fecharRotina();
 });
-            const ApiAtualizar = "http://192.168.0.183:5000/api/AtualizacaoFilaOFF";
-            const ApiConsultarLinhas = 'http://192.168.0.183:5000/api/linhasPadrao';
-            const GetUsuarios = "http://192.168.0.183:5000/api/UsuariosPortal";
-            const ApiSalvarOperadores = 'http://192.168.0.183:5000/api/SalvarProdutividadeLinha'
+            const ApiAtualizar = "http://10.162.0.190:5000/api/AtualizacaoFilaOFF";
+            const ApiConsultarLinhas = 'http://10.162.0.190:5000/api/linhasPadrao';
+            const GetUsuarios = "http://10.162.0.190:5000/api/UsuariosPortal";
+            const ApiSalvarOperadores = 'http://10.162.0.190:5000/api/SalvarProdutividadeLinha'
             const Token = "a40016aabcx9";
             const SalvarOperadores = document.getElementById('salvarEdicaoUsuario');
 
@@ -324,7 +324,7 @@ btnFecharRotina.addEventListener('click', () => {
             async function Api(Op) {
                 try {
                     const numeroOP = localStorage.getItem('numeroOP');
-                    const response = await fetch(`http://192.168.0.183:5000/api/DetalhaOPQuantidade?empresa=1&numeroop=${Op}`, {
+                    const response = await fetch(`http://10.162.0.190:5000/api/DetalhaOPQuantidade?empresa=1&numeroop=${Op}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',

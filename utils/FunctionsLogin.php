@@ -2,7 +2,7 @@
 // FunctionsLogin.php
 
 function fazerChamadaApi($username, $password) {
-    $apiUrl = "http://192.168.0.183:5000/api/UsuarioSenhaPortal?codigo={$username}&senha={$password}";
+    $apiUrl = "http://10.162.0.190:5000/api/UsuarioSenhaPortal?codigo={$username}&senha={$password}";
 
     // Inicializa a sessão cURL
     $ch = curl_init($apiUrl);

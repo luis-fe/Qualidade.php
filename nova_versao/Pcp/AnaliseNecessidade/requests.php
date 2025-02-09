@@ -83,7 +83,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultarPlanos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -105,7 +105,7 @@ function ConsultarPlanos($empresa)
 
 function ConsultarNaturezas($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/naturezaEstoqueComponentes";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -127,7 +127,7 @@ function ConsultarNaturezas($empresa)
 
 function ConsultarComprometidos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/comprometidoOP";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -149,7 +149,7 @@ function ConsultarComprometidos($empresa)
 
 function ConsultarComprometidoCompras($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/comprometidoCompras";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -172,7 +172,7 @@ function ConsultarComprometidoCompras($empresa)
 
 function DetalhaNecessidade($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/DetalhaNecessidade";
 
     $ch = curl_init($apiUrl);
@@ -205,7 +205,7 @@ function DetalhaNecessidade($empresa, $dados)
 
 function AnaliseMateriais($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/AnaliseMateriaisPelaTendencia";
 
     $ch = curl_init($apiUrl);

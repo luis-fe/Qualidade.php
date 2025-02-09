@@ -11,7 +11,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 }
 
 function ConsultarFaturamento($dataInicio, $dataFim) {
-    $baseUrl = 'http://192.168.0.183:5000';
+    $baseUrl = 'http://10.162.0.190:5000';
     $apiUrl = "{$baseUrl}/api/Faturamento?empresa=1&dataFim={$dataInicio}&dataInicio={$dataFim}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -32,7 +32,7 @@ function ConsultarFaturamento($dataInicio, $dataFim) {
 }
 
 function ConsultarProdutividade($dataInicio, $dataFim, $Consulta, $HoraInicio, $HoraFim) {
-    $baseUrl = 'http://192.168.0.183:5000';
+    $baseUrl = 'http://10.162.0.190:5000';
     $apiUrl = "{$baseUrl}/api/{$Consulta}/Resumo?DataInicial={$dataInicio}&DataFinal={$dataFim}&horarioInicial={$HoraInicio}&horarioFinal={$HoraFim}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

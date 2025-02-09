@@ -184,11 +184,11 @@ function fecharModalEditar() {
 }
 
 
-    const ApiLinhas = 'http://192.168.0.183:5000/api/ProdutividadeGarantiaEquipe?';
-    const ApiProducao = 'http://192.168.0.183:5000/api/ProdutividadeGarantiaIndividual?';
-    const ApiListaOps = 'http://192.168.0.183:5000/api/OpsProduzidasGarantia?';
-    const ApiAtualizarDado = 'http://192.168.0.183:5000/api/AlterarOPsProduzidasGarantia';
-    const ApiDeletarUsuario = 'http://192.168.0.183:5000/api/DeletarOPsProduzidasGarantia';
+    const ApiLinhas = 'http://10.162.0.190:5000/api/ProdutividadeGarantiaEquipe?';
+    const ApiProducao = 'http://10.162.0.190:5000/api/ProdutividadeGarantiaIndividual?';
+    const ApiListaOps = 'http://10.162.0.190:5000/api/OpsProduzidasGarantia?';
+    const ApiAtualizarDado = 'http://10.162.0.190:5000/api/AlterarOPsProduzidasGarantia';
+    const ApiDeletarUsuario = 'http://10.162.0.190:5000/api/DeletarOPsProduzidasGarantia';
     const Token = "a40016aabcx9";
 
     document.addEventListener("DOMContentLoaded", function () {

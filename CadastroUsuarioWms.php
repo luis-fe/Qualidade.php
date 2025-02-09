@@ -164,7 +164,7 @@ include_once("./templates/cabecalho.php");
 </body>
 
 <script>
-    const ApiUsuariosMatriz = "http://192.168.0.183:5000/api/Usuarios";
+    const ApiUsuariosMatriz = "http://10.162.0.190:5000/api/Usuarios";
     const ApiUsuariosFilial = "http://192.168.0.184:5000/api/Usuarios";
     var empresa = '<?php echo $empresa; ?>';
     const Token = 'a40016aabcx9';

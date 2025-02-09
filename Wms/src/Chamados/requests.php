@@ -15,7 +15,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultarChamados($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/chamados";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -37,7 +37,7 @@ function ConsultarChamados($empresa, $token)
 
 function ConsultarAreasDeChamados($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/area";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -60,7 +60,7 @@ function ConsultarAreasDeChamados($empresa, $token)
 
 function CadastrarChamados($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/NovoChamado";
 
     $ch = curl_init($apiUrl);
@@ -100,7 +100,7 @@ function CadastrarChamados($empresa, $token, $dados)
 
 function SalvarImagem($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/upload";
 
     $ch = curl_init($apiUrl);

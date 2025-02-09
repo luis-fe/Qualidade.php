@@ -102,7 +102,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultarNotas($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/TipoNotasCsw";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -124,7 +124,7 @@ function ConsultarNotas($empresa)
 
 function ConsultarPedidos($empresa, $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData, $emissaoinicial, $emissaofinal)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento?empresa={$empresa}&iniVenda={$iniVenda}&finalVenda={$finalVenda}&tiponota={$tipoNota}&parametroClassificacao={$parametroClassificacao}&tipoData={$tipoData}&FiltrodataEmissaoInicial={$emissaoinicial}&FiltrodataEmissaoFinal={$emissaofinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

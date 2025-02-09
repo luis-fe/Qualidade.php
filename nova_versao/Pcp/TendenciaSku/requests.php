@@ -96,7 +96,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultarPlanos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -118,7 +118,7 @@ function ConsultarPlanos($empresa)
 
 function ConsultaSimulacaoEspecifica($empresa, $simulacao)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaDetalhadaSimulacao?nomeSimulacao=" . urlencode($simulacao);
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -141,7 +141,7 @@ function ConsultaSimulacaoEspecifica($empresa, $simulacao)
 
 function ConsultaCategorias($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/CategoriasDisponiveis";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -163,7 +163,7 @@ function ConsultaCategorias($empresa)
 
 function ConsultaAbc($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaParametrizacaoABC";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -185,7 +185,7 @@ function ConsultaAbc($empresa)
 
 function ConsultaSimulacoes($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaSimulacoes";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -207,7 +207,7 @@ function ConsultaSimulacoes($empresa)
 
 function ConsultaAbcPlano($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaPlanejamentoABC_plano?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -230,7 +230,7 @@ function ConsultaAbcPlano($empresa, $plano)
 
 function ConsultaTendencias($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/tendenciaSku";
 
     $ch = curl_init($apiUrl);
@@ -262,7 +262,7 @@ function ConsultaTendencias($empresa, $dados)
 
 function Simular_Programacao($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/simulacaoProgramacao";
 
     $ch = curl_init($apiUrl);
@@ -295,7 +295,7 @@ function Simular_Programacao($empresa, $dados)
 
 function CadastroSimulacao($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/atualizaInserirSimulacao";
 
     $ch = curl_init($apiUrl);

@@ -125,10 +125,10 @@ include_once("./templates/headers.php");
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        const ApiCarrinhos = 'http://192.168.0.183:5000/api/consultarCarrinhos?';
-        const ApiImprimirCarrinhos = 'http://192.168.0.183:5000/api/imprimirCodCarrinho';
-        const ApiCadastrarCarrinhos = 'http://192.168.0.183:5000/api/NovoCarrinho';
-        const ApiGrades = 'http://192.168.0.183:8000/pcp/api/DesmembramentoCargaCarrinho?';
+        const ApiCarrinhos = 'http://10.162.0.190:5000/api/consultarCarrinhos?';
+        const ApiImprimirCarrinhos = 'http://10.162.0.190:5000/api/imprimirCodCarrinho';
+        const ApiCadastrarCarrinhos = 'http://10.162.0.190:5000/api/NovoCarrinho';
+        const ApiGrades = 'http://10.162.0.190:8000/pcp/api/DesmembramentoCargaCarrinho?';
         const Token = "a40016aabcx9";
 
         $(document).ready(() => {

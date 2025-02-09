@@ -129,10 +129,10 @@ const modalError = document.getElementById('modalError');
         fecharRotina();
     });
 
-    const GetUsuarios = "http://192.168.0.183:5000/api/UsuariosPortal";
-const ApiGetLinhas = "http://192.168.0.183:5000/api/linhasPadrao";
-const CadLinhas = "http://192.168.0.183:5000/api/NovaLinha";
-const ApiEditUsuarios = "http://192.168.0.183:5000/api/AtualizarLinha";
+    const GetUsuarios = "http://10.162.0.190:5000/api/UsuariosPortal";
+const ApiGetLinhas = "http://10.162.0.190:5000/api/linhasPadrao";
+const CadLinhas = "http://10.162.0.190:5000/api/NovaLinha";
+const ApiEditUsuarios = "http://10.162.0.190:5000/api/AtualizarLinha";
 const addLinha = document.getElementById('addLinha');
 const ModalNewLinha = document.getElementById('ModalNovoUsuario');
 const ModalEditarUsuario = document.getElementById('ModalEditarUsuario');

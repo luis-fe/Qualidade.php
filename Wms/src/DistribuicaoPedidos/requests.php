@@ -13,7 +13,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 }
 
 function consultarPedidos($empresa, $token) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/FilaPedidos";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -35,7 +35,7 @@ function consultarPedidos($empresa, $token) {
 }
 
 function consultarUsuarios($empresa, $token) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/Usuarios";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -57,7 +57,7 @@ function consultarUsuarios($empresa, $token) {
 }
 
 function RecarregarPedidos($empresa, $token) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/RecarregarPedidos?empresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -79,7 +79,7 @@ function RecarregarPedidos($empresa, $token) {
 }
 
 function consultarPecasFaltantes($empresa, $token, $codPedido) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $codPedidoArray = explode(',', $codPedido);
     $results = [];
 
@@ -108,7 +108,7 @@ function consultarPecasFaltantes($empresa, $token, $codPedido) {
 }
 
 function atribuirPedidos($empresa, $token, $dados) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/AtribuirPedidos";
 
     $ch = curl_init($apiUrl);
@@ -139,7 +139,7 @@ function atribuirPedidos($empresa, $token, $dados) {
 }
 
 function alterarPrioridade($empresa, $token, $dados) {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/Prioriza";
 
     $ch = curl_init($apiUrl);
@@ -177,7 +177,7 @@ function alterarPrioridade($empresa, $token, $dados) {
 
 function LimparSeparacao($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     $apiUrl = "{$baseUrl}/api/LimparPedido";
 
     $ch = curl_init($apiUrl);

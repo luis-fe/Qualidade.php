@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 
 function ConsultaLotes($plano)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ConsultaLotesVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -28,7 +28,7 @@ function ConsultaLotes($plano)
 }
 
 function consultarInformacoesPlano($empresa, $token, $plano){
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/PlanoPorPlano?codigoPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -49,7 +49,7 @@ function consultarInformacoesPlano($empresa, $token, $plano){
 
 function ConsultaPlanosDisponiveis($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -71,7 +71,7 @@ function ConsultaPlanosDisponiveis($empresa, $token)
 
 function ConsultaCronogramaFase($empresa, $token, $codPlano, $codFase)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaCronogramaFasePlanoFase?codigoPlano={$codPlano}&codFase={$codFase}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -96,7 +96,7 @@ function ConsultaCronogramaFase($empresa, $token, $codPlano, $codFase)
 
 function ConsultaMetas($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/MetasFases";
 
     $ch = curl_init($apiUrl);
@@ -128,7 +128,7 @@ function ConsultaMetas($dados)
 
 function ConsultarDetalhaFila($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/DetalhaOpFilas";
 
     $ch = curl_init($apiUrl);

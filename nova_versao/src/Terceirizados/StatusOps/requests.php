@@ -15,7 +15,7 @@ $token = $_SESSION['token'];
 
 function ConsultaCategorias()
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ObterCategorias";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -36,7 +36,7 @@ function ConsultaCategorias()
 }
 function ConsultaInformacoesPlano($plano)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/PlanoPorPlano?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -58,7 +58,7 @@ function ConsultaInformacoesPlano($plano)
 
 function ConsultaPlanosDisponiveis($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -80,7 +80,7 @@ function ConsultaPlanosDisponiveis($empresa, $token)
 
 function ConsultaCronogramaFase($empresa, $token, $codPlano, $codFase)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaCronogramaFasePlanoFase?codigoPlano={$codPlano}&codFase={$codFase}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -102,7 +102,7 @@ function ConsultaCronogramaFase($empresa, $token, $codPlano, $codFase)
 
 function ConsultarStatus($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.184:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://192.168.0.184:8000';
     $apiUrl = "{$baseUrl}/pcp/api/consultarStatusDisponiveis";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -126,7 +126,7 @@ function ConsultarStatus($empresa, $token)
 
 function ConsultaMetas($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/MetasFases";
 
     $ch = curl_init($apiUrl);
@@ -158,7 +158,7 @@ function ConsultaMetas($dados)
 
 function ConsultarFaccionistas($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/FaccionistaCategoria";
 
     $ch = curl_init($apiUrl);
@@ -190,7 +190,7 @@ function ConsultarFaccionistas($dados)
 
 function InserirStatus($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.190:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ApontarStatusOP";
 
     $ch = curl_init($apiUrl);

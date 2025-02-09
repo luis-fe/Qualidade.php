@@ -3,7 +3,7 @@
 
 function fazerChamadaApi($username, $password, $empresa) {
     // Determinar a URL com base na empresa
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:5000' : 'http://192.168.0.184:5000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://192.168.0.184:5000';
     
     // Montar a URL completa com os parâmetros de username e password
     $apiUrl = "{$baseUrl}/api/UsuarioSenha?codigo={$username}&senha={$password}";

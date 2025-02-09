@@ -358,9 +358,9 @@ include_once("./templates/cabecalho.php");
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
     <script>
-        const ApiDistribuicaoMatriz = 'http://192.168.0.183:8000/pcp/api/monitorPreFaturamento?empresa=1&';
-        const ApiConsultaPercentuaisEmbarques = 'http://192.168.0.183:8000/pcp/api/ConsultaConfiguracaoDistribuicao';
-        const ApiUpdatePercentuaisEmbarques = 'http://192.168.0.183:8000/pcp/api/UpdateConfiguracaoDistribuicao';
+        const ApiDistribuicaoMatriz = 'http://10.162.0.190:8000/pcp/api/monitorPreFaturamento?empresa=1&';
+        const ApiConsultaPercentuaisEmbarques = 'http://10.162.0.190:8000/pcp/api/ConsultaConfiguracaoDistribuicao';
+        const ApiUpdatePercentuaisEmbarques = 'http://10.162.0.190:8000/pcp/api/UpdateConfiguracaoDistribuicao';
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
         const Token = 'a44pcp22';

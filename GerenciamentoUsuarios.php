@@ -138,8 +138,8 @@ include_once("./templates/headers.php");
         fecharRotina();
     });
 
-    const ApiGetUsuarios = "http://192.168.0.183:5000/api/UsuariosPortal";
-const ApiEditUsuario = "http://192.168.0.183:5000/api/UsuariosPortal";
+    const ApiGetUsuarios = "http://10.162.0.190:5000/api/UsuariosPortal";
+const ApiEditUsuario = "http://10.162.0.190:5000/api/UsuariosPortal";
 const Token = "a40016aabcx9";
 const ModalEdit = document.getElementById('editModal');
 const newModal = document.getElementById('newModal');
