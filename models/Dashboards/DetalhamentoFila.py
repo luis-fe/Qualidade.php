@@ -162,16 +162,16 @@ def ValidandoTracoOP():
     c = pd.merge(c1,c2,on='codbarrastag')
 
     update_sql = text("""
-    update "Reposicao"."off".reposicao_qualidade rq 
-    set numeroop = :numeroop
-    where codbarrastag = :codbarrastag
+        UPDATE "Reposicao"."off".reposicao_qualidade
+        SET numeroop = :numeroop
+        WHERE codbarrastag = :codbarrastag
     """)
 
     with conn.connect() as connection:
         for index, row in c.iterrows():
-            connection.execute(update_sql,{
-                "numeroop": row['numeroop'],
-                "codbarrastag": row['codbarrastag']
+            connection.execute(update_sql, {
+                "numeroop": row["numeroop"],
+                "codbarrastag": row["codbarrastag"]
             })
 
         sql = """
