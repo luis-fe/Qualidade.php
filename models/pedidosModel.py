@@ -356,7 +356,7 @@ SET prioridade =
         WHEN prioridade = 'REVISAR' THEN 'REVISAR'  -- Não altera se já for 'REVISAR'
         ELSE prioridade || 'REVISAR'           
     END
-WHERE codigopedido = %s;
+WHERE codigopedido = ::codigopedido ;
     """)
 
     with conn.connect() as connection:
