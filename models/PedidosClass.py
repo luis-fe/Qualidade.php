@@ -50,7 +50,7 @@ class Pedido():
                     dataGeracao, 
                     priorizar, 
                     vlrSugestao,
-                    situacaosugestao, 
+                    situacaoSugestao, 
                     dataFaturamentoPrevisto  
                 from 
                     ped.SugestaoPed
@@ -82,7 +82,7 @@ class Pedido():
             dataemissao as dataGeracao,
             '0' as priorizar, 
             vlrPedido as vlrSugestao, 
-            '2' as situacaosugestao,
+            '2' as situacaoSugestao,
             dataPrevFat as dataFaturamentoPrevisto
         FROM 
             ped.Pedido e
