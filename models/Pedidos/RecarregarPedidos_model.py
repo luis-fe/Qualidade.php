@@ -109,7 +109,6 @@ def RecarregarPedidos(empresa):
         SugestoesAbertos2.drop('codPedido2', axis=1, inplace=True)
 
         if tamanho >= 1:
-            print(SugestoesAbertos2.columns)
             #ConexaoPostgreMPL.Funcao_Inserir(SugestoesAbertos2, tamanho, 'filaseparacaopedidos', 'append')
 
             SugestoesAbertos2 = SugestoesAbertos2.reset_index()
@@ -122,6 +121,8 @@ def RecarregarPedidos(empresa):
 
 
             status = Verificando_RetornaxConferido(empresa)
+            print(SugestoesAbertos2.columns)
+
             return pd.DataFrame([{'Mensagem:':f'foram inseridos {tamanho} pedidos!','Excluido':f'{tamanhoExclusao} pedidos removidos pois ja foram faturados ',
                                   'Pedidos Atualizados para Retorna':f'{status}'}])
         else:
