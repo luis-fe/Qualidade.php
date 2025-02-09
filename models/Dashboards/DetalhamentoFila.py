@@ -164,7 +164,7 @@ def ValidandoTracoOP():
     update_sql = text("""
     update "Reposicao"."off".reposicao_qualidade rq 
     set numeroop :numeroop
-    where codbarrastag :codbarrastag
+    where codbarrastag = :codbarrastag
     """)
 
     with conn.connect() as connection:
