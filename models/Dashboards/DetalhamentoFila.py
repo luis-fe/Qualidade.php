@@ -163,7 +163,7 @@ def ValidandoTracoOP():
 
     update_sql = text("""
     update "Reposicao"."off".reposicao_qualidade rq 
-    set numeroop :numeroop
+    set numeroop = :numeroop
     where codbarrastag = :codbarrastag
     """)
 
