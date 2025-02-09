@@ -145,44 +145,50 @@ where ts.codbarrastag in (select codbarrastag  from "Reposicao"."Reposicao".fila
 
 
 def ValidandoTracoOP():
+    # Criando conexão com o banco
+    engine = ConexaoPostgreMPL.conexaoEngine()
 
     sql1 = """
-    select codbarrastag, f.numeroop  from "Reposicao"."Reposicao".filareposicaoportag f 
-    where f.numeroop not like '%-001'
+    SELECT codbarrastag, f.numeroop  
+    FROM "Reposicao"."Reposicao".filareposicaoportag f 
+    WHERE f.numeroop NOT LIKE '%-001'
     """
 
     sql2 = """
-    select rq.codbarrastag   from "Reposicao"."off".reposicao_qualidade rq 
+    SELECT rq.codbarrastag   
+    FROM "Reposicao"."off".reposicao_qualidade rq
     """
 
-    conn = ConexaoPostgreMPL.conexaoEngine()
-    c1 = pd.read_sql(sql1,conn)
-    c2 = pd.read_sql(sql2,conn)
+    # Lendo os dados com uma conexão de streaming
+    with engine.connect() as conn:
+        c1 = pd.read_sql(sql1, conn)
+        c2 = pd.read_sql(sql2, conn)
 
-    c = pd.merge(c1,c2,on='codbarrastag')
+        # Fazendo merge entre os dois DataFrames
+        c = pd.merge(c1, c2, on='codbarrastag')
 
-    update_sql = text("""
-        UPDATE "Reposicao"."off".reposicao_qualidade
-        SET numeroop = :numeroop
-        WHERE codbarrastag = :codbarrastag
-    """)
+        update_sql = text("""
+            UPDATE "Reposicao"."off".reposicao_qualidade
+            SET numeroop = :numeroop
+            WHERE codbarrastag = :codbarrastag
+        """)
 
-    delete_sql = text("""
-        DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
-        WHERE codbarrastag IN (
-            SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
-        )
-    """)
+        delete_sql = text("""
+            DELETE FROM "Reposicao"."Reposicao".filareposicaoportag
+            WHERE codbarrastag IN (
+                SELECT codbarrastag FROM "Reposicao"."Reposicao".tagsreposicao
+            )
+        """)
 
-    with conn.connect() as connection:
-        transaction = connection.begin()  # Inicia transação
-        for index, row in c.iterrows():
-                connection.execute(update_sql, {
-                    "numeroop": row["numeroop"],
-                    "codbarrastag": row["codbarrastag"]
-                })
+        # Iniciando a transação
+        transaction = conn.begin()
+        for _, row in c.iterrows():
+            conn.execute(update_sql, {
+                "numeroop": row["numeroop"],
+                "codbarrastag": row["codbarrastag"]
+            })
 
-        connection.execute(delete_sql)  # Executa DELETE
+        conn.execute(delete_sql)  # Executa DELETE
         transaction.commit()  # Confirma transação
 
 
