@@ -8,7 +8,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultaLotes($plano)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ConsultaLotesVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -30,7 +30,7 @@ function ConsultaLotes($plano)
 
 function ConsultaPlanosDisponiveis($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -52,7 +52,7 @@ function ConsultaPlanosDisponiveis($empresa, $token)
 
 function ConsultaFaccionistasCsw()
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ConsultaFaccionistasCsw";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -74,7 +74,7 @@ function ConsultaFaccionistasCsw()
 
 function ConsultaCategorias()
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ObterCategorias";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -97,7 +97,7 @@ function ConsultaCategorias()
 
 function ConsultaMetas($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/MetasFaccionista";
 
     $ch = curl_init($apiUrl);
@@ -130,7 +130,7 @@ function ConsultaMetas($dados)
 
 function ConsultaMetasCategorias($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/MetasFasesCosturaCategorias";
 
     $ch = curl_init($apiUrl);
@@ -162,7 +162,7 @@ function ConsultaMetasCategorias($dados)
 
 function ConsultaRealizadoGeral($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/RealizadoGeralCostura";
 
     $ch = curl_init($apiUrl);
@@ -196,7 +196,7 @@ function ConsultaRealizadoGeral($dados)
 
 function CadastrarFaccionista($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/CadastrarCapacidadeDiariaFac";
 
     $ch = curl_init($apiUrl);

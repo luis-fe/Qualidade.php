@@ -15,7 +15,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultarReservas($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : '';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : '';
     $apiUrl = "{$baseUrl}/pcp/api/ReservaPreFaturamento";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

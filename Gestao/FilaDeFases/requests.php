@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 
 function ConsultaColecoes()
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/DistinctColecao";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -29,7 +29,7 @@ function ConsultaColecoes()
 
 function ConsultarFilaDasFases($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/FilaFases";
 
     $ch = curl_init($apiUrl);
@@ -61,7 +61,7 @@ function ConsultarFilaDasFases($dados)
 
 function ConsultarDetalhaFila($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/DetalhaOpFilas";
 
     $ch = curl_init($apiUrl);

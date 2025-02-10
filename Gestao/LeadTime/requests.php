@@ -8,7 +8,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultaTipoOp()
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ObterTipoOP";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -31,7 +31,7 @@ function ConsultaTipoOp()
 
 function ConsultarLeadTime($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/LeadTimesRealizados";
 
     $ch = curl_init($apiUrl);
@@ -63,7 +63,7 @@ function ConsultarLeadTime($dados)
 
 function ConsultarLeadTimeFases($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/LeadTimesFases";
 
     $ch = curl_init($apiUrl);
@@ -95,7 +95,7 @@ function ConsultarLeadTimeFases($dados)
 
 function ConsultarLeadTimeFaccionistas($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/LeadTimesFaccionistas";
 
     $ch = curl_init($apiUrl);

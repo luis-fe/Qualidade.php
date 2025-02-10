@@ -13,7 +13,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
 function ConsultarPedidos($empresa, $token, $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData,$emissaoinicial,$emissaofinal)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento?empresa={$empresa}&iniVenda={$iniVenda}&finalVenda={$finalVenda}&tiponota={$tipoNota}&parametroClassificacao={$parametroClassificacao}&tipoData={$tipoData}&emissaoinicial={$emissaoinicial}&emissaofinal={$emissaofinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -35,7 +35,7 @@ function ConsultarPedidos($empresa, $token, $iniVenda, $finalVenda, $tipoNota, $
 
 function ConsultarOps($empresa, $dataInicio, $dataFim)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.190:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
     $apiUrl = "{$baseUrl}/pcp/api/monitorOPs?dataInico={$dataInicio}&dataFim={$dataFim}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -57,7 +57,7 @@ function ConsultarOps($empresa, $dataInicio, $dataFim)
 
 function DetalharOp($empresa, $numeroOp)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/DelhalamentoMonitorOP?numeroOP={$numeroOp}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -79,7 +79,7 @@ function DetalharOp($empresa, $numeroOp)
 
 function DetalharPedido($empresa, $numeroPedido)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/DetalhaPedidoMonitor?codPedido={$numeroPedido}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -101,7 +101,7 @@ function DetalharPedido($empresa, $numeroPedido)
 
 function ConsultaTiposNotaCsw($empresa, $token)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/TipoNotasCsw";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -123,7 +123,7 @@ function ConsultaTiposNotaCsw($empresa, $token)
 
 function ConsultaProdutoSemOp($empresa, $token, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.190:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ProdutosSemOP";
 
     $ch = curl_init($apiUrl);

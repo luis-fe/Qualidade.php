@@ -15,7 +15,7 @@ $token = $_SESSION['token'];
 
 function ConsultaCategorias()
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/ObterCategorias";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -37,7 +37,7 @@ function ConsultaCategorias()
 
 function ConsultaFaccionistas()
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/RegistroFaccionistas";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -60,7 +60,7 @@ function ConsultaFaccionistas()
 
 function ConsultaMetas($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/MetasFases";
 
     $ch = curl_init($apiUrl);
@@ -92,7 +92,7 @@ function ConsultaMetas($dados)
 
 function ConsultarFaccionistas($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/FaccionistaCategoria";
 
     $ch = curl_init($apiUrl);
@@ -124,7 +124,7 @@ function ConsultarFaccionistas($dados)
 
 function ConsultaDados($dados)
 {
-    $baseUrl = 'http://10.162.0.190:8000/pcp';
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
     $apiUrl = "{$baseUrl}/api/DashboardFaccTotal";
 
     $ch = curl_init($apiUrl);

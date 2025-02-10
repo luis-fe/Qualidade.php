@@ -128,7 +128,7 @@ include_once("./templates/headers.php");
         const ApiCarrinhos = 'http://10.162.0.190:5000/api/consultarCarrinhos?';
         const ApiImprimirCarrinhos = 'http://10.162.0.190:5000/api/imprimirCodCarrinho';
         const ApiCadastrarCarrinhos = 'http://10.162.0.190:5000/api/NovoCarrinho';
-        const ApiGrades = 'http://10.162.0.190:8000/pcp/api/DesmembramentoCargaCarrinho?';
+        const ApiGrades = 'http://192.168.0.183:8000/pcp/api/DesmembramentoCargaCarrinho?';
         const Token = "a40016aabcx9";
 
         $(document).ready(() => {
