@@ -13,7 +13,7 @@
             session_start();
             $_SESSION['usuario'] = $username;
 
-            header("Location: TelaInicial.php");
+            header("Location: ./TelaInicial.php");
             exit();
         } else {
             $mensagemErro = "Usuário inválido. Tente novamente.";
