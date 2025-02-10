@@ -4,7 +4,7 @@ const EmpresaLogin = document.getElementById("InputEmpresa");
 const UsuarioNegado = document.getElementById("UsuarioNegado");
 const KeyApi = "a40016aabcx9";
 const ApiValidacaoMatriz = "http://10.162.0.190:5000/api/UsuarioSenha";
-const ApiValidacaoFilial = "http://192.168.0.184:5000/api/UsuarioSenha";
+const ApiValidacaoFilial = "http://10.162.0.191:5000/api/UsuarioSenha";
 
 function ValidacaoEmpresa() {
     const EmpresaSelecionada = EmpresaLogin.value;

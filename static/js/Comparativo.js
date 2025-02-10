@@ -12,7 +12,7 @@ if (Empresa === "1") {
 
 
 const ApiComparativoMatriz = "http://10.162.0.190:5000/api/confrontoTags";
-const ApiComparativoFilial = "http://192.168.0.184:5000/api/confrontoTags";
+const ApiComparativoFilial = "http://10.162.0.191:5000/api/confrontoTags";
 const Token = "a40016aabcx9"
 
 async function ChamadaApiComparativo(api) {

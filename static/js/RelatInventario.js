@@ -11,7 +11,7 @@ if (Empresa === "1") {
 }
 
 const ApiMatriz = 'http://10.162.0.190:5000/api/RelatorioInventario?';
-const ApiFilial = 'http://192.168.0.184:5000/api/RelatorioInventario?';
+const ApiFilial = 'http://10.162.0.191:5000/api/RelatorioInventario?';
   const Token1= 'a40016aabcx9';
 
     document.getElementById('BotaoConsultar').addEventListener('click', async () => {

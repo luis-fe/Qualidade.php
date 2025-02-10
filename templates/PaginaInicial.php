@@ -137,9 +137,9 @@ include_once("./templates/cabecalho.php");
         const ApiFilaPedidos = 'http://10.162.0.190:5000/api/RelatorioTotalFila';
         const ApiPedidosMatriz = 'http://10.162.0.190:5000/api/statuspedidos';
         const ApiEnderecosMatriz = 'http://10.162.0.190:5000/api/DisponibilidadeEnderecos?';
-        const ApiFilaPedidosFilial = 'http://192.168.0.184:5000/api/RelatorioTotalFila';
-        const ApiPedidosFilial = 'http://192.168.0.184:5000/api/statuspedidos';
-        const ApiEnderecosFilial = 'http://192.168.0.184:5000/api/DisponibilidadeEnderecos?';
+        const ApiFilaPedidosFilial = 'http://10.162.0.191:5000/api/RelatorioTotalFila';
+        const ApiPedidosFilial = 'http://10.162.0.191:5000/api/statuspedidos';
+        const ApiEnderecosFilial = 'http://10.162.0.191:5000/api/DisponibilidadeEnderecos?';
 
         async function fetchData(apiUrl) {
             try {

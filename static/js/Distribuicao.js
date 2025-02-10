@@ -11,7 +11,7 @@ if (Empresa === "1") {
 }
 
 const ApiDistribuicaoMatriz = 'http://10.162.0.190:5000/api/FilaPedidos';
-const ApiDistribuicaoFilial = 'http://192.168.0.184:5000/api/FilaPedidos';
+const ApiDistribuicaoFilial = 'http://10.162.0.191:5000/api/FilaPedidos';
 const indiceExibicao = 0;
 let PedidosSelecionados = [];
 let UsuarioSelecionado;
@@ -332,7 +332,7 @@ async function CarregarDados(api) {
 
         
 const ApiUsuariosMatriz = "http://10.162.0.190:5000/api/Usuarios";
-const ApiUsuariosFilial = "http://192.168.0.184:5000/api/Usuarios"
+const ApiUsuariosFilial = "http://10.162.0.191:5000/api/Usuarios"
 
 function CarregarUsuarios(api) {
     const selecaoUsuarios = document.getElementById('Usuarios');
@@ -528,7 +528,7 @@ function capturarItensSelecionados() {
 }
 
 const ApiAtribuicaoMatriz = 'http://10.162.0.190:5000/api/AtribuirPedidos';
-const ApiAtribuicaoFilial = 'http://192.168.0.184:5000/api/AtribuirPedidos'
+const ApiAtribuicaoFilial = 'http://10.162.0.191:5000/api/AtribuirPedidos'
 
 function AtribuicaoPedidos(api) {
     const PedidosSelecionados = capturarItensSelecionados();
@@ -586,7 +586,7 @@ function AtribuicaoPedidos(api) {
 }}
 
 const ApiPriorizaMatriz = "http://10.162.0.190:5000/api/Prioriza";
-const ApiPriorizaFilial = "http://192.168.0.184:5000/api/Prioriza"
+const ApiPriorizaFilial = "http://10.162.0.191:5000/api/Prioriza"
 
 function DefinirPrioridade(api) {
     const PedidosSelecionados = capturarItensSelecionados();
@@ -649,7 +649,7 @@ comboboxUsuarios.addEventListener('change', () => {
 });
 
 ApiOrdenacaoMatriz = "http://10.162.0.190:5000/api/FilaPedidosClassificacao";
-ApiOrdenacaoFilial = "http://192.168.0.184:5000/api/FilaPedidosClassificacao";
+ApiOrdenacaoFilial = "http://10.162.0.191:5000/api/FilaPedidosClassificacao";
 
 
 function OrdenarTabela(Coluna, api) {
@@ -731,7 +731,7 @@ function capturarPedidoVerificacao() {
 }
 
 const ApiMatrizFalta = `http://10.162.0.190:5000/api/DetalharPedido?codPedido=`
-const ApiFilialFalta = `http://192.168.0.184:5000/api/DetalharPedido?codPedido=`
+const ApiFilialFalta = `http://10.162.0.191:5000/api/DetalharPedido?codPedido=`
 
 function PecasFaltantes(api) {
     const PedidosSelecionados = capturarPedidoVerificacao();
@@ -861,7 +861,7 @@ function criarTabelaInformacoes(listaInformacoes) {
     };
 
     const ApiIndicadorDistribuicaoMatriz = 'http://10.162.0.190:5000/api/IndicadorDistribuicao';
-    const ApiIndicadorDistribuicaoFilial = 'http://192.168.0.184:5000/api/IndicadorDistribuicao';
+    const ApiIndicadorDistribuicaoFilial = 'http://10.162.0.191:5000/api/IndicadorDistribuicao';
   
 function PassarInformacoes(api){
     fetch(api, {
@@ -891,7 +891,7 @@ function PassarInformacoes(api){
 
 
 const ApiRecarregarPedidosMatriz = "http://10.162.0.190:5000/api/RecarregarPedidos?empresa=";
-const ApiRecarregarPedidosFilial = "http://192.168.0.184:5000/api/RecarregarPedidos?empresa=";
+const ApiRecarregarPedidosFilial = "http://10.162.0.191:5000/api/RecarregarPedidos?empresa=";
 async function AtualizarDados(api, Empresa) {
     AbrirModalLoading();
     try {

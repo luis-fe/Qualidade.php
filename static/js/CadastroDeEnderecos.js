@@ -22,7 +22,7 @@ function AbrirModalLoading() {
 
 
   const CadastrarEnderecosMatriz = "http://10.162.0.190:5000/api/EnderecoAtacado";
-  const CadastrarEnderecosFilial = "http://192.168.0.184:5000/api/EnderecoAtacado";
+  const CadastrarEnderecosFilial = "http://10.162.0.191:5000/api/EnderecoAtacado";
 
 function CadastrarEnderecos(api, Metodo, Condicao) {
     AbrirModalLoading();

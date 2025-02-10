@@ -131,8 +131,8 @@ include_once("./templates/cabecalho.php");
 
     <script>
         const apiCadastroMatriz= 'http://10.162.0.190:5000/api/CadastrarCaixa';
-        const apiCadastroFilial = 'http://192.168.0.184:5000/api/CadastrarCaixa';
-        const apiConsultaFilial = "http://192.168.0.184:5000/api/relatorioCaixas";
+        const apiCadastroFilial = 'http://10.162.0.191:5000/api/CadastrarCaixa';
+        const apiConsultaFilial = "http://10.162.0.191:5000/api/relatorioCaixas";
         const apiConsultaMatriz = "http://10.162.0.190:5000/api/relatorioCaixas";
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
