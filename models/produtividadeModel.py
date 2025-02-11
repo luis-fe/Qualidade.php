@@ -93,6 +93,7 @@ def ProdutividadeRepositores(dataInicial = '0', dataFInal ='0' , horarioInicial 
 
         ritmo2['acum'] = ritmo2.groupby(['usuario', 'dia']).cumcount() + 1
         ritmo2['acum'] = ritmo2['acum'] * (15 * 60)
+        ritmo2['ritmo'] = pd.to_numeric(ritmo2['ritmo'], errors='coerce')
         ritmo2['ritmo'] = ritmo2.groupby(['usuario', 'dia'])['ritmo'].cumsum()
         ritmo2['ritmo'] = ritmo2['acum'] / ritmo2['ritmo']
         ritmo2 = ritmo2.groupby(['usuario', 'dia']).tail(1)
