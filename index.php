@@ -1,5 +1,5 @@
 <?php
-    //include_once("helpers/url.php");
+    include_once __DIR__ . "/helpers/url.php";
     include_once("utils/FunctionsLogin.php");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
