@@ -87,7 +87,7 @@ def conexaoPCP():
 
     db_name = "PCP"
     db_user = os.getenv('POSTGRE_USER')
-    db_password = os.getenv('POSTGRE_PASSWORD')
+    db_password = "Master100"
     db_host = "192.168.0.183"
     portbanco = "5432"
 
