@@ -88,7 +88,7 @@ def conexaoPCP():
     db_name = "PCP"
     db_user = os.getenv('POSTGRE_USER')
     db_password = os.getenv('POSTGRE_PASSWORD')
-    db_host = "localhost"
+    db_host = "192.168.0.183"
     portbanco = "5432"
 
     return psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host, port=portbanco)
