@@ -1,7 +1,7 @@
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../ambiente.env') });
-const testtt = `${process.env.API_BASE_URL}/api/FilaPedidos`;
-alert(testtt); // Exibe a URL em um alerta no navegador
+//const path = require('path');
+//require('dotenv').config({ path: path.resolve(__dirname, '../ambiente.env') });
+//const testtt = `${process.env.API_BASE_URL}/api/FilaPedidos`;
+//alert(testtt); // Exibe a URL em um alerta no navegador
 
 const ApiDistribuicao = 'http://192.168.0.183:5000/api/FilaPedidos';
 
