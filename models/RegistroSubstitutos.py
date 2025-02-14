@@ -111,8 +111,8 @@ class RegistroSubstitutos():
                 cursor.execute(insert, (self.numeroop , self.cor, self.usurio, dataHora, self.empresa))
                 conn.commit()
 
-                cursor.execute(update,(self.numeroop, self.cor))
-                conn.commit()
+                #cursor.execute(update,(self.numeroop, self.cor))
+                #conn.commit()
 
 
             else:
