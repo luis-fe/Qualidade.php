@@ -120,8 +120,8 @@ class RegistroSubstitutos():
                 cursor.execute(delete, (self.numeroop , self.empresa, self.cor))
                 conn.commit()
 
-                cursor.execute(update,(self.numeroop, self.cor))
-                conn.commit()
+                #cursor.execute(update,(self.numeroop, self.cor))
+                #conn.commit()
 
 
             cursor.close()
