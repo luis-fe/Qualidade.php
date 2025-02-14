@@ -1,7 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../ambiente.env') });
-
-console.log(process.env.API_BASE_URL); // Exibe o valor da variável de ambiente
+const testtt = `${process.env.API_BASE_URL}/api/FilaPedidos`;
+alert(testtt); // Exibe a URL em um alerta no navegador
 
 const ApiDistribuicao = 'http://10.162.0.190:5000/api/FilaPedidos';
 
