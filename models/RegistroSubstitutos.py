@@ -103,7 +103,7 @@ class RegistroSubstitutos():
             dataHora = self.obterHoraAtual()
 
             insert = 'insert into "Reposicao"."RegistroSubstituto" (numeroop, cor, usuario, "dataHoraRegistro", empresa) values (%s, %s, %s, %s, %s)'
-            update = """update "Reposicao"."SubstitutosSkuOP" set considera = 'sim' and consideracao = 'sim' where numeroop = %s and cor =%s  """
+            update = """update "Reposicao"."SubstitutosSkuOP" set considera = 'sim', consideracao = 'sim' where numeroop = %s and cor =%s  """
 
             cursor = conn.cursor()
 
