@@ -9,7 +9,7 @@ function Login() {
     const senha = SenhaLogin.value; 
     const Empresa = EmpresaLogin.value;
 
-    fetch(`http://10.162.0.190:5000/api/UsuarioSenha?codigo=${codigo}&senha=${senha}`, {
+    fetch(`http://192.168.0.183:5000/api/UsuarioSenha?codigo=${codigo}&senha=${senha}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

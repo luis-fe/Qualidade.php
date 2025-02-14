@@ -86,7 +86,7 @@ include_once("./templates/cabecalho.php");
     </div>
 
     <script>
-        const ApiComparativoMatriz = "http://10.162.0.190:5000/api/confrontoTags";
+        const ApiComparativoMatriz = "http://192.168.0.183:5000/api/confrontoTags";
         const ApiComparativoFilial = "http://10.162.0.191:5000/api/confrontoTags";
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';

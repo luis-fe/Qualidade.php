@@ -107,7 +107,7 @@
 
         async function Consultas(Coluna, Operador, Nome) {
             try {
-                const response = await fetch(`http://10.162.0.190:5000/api/Silk/PesquisaEndereco?Coluna=${Coluna}&Operador=${Operador}&Nome=${Nome}`, {
+                const response = await fetch(`http://192.168.0.183:5000/api/Silk/PesquisaEndereco?Coluna=${Coluna}&Operador=${Operador}&Nome=${Nome}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -134,7 +134,7 @@
                 "endereco": document.getElementById('InputCadEndereco').value,
             }
             try {
-                const response = await fetch(`http://10.162.0.190:5000/api/Silk/IserirTelas`, {
+                const response = await fetch(`http://192.168.0.183:5000/api/Silk/IserirTelas`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -157,7 +157,7 @@
 
         async function ConsultaReferencia(Op) {
             try {
-                const response = await fetch(`http://10.162.0.190:5000/api/Silk/PesquisaReferencia?numeroOP=${Op}`, {
+                const response = await fetch(`http://192.168.0.183:5000/api/Silk/PesquisaReferencia?numeroOP=${Op}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application.json',

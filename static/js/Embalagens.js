@@ -1,4 +1,4 @@
-const apiCadastro = 'http://10.162.0.190:5000/api/CadastrarCaixa';
+const apiCadastro = 'http://192.168.0.183:5000/api/CadastrarCaixa';
 const Token = "a40016aabcx9";
 
 function getFormattedDate(date) {
@@ -11,7 +11,7 @@ function getFormattedDate(date) {
 async function obterInformacoesCaixas(dataInicio, dataFim) {
   
     try {
-        const response = await fetch(`http://10.162.0.190:5000/api/relatorioCaixas?dataInicio=${dataInicio}&dataFim=${dataFim}`, {
+        const response = await fetch(`http://192.168.0.183:5000/api/relatorioCaixas?dataInicio=${dataInicio}&dataFim=${dataFim}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

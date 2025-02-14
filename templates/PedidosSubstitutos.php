@@ -98,7 +98,7 @@ include_once("./templates/cabecalho.php");
         </div>
     </div>
     <script>
-    const ApiConsultaPedidosWms = "http://10.162.0.190:5000/api/PedidosRestricao";
+    const ApiConsultaPedidosWms = "http://192.168.0.183:5000/api/PedidosRestricao";
     const Token = 'a40016aabcx9';
     // Se $usuario é uma variável PHP, precisa ser definida antes de ser usada aqui.
     var usuario = '<?php echo $usuario; ?>';
