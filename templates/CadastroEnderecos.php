@@ -161,7 +161,7 @@ include_once("./templates/cabecalho.php");
     </div>
 
     <script>
-        const CadastrarEnderecosMatriz = "http://192.168.0.183:5000/api/EnderecoAtacado";
+        const CadastrarEnderecosMatriz = "http://10.162.0.190:5000/api/EnderecoAtacado";
         const CadastrarEnderecosFilial = "http://177.221.240.74:5000/api/EnderecoAtacado";
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';

@@ -140,19 +140,19 @@ include_once("./templates/cabecalho.php");
 
 
     <script>
-        const ApiDistribuicaoMatriz = 'http://192.168.0.183:5000/api/FilaPedidos';
+        const ApiDistribuicaoMatriz = 'http://10.162.0.190:5000/api/FilaPedidos';
         const ApiDistribuicaoFilial = 'http://10.162.0.191:5000/api/FilaPedidos';
-        const ApiUsuariosMatriz = "http://192.168.0.183:5000/api/Usuarios";
+        const ApiUsuariosMatriz = "http://10.162.0.190:5000/api/Usuarios";
         const ApiUsuariosFilial = "http://10.162.0.191:5000/api/Usuarios";
-        const ApiAtribuicaoMatriz = 'http://192.168.0.183:5000/api/AtribuirPedidos';
+        const ApiAtribuicaoMatriz = 'http://10.162.0.190:5000/api/AtribuirPedidos';
         const ApiAtribuicaoFilial = 'http://10.162.0.191:5000/api/AtribuirPedidos'
-        const ApiPriorizaMatriz = "http://192.168.0.183:5000/api/Prioriza";
+        const ApiPriorizaMatriz = "http://10.162.0.190:5000/api/Prioriza";
         const ApiPriorizaFilial = "http://10.162.0.191:5000/api/Prioriza";
-        const ApiRecarregarPedidosMatriz = "http://192.168.0.183:5000/api/RecarregarPedidos?empresa=";
+        const ApiRecarregarPedidosMatriz = "http://10.162.0.190:5000/api/RecarregarPedidos?empresa=";
         const ApiRecarregarPedidosFilial = "http://10.162.0.191:5000/api/RecarregarPedidos?empresa=";
-        const ApiIndicadorDistribuicaoMatriz = 'http://192.168.0.183:5000/api/IndicadorDistribuicao';
+        const ApiIndicadorDistribuicaoMatriz = 'http://10.162.0.190:5000/api/IndicadorDistribuicao';
         const ApiIndicadorDistribuicaoFilial = 'http://10.162.0.191:5000/api/IndicadorDistribuicao';
-        const ApiMatrizFalta = `http://192.168.0.183:5000/api/DetalharPedido?codPedido=`
+        const ApiMatrizFalta = `http://10.162.0.190:5000/api/DetalharPedido?codPedido=`
         const ApiFilialFalta = `http://10.162.0.191:5000/api/DetalharPedido?codPedido=`
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';

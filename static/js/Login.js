@@ -3,7 +3,7 @@ const SenhaLogin = document.getElementById("InputSenha");
 const EmpresaLogin = document.getElementById("InputEmpresa");
 const UsuarioNegado = document.getElementById("UsuarioNegado");
 const KeyApi = "a40016aabcx9";
-const ApiValidacaoMatriz = "http://192.168.0.183:5000/api/UsuarioSenha";
+const ApiValidacaoMatriz = "http://10.162.0.190:5000/api/UsuarioSenha";
 const ApiValidacaoFilial = "http://10.162.0.191:5000/api/UsuarioSenha";
 
 function ValidacaoEmpresa() {

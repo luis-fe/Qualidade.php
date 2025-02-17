@@ -10,7 +10,7 @@ if (Empresa === "1") {
     window.location.href = '/Login_Teste';
 }
 
-const ApiMatriz = 'http://192.168.0.183:5000/api/RelatorioInventario?';
+const ApiMatriz = 'http://10.162.0.190:5000/api/RelatorioInventario?';
 const ApiFilial = 'http://10.162.0.191:5000/api/RelatorioInventario?';
   const Token1= 'a40016aabcx9';
 

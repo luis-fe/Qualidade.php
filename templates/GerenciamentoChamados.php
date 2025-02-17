@@ -141,13 +141,13 @@ include_once("./templates/cabecalho.php");
     </div>
 
     <script>
-        const ApiConsultaChamadosMatriz = "http://192.168.0.183:5000/api/chamados";
+        const ApiConsultaChamadosMatriz = "http://10.162.0.190:5000/api/chamados";
         const ApiConsultaChamadosFilial = "http://10.162.0.191:5000/api/chamados";
-        const ApiNovoChamadoMatriz = "http://192.168.0.183:5000/api/NovoChamado";
+        const ApiNovoChamadoMatriz = "http://10.162.0.190:5000/api/NovoChamado";
         const ApiNovoChamadoFilial = "http://10.162.0.191:5000/api/NovoChamado";
-        const ApiImagemMatriz = "http://192.168.0.183:5000/api/upload";
+        const ApiImagemMatriz = "http://10.162.0.190:5000/api/upload";
         const ApiImagemFilial = "http://10.162.0.191:5000/api/upload";
-        const ApiConsultaAreaChamadosMatriz = "http://192.168.0.183:5000/api/area";
+        const ApiConsultaAreaChamadosMatriz = "http://10.162.0.190:5000/api/area";
         const ApiConsultaAreaChamadosFilial = "http://10.162.0.191:5000/api/area";
         var empresa = '<?php echo $empresa; ?>';
         var usuario = '<?php echo $usuario; ?>';
