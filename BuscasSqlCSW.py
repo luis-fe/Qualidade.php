@@ -163,10 +163,22 @@ def MovimentacoesOpsNodia():
 #17- SQL DE BUSCA DAS QUALIDADES DAS TAGS ENTRE DATAS no dia : velocidade 2,00 segundos (REGULAR)
 def TagsSegundaQualidadePeriodo(datainicial, datafinal):
 
-        detalhado =   'SELECT codBarrasTag , codReduzido , codNaturezaAtual , numeroOP , motivo2Qualidade  FROM tcr.TagBarrasProduto t'\
-        '    WHERE t.codEmpresa = 1 and t.codNaturezaAtual in (7, 54, 53) and t.numeroOP in '\
-        '(SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 2 '\
-        "and op.datafim >= '"+datainicial+"' and op.datafim < '"+ datafinal+"' ) and motivo2Qualidade > 0 and situacao <> 1"
+        detalhado =   """
+        SELECT 
+            codBarrasTag , 
+            codReduzido , 
+            codNaturezaAtual , 
+            numeroOP , 
+            motivo2Qualidade  
+        FROM 
+            tcr.TagBarrasProduto t
+        WHERE 
+            t.codEmpresa = 1 
+            and t.codNaturezaAtual in (7, 54, 53) 
+            and t.numeroOP in
+        (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 2
+        and op.datafim >= '"""+datainicial+"""' and op.datafim =< '"""+ datafinal+"""' ) and motivo2Qualidade > 0 and situacao <> 1
+        """
 
         return detalhado
 
@@ -182,28 +194,43 @@ def Motivos():
 #19- Sql Obter as OPs Baixadas no Periodo: velocidade 0,70 segundos (otimo)
 
 def OpsBaixadas(datainicial, datafinal):
-    opsBaixadas = 'SELECT M.dataLcto , m.numDocto, m.qtdMovto, codNatureza1, m.codItem FROM est.Movimento m'\
-                    " WHERE codEmpresa = 1 and m.dataLcto >= '"+ datainicial +"'and m.dataLcto <= '"+datafinal+"'"\
-                    " and operacao1 = '+' and numDocto like 'OP%'"\
-                    " AND codNatureza1 IN (5,7)"
+    opsBaixadas = """
+            SELECT 
+                M.dataLcto , 
+                m.numDocto, 
+                m.qtdMovto, 
+                codNatureza1, 
+                m.codItem FROM est.Movimento m
+            WHERE 
+                codEmpresa = 1 and m.dataLcto >= '"""+ datainicial +"""'and m.dataLcto <= '"""+datafinal+"""'
+                and operacao1 = '+' and numDocto like 'OP%'
+                AND codNatureza1 IN (5,7)
+                """
 
     return opsBaixadas
 
 #20- Sql Obter as OPs Baixadas por faccionista no Periodo: velocidade 1,70 segundos (otimo)
 
 def OpsBaixadasFaccionista(datainicial, datafinal):
-    opBaixadas = "  SELECT CONVERT(VARCHAR(10), R.codOP) AS numeroOP2, CONVERT(VARCHAR(6), R.codOP) AS OPpai, R.codFase as codFase, R.codFac,"\
-  " (SELECT fase.nome FROM tcp.FasesProducao fase WHERE fase.codempresa = 1 and fase.codfase = R.codFase) as nomeFase,"\
-   " (SELECT nome  FROM tcg.Faccionista  f WHERE f.empresa = 1 and f.codfaccionista = r.codfac) as nomeFaccicionista"\
-  " FROM TCT.RemessaOPsDistribuicao R"\
-" INNER JOIN tco.OrdemProd op on"\
-     " op.codempresa = r.empresa and op.numeroop = CONVERT(VARCHAR(10), R.codOP)"\
-     " WHERE R.Empresa = 1 and r.situac = 2 and op.numeroop in "\
-     " ("\
-     " SELECT SUBSTRING(m.numDocto, 11,10) FROM est.Movimento m"\
-                     " WHERE codEmpresa = 1 and m.dataLcto >= '"+datainicial +"' and m.dataLcto <= '"+datafinal+"' "\
-                     " and operacao1 = '+' and numDocto like 'OP%'"\
-                     " AND codNatureza1 IN (5,7))"
+    opBaixadas = """  
+                SELECT 
+                    CONVERT(VARCHAR(10), R.codOP) AS numeroOP2, 
+                    CONVERT(VARCHAR(6), R.codOP) AS OPpai, 
+                    R.codFase as codFase, 
+                    R.codFac,
+                    (SELECT fase.nome FROM tcp.FasesProducao fase WHERE fase.codempresa = 1 and fase.codfase = R.codFase) as nomeFase,
+                    (SELECT nome  FROM tcg.Faccionista  f WHERE f.empresa = 1 and f.codfaccionista = r.codfac) as nomeFaccicionista
+                FROM 
+                    TCT.RemessaOPsDistribuicao R
+                INNER JOIN tco.OrdemProd op on
+                    op.codempresa = r.empresa and op.numeroop = CONVERT(VARCHAR(10), R.codOP)
+                WHERE R.Empresa = 1 and r.situac = 2 and op.numeroop in
+                    (
+                    SELECT SUBSTRING(m.numDocto, 11,10) FROM est.Movimento m
+                        WHERE codEmpresa = 1 and m.dataLcto >= '"""+datainicial +"""' and m.dataLcto <= '"""+datafinal+"""' 
+                        and operacao1 = '+' and numDocto like 'OP%'
+                        AND codNatureza1 IN (5,7))
+                """
 
     return opBaixadas
 
