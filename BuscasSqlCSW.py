@@ -176,8 +176,17 @@ def TagsSegundaQualidadePeriodo(datainicial, datafinal):
             t.codEmpresa = 1 
             and t.codNaturezaAtual in (7, 54, 53) 
             and t.numeroOP in
-        (SELECT op.numeroop from tco.OrdemProd op WHERE op.codempresa = 1 and op.situacao = 2
-        and op.datafim >= '"""+datainicial+"""' and op.datafim =< '"""+ datafinal+"""' ) and motivo2Qualidade > 0 and situacao <> 1
+                (
+                SELECT 
+                    op.numeroop 
+                from 
+                    tco.OrdemProd op 
+                WHERE 
+                    op.codempresa = 1 and op.situacao = 2
+                    and op.datafim >= '"""+datainicial+"""' 
+                    and op.datafim <= '"""+ datafinal+"""' 
+                ) 
+        and motivo2Qualidade > 0 and situacao <> 1
         """
 
         return detalhado
@@ -200,7 +209,8 @@ def OpsBaixadas(datainicial, datafinal):
                 m.numDocto, 
                 m.qtdMovto, 
                 codNatureza1, 
-                m.codItem FROM est.Movimento m
+                m.codItem 
+            FROM est.Movimento m
             WHERE 
                 codEmpresa = 1 and m.dataLcto >= '"""+ datainicial +"""'and m.dataLcto <= '"""+datafinal+"""'
                 and operacao1 = '+' and numDocto like 'OP%'
