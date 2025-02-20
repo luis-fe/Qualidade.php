@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
 include_once("../../templates/Loading.php");
-include_once('../../templates/header.php');
+include_once('../../templates/headerGarantia.php');
 ?>
 <link rel="stylesheet" href="style.css">
 <style>
