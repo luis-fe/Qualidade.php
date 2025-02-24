@@ -568,7 +568,7 @@
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <ul class="submenu">
-                    <a href="Metas_Departamentos" class="nav-link submenu-item">
+                    <a href="../../Gestao/Metas_Departamentos" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
                     </a>
                 </ul>
