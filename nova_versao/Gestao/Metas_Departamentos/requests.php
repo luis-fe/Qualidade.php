@@ -128,6 +128,8 @@ function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
     $Fase = str_replace(' ', '%20', $Fase);
+    $Fase = str_replace('ÃÃ', 'ÇÃ', $Fase);
+
     $apiUrl = "{$baseUrl}/pcp/api/RetornoPorFaseDiaria?nomeFase={$Fase}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
