@@ -562,6 +562,17 @@
                     </a> -->
                 </ul>
             </li>
+             <li class="nav-item">
+                <a href="#" class="nav-link menu-item">
+                    <i class="bi bi-clipboard-data icon-menu"></i> Gestão
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <a href="Metas_Departamentos" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
+                    </a>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link menu-item">
                     <i class="bi bi-printer icon-menu"></i> Relatórios
