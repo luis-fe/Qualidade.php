@@ -42,7 +42,7 @@ include_once('../../templates/headerPcp.php');
 </style>
 
 <div class="titulo-tela">
-    <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
+    <span class="span-icone"><i class="bi bi-bullseye"></i></span> Metas
 </div>
 
 <div class="mt-3 mb-4 row justify-content-left" id="selecao-plano">
@@ -197,4 +197,4 @@ include_once('../../templates/headerPcp.php');
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script.js"></script>
+<script src="script3.js"></script>
