@@ -571,6 +571,9 @@
                     <a href="../../Gestao/Metas_Departamentos" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
                     </a>
+                    <a href="../../Gestao/Lead_Time" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Lead Time <!-- PCP -->
+                    </a>
                 </ul>
             </li>
             <li class="nav-item">
