@@ -545,9 +545,6 @@
                     <!-- <a href="#" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Lead Time GESTÃO
                     </a> -->
-                    <a href="../../Gestao/Metas_Departamentos" class="nav-link submenu-item">
-                        <i class="bi bi-circle-fill"></i> Meta dos Departamentos <!--GESTÃO-->
-                    </a>
                     <!-- <a href="#" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Meta dos Terceirizados TERCEIRIZADOS
                     </a> -->
@@ -568,11 +565,14 @@
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <ul class="submenu">
-                    <a href="../../Gestao/Metas_Departamentos" class="nav-link submenu-item">
-                        <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
+                    <a href="../../Gestao/Fila_Fases" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Fila de Fases <!-- PCP -->
                     </a>
                     <a href="../../Gestao/Lead_Time" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Lead Time <!-- PCP -->
+                    </a>
+                     <a href="../../Gestao/Metas_Departamentos" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Metas dos Departamentos <!-- PCP -->
                     </a>
                 </ul>
             </li>
