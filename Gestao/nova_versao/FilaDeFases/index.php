@@ -5,7 +5,7 @@ include_once('../../templates/header.php');
 ?>
 <!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-<link rel="stylesheet" href="style1.css">
+<link rel="stylesheet" href="style.css">
 <style>
     #detalha-info {
         position: absolute;
@@ -51,4 +51,4 @@ include_once('../../templates/header.php');
 <?php
 include_once('../../templates/footer.php');
 ?>
-<script src="script3.js"></script>
+<script src="script.js"></script>
