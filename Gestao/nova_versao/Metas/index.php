@@ -239,4 +239,4 @@ include_once('../../templates/header.php');
 <?php
 include_once('../../templates/footer.php');
 ?>
-<script src="script4.js"></script>
+<script src="script.js"></script>
