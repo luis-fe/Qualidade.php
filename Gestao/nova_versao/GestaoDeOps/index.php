@@ -5,7 +5,7 @@ include_once('../../templates/header.php');
 ?>
 <!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-<link rel="stylesheet" href="style4.css">
+<link rel="stylesheet" href="style.css">
 <style>
 </style>
 
@@ -198,7 +198,7 @@ include_once('../../templates/header.php');
 <?php
 include_once('../../templates/footer.php');
 ?>
-<script src="script5.js"></script>
+<script src="script.js"></script>
 <script>
     document.querySelectorAll('[name="opcoesOrdenacao"]').forEach(radio => {
         radio.addEventListener('change', function() {
