@@ -494,18 +494,12 @@
           <a href="../../../FilaDeFases" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Fila de Fases <!-- PCP -->
           </a>
-        </ul>
-        <ul class="submenu">
           <a href="../../../GestaoDeOps" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Gestão de Op's <!-- PCP -->
           </a>
-        </ul>
-        <ul class="submenu">
           <a href="../../../LeadTime" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Lead Time <!-- PCP -->
           </a>
-        </ul>
-        <ul class="submenu">
           <a href="../../../Metas" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
           </a>
