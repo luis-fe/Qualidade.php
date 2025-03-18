@@ -485,16 +485,16 @@
       <img src="../../../templates/logo-grupompl.png" alt="" style="width: 60%; margin-top: 80px; margin-bottom: 20px">
     </div>
     <ul class="nav flex-column">
-          <a href="../../../FilaDeFases" class="nav-link submenu-item">
+          <a href="../FilaDeFases" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Fila de Fases <!-- PCP -->
           </a>
-          <a href="../../../GestaoDeOps" class="nav-link submenu-item">
+          <a href="../GestaoDeOps" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Gestão de Op's <!-- PCP -->
           </a>
-          <a href="../../../LeadTime" class="nav-link submenu-item">
+          <a href="../LeadTime" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Lead Time <!-- PCP -->
           </a>
-          <a href="../../../Metas" class="nav-link submenu-item">
+          <a href="../Metas" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
           </a>
     </ul>
