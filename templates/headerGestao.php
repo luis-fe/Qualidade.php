@@ -485,12 +485,6 @@
       <img src="../../../templates/logo-grupompl.png" alt="" style="width: 60%; margin-top: 80px; margin-bottom: 20px">
     </div>
     <ul class="nav flex-column">
-      <li class="nav-item">
-        <a href="#" class="nav-link menu-item">
-          <i class="bi bi-clipboard-data icon-menu"></i> Gestão
-          <i class="fas fa-chevron-down"></i>
-        </a>
-        <ul class="submenu">
           <a href="../../../FilaDeFases" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Fila de Fases <!-- PCP -->
           </a>
@@ -503,8 +497,6 @@
           <a href="../../../Metas" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
           </a>
-        </ul>
-      </li>
     </ul>
   </div>
 
