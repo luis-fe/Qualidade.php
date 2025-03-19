@@ -1,12 +1,4 @@
 <?php
-// session_start();
-// if (isset($_SESSION['username']) && isset($_SESSION['empresa'])) {
-//     $username = $_SESSION['username'];
-//     $empresa = $_SESSION['empresa'];
-// } else {
-//     header("Location: ../../index.php");
-// }
-
 
 function jsonResponse($data)
 {
@@ -114,8 +106,9 @@ function ConsultarLotes($empresa, $plano)
 
 function ConsultaPrevisaoCategoria($Fase)
 {
+    $fase_encoded = urlencode($Fase);
     $baseUrl = 'http://192.168.0.183:8000/pcp';
-    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase?nomeFase={$Fase}";
+    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase?nomeFase={$fase_encoded}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -136,8 +129,9 @@ function ConsultaPrevisaoCategoria($Fase)
 
 function ConsultaFaltaProgramarCategoria($Fase)
 {
+    $fase_encoded = urlencode($Fase);
     $baseUrl = 'http://192.168.0.183:8000/pcp';
-    $apiUrl = "{$baseUrl}/api/faltaProgcategoria_fase?nomeFase={$Fase}";
+    $apiUrl = "{$baseUrl}/api/faltaProgcategoria_fase?nomeFase={$fase_encoded}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -203,8 +197,9 @@ function ConsultarPlanos($empresa)
 
 function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 {
+    $fase_encoded = urlencode($Fase);
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
-    $apiUrl = "{$baseUrl}/pcp/api/RetornoPorFaseDiaria?nomeFase={$Fase}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
+    $apiUrl = "{$baseUrl}/pcp/api/RetornoPorFaseDiaria?nomeFase={$fase_encoded}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
