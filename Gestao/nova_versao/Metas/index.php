@@ -81,7 +81,7 @@ include_once('../../../templates/headerGestao.php');
                     <th>Efic. %<br></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="overflow-y: auto">
                 <!-- Aqui vão os dados da tabela -->
             </tbody>
         </table>
