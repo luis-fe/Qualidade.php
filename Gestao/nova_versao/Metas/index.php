@@ -65,7 +65,7 @@ include_once('../../../templates/headerGestao.php');
 <div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
-            <thead>
+            <thead class="table-light" style="position: sticky; top: 0; z-index: 1020;">
                 <tr>
                     <th>Sequencia<br></th>
                     <th>Cód. Fase<br></th>
