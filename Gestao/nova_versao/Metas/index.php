@@ -18,6 +18,12 @@ include_once('../../../templates/headerGestao.php');
         display: block;
     }
 
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* Ocupa 100% da altura da tela */
+    }
+
     .custom-pagination-container {
         justify-content: space-between;
         align-items: center;
@@ -40,29 +46,32 @@ include_once('../../../templates/headerGestao.php');
         background-color: lightgray !important;
     }
 </style>
-<div style="position: sticky; top: 0; z-index: 1050;">
-    <div class="titulo-tela bg-white shadow-sm p-3">
-        <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
-    </div>
+<div class="wrapper">
+    <!-- Parte fixa (sem rolagem) -->
+    <div class="fixed-section" style="position: sticky; top: 0; z-index: 1050;">
+        <div class="titulo-tela bg-white shadow-sm p-3">
+            <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
+        </div>
 
-    <div class="mt-3 mb-4 row justify-content-left" id="selecao-plano">
-        <div class="col-12 col-md-6">
-            <div class="select text-start">
-                <label for="select-plano" class="form-label">Selecionar plano</label>
-                <select id="select-plano" class="form-select" required>
-                </select>
+        <div class="mt-3 mb-4 row justify-content-left" id="selecao-plano">
+            <div class="col-12 col-md-6">
+                <div class="select text-start">
+                    <label for="select-plano" class="form-label">Selecionar plano</label>
+                    <select id="select-plano" class="form-select" required>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 d-none" id="div-selecionar-lote">
+                <div class="select text-start">
+                    <label for="select-lote" class="form-label">Selecionar Lote</label>
+                    <select id="select-lote" class="form-select" required>
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 d-none" id="div-selecionar-lote">
-            <div class="select text-start">
-                <label for="select-lote" class="form-label">Selecionar Lote</label>
-                <select id="select-lote" class="form-select" required>
-                </select>
-            </div>
-        </div>
     </div>
 
-</div>
+    <!-- Parte rolável -->
 
 <div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
