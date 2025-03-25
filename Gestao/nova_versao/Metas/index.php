@@ -40,26 +40,28 @@ include_once('../../../templates/headerGestao.php');
         background-color: lightgray !important;
     }
 </style>
+<div style="position: sticky; top: 0; z-index: 1050;>
+    <div class="titulo-tela bg-white shadow-sm p-3">
+        <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
+    </div>
 
-<div class="titulo-tela bg-white shadow-sm p-3" style="position: sticky; top: 0; z-index: 1050;">
-    <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
-</div>
-
-<div class="mt-3 mb-4 row justify-content-left" id="selecao-plano">
-    <div class="col-12 col-md-6">
-        <div class="select text-start">
-            <label for="select-plano" class="form-label">Selecionar plano</label>
-            <select id="select-plano" class="form-select" required>
-            </select>
+    <div class="mt-3 mb-4 row justify-content-left" id="selecao-plano">
+        <div class="col-12 col-md-6">
+            <div class="select text-start">
+                <label for="select-plano" class="form-label">Selecionar plano</label>
+                <select id="select-plano" class="form-select" required>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 d-none" id="div-selecionar-lote">
+            <div class="select text-start">
+                <label for="select-lote" class="form-label">Selecionar Lote</label>
+                <select id="select-lote" class="form-select" required>
+                </select>
+            </div>
         </div>
     </div>
-    <div class="col-12 col-md-6 d-none" id="div-selecionar-lote">
-        <div class="select text-start">
-            <label for="select-lote" class="form-label">Selecionar Lote</label>
-            <select id="select-lote" class="form-select" required>
-            </select>
-        </div>
-    </div>
+
 </div>
 
 <div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
