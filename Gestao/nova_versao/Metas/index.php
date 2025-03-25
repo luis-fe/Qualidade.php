@@ -41,7 +41,7 @@ include_once('../../../templates/headerGestao.php');
     }
 </style>
 
-<div class="titulo-tela">
+<div class="titulo-tela bg-white shadow-sm p-3" style="position: sticky; top: 0; z-index: 1050;">
     <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
 </div>
 
@@ -62,10 +62,10 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="col-12 div-metas d-none bg-light rounded p-2" style="background-color: lightgray; border-radius: 8px;">
+<div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered table-striped m-0 w-100" id="table-metas" style="width: 100%;">
-            <thead class="table-light" style="position: sticky; top: 0; z-index: 1020;">
+        <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
+            <thead>
                 <tr>
                     <th>Sequencia<br></th>
                     <th>Cód. Fase<br></th>
@@ -81,7 +81,7 @@ include_once('../../../templates/headerGestao.php');
                     <th>Efic. %<br></th>
                 </tr>
             </thead>
-            <tbody style="overflow-y: auto">
+            <tbody>
                 <!-- Aqui vão os dados da tabela -->
             </tbody>
         </table>
