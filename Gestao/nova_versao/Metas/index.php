@@ -40,7 +40,7 @@ include_once('../../../templates/headerGestao.php');
         background-color: lightgray !important;
     }
 </style>
-<div style="position: sticky; top: 0; z-index: 1050;>
+<div style="position: sticky; top: 0; z-index: 1050;">
     <div class="titulo-tela bg-white shadow-sm p-3">
         <span class="span-icone"><i class="bi bi-bullseye"></i></span> plano
     </div>
