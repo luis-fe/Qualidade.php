@@ -62,9 +62,9 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
+<div class="col-12 div-metas d-none bg-light rounded p-2" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
+        <table class="table table-bordered table-striped m-0 w-100" id="table-metas" style="width: 100%;">
             <thead class="table-light" style="position: sticky; top: 0; z-index: 1020;">
                 <tr>
                     <th>Sequencia<br></th>
