@@ -62,29 +62,31 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
-    <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
-            <thead>
-                <tr>
-                    <th>Sequencia<br></th>
-                    <th>Cód. Fase<br></th>
-                    <th>Nome Fase<br><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
-                    <th>Previsão de Peças<br></th>
-                    <th>Falta Programar<br></th>
-                    <th>Carga<br></th>
-                    <th>Fila <br></th>
-                    <th>Falta Produzir<br></th>
-                    <th>Qtd. Dias<br></th>
-                    <th>Meta Dia<br></th>
-                    <th>Realizado<br></th>
-                    <th>Efic. %<br></th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aqui vão os dados da tabela -->
-            </tbody>
-        </table>
+<div style="position: sticky;">
+    <div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
+        <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+            <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Sequencia<br></th>
+                        <th>Cód. Fase<br></th>
+                        <th>Nome Fase<br><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
+                        <th>Previsão de Peças<br></th>
+                        <th>Falta Programar<br></th>
+                        <th>Carga<br></th>
+                        <th>Fila <br></th>
+                        <th>Falta Produzir<br></th>
+                        <th>Qtd. Dias<br></th>
+                        <th>Meta Dia<br></th>
+                        <th>Realizado<br></th>
+                        <th>Efic. %<br></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aqui vão os dados da tabela -->
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
