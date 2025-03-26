@@ -274,7 +274,3 @@ function ConsultarMetas($empresa, $dados)
     return json_decode($apiResponse, true);
 }
 
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
