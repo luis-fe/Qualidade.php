@@ -37,10 +37,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $fase = $_GET['fase'];
                     jsonResponse(ConsultaPrevisaoCategoria($fase));
                     break;
-                case 'Consulta_Falta_Programar_Categoria':
+                case 'Consulta_Falta_Produzir_Categoria':
                     $fase = $_GET['fase'];
-                    jsonResponse(ConsultaFaltaProgramarCategoria($fase));
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultaFaltaProduzirCategoria_Fase($fase, $plano));
                     break;
+
 
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
@@ -127,11 +129,11 @@ function ConsultaPrevisaoCategoria($Fase)
     return json_decode($apiResponse, true);
 }
 
-function ConsultaFaltaProgramarCategoria($Fase)
+function ConsultaFaltaProduzirCategoria_Fase($Fase, $Plano)
 {
     $fase_encoded = urlencode($Fase);
     $baseUrl = 'http://192.168.0.183:8000/pcp';
-    $apiUrl = "{$baseUrl}/api/faltaProgcategoria_fase?nomeFase={$fase_encoded}";
+    $apiUrl = "{$baseUrl}/api/FaltaProduzircategoria_fase?nomeFase={$fase_encoded}&codPlano={$Plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -266,6 +268,11 @@ function ConsultarMetas($empresa, $dados)
         error_log("Erro na solicitação cURL: {$error}");
         return false;
     }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
     curl_close($ch);
 
