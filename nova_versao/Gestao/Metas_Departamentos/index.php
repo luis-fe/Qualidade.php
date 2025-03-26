@@ -197,4 +197,4 @@ include_once('../../templates/headerPcp.php');
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script3.js"></script>
+<script src="script5.js"></script>
