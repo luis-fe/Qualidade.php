@@ -62,100 +62,97 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div style="position: relative; height: 500px; overflow-y: auto;">
-    <div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px; position: sticky; top: 0; z-index: 10;">
-            <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-                <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>Sequencia<br></th>
-                            <th>Cód. Fase<br></th>
-                            <th>Nome Fase<br><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
-                            <th>Previsão de Peças<br></th>
-                            <th>Falta Programar<br></th>
-                            <th>Carga<br></th>
-                            <th>Fila <br></th>
-                            <th>Falta Produzir<br></th>
-                            <th>Qtd. Dias<br></th>
-                            <th>Meta Dia<br></th>
-                            <th>Realizado<br></th>
-                            <th>Efic. %<br></th>
-                        </tr>
-                    </thead>
-                <tbody>
-                    <!-- Aqui vão os dados da tabela -->
-                </tbody>
-            </table>
-        </div>
+<div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
+    <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+        <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Sequencia<br></th>
+                    <th>Cód. Fase<br></th>
+                    <th>Nome Fase<br><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
+                    <th>Previsão de Peças<br></th>
+                    <th>Falta Programar<br></th>
+                    <th>Carga<br></th>
+                    <th>Fila <br></th>
+                    <th>Falta Produzir<br></th>
+                    <th>Qtd. Dias<br></th>
+                    <th>Meta Dia<br></th>
+                    <th>Realizado<br></th>
+                    <th>Efic. %<br></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aqui vão os dados da tabela -->
+            </tbody>
+        </table>
     </div>
 </div>
 
+<div class="modal fade modal-custom" id="modal-filtros" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Filtro</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-filtros" onsubmit="Consulta_Metas(true); return false;">
+                    <div class="mb-3">
+                        <label for="data-inicial" class="form-label text-dark fw-bold">Data de Início:</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-secondary">
+                                <i class="fas fa-calendar-alt"></i>
+                            </span>
+                            <input type="date" class="form-control border-secondary rounded-end" id="data-inicial" required>
+                        </div>
+                    </div>
 
-    <div class="modal fade modal-custom" id="modal-filtros" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-top">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" style="color: black;">Filtro</h5>
-                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-filtros" onsubmit="Consulta_Metas(true); return false;">
-                        <div class="mb-3">
-                            <label for="data-inicial" class="form-label text-dark fw-bold">Data de Início:</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light text-secondary">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                                <input type="date" class="form-control border-secondary rounded-end" id="data-inicial" required>
-                            </div>
+                    <div class="mb-3">
+                        <label for="data-final" class="form-label text-dark fw-bold">Data de Fim:</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-secondary">
+                                <i class="fas fa-calendar-alt"></i>
+                            </span>
+                            <input type="date" class="form-control border-secondary rounded-end" id="data-final" required>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="data-final" class="form-label text-dark fw-bold">Data de Fim:</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light text-secondary">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                                <input type="date" class="form-control border-secondary rounded-end" id="data-final" required>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3" style="font-size: 20px; font-weight: 500">Tipos de Op's</div>
-                        <div class="form-group" id="TiposOps"></div>
-                        <div class="modal-footer d-flex justify-content-end">
-                            <button type="submit" class="btn btn-salvar">
-                                <span><i class="bi bi-floppy"></i></span>
-                                Filtrar
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-group mb-3" style="font-size: 20px; font-weight: 500">Tipos de Op's</div>
+                    <div class="form-group" id="TiposOps"></div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="submit" class="btn btn-salvar">
+                            <span><i class="bi bi-floppy"></i></span>
+                            Filtrar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="modal fade modal-custom" id="modal-realizado" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-top">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="titulo-realizado" style="color: black;"></h5>
-                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="max-height: 500px; overflow: auto">
-                    <table class="table table-bordered table-striped" id="table-realizado" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th>Data<br></th>
-                                <th>Dia<br></th>
-                                <th>Realizado<br></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Aqui vão os dados da tabela -->
-                        </tbody>
-                    </table>
-                </div>
+</div>
+<div class="modal fade modal-custom" id="modal-realizado" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-realizado" style="color: black;"></h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow: auto">
+                <table class="table table-bordered table-striped" id="table-realizado" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Data<br></th>
+                            <th>Dia<br></th>
+                            <th>Realizado<br></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aqui vão os dados da tabela -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
 <div class="modal fade modal-custom" id="modal-previsao-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top">
@@ -181,19 +178,24 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="modal fade modal-custom" id="modal-falta-programar-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top">
+<div class="modal fade modal-custom" id="modal-falta-produzir-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Falta Programar</h5>
+                <h5 class="modal-title" style="color: black;">Falta Produzir</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height: 500px; overflow: auto">
-                <table class="table table-bordered table-striped" id="table-falta-programar-categorias" style="width: 100%;">
+                <table class="table table-bordered table-striped" id="table-falta-produzir-categorias" style="width: 100%;">
                     <thead>
                         <tr>
                             <th>Categoria<br></th>
+                            <th>Carga<br></th>
+                            <th>Fila<br></th>
                             <th>Falta Programar<br></th>
+                            <th>Falta Produzir<br></th>
+                            <th>Dias<br></th>
+                            <th>Meta Diária<br></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -204,6 +206,7 @@ include_once('../../../templates/headerGestao.php');
         </div>
     </div>
 </div>
+
 
 <div class="modal fade modal-custom" id="modal-cronograma" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top">
