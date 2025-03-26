@@ -245,4 +245,4 @@ include_once('../../../templates/headerGestao.php');
 <?php
 include_once('../../../templates/footerGestao.php');
 ?>
-<script src="script.js"></script>
+<script src="script1.js"></script>
