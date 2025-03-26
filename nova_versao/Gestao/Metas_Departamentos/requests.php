@@ -38,6 +38,18 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $fase = $_GET['fase'];
                     jsonResponse(ConsultarCronograma('1', $plano, $fase));
                     break;
+                case 'Consultar_Tipo_Op':
+                    jsonResponse(ConsultarTipoOp('1'));
+                    break;
+                case 'Consulta_Previsao_Categoria':
+                    $fase = $_GET['fase'];
+                    jsonResponse(ConsultaPrevisaoCategoria($fase));
+                    break;
+                case 'Consulta_Falta_Produzir_Categoria':
+                    $fase = $_GET['fase'];
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultaFaltaProduzirCategoria_Fase($fase, $plano));
+                    break;
 
 
                 default:
@@ -102,6 +114,75 @@ function ConsultarLotes($empresa, $plano)
     return json_decode($apiResponse, true);
 }
 
+function ConsultaPrevisaoCategoria($Fase)
+{
+    $fase_encoded = urlencode($Fase);
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase?nomeFase={$fase_encoded}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultaFaltaProduzirCategoria_Fase($Fase, $Plano)
+{
+    $fase_encoded = urlencode($Fase);
+    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $apiUrl = "{$baseUrl}/api/FaltaProduzircategoria_fase?nomeFase={$fase_encoded}&codPlano={$Plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function ConsultarTipoOp($empresa)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/filtroProdutivo";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 function ConsultarPlanos($empresa)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
@@ -126,11 +207,9 @@ function ConsultarPlanos($empresa)
 
 function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 {
+    $fase_encoded = urlencode($Fase);
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
-    $Fase = str_replace(' ', '%20', $Fase);
-    $Fase = str_replace('ÃÃ', 'ÇÃ', $Fase);
-
-    $apiUrl = "{$baseUrl}/pcp/api/RetornoPorFaseDiaria?nomeFase={$Fase}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
+    $apiUrl = "{$baseUrl}/pcp/api/RetornoPorFaseDiaria?nomeFase={$fase_encoded}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -197,6 +276,12 @@ function ConsultarMetas($empresa, $dados)
         error_log("Erro na solicitação cURL: {$error}");
         return false;
     }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 
     curl_close($ch);
 
