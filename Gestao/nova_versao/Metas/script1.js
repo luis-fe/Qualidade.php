@@ -113,7 +113,7 @@ const Consulta_Previsao_Categoria = async (Fase) => {
     }
 };
 
-const Consulta_Falta_Programar_Categoria = async (Fase) => {
+const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
     try {
         $('#loadingModal').modal('show');
 
@@ -122,18 +122,21 @@ const Consulta_Falta_Programar_Categoria = async (Fase) => {
             url: 'requests.php',
             dataType: 'json',
             data: {
-                acao: 'Consulta_Falta_Programar_Categoria',
-                fase: Fase
+                acao: 'Consulta_Falta_Produzir_Categoria',
+                fase: Fase,
+                plano: Plano
             },
         });
-        TabelaFaltaProgramarCategorias(response);
-        $('#modal-falta-programar-categorias').modal('show')
+        console.log(response)
+        TabelaFaltaProduzirCategorias(response);
+        $('#modal-falta-produzir-categorias').modal('show')
     } catch (error) {
         console.error('Erro:', error);
     } finally {
         $('#loadingModal').modal('hide');
     }
 };
+
 
 const Consulta_Lotes = async () => {
     try {
@@ -310,7 +313,8 @@ function TabelaMetas(listaMetas) {
                 visible: false
             },
             {
-                data: 'nomeFase'
+                data: 'nomeFase',
+                render: (data, type, row) => `<span class="faseClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
             },
             {
                 data: 'previsao',
@@ -318,7 +322,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'FaltaProgramar',
-                render: (data, type, row) => `<span class="faltaProgramarClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
+                render: data => parseInt(data).toLocaleString()
             },
             {
                 data: 'Carga Atual',
@@ -330,7 +334,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Falta Produzir',
-                render: data => parseInt(data).toLocaleString()
+                render: (data, type, row) => `<span class="faltaProduzirClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
             },
             {
                 data: 'dias',
@@ -406,11 +410,19 @@ function TabelaMetas(listaMetas) {
         Consulta_Previsao_Categoria(Fase);
     });
 
-    $('#table-metas').on('click', '.faltaProgramarClicado', function () {
+
+    $('#table-metas').on('click', '.faltaProduzirClicado', function () {
+        const Plano = $('#select-plano').val()
         const Fase = $(this).attr('data-Fase')
-        Consulta_Falta_Programar_Categoria(Fase);
+        Consulta_Falta_Produzir_Categoria(Fase, Plano);
     });
 
+    $('#table-metas').on('click', '.faseClicado', function () {
+        const Plano = $('#select-plano').val()
+        const Fase = $(this).attr('data-Fase')
+        Consulta_Falta_Produzir_Categoria(Fase, Plano);
+    });
+    
 }
 
 function TabelaRealizado(listaRealizado) {
@@ -482,23 +494,43 @@ function TabelaPrevisaoCategorias(listaPrevisao) {
     });
 }
 
-function TabelaFaltaProgramarCategorias(listaFaltaProgramar) {
-    if ($.fn.DataTable.isDataTable('#table-falta-programar-categorias')) {
-        $('#table-falta-programar-categorias').DataTable().destroy();
+function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
+    if ($.fn.DataTable.isDataTable('#table-falta-produzir-categorias')) {
+        $('#table-falta-produzir-categorias').DataTable().destroy();
     }
-    const tabela = $('#table-falta-programar-categorias').DataTable({
+    const tabela = $('#table-falta-produzir-categorias').DataTable({
         searching: true,
         paging: false,
         lengthChange: false,
         info: false,
         pageLength: 10,
-        data: listaFaltaProgramar,
+        data: listaFaltaProduzir,
         columns: [
             {
                 data: 'categoria',
             },
             {
+                data: 'Carga',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'Fila',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
                 data: 'FaltaProgramar',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'faltaProduzir',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'dias',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'metaDiaria',
                 render: data => parseInt(data).toLocaleString()
             },
         ],
