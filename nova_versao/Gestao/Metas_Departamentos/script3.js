@@ -1,5 +1,6 @@
 $(document).ready(async () => {
     await Consulta_Planos();
+    Consultar_Tipo_Op()
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
         allowClear: false,
@@ -54,6 +55,89 @@ const Consulta_Planos = async () => {
     }
 };
 
+const Consultar_Tipo_Op = async () => {
+    try {
+        $('#loadingModal').modal('show');
+
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consultar_Tipo_Op',
+            },
+        });
+        console.log(response)
+        const divTiposOps = $('#TiposOps');
+        divTiposOps.empty();
+        response.forEach(opcao => {
+            const checkbox = $('<div class="form-check">')
+                .append(
+                    $('<input class="form-check-input" type="checkbox">')
+                        .attr('value', opcao['Tipo Producao'])
+                        .attr('id', `checkbox${opcao['Tipo Producao']}`)
+                )
+                .append(
+                    $('<label class="form-check-label">')
+                        .attr('for', `checkbox${opcao['Tipo Producao']}`)
+                        .text(opcao['Tipo Producao'])
+                );
+            divTiposOps.append(checkbox);
+        });
+    } catch (error) {
+        console.error('Erro:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+const Consulta_Previsao_Categoria = async (Fase) => {
+    try {
+        $('#loadingModal').modal('show');
+
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Previsao_Categoria',
+                fase: Fase
+            },
+        });
+        TabelaPrevisaoCategorias(response);
+        $('#modal-previsao-categorias').modal('show')
+    } catch (error) {
+        console.error('Erro:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
+    try {
+        $('#loadingModal').modal('show');
+
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Falta_Produzir_Categoria',
+                fase: Fase,
+                plano: Plano
+            },
+        });
+        console.log(response)
+        TabelaFaltaProduzirCategorias(response);
+        $('#modal-falta-produzir-categorias').modal('show')
+    } catch (error) {
+        console.error('Erro:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+
 const Consulta_Lotes = async () => {
     try {
         $('#loadingModal').modal('show');
@@ -85,7 +169,23 @@ const Consulta_Lotes = async () => {
     }
 };
 
+let TiposOpsSelecionados = [];
 async function Consulta_Metas(congelado) {
+    TiposOpsSelecionados = [];
+    $('input[type=checkbox][id^="checkbox"]').each(function () {
+        // Verificar se o checkbox está marcado
+        if ($(this).is(':checked')) {
+            // Obter o valor do checkbox
+            var tiposOps = $(this).val();
+
+            // Verificar se a coleção já existe no array
+            if (!TiposOpsSelecionados.includes(tiposOps)) {
+                // Adicionar o valor ao array de coleções selecionadas
+                TiposOpsSelecionados.push(tiposOps);
+            }
+        }
+    });
+    console.log(TiposOpsSelecionados)
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -95,7 +195,8 @@ async function Consulta_Metas(congelado) {
                 arrayCodLoteCsw: [$('#select-lote').val()],
                 dataMovFaseIni: $('#data-inicial').val(),
                 dataMovFaseFim: $('#data-final').val(),
-                congelado: congelado
+                congelado: congelado,
+                ArrayTipoProducao: TiposOpsSelecionados
             }
         };
 
@@ -212,11 +313,12 @@ function TabelaMetas(listaMetas) {
                 visible: false
             },
             {
-                data: 'nomeFase'
+                data: 'nomeFase',
+                render: (data, type, row) => `<span class="faseClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
             },
             {
                 data: 'previsao',
-                render: data => parseInt(data).toLocaleString()
+                render: (data, type, row) => `<span class="previsaoClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
             },
             {
                 data: 'FaltaProgramar',
@@ -232,7 +334,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Falta Produzir',
-                render: data => parseInt(data).toLocaleString()
+                render: (data, type, row) => `<span class="faltaProduzirClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
             },
             {
                 data: 'dias',
@@ -303,7 +405,24 @@ function TabelaMetas(listaMetas) {
         Consultar_Cronograma(Fase);
     });
 
+    $('#table-metas').on('click', '.previsaoClicado', function () {
+        const Fase = $(this).attr('data-Fase')
+        Consulta_Previsao_Categoria(Fase);
+    });
 
+
+    $('#table-metas').on('click', '.faltaProduzirClicado', function () {
+        const Plano = $('#select-plano').val()
+        const Fase = $(this).attr('data-Fase')
+        Consulta_Falta_Produzir_Categoria(Fase, Plano);
+    });
+
+    $('#table-metas').on('click', '.faseClicado', function () {
+        const Plano = $('#select-plano').val()
+        const Fase = $(this).attr('data-Fase')
+        Consulta_Falta_Produzir_Categoria(Fase, Plano);
+    });
+    
 }
 
 function TabelaRealizado(listaRealizado) {
@@ -328,6 +447,90 @@ function TabelaRealizado(listaRealizado) {
             },
             {
                 data: 'Realizado',
+                render: data => parseInt(data).toLocaleString()
+            },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+    });
+}
+
+function TabelaPrevisaoCategorias(listaPrevisao) {
+    if ($.fn.DataTable.isDataTable('#table-previsao-categorias')) {
+        $('#table-previsao-categorias').DataTable().destroy();
+    }
+    const tabela = $('#table-previsao-categorias').DataTable({
+        searching: true,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: listaPrevisao,
+        columns: [
+            {
+                data: 'categoria',
+            },
+            {
+                data: 'previsao',
+                render: data => parseInt(data).toLocaleString()
+            },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+    });
+}
+
+function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
+    if ($.fn.DataTable.isDataTable('#table-falta-produzir-categorias')) {
+        $('#table-falta-produzir-categorias').DataTable().destroy();
+    }
+    const tabela = $('#table-falta-produzir-categorias').DataTable({
+        searching: true,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: listaFaltaProduzir,
+        columns: [
+            {
+                data: 'categoria',
+            },
+            {
+                data: 'Carga',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'Fila',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'FaltaProgramar',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'faltaProduzir',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'dias',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
+                data: 'metaDiaria',
                 render: data => parseInt(data).toLocaleString()
             },
         ],
