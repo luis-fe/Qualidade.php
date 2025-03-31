@@ -62,27 +62,26 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px;">
-    <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+<div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px; padding: 10px;">
+    <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 400px; border-radius: 8px;">
         <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
-            <thead>
+            <thead style="position: sticky; top: 0; background-color: white; z-index: 10;">
                 <tr>
-                    <th>Sequencia<br></th>
-                    <th>Cód. Fase<br></th>
+                    <th>Sequencia</th>
+                    <th>Cód. Fase</th>
                     <th>Nome Fase<br><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
-                    <th>Previsão de Peças<br></th>
-                    <th>Falta Programar<br></th>
-                    <th>Carga<br></th>
-                    <th>Fila <br></th>
-                    <th>Falta Produzir<br></th>
-                    <th>Qtd. Dias<br></th>
-                    <th>Meta Dia<br></th>
-                    <th>Realizado<br></th>
-                    <th>Efic. %<br></th>
+                    <th>Previsão de Peças</th>
+                    <th>Falta Programar</th>
+                    <th>Carga</th>
+                    <th>Fila</th>
+                    <th>Falta Produzir</th>
+                    <th>Qtd. Dias</th>
+                    <th>Meta Dia</th>
+                    <th>Realizado</th>
+                    <th>Efic. %</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Aqui vão os dados da tabela -->
             </tbody>
         </table>
     </div>
