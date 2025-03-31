@@ -76,6 +76,7 @@ include_once('../../../templates/headerGestao.php');
                     <th>Fila</th>
                     <th>Falta Produzir</th>
                     <th>Qtd. Dias</th>
+                    <th>Meta Anterior</th>
                     <th>Meta Dia</th>
                     <th>Realizado</th>
                     <th>Efic. %</th>
@@ -244,4 +245,4 @@ include_once('../../../templates/headerGestao.php');
 <?php
 include_once('../../../templates/footerGestao.php');
 ?>
-<script src="script1.js"></script>
+<script src="script2.js"></script>
