@@ -603,7 +603,7 @@ def trocarTracoDaOP_Carrinho(Ncarrinho,opAtual, novoTraco):
         update 
             "Reposicao"."off".reposicao_qualidade
         set 
-            numeroop = substring( "numeroop",1,6) ||'-'|| """+ str(novoTraco) + """
+            numeroop = substring( "numeroop",1,6) ||'-00'|| """+ str(novoTraco) + """
         where 
             "Ncarrinho" = %s
         """
