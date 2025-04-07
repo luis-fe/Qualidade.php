@@ -396,7 +396,7 @@ def AlteracoTracoOPCarrinho():
         opAtual = dados['opAtual']
         novoTraco = dados.get('novoTraco','-')
 
-        sleep(5)  # pausa de 5 segundos
+       # sleep(5)  # pausa de 5 segundos
         consulta = ReposicaoQualidade.trocarTracoDaOP_Carrinho(Ncarrinho, opAtual, str(novoTraco))
 
         # Obtém os nomes das colunas
