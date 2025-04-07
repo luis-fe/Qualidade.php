@@ -383,3 +383,31 @@ def DetalhaOPQuantidade():
         print(f"Erro detectado: {str(e)}")
         restart_server()
         return jsonify({"error": "O servidor foi reiniciado devido a um erro."})
+
+
+@reposicao_qualidadeRoute.route('/api/AlteracoTracoOPCarrinho', methods=['POST'])
+@token_required
+def AlteracoTracoOPCarrinho():
+
+        dados = request.get_json()# Obtenha os dados do corpo da requisição
+        Ncarrinho = dados['Ncarrinho']# Extraia os valores dos campos do novo usuário
+        opAtual = dados['opAtual']
+        novoTraco = dados.get('novoTraco','-')
+
+
+
+        consulta = ReposicaoQualidade.trocarTracoDaOP_Carrinho(Ncarrinho, opAtual, str(novoTraco))
+
+        # Obtém os nomes das colunas
+        column_names = consulta.columns
+        # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+        consulta_data = []
+        for index, row in consulta.iterrows():
+            consulta_dict = {}
+            for column_name in column_names:
+                consulta_dict[column_name] = row[column_name]
+            consulta_data.append(consulta_dict)
+        return jsonify(consulta_data)
+
+
+

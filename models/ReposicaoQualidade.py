@@ -580,3 +580,49 @@ def LimpandoDuplicidadeFilaOFF():
         conn.commit()
         conn.close()
 
+
+def trocarTracoDaOP_Carrinho(Ncarrinho,opAtual, novoTraco):
+        '''Metodo que troca o traço da Op do Carrinho'''
+
+        opAtual = opAtual.split('-')[0]
+
+
+        sqlNumeroOP = """
+        select distinct 
+            substring( "numeroop",1,6) as "opAtual"  
+        from 
+            "Reposicao"."off".reposicao_qualidade rq 
+        where 
+            rq."Ncarrinho" = %
+        """
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        sqlNumeroOP = pd.read_sql(sqlNumeroOP, conn , params=(str(Ncarrinho),))
+
+        update = """
+        update 
+            "Reposicao"."off".reposicao_qualidade
+        set 
+            numeroop = substring( "numeroop",1,6) ||'-'|| """+ str(novoTraco) + """
+        where 
+            rq."Ncarrinho" = %
+        """
+
+        if opAtual == sqlNumeroOP['opAtual'][0]:
+
+            with ConexaoPostgreMPL.conexao() as conn:
+                with conn.cursor() as curr:
+                    curr.execute(update, Ncarrinho)
+                    conn.commit()
+
+            return pd.DataFrame([{'Mensagem':"Traço - Alteado com sucesso !", 'status':True}])
+
+        else:
+            return pd.DataFrame([{'Mensagem':f"Op informada diferente da op do carrinho {sqlNumeroOP['opAtual'][0]}", 'status':False}])
+
+
+
+
+
+
+
