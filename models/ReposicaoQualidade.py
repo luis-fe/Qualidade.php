@@ -593,7 +593,7 @@ def trocarTracoDaOP_Carrinho(Ncarrinho,opAtual, novoTraco):
         from 
             "Reposicao"."off".reposicao_qualidade rq 
         where 
-            rq."Ncarrinho" = s%
+            rq."Ncarrinho" = %s
         """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
