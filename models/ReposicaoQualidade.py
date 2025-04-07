@@ -605,7 +605,7 @@ def trocarTracoDaOP_Carrinho(Ncarrinho,opAtual, novoTraco):
         set 
             numeroop = substring( "numeroop",1,6) ||'-'|| """+ str(novoTraco) + """
         where 
-            rq."Ncarrinho" = %s
+            "Ncarrinho" = %s
         """
 
         if opAtual == sqlNumeroOP['opAtual'][0]:
