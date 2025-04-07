@@ -11,6 +11,8 @@ from flask import Blueprint, jsonify, request
 from functools import wraps
 import pandas as pd
 import subprocess
+from time import sleep  # <- certifique-se de importar isso
+
 
 reposicao_qualidadeRoute = Blueprint('reposicao_qualidadeRoute', __name__)
 
@@ -394,8 +396,7 @@ def AlteracoTracoOPCarrinho():
         opAtual = dados['opAtual']
         novoTraco = dados.get('novoTraco','-')
 
-
-
+        sleep(5)  # pausa de 5 segundos
         consulta = ReposicaoQualidade.trocarTracoDaOP_Carrinho(Ncarrinho, opAtual, str(novoTraco))
 
         # Obtém os nomes das colunas
