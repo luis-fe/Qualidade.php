@@ -612,7 +612,8 @@ def trocarTracoDaOP_Carrinho(Ncarrinho,opAtual, novoTraco):
 
             with ConexaoPostgreMPL.conexao() as conn:
                 with conn.cursor() as curr:
-                    curr.execute(update, Ncarrinho)
+
+                    curr.execute(update, (Ncarrinho, ))
                     conn.commit()
 
             return pd.DataFrame([{'Mensagem':"Traço - Alteado com sucesso !", 'status':True}])
