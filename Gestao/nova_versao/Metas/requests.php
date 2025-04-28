@@ -7,76 +7,68 @@ function jsonResponse($data)
     exit;
 }
 
-switch ($_SERVER["REQUEST_METHOD"]) {
-    case "GET":
-        if (isset($_GET["acao"])) {
-            $acao = $_GET["acao"];
-            switch ($acao) {
-                case 'Consulta_Planos':
-                    jsonResponse(ConsultarPlanos('1'));
-                    break;
-                case 'Consulta_Lotes':
-                    $plano = $_GET['plano'];
-                    jsonResponse(ConsultarLotes('1', $plano));
-                    break;
-                case 'Consultar_Realizados':
-                    $Fase = $_GET['Fase'];
-                    $dataInicial = $_GET['dataInicial'];
-                    $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(ConsultarRealizados('1', $Fase, $dataInicial, $dataFinal));
-                    break;
-                case 'Consultar_Cronograma':
-                    $plano = $_GET['plano'];
-                    $fase = $_GET['fase'];
-                    jsonResponse(ConsultarCronograma('1', $plano, $fase));
-                    break;
-                case 'Consultar_Tipo_Op':
-                    jsonResponse(ConsultarTipoOp('1'));
-                    break;
-                case 'Consulta_Previsao_Categoria':
-                    $fase = $_GET['fase'];
-                    jsonResponse(ConsultaPrevisaoCategoria($fase));
-                    break;
-                default:
-                    jsonResponse(['status' => false, 'message' => 'Acao GET não reconhecida.']);
-                    break;
-            }
-        }
+// Detectar método
+$method = $_SERVER['REQUEST_METHOD'];
+
+// Buscar ação
+if ($method === 'GET') {
+    $acao = $_GET['acao'] ?? null;
+    $dados = $_GET;
+} else {
+    $input = file_get_contents('php://input');
+    $requestData = json_decode($input, true);
+    $acao = $requestData['acao'] ?? null;
+    $dados = $requestData['dados'] ?? [];
+}
+
+// Se não tiver ação, erro
+if (!$acao) {
+    jsonResponse(['status' => false, 'message' => 'Ação não informada.']);
+}
+
+// Definir ações
+switch ($acao) {
+    case 'Consulta_Planos':
+        jsonResponse(ConsultarPlanos('1'));
         break;
-    case "POST":
-        $requestData = json_decode(file_get_contents('php://input'), true);
-        $acao = $requestData['acao'] ?? null;
-        $dados = $requestData['dados'] ?? null;
-        if ($acao) {
-            switch ($acao) {
-                case 'Consulta_Metas':
-                    header('Content-Type: application/json');
-                    echo json_encode(ConsultarMetas('1', $dados));
-                    break;
-                case 'ConsultaFaltaProduzirCategoria_Fase':
-                    header('Content-Type: application/json');
-                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
-                    break;
-                default:
-                    jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
-                    break;
-            }
-        }
+
+    case 'Consulta_Lotes':
+        $plano = $dados['plano'] ?? null;
+        jsonResponse(ConsultarLotes('1', $plano));
         break;
-    case "PUT":
-        $requestData = json_decode(file_get_contents('php://input'), true);
-        $acao = $requestData['acao'] ?? null;
-        $dados = $requestData['dados'] ?? null;
-        if ($acao) {
-            switch ($acao) {
-                default:
-                    jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
-                    break;
-            }
-        }
+
+    case 'Consultar_Realizados':
+        $Fase = $dados['Fase'] ?? null;
+        $dataInicial = $dados['dataInicial'] ?? null;
+        $dataFinal = $dados['dataFinal'] ?? null;
+        jsonResponse(ConsultarRealizados('1', $Fase, $dataInicial, $dataFinal));
         break;
+
+    case 'Consultar_Cronograma':
+        $plano = $dados['plano'] ?? null;
+        $fase = $dados['fase'] ?? null;
+        jsonResponse(ConsultarCronograma('1', $plano, $fase));
+        break;
+
+    case 'Consultar_Tipo_Op':
+        jsonResponse(ConsultarTipoOp('1'));
+        break;
+
+    case 'Consulta_Previsao_Categoria':
+        $fase = $dados['fase'] ?? null;
+        jsonResponse(ConsultaPrevisaoCategoria($fase));
+        break;
+
+    case 'Consulta_Metas':
+        jsonResponse(ConsultarMetas('1', $dados));
+        break;
+
+    case 'ConsultaFaltaProduzirCategoria_Fase':
+        jsonResponse(ConsultaFaltaProduzirCategoria_Fase($dados));
+        break;
+
     default:
-        jsonResponse(['status' => false, 'message' => 'Método de requisição não suportado.']);
+        jsonResponse(['status' => false, 'message' => 'Ação não reconhecida.']);
         break;
 }
 
