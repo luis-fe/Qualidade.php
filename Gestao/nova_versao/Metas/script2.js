@@ -113,29 +113,7 @@ const Consulta_Previsao_Categoria = async (Fase) => {
     }
 };
 
-const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
-    try {
-        $('#loadingModal').modal('show');
 
-        const response = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Falta_Produzir_Categoria',
-                fase: Fase,
-                plano: Plano
-            },
-        });
-        console.log(response)
-        TabelaFaltaProduzirCategorias(response);
-        $('#modal-falta-produzir-categorias').modal('show')
-    } catch (error) {
-        console.error('Erro:', error);
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
-};
 
 
 const Consulta_Lotes = async () => {
@@ -211,6 +189,35 @@ async function Consulta_Metas(congelado) {
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
+    try {
+        $('#loadingModal').modal('show');
+        const requestData = {
+            acao: "Consulta_Metas",
+            dados: {
+                codigoPlano: Plano,
+                arrayCodLoteCsw: [$('#select-lote').val()],
+                congelado: congelado,
+                nomeFase: Fase,
+                ArrayTipoProducao: TiposOpsSelecionados
+            }
+        };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+
+
+    } catch (error) {
+        console.error('Erro:', error);
     } finally {
         $('#loadingModal').modal('hide');
     }
