@@ -38,7 +38,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     jsonResponse(ConsultaPrevisaoCategoria($fase));
                     break;
                 default:
-                    jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
+                    jsonResponse(['status' => false, 'message' => 'Acao GET não reconhecida.']);
                     break;
             }
         }
