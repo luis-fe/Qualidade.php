@@ -6,7 +6,6 @@ function jsonResponse($data)
     echo json_encode($data);
     exit;
 }
-
 switch ($_SERVER["REQUEST_METHOD"]) {
     case "GET":
         if (isset($_GET["acao"])) {
