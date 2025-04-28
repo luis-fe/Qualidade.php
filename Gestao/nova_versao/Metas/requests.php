@@ -252,7 +252,6 @@ function ConsultarMetas($empresa, $dados)
 
 function ConsultaFaltaProduzirCategoria_Fase($dados)
 {
-    $fase_encoded = urlencode($Fase);
     $baseUrl = 'http://192.168.0.183:7070/pcp';
     $apiUrl = "{$baseUrl}/api/FaltaProduzircategoria_fase";
     $ch = curl_init($apiUrl);
