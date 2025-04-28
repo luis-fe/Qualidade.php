@@ -203,17 +203,18 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
             dados: {
                 codigoPlano: Plano,
                 arrayCodLoteCsw: [$('#select-lote').val()],
-                congelado: congelado,
+                congelado: typeof congelado !== 'undefined' ? congelado : null,
                 nomeFase: Fase,
-                ArrayTipoProducao: TiposOpsSelecionados
+                ArrayTipoProducao: typeof TiposOpsSelecionados !== 'undefined' ? TiposOpsSelecionados : []
             }
         };
 
         const response = await $.ajax({
             type: 'POST',
             url: 'requests.php',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
+            contentType: 'application/json',  // Envia como JSON
+            dataType: 'json',                  // Espera resposta JSON
+            data: JSON.stringify(requestData)  // Stringify para enviar como JSON
         });
         TabelaFaltaProduzirCategorias(response);
         $('#modal-previsao-categorias').modal('show')
