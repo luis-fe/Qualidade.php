@@ -37,13 +37,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $fase = $_GET['fase'];
                     jsonResponse(ConsultaPrevisaoCategoria($fase));
                     break;
-                case 'Consulta_Falta_Produzir_Categoria':
-                    $fase = $_GET['fase'];
-                    $plano = $_GET['plano'];
-                    jsonResponse(ConsultaFaltaProduzirCategoria_Fase($fase, $plano));
-                    break;
-
-
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -59,6 +52,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Metas':
                     header('Content-Type: application/json');
                     echo json_encode(ConsultarMetas('1', $dados));
+                    break;
+                case 'Consulta_Falta_Produzir_Categoria':
+                    header('Content-Type: application/json');
+                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
@@ -129,28 +126,7 @@ function ConsultaPrevisaoCategoria($Fase)
     return json_decode($apiResponse, true);
 }
 
-function ConsultaFaltaProduzirCategoria_Fase($Fase, $Plano)
-{
-    $fase_encoded = urlencode($Fase);
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
-    $apiUrl = "{$baseUrl}/api/FaltaProduzircategoria_fase?nomeFase={$fase_encoded}&codPlano={$Plano}";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
 
-    $apiResponse = curl_exec($ch);
-
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
 
 
 function ConsultarTipoOp($empresa)
@@ -267,6 +243,37 @@ function ConsultarMetas($empresa, $dados)
         $error = curl_error($ch);
         error_log("Erro na solicitação cURL: {$error}");
         return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultaFaltaProduzirCategoria_Fase($dados)
+{
+    $fase_encoded = urlencode($Fase);
+    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $apiUrl = "{$baseUrl}/api/FaltaProduzircategoria_fase";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
     }
 
     curl_close($ch);
