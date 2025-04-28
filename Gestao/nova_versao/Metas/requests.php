@@ -36,6 +36,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $fase = $_GET['fase'];
                     jsonResponse(ConsultaPrevisaoCategoria($fase));
                     break;
+                case 'ConsultaFaltaProduzirCategoria_Fase':
+                    header('Content-Type: application/json');
+                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Acao GET não reconhecida.']);
                     break;
