@@ -195,10 +195,11 @@ async function Consulta_Metas(congelado) {
 };
 
 const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
+    $('#loadingModal').modal('show');
+
     try {
-        $('#loadingModal').modal('show');
         const requestData = {
-            acao: "Consulta_Metas",
+            acao: "ConsultaFaltaProduzirCategoria_Fase",
             dados: {
                 codigoPlano: Plano,
                 arrayCodLoteCsw: [$('#select-lote').val()],
@@ -214,6 +215,8 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
+        TabelaFaltaProduzirCategorias(response);
+        $('#modal-previsao-categorias').modal('show')
 
 
     } catch (error) {
