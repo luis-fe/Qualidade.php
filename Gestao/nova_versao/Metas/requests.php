@@ -244,7 +244,7 @@ function ConsultarCronograma($empresa, $codPlano, $codFase)
 
 function ConsultarMetas($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
     $apiUrl = "{$baseUrl}/pcp/api/MetasFases";
 
     $ch = curl_init($apiUrl);
