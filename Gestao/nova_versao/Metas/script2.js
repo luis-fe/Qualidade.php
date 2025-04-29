@@ -432,6 +432,7 @@ function TabelaMetas(listaMetas) {
         event.stopPropagation();
         const Plano = $('#select-plano').val();
         const Fase = $(this).attr('data-fase'); 
+        console.log('cliquei em nomeFase')
         Consulta_Falta_Produzir_Categoria(Fase, Plano);
     });
     
