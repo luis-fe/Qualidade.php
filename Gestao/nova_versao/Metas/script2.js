@@ -352,7 +352,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Meta Anterior',
-                render: data => parseInt(data).toLocaleString()
+                visible: true
             },
             {
                 data: 'Meta Dia',
