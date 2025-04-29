@@ -219,7 +219,7 @@ async function Consulta_Falta_Produzir_Categoria(Fase, Plano) {
 
         TabelaFaltaProduzirCategorias(response);
         console.log(response)
-        $('modal-falta-produzir-categorias').modal('show');
+        $('#modal-falta-produzir-categorias').modal('show');
 
     } catch (error) {
         console.error('Erro no detalha falta Produzir:', error);
