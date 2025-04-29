@@ -6,8 +6,8 @@
 }
 
 
-#table-falta-produzir-categorias tfoot tr {
-    background-color: #003366; /* azul escuro */
-    color: white;              /* texto branco */
-    font-weight: bold;         /* opcional */
+#table-falta-produzir-categorias tfoot th {
+    background-color: #003366 !important;
+    color: white !important;
+    font-weight: bold;
 }
