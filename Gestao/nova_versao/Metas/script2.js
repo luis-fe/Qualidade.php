@@ -551,7 +551,7 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
                 const data = api.column(index).data();
                 const total = data.reduce((total, valor) => total + (parseInt(valor) || 0), 0);
                 const count = data.length;
-                return count ? total / count : 0;
+                return count ? Math.round(total / count) : 0;
             }
         
             // Índices das colunas numéricas (começam do 1)
@@ -560,13 +560,13 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
                 let valor;
                 if (i === 5) { // coluna "dias"
                     valor = mediaColuna(i);
-                    $(api.column(i).footer()).html(valor.toFixed(1).toLocaleString());
                 } else {
                     valor = somaColuna(i);
-                    $(api.column(i).footer()).html(valor.toLocaleString());
                 }
+                $(api.column(i).footer()).html(valor.toLocaleString());
             });
         }
+        
         
     });
 }
