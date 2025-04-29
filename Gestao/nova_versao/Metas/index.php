@@ -202,7 +202,7 @@ include_once('../../../templates/headerGestao.php');
                         <!-- Aqui vão os dados da tabela -->
                     </tbody>
                     <tfoot>
-                        <tr>
+                        <tr style="background-color:#003366; color:white; font-weight:bold; text-align:center;">
                             <th>Total</th>
                             <th></th> <!-- Carga -->
                             <th></th> <!-- Fila -->

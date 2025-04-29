@@ -6,7 +6,7 @@
 }
 
 
-#modal-falta-produzir-categorias table#table-falta-produzir-categorias > tfoot > tr > th {
+tfoot tr th {
     background-color: #003366 !important;
     color: white !important;
     font-weight: bold !important;
