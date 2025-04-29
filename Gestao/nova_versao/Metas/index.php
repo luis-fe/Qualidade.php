@@ -47,7 +47,7 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 
-    #table-falta-produzir-categorias > thead  {
+    #CabecalhoModal  {
     background-color: #003366 !important; /* Azul escuro */
     color: white !important;              /* Texto branco */
     font-weight: bold !important;         /* Negrito */
@@ -202,7 +202,7 @@ include_once('../../../templates/headerGestao.php');
             </div>
             <div class="modal-body" style="max-height: 800px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-falta-produzir-categorias" style="width: 100%;">
-                    <thead>
+                    <thead id = 'CabecalhoModal'>
                         <tr>
                             <th>Categoria<br></th>
                             <th>Carga<br></th>
