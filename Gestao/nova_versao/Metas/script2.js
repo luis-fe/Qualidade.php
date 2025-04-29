@@ -119,7 +119,7 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
 
     try {
          const requestData = {
-             acao: "ConsultaFaltaProduzirCategoria_Fase",
+             acao: "Consulta_Falta_Produzir_Categoria",
              dados: {
                  codigoPlano: Plano,
                  arrayCodLoteCsw: [$('#select-lote').val()],
