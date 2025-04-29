@@ -15,7 +15,14 @@ function jsonResponse($data)
     exit;
 }
 
+function jsonResponse($data)
+{
+    header('Content-Type: application/json');
+    echo json_encode($data);
+    exit;
+}
 switch ($_SERVER["REQUEST_METHOD"]) {
+
     case "GET":
         if (isset($_GET["acao"])) {
             $acao = $_GET["acao"];
@@ -45,15 +52,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $fase = $_GET['fase'];
                     jsonResponse(ConsultaPrevisaoCategoria($fase));
                     break;
-                case 'Consulta_Falta_Produzir_Categoria':
-                    $fase = $_GET['fase'];
-                    $plano = $_GET['plano'];
-                    jsonResponse(ConsultaFaltaProduzirCategoria_Fase($fase, $plano));
+                case 'ConsultaFaltaProduzirCategoria_Fase':
+                    header('Content-Type: application/json');
+                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
-
-
                 default:
-                    jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
+                    jsonResponse(['status' => false, 'message' => 'Acao GET não reconhecida.']);
                     break;
             }
         }
@@ -67,6 +71,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Metas':
                     header('Content-Type: application/json');
                     echo json_encode(ConsultarMetas('1', $dados));
+                    break;
+                case 'ConsultaFaltaProduzirCategoria_Fase':
+                    header('Content-Type: application/json');
+                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
@@ -90,7 +98,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         jsonResponse(['status' => false, 'message' => 'Método de requisição não suportado.']);
         break;
 }
-
 
 function ConsultarLotes($empresa, $plano)
 {
