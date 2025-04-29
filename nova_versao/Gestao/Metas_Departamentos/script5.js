@@ -114,28 +114,38 @@ const Consulta_Previsao_Categoria = async (Fase) => {
 };
 
 const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
+
+    $('#loadingModal').modal('show');
+
     try {
-        $('#loadingModal').modal('show');
+         const requestData = {
+             acao: "ConsultaFaltaProduzirCategoria_Fase",
+             dados: {
+                 codigoPlano: Plano,
+                 arrayCodLoteCsw: [$('#select-lote').val()],
+                 nomeFase: Fase,
+                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+             }
+         };
 
         const response = await $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: 'requests.php',
+            contentType: 'application/json',
             dataType: 'json',
-            data: {
-                acao: 'Consulta_Falta_Produzir_Categoria',
-                fase: Fase,
-                plano: Plano
-            },
+            data: JSON.stringify(requestData)
         });
-        console.log(response)
+
         TabelaFaltaProduzirCategorias(response);
-        $('#modal-falta-produzir-categorias').modal('show')
+        console.log(response)
+        $('#modal-falta-produzir-categorias').modal('show');
+
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro no detalha falta Produzir:', error);
     } finally {
         $('#loadingModal').modal('hide');
     }
-};
+}
 
 
 const Consulta_Lotes = async () => {
