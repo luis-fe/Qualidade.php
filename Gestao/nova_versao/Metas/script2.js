@@ -195,18 +195,6 @@ async function Consulta_Metas(congelado) {
 };
 
 async function Consulta_Falta_Produzir_Categoria(Fase, Plano) {
-    let TiposOpsSelecionados = [];
-
-    $('input[type=checkbox][id^="checkbox"]').each(function () {
-        if ($(this).is(':checked')) {
-            const tiposOps = $(this).val();
-            if (!TiposOpsSelecionados.includes(tiposOps)) {
-                TiposOpsSelecionados.push(tiposOps);
-            }
-        }
-    });
-
-    console.log(TiposOpsSelecionados);
 
     $('#loadingModal').modal('show');
 
@@ -230,10 +218,11 @@ async function Consulta_Falta_Produzir_Categoria(Fase, Plano) {
         });
 
         TabelaFaltaProduzirCategorias(response);
+        console.log(response)
         $('#modal-previsao-categorias').modal('show');
 
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro no detalha falta Produzir:', error);
     } finally {
         $('#loadingModal').modal('hide');
     }
