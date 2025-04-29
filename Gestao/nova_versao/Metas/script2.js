@@ -141,7 +141,7 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
         TabelaFaltaProduzirCategorias(response);
         console.log(response)
         // Atualiza o título do modal com a fase
-        $('#modal-falta-produzir-categorias').text(`Falta Produzir - ${Fase}`);
+        $('#titulo-falta-produzir').text(`Falta Produzir - ${Fase}`);
         $('#modal-falta-produzir-categorias').modal('show');
 
     } catch (error) {
