@@ -135,6 +135,9 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
             dataType: 'json',
             data: JSON.stringify(requestData)
         });
+        
+        // Atualiza o título do modal com a fase
+                $('#titulo-falta-produzir').text(`Falta Produzir - ${Fase}`);
 
         TabelaFaltaProduzirCategorias(response);
         console.log(response)
