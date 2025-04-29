@@ -14,9 +14,9 @@ tfoot tr th {
 }
 
 
-#CabecalhoModal  {
-    background-color: #003366 !important; /* Azul escuro */
-    color: white !important;              /* Texto branco */
-    font-weight: bold !important;         /* Negrito */
-    text-align: center !important;        /* Centralizado */
+.cabecalho-destaque {
+    background-color: #003366 !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center !important;
 }
