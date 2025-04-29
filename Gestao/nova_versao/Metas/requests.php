@@ -1,7 +1,5 @@
 <?php
 
-$mensagem = "Olá do PHP!";
-echo "<script>console.log('PHP diz: " . addslashes($mensagem) . "');</script>";
 
 function jsonResponse($data)
 {
@@ -10,6 +8,7 @@ function jsonResponse($data)
     exit;
 }
 switch ($_SERVER["REQUEST_METHOD"]) {
+
     case "GET":
         if (isset($_GET["acao"])) {
             $acao = $_GET["acao"];
