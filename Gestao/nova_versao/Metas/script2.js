@@ -411,7 +411,7 @@ function TabelaMetas(listaMetas) {
 
     $('#table-metas').on('click', '.diasClicado', function () {
         const Fase = $(this).attr('data-teste')
-        console.log(`${dias} , clicado Fase`);
+        console.log(`${Fase} clicou  em dias`)
         Consultar_Cronograma(Fase);
     });
 
