@@ -53,7 +53,10 @@ include_once('../../../templates/headerGestao.php');
     font-weight: bold !important;
     text-align: center !important;
 }
-
+#table-falta-produzir-categorias tbody tr:hover {
+    background-color: #d0e7ff; /* Azul claro */
+    cursor: pointer;           /* Muda o cursor para indicar que é clicável, opcional */
+}
 
 
 
