@@ -1,5 +1,8 @@
 <?php
 
+$mensagem = "Olá do PHP!";
+echo "<script>console.log('PHP diz: " . addslashes($mensagem) . "');</script>";
+
 function jsonResponse($data)
 {
     header('Content-Type: application/json');

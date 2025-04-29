@@ -199,15 +199,15 @@ async function Consulta_Falta_Produzir_Categoria(Fase, Plano) {
     $('#loadingModal').modal('show');
 
     try {
-        const requestData = {
-            acao: "ConsultaFaltaProduzirCategoria_Fase",
-            dados: {
-                codigoPlano: Plano,
-                arrayCodLoteCsw: [$('#select-lote').val()],
-                nomeFase: Fase,
-                ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
-            }
-        };
+         const requestData = {
+             acao: "ConsultaFaltaProduzirCategoria_Fase",
+             dados: {
+                 codigoPlano: Plano,
+                 arrayCodLoteCsw: [$('#select-lote').val()],
+                 nomeFase: Fase,
+                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+             }
+         };
 
         const response = await $.ajax({
             type: 'POST',
