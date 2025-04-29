@@ -24,6 +24,8 @@ $(document).ready(async () => {
     const hoje = new Date().toISOString().split('T')[0];
     document.getElementById('data-inicial').value = hoje;
     document.getElementById('data-final').value = hoje;
+
+
 });
 
 const Consulta_Planos = async () => {
@@ -142,8 +144,15 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
         console.log(response)
         // Atualiza o título do modal com a fase
        await $('#titulo-falta-produzir').text(`Falta Produzir - ${Fase}`);
-        $('#CabecalhoModal').addClass('cabecalho-destaque');
-        $('#modal-falta-produzir-categorias').modal('show');
+       
+            $('#CabecalhoModal').css({
+                'background-color': '#003366',
+                'color': 'white',
+                'font-weight': 'bold',
+                'text-align': 'center'
+
+                    });        
+            $('#modal-falta-produzir-categorias').modal('show');
 
     } catch (error) {
         console.error('Erro no detalha falta Produzir:', error);
