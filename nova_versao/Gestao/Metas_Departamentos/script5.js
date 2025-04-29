@@ -417,9 +417,11 @@ function TabelaMetas(listaMetas) {
         Consulta_Falta_Produzir_Categoria(Fase, Plano);
     });
 
-    $('#table-metas').on('click', '.faseClicado', function () {
-        const Plano = $('#select-plano').val()
-        const Fase = $(this).attr('data-Fase')
+    $('#table-metas').on('click', '.faseClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
         Consulta_Falta_Produzir_Categoria(Fase, Plano);
     });
     
