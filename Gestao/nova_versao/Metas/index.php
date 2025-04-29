@@ -54,7 +54,7 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 #table-falta-produzir-categorias tbody tr:hover {
-    background-color: rgb(199, 225, 252);
+    background-color: rgb(199, 225, 252) !important;
     cursor: pointer;
 }
 
