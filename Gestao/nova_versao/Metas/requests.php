@@ -60,7 +60,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     break;
                 case 'Consulta_Falta_Produzir_Categoria':
                     header('Content-Type: application/json');
-                    echo json_encode(Consulta_Falta_Produzir_Categoria($dados));
+                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
