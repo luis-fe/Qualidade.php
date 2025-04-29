@@ -539,20 +539,34 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
         },
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
-
+        
             function somaColuna(index) {
                 return api
                     .column(index)
                     .data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
-
+        
+            function mediaColuna(index) {
+                const data = api.column(index).data();
+                const total = data.reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+                const count = data.length;
+                return count ? total / count : 0;
+            }
+        
             // Índices das colunas numéricas (começam do 1)
             const colunas = [1, 2, 3, 4, 5, 6];
             colunas.forEach(i => {
-                const total = somaColuna(i);
-                $(api.column(i).footer()).html(total.toLocaleString());
+                let valor;
+                if (i === 5) { // coluna "dias"
+                    valor = mediaColuna(i);
+                    $(api.column(i).footer()).html(valor.toFixed(1).toLocaleString());
+                } else {
+                    valor = somaColuna(i);
+                    $(api.column(i).footer()).html(valor.toLocaleString());
+                }
             });
         }
+        
     });
 }
