@@ -47,12 +47,13 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 
-#CabecalhoModal  {
-    background-color: #003366 !important; /* Azul escuro */
-    color: white !important;              /* Texto branco */
-    font-weight: bold !important;         /* Negrito */
-    text-align: center !important;        /* Centralizado */
+#CabecalhoModal th {
+    background-color: #003366 !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center !important;
 }
+
 
 
 
