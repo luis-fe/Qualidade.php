@@ -44,7 +44,7 @@ include_once('../../../templates/headerGestao.php');
     background-color: #003366 !important;
     color: white !important;
     font-weight: bold !important;
-    text-align: center;
+    text-align: center !important;
 }
 
 </style>
