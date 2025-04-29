@@ -517,6 +517,16 @@ function TabelaPrevisaoCategorias(listaPrevisao) {
     });
 }
 
+// Adiciona suporte ao tipo de dado 'num-formatted' no DataTables
+jQuery.extend(jQuery.fn.dataTable.ext.type.order, {
+    "num-formatted-pre": function (data) {
+        if (typeof data === 'string') {
+            return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
+        }
+        return data;
+    }
+});
+
 function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
     if ($.fn.DataTable.isDataTable('#table-falta-produzir-categorias')) {
         $('#table-falta-produzir-categorias').DataTable().destroy();
@@ -529,14 +539,37 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
         pageLength: 10,
         data: listaFaltaProduzir,
         columns: [
-            {
-                data: 'categoria'},
-            { data: 'Carga', render: data => parseInt(data).toLocaleString() },
-            { data: 'Fila', render: data => parseInt(data).toLocaleString() },
-            { data: 'FaltaProgramar', render: data => parseInt(data).toLocaleString() },
-            { data: 'faltaProduzir', render: data => parseInt(data).toLocaleString() },
-            { data: 'dias', render: data => parseInt(data).toLocaleString() },
-            { data: 'metaDiaria', render: data => parseInt(data).toLocaleString() }
+            { data: 'categoria' },
+            { 
+                data: 'Carga',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+            { 
+                data: 'Fila',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+            { 
+                data: 'FaltaProgramar',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+            { 
+                data: 'faltaProduzir',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+            { 
+                data: 'dias',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+            { 
+                data: 'metaDiaria',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            }
         ],
         language: {
             paginate: {
@@ -581,29 +614,3 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const table = document.getElementById("table-falta-produzir-categorias");
-    const headers = table.querySelectorAll("thead th");
-
-    headers.forEach((header, index) => {
-        header.addEventListener("click", () => {
-            const tbody = table.querySelector("tbody");
-            const rows = Array.from(tbody.querySelectorAll("tr"));
-
-            // Alternância asc/desc
-            const isAsc = header.classList.toggle("asc");
-
-            rows.sort((rowA, rowB) => {
-                const cellA = rowA.children[index].textContent.trim().replace(/\./g, '').replace(',', '.');
-                const cellB = rowB.children[index].textContent.trim().replace(/\./g, '').replace(',', '.');
-
-                const valA = parseFloat(cellA) || 0;
-                const valB = parseFloat(cellB) || 0;
-
-                return isAsc ? valA - valB : valB - valA;
-            });
-
-            rows.forEach(row => tbody.appendChild(row));
-        });
-    });
-});
