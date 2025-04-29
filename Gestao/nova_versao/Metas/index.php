@@ -201,6 +201,17 @@ include_once('../../../templates/headerGestao.php');
                     <tbody>
                         <!-- Aqui vão os dados da tabela -->
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th> <!-- Carga -->
+                            <th></th> <!-- Fila -->
+                            <th></th> <!-- Falta Programar -->
+                            <th></th> <!-- Falta Produzir -->
+                            <th></th> <!-- Dias -->
+                            <th></th> <!-- Meta Diária -->
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

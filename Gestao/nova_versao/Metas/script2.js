@@ -520,32 +520,13 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
         data: listaFaltaProduzir,
         columns: [
             {
-                data: 'categoria',
-            },
-            {
-                data: 'Carga',
-                render: data => parseInt(data).toLocaleString()
-            },
-            {
-                data: 'Fila',
-                render: data => parseInt(data).toLocaleString()
-            },
-            {
-                data: 'FaltaProgramar',
-                render: data => parseInt(data).toLocaleString()
-            },
-            {
-                data: 'faltaProduzir',
-                render: data => parseInt(data).toLocaleString()
-            },
-            {
-                data: 'dias',
-                render: data => parseInt(data).toLocaleString()
-            },
-            {
-                data: 'metaDiaria',
-                render: data => parseInt(data).toLocaleString()
-            },
+                data: 'categoria'},
+            { data: 'Carga', render: data => parseInt(data).toLocaleString() },
+            { data: 'Fila', render: data => parseInt(data).toLocaleString() },
+            { data: 'FaltaProgramar', render: data => parseInt(data).toLocaleString() },
+            { data: 'faltaProduzir', render: data => parseInt(data).toLocaleString() },
+            { data: 'dias', render: data => parseInt(data).toLocaleString() },
+            { data: 'metaDiaria', render: data => parseInt(data).toLocaleString() }
         ],
         language: {
             paginate: {
@@ -556,5 +537,22 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            function somaColuna(index) {
+                return api
+                    .column(index)
+                    .data()
+                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+            }
+
+            // Índices das colunas numéricas (começam do 1)
+            const colunas = [1, 2, 3, 4, 5, 6];
+            colunas.forEach(i => {
+                const total = somaColuna(i);
+                $(api.column(i).footer()).html(total.toLocaleString());
+            });
+        }
     });
 }
