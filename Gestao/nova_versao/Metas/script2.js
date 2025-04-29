@@ -584,34 +584,25 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
 document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("table-falta-produzir-categorias");
     const headers = table.querySelectorAll("thead th");
-    let sortDirection = {};
 
-    headers.forEach((th, columnIndex) => {
-        th.addEventListener("click", () => {
-            const rows = Array.from(table.querySelector("tbody").rows);
-            const isAscending = sortDirection[columnIndex] = !sortDirection[columnIndex];
+    headers.forEach((header, index) => {
+        header.addEventListener("click", () => {
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
 
-            rows.sort((a, b) => {
-                let aText = a.cells[columnIndex].textContent.trim();
-                let bText = b.cells[columnIndex].textContent.trim();
+            // Alternância asc/desc
+            const isAsc = header.classList.toggle("asc");
 
-                // Remove pontos (.) e transforma em número
-                let aValue = parseFloat(aText.replace(/\./g, '').replace(',', '.')) || 0;
-                let bValue = parseFloat(bText.replace(/\./g, '').replace(',', '.')) || 0;
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.children[index].textContent.trim().replace(/\./g, '').replace(',', '.');
+                const cellB = rowB.children[index].textContent.trim().replace(/\./g, '').replace(',', '.');
 
-                // Se os valores são numéricos, classifica como número
-                if (!isNaN(aValue) && !isNaN(bValue)) {
-                    return isAscending ? aValue - bValue : bValue - aValue;
-                }
+                const valA = parseFloat(cellA) || 0;
+                const valB = parseFloat(cellB) || 0;
 
-                // Caso contrário, classifica como texto
-                return isAscending
-                    ? aText.localeCompare(bText)
-                    : bText.localeCompare(aText);
+                return isAsc ? valA - valB : valB - valA;
             });
 
-            // Reinsere as linhas ordenadas
-            const tbody = table.querySelector("tbody");
             rows.forEach(row => tbody.appendChild(row));
         });
     });
