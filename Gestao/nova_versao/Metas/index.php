@@ -39,6 +39,14 @@ include_once('../../../templates/headerGestao.php');
     .button-filtros:hover {
         background-color: lightgray !important;
     }
+
+    tfoot tr th {
+    background-color: #003366 !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center;
+}
+
 </style>
 
 <div class="titulo-tela">
@@ -202,7 +210,7 @@ include_once('../../../templates/headerGestao.php');
                         <!-- Aqui vão os dados da tabela -->
                     </tbody>
                     <tfoot>
-                        <tr style="background-color:#003366; color:white; font-weight:bold; text-align:center;">
+                        <tr>
                             <th>Total</th>
                             <th></th> <!-- Carga -->
                             <th></th> <!-- Fila -->
