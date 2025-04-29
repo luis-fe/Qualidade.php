@@ -47,6 +47,13 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 
+#modal-falta-produzir-categorias table#table-falta-produzir-categorias > thead > tr {
+    background-color: #003366 !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center !important;
+}
+
 </style>
 
 <div class="titulo-tela">
