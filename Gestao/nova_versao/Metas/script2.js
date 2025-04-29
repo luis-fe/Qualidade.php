@@ -351,6 +351,10 @@ function TabelaMetas(listaMetas) {
                 render: (data, type, row) => `<span class="diasClicado" data-teste="${row.codFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
             },
             {
+                data: 'Meta Anterior',
+                render: data => parseInt(data).toLocaleString()
+            },
+            {
                 data: 'Meta Dia',
                 render: data => parseInt(data).toLocaleString()
             },
