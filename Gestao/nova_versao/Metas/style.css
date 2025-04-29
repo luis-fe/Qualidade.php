@@ -4,3 +4,10 @@
     color: black;
     font-weight: 100;
 }
+
+
+#table-falta-produzir-categorias tfoot tr {
+    background-color: #003366; /* azul escuro */
+    color: white;              /* texto branco */
+    font-weight: bold;         /* opcional */
+}
