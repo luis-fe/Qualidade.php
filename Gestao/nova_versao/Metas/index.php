@@ -265,6 +265,7 @@ include_once('../../../templates/headerGestao.php');
                             <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
                             <th>codProduto<br></th>
                             <th id ="formato_descricao">descricao<br></th>
+                            <th>prioridade<br></th>
                             <th>Carga<br></th>
                         </tr>
                     </thead>
@@ -276,6 +277,7 @@ include_once('../../../templates/headerGestao.php');
                             <th>Total</th>
                             <th></th>
                             <th></th>
+                            <th></th> 
                             <th></th> 
                             <th></th> 
                             <th></th> 
