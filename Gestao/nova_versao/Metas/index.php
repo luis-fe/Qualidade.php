@@ -54,7 +54,7 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 
-#formato_descricao {
+#formato_descricao th {
     text-align: left !important; 
     max-width: 200px !important; 
     width: 200px !important;
@@ -257,12 +257,12 @@ include_once('../../../templates/headerGestao.php');
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height: 1000px; overflow: auto">
-                <table class="table table-bordered table-striped" id="table-cargaOP_fase" style="width: 110%;">
+                <table class="table table-bordered table-striped" id="table-cargaOP_fase" style="width: 150%;">
                     <thead id = 'CabecalhoModal'>
                         <tr >
-                            <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
+                            <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 130px;"></th>
                             <th>numeroOP<br></th>
-                            <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
+                            <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 130px;"></th>
                             <th>codProduto<br></th>
                             <th id ="formato_descricao">descricao<br></th>
                             <th>Carga<br></th>
