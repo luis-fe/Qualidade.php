@@ -659,6 +659,7 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
         
         
     });
+
 }
 
 
@@ -715,6 +716,9 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
                 $(api.column(i).footer()).html('-');
             });
         }
+    });
+    $('.search-input-table-cargaOP_fase').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
 

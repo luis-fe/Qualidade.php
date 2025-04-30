@@ -252,7 +252,7 @@ include_once('../../../templates/headerGestao.php');
                     <thead id = 'CabecalhoModal'>
                         <tr >
                             <th>numeroOP<br></th>
-                            <th>categoria<br><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
+                            <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
                             <th>Carga<br></th>
                         </tr>
                     </thead>
