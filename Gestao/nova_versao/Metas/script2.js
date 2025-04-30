@@ -381,7 +381,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Carga Atual',
-                render: (data, type, row) => `<span class="cargaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
+                render: (data, type, row) => `<span class="cargaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
             },
             {
                 data: 'Fila',
