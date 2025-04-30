@@ -251,6 +251,7 @@ include_once('../../../templates/headerGestao.php');
                 <table class="table table-bordered table-striped" id="table-cargaOP_fase" style="width: 100%;">
                     <thead id = 'CabecalhoModal'>
                         <tr >
+                            <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
                             <th>numeroOP<br></th>
                             <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
                             <th>Carga<br></th>
@@ -262,6 +263,7 @@ include_once('../../../templates/headerGestao.php');
                     <tfoot>
                         <tr>
                             <th>Total</th>
+                            <th></th>
                             <th></th>
                             <th></th> 
                         </tr>
