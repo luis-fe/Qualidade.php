@@ -247,7 +247,7 @@ include_once('../../../templates/headerGestao.php');
                 <h5 class="modal-title" style="color: black;" id = 'titulo-cargaOP_fase'>Carga</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="max-height: 800px; overflow: auto">
+            <div class="modal-body" style="max-height: 1000px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-cargaOP_fase" style="width: 100%;">
                     <thead id = 'CabecalhoModal'>
                         <tr >
@@ -255,7 +255,7 @@ include_once('../../../templates/headerGestao.php');
                             <th>numeroOP<br></th>
                             <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
                             <th>codProduto<br></th>
-                            <th>descricao<br></th>
+                            <th style="text-align: left; max-width: 200px; width: 200px;">descricao<br></th>
                             <th>Carga<br></th>
                         </tr>
                     </thead>
