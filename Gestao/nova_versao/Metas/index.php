@@ -54,7 +54,7 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 
-#formato_descricao th {
+#formato_descricao {
     text-align: left !important; 
     max-width: 200px !important; 
     width: 200px !important;
@@ -261,12 +261,12 @@ include_once('../../../templates/headerGestao.php');
                     <thead id = 'CabecalhoModal'>
                         <tr >
                             <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
-                            <th><br>numeroOP</th>
-                            <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
-                            <th><br>codProduto</th>
+                            <th>numeroOP<br></th>
+                            <th>categoria<input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
+                            <th>codProduto</th>
                             <th id ="formato_descricao">descricao<br></th>
-                            <th><br>prioridade</th>
-                            <th><br>Carga</th>
+                            <th>prioridade</th>
+                            <th>Carga</th>
                         </tr>
                     </thead>
                     <tbody>
