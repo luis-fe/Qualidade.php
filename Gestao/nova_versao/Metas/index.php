@@ -55,9 +55,11 @@ include_once('../../../templates/headerGestao.php');
 }
 
 table#table-cargaOP_fase th#formato_descricao {
-    text-align: left !important;
-    max-width: 200px !important;
-    width: 200px !important;
+    max-width: 150px !important;
+    width: 150px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
 }
 
 
