@@ -54,7 +54,7 @@ include_once('../../../templates/headerGestao.php');
     text-align: center !important;
 }
 
-table#table-cargaOP_fase th#formato_descricao {
+#formato_descricao {
     max-width: 150px !important;
     width: 150px !important;
     overflow: hidden !important;
