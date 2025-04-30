@@ -53,6 +53,15 @@ include_once('../../../templates/headerGestao.php');
     font-weight: bold !important;
     text-align: center !important;
 }
+
+#formato_descricao {
+    text-align: left !important; 
+    max-width: 200px !important; 
+    width: 200px !important;
+}
+
+
+
 #table-falta-produzir-categorias tbody tr:hover {
     background-color: rgb(199, 225, 252) !important;
     cursor: pointer;
@@ -248,14 +257,14 @@ include_once('../../../templates/headerGestao.php');
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height: 1000px; overflow: auto">
-                <table class="table table-bordered table-striped" id="table-cargaOP_fase" style="width: 100%;">
+                <table class="table table-bordered table-striped" id="table-cargaOP_fase" style="width: 110%;">
                     <thead id = 'CabecalhoModal'>
                         <tr >
                             <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
                             <th>numeroOP<br></th>
                             <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 150px;"></th>
                             <th>codProduto<br></th>
-                            <th style="text-align: left; max-width: 200px; width: 200px;">descricao<br></th>
+                            <th id ="formato_descricao">descricao<br></th>
                             <th>Carga<br></th>
                         </tr>
                     </thead>
