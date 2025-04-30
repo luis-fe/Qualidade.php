@@ -679,11 +679,10 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             { data: 'COLECAO' },      // Índice 0
             { data: 'numeroOP' },      // Índice 1
             { data: 'categoria' },     // Índice 2
-            { data: 'codProduto' },      // Índice 3
+            { data: 'codProduto' },     // Índice 3
             { data: 'descricao' },     // Índice 4
-
             { 
-                data: 'Carga',          // Índice 5
+                data: 'Carga',          // Índice 3
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
