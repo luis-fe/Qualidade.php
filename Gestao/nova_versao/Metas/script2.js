@@ -154,6 +154,45 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
 }
 
 
+const Consulta_cargaOP_fase = async (Fase, Plano) => {
+
+    $('#loadingModal').modal('show');
+
+    try {
+         const requestData = {
+             acao: "Consulta_cargaOP_fase",
+             dados: {
+                 codigoPlano: Plano,
+                 arrayCodLoteCsw: [$('#select-lote').val()],
+                 nomeFase: Fase,
+                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+             }
+         };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(requestData)
+        });
+        
+
+
+        Tabela_cargaOP_fase(response);
+        console.log(response)
+        // Atualiza o título do modal com a fase
+       await $('#titulo-cargaOP_faser').text(`cargaOP_fase - ${Fase}`);
+            $('#modal-cargaOP_fase').modal('show');
+
+    } catch (error) {
+        console.error('Erro no detalha cargaOP_fase:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+
 const Consulta_Lotes = async () => {
     try {
         $('#loadingModal').modal('show');
@@ -342,7 +381,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Carga Atual',
-                render: data => parseInt(data).toLocaleString()
+                render: (data, type, row) => `<span class="cargaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
             },
             {
                 data: 'Fila',
@@ -444,6 +483,14 @@ function TabelaMetas(listaMetas) {
         const Fase = $(this).attr('data-fase'); 
         console.log('cliquei em nomeFase')
         Consulta_Falta_Produzir_Categoria(Fase, Plano);
+    });
+
+    $('#table-metas').on('click', '.cargaClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
+        Consulta_cargaOP_fase(Fase, Plano);
     });
     
 }
@@ -603,6 +650,71 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
                 let valor;
                 if (i === 5) { // coluna "dias"
                     valor = mediaColuna(i);
+                } else {
+                    valor = somaColuna(i);
+                }
+                $(api.column(i).footer()).html(valor.toLocaleString());
+            });
+        }
+        
+        
+    });
+}
+
+
+function Tabela_cargaOP_fase(listaFaltaProduzir) {
+    if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
+        $('#table-cargaOP_fase').DataTable().destroy();
+    }
+    const tabela = $('#table-cargaOP_fase').DataTable({
+        searching: true,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: listaFaltaProduzir,
+        columns: [
+            { data: 'numeroOP' },
+            { data: 'categoria' },
+            { 
+                data: 'Carga',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+        
+            function somaColuna(index) {
+                return api
+                    .column(index)
+                    .data()
+                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+            }
+        
+            function mediaColuna(index) {
+                const data = api.column(index).data();
+                const total = data.reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+                const count = data.length;
+                return count ? Math.round(total / count) : 0;
+            }
+        
+            // Índices das colunas numéricas (começam do 1)
+            const colunas = [1, 2, 3];
+            colunas.forEach(i => {
+                let valor;
+
+                if (i === 1) { // coluna "dias"
+                    valor = '-';
                 } else {
                     valor = somaColuna(i);
                 }
