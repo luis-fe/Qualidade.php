@@ -666,6 +666,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
+
     const tabela = $('#table-cargaOP_fase').DataTable({
         searching: true,
         paging: false,
@@ -674,10 +675,10 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
         pageLength: 10,
         data: listaFaltaProduzir,
         columns: [
-            { data: 'numeroOP' },
-            { data: 'categoria' },
+            { data: 'numeroOP' },      // Índice 0
+            { data: 'categoria' },     // Índice 1
             { 
-                data: 'Carga',
+                data: 'Carga',          // Índice 2
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
@@ -693,36 +694,28 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
         },
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
-        
+
             function somaColuna(index) {
                 return api
                     .column(index)
                     .data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
-        
-            function mediaColuna(index) {
-                const data = api.column(index).data();
-                const total = data.reduce((total, valor) => total + (parseInt(valor) || 0), 0);
-                const count = data.length;
-                return count ? Math.round(total / count) : 0;
-            }
-        
-            // Índices das colunas numéricas (começam do 1)
-            const colunas = [1, 2, 3];
-            colunas.forEach(i => {
-                let valor;
 
-                if (i === 1) { // coluna "dias"
-                    valor = '-';
-                } else {
-                    valor = somaColuna(i);
-                }
+            // Apenas a coluna 'Carga' (índice 2) deve ser somada
+            const colunas = [2];
+
+            colunas.forEach(i => {
+                const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
+
+            // Se quiser deixar '-' nas colunas não numéricas:
+            [0, 1].forEach(i => {
+                $(api.column(i).footer()).html('-');
+            });
         }
-        
-        
     });
 }
+
 
