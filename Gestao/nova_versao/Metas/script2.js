@@ -182,7 +182,7 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
         Tabela_cargaOP_fase(response);
         console.log(response)
         // Atualiza o título do modal com a fase
-       await $('#titulo-cargaOP_fase').text(`cargaOP_fase - ${Fase}`);
+       await $('#titulo-cargaOP_fase').text(`Carga Fase - ${Fase}`);
             $('#modal-cargaOP_fase').modal('show');
 
     } catch (error) {

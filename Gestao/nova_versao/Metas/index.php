@@ -261,12 +261,12 @@ include_once('../../../templates/headerGestao.php');
                     <thead id = 'CabecalhoModal'>
                         <tr >
                             <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
-                            <th>numeroOP<br></th>
+                            <th><br>numeroOP</th>
                             <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
-                            <th>codProduto<br></th>
+                            <th><br>codProduto</th>
                             <th id ="formato_descricao">descricao<br></th>
-                            <th>prioridade<br></th>
-                            <th>Carga<br></th>
+                            <th><br>prioridade</th>
+                            <th><br>Carga</th>
                         </tr>
                     </thead>
                     <tbody>
