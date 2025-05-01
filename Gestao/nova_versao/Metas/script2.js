@@ -728,13 +728,13 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
-            const colunas = [8];
+            const colunas = [9];
             colunas.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            [0, 1, 2, 3, 4, 5, 6, 7].forEach(i => {
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach(i => {
                 $(api.column(i).footer()).html('-');
             });
         }
