@@ -252,7 +252,7 @@ include_once('../../../templates/headerGestao.php');
 
 
 <div class="modal fade modal-custom" id="modal-cargaOP_fase" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered w-200 m-0">
+    <div class="modal-dialog modal-dialog-centered w-100 m-0">
         <div class="modal-content w-100">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;" id = 'titulo-cargaOP_fase'>Carga</h5>
@@ -262,9 +262,9 @@ include_once('../../../templates/headerGestao.php');
                 <table class="table table-bordered table-striped" id="table-cargaOP_fase">
                     <thead id = 'CabecalhoModal'>
                         <tr >
-                            <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
+                            <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase"></th>
                             <th>numeroOP<br></th>
-                            <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase" style="min-width: 100px;"></th>
+                            <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase"></th>
                             <th>codProduto</th>
                             <th id="formato_descricao">descricao<br></th>
                             <th>prioridade</th>
