@@ -321,9 +321,9 @@ include_once('../../../templates/headerGestao.php');
                             <th>codProduto</th>
                             <th id="formato_descricao">descricao<br></th>
                             <th>prioridade</th>
+                            <th>Carga</th>
                             <th>Data<br>Entrada</br></th>
                             <th>DiasFase</th>
-                            <th>Carga</th>
                         </tr>
                     </thead>
                     <tbody>

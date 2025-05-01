@@ -719,7 +719,7 @@ function Tabela_cargaOP_fase(response) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-       /* footerCallback: function (row, data, start, end, display) {
+     footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
             function somaColuna(index) {
@@ -742,7 +742,7 @@ function Tabela_cargaOP_fase(response) {
     });
 
     $('.search-input-table-cargaOP_fase').on('input', function () {
-        tabela.column($(this).closest('th').index()).search($(this).val()).draw();*/
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
 
