@@ -252,7 +252,7 @@ include_once('../../../templates/headerGestao.php');
 
 
 <div class="modal fade modal-custom" id="modal-cargaOP_fase" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
+    <div class="modal-dialog modal-dialog-centered w-100 m-0">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;" id = 'titulo-cargaOP_fase'>Carga</h5>
