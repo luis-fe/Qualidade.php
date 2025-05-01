@@ -664,13 +664,13 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
 
 
 
-function Tabela_cargaOP_fase(listaFaltaProduzir) {
+function Tabela_cargaOP_fase(response) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
     // Remover a chave "Tipo Producao"
-    const dadosFiltrados = listaFaltaProduzir.map(item => {
+    const dadosFiltrados = response.map(item => {
         const { ['Tipo Producao']: _, ...resto } = item;
         return resto;
     });
@@ -718,7 +718,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        footerCallback: function (row, data, start, end, display) {
+       /* footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
             function somaColuna(index) {
@@ -741,7 +741,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
     });
 
     $('.search-input-table-cargaOP_fase').on('input', function () {
-        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();*/
     });
 }
 
