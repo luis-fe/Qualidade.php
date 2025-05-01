@@ -88,7 +88,6 @@ include_once('../../../templates/headerGestao.php');
 #modal-cargaOP_fase tfoot th {
     position: sticky !important;
     z-index: 10 !important;
-    background-color: #f8f9fa !important;
     padding: 0.5rem !important;
     height: 60px !important;
     vertical-align: middle !important;
@@ -107,7 +106,6 @@ include_once('../../../templates/headerGestao.php');
     padding: 0.25rem 0.5rem !important;
     box-sizing: border-box !important;
     width: 100% !important;
-    background-color: #ffffff !important;
     border: 1px solid #ced4da !important;
 }
 
