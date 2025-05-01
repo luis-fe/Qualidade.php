@@ -669,12 +669,13 @@ function Tabela_cargaOP_fase(response) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
-    // Remover a chave "Tipo Producao"
-    const dadosFiltrados = response.map(item => {
-        const { ['Tipo Producao']: _, ...resto } = item;
-        return resto;
-    });
+    const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'EntFase', 'DiasFase', 'Carga'];
 
+    const dadosFiltrados = response.map(item => 
+        Object.fromEntries(
+            Object.entries(item).filter(([key]) => camposValidos.includes(key))
+        )
+    );
     // Diagnóstico
     dadosFiltrados.forEach((item, index) => {
         const keys = Object.keys(item);
