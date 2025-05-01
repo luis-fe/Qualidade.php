@@ -683,8 +683,10 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             { data: 'descricao' },     // Índice 4
             { data: 'prioridade' },     // Índice 5
             { data: 'EntFase' },     // Índice 6
-            { data: 'DiasFase' },     // Índice 7
-
+            { data: 'DiasFase',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+             },     // Índice 7
             { 
                 data: 'Carga',          // Índice 8
                 type: 'num-formatted',
