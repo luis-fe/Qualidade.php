@@ -109,6 +109,20 @@ include_once('../../../templates/headerGestao.php');
     border: 1px solid #ced4da !important;
 }
 
+#table-cargaOP_fase {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+#modal-cargaOP_fase tbody tr:first-child td {
+    margin-top: 0 !important;
+    padding-top: 0.5rem !important; /* ou o valor que harmoniza com o <thead> */
+}
+
+#modal-cargaOP_fase thead th {
+    border-bottom: 2px solid #dee2e6 !important;
+}
+
 
 </style>
 
