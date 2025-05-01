@@ -719,7 +719,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             });
 
             // Se quiser deixar '-' nas colunas não numéricas:
-            [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach(i => {
+            [0, 1, 2, 3, 4, 5, 6, 7].forEach(i => {
                 $(api.column(i).footer()).html('-');
             });
         }
