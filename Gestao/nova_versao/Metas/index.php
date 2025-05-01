@@ -81,29 +81,36 @@ include_once('../../../templates/headerGestao.php');
     100% !important;
 }
 
-#modal-cargaOP_fase .modal-body {
-    max-height: 900px;
-    overflow: auto;
+
+
+
+#modal-cargaOP_fase thead th,
+#modal-cargaOP_fase tfoot th {
+    position: sticky !important;
+    z-index: 10 !important;
+    background-color: #f8f9fa !important;
+    padding: 0.5rem !important;
+    height: 60px !important;
+    vertical-align: middle !important;
 }
 
 #modal-cargaOP_fase thead th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    padding: 0.5rem;
-    background-color: #f8f9fa;
-    height: 60px;
-    vertical-align: middle;
+    top: 0 !important;
+}
+
+#modal-cargaOP_fase tfoot th {
+    bottom: 0 !important;
 }
 
 #modal-cargaOP_fase thead th input {
-    margin: 0;
-    padding: 0.25rem 0.5rem;
-    box-sizing: border-box;
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
+    margin: 0 !important;
+    padding: 0.25rem 0.5rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    background-color: #ffffff !important;
+    border: 1px solid #ced4da !important;
 }
+
 
 </style>
 
