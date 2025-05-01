@@ -89,8 +89,11 @@ include_once('../../../templates/headerGestao.php');
 #modal-cargaOP_fase thead th {
     position: sticky;
     top: 0;
-    z-index: 5;
+    z-index: 10;
     padding: 0.5rem;
+    background-color: #f8f9fa;
+    height: 60px;
+    vertical-align: middle;
 }
 
 #modal-cargaOP_fase thead th input {
@@ -98,6 +101,8 @@ include_once('../../../templates/headerGestao.php');
     padding: 0.25rem 0.5rem;
     box-sizing: border-box;
     width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
 }
 
 </style>
