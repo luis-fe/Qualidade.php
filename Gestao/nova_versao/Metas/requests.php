@@ -140,7 +140,7 @@ function ConsultaPrevisaoCategoria($Fase)
 
 function ConsultarTipoOp($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
     $apiUrl = "{$baseUrl}/pcp/api/filtroProdutivo";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
