@@ -69,6 +69,10 @@ include_once('../../../templates/headerGestao.php');
     cursor: pointer;
 }
 
+#modal-cargaOP_fase{
+    width: 100% !important;
+}
+
 
 
 </style>
