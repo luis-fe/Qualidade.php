@@ -668,6 +668,12 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
+    listaFaltaProduzir.forEach((item, index) => {
+        const keys = Object.keys(item);
+        if (keys.length !== 9) {
+            console.warn(`Item ${index} tem ${keys.length} propriedades`, item);}
+        });
+
     const tabela = $('#table-cargaOP_fase').DataTable({
         searching: true,
         paging: false,
