@@ -731,7 +731,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             const colunas = [2];
             colunas.forEach(i => {
                 const valor = somaColuna(i);
-                $(api.column(i).footer()).html(valor.toLocaleString());
+          //      $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
             [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach(i => {
