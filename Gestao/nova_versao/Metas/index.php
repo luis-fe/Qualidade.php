@@ -89,7 +89,15 @@ include_once('../../../templates/headerGestao.php');
 #modal-cargaOP_fase thead th {
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 5;
+    padding: 0.5rem;
+}
+
+#modal-cargaOP_fase thead th input {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 </style>
