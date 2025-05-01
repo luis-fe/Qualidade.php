@@ -663,16 +663,25 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
 }
 
 
+
 function Tabela_cargaOP_fase(listaFaltaProduzir) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
-    listaFaltaProduzir.forEach((item, index) => {
+    // Remover a chave "Tipo Producao"
+    const dadosFiltrados = listaFaltaProduzir.map(item => {
+        const { ['Tipo Producao']: _, ...resto } = item;
+        return resto;
+    });
+
+    // Diagnóstico
+    dadosFiltrados.forEach((item, index) => {
         const keys = Object.keys(item);
         if (keys.length !== 9) {
-            console.warn(`Item ${index} tem ${keys.length} propriedades`, item);}
-        });
+            console.warn(`Item ${index} tem ${keys.length} propriedades`, item);
+        }
+    });
 
     const tabela = $('#table-cargaOP_fase').DataTable({
         searching: true,
@@ -680,21 +689,22 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
         lengthChange: false,
         info: false,
         pageLength: 10,
-        data: listaFaltaProduzir,
+        data: dadosFiltrados,
         columns: [
-            { data: 'COLECAO' },      // Índice 0
-            { data: 'numeroOP' },      // Índice 1
-            { data: 'categoria' },     // Índice 2
-            { data: 'codProduto' },     // Índice 3
-            { data: 'descricao' },     // Índice 4
-            { data: 'prioridade' },     // Índice 5
-            { data: 'EntFase' },     // Índice 6
-            { data: 'DiasFase',
+            { data: 'COLECAO' },
+            { data: 'numeroOP' },
+            { data: 'categoria' },
+            { data: 'codProduto' },
+            { data: 'descricao' },
+            { data: 'prioridade' },
+            { data: 'EntFase' },
+            { 
+                data: 'DiasFase',
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
-             },     // Índice 7
+            },
             { 
-                data: 'Carga',          // Índice 8
+                data: 'Carga',
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
@@ -718,23 +728,23 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
-            // Apenas a coluna 'Carga' (índice 2) deve ser somada
             const colunas = [8];
-
             colunas.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            // Se quiser deixar '-' nas colunas não numéricas:
             [0, 1, 2, 3, 4, 5, 6, 7].forEach(i => {
                 $(api.column(i).footer()).html('-');
             });
         }
     });
+
     $('.search-input-table-cargaOP_fase').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
+
+  
 
 
