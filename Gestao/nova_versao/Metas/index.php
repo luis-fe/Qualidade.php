@@ -69,10 +69,15 @@ include_once('../../../templates/headerGestao.php');
     cursor: pointer;
 }
 
-#modal-cargaOP_fase .modal-content {
-    width: 100%;
+#modal-cargaOP_fase .modal-dialog {
+    width: 90vw !important;
+    max-width: 90vw !important;
+    margin: auto !important;
 }
 
+#modal-cargaOP_fase .modal-content {
+    width: 100% !important;
+}
 
 </style>
 
