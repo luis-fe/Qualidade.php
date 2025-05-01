@@ -76,7 +76,20 @@ include_once('../../../templates/headerGestao.php');
 }
 
 #modal-cargaOP_fase .modal-content {
-    width: 100% !important;
+    width:
+    
+    100% !important;
+}
+
+#modal-cargaOP_fase .modal-body {
+    max-height: 900px;
+    overflow: auto;
+}
+
+#modal-cargaOP_fase thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 </style>
