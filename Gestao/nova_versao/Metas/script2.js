@@ -669,7 +669,7 @@ function Tabela_cargaOP_fase(response) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
-    const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'EntFase', 'DiasFase', 'Carga'];
+    const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'Carga', 'EntFase', 'DiasFase'];
 
     const dadosFiltrados = response.map(item => 
         Object.fromEntries(
@@ -732,8 +732,8 @@ function Tabela_cargaOP_fase(response) {
             function mediaColuna(index) {
                 const dados = api.column(index).data();
                 const total = dados.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
-                const quantidade = dados.length;
-                return quantidade > 0 ? total / quantidade : 0;
+                const quantidade = dadosVisiveis.length;
+                return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
             }
 
             const colunas = [6];
