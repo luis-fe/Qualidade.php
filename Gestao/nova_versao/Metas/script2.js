@@ -709,7 +709,6 @@ function Tabela_cargaOP_fase(response) {
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
-,
         ],
         language: {
             paginate: {
@@ -730,10 +729,22 @@ function Tabela_cargaOP_fase(response) {
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
-            const colunas = [8];
+            function mediaColuna(index) {
+                const dados = api.column(index).data();
+                const total = dados.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
+                const quantidade = dados.length;
+                return quantidade > 0 ? total / quantidade : 0;
+            }
+
+            const colunas = [6];
             colunas.forEach(i => {
                 const valor = somaColuna(i);
-          //      $(api.column(i).footer()).html(valor.toLocaleString());
+               $(api.column(i).footer()).html(valor.toLocaleString());
+            });
+
+            [8].forEach(i => {
+                const valor = mediaColuna(i);
+                $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
             [0, 1, 2, 3, 4, 5, 6, 7].forEach(i => {
