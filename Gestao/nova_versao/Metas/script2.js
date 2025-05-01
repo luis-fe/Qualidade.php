@@ -698,17 +698,18 @@ function Tabela_cargaOP_fase(response) {
             { data: 'codProduto' },
             { data: 'descricao' },
             { data: 'prioridade' },
+            { 
+                data: 'Carga',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
             { data: 'EntFase' },
             { 
                 data: 'DiasFase',
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
-            { 
-                data: 'Carga',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
+,
         ],
         language: {
             paginate: {
