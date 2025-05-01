@@ -682,9 +682,11 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             { data: 'codProduto' },     // Índice 3
             { data: 'descricao' },     // Índice 4
             { data: 'prioridade' },     // Índice 5
+            { data: 'EntFase' },     // Índice 6
+            { data: 'DiasFase' },     // Índice 7
 
             { 
-                data: 'Carga',          // Índice 6
+                data: 'Carga',          // Índice 8
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
@@ -709,7 +711,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             }
 
             // Apenas a coluna 'Carga' (índice 2) deve ser somada
-            const colunas = [6];
+            const colunas = [8];
 
             colunas.forEach(i => {
                 const valor = somaColuna(i);
@@ -717,7 +719,7 @@ function Tabela_cargaOP_fase(listaFaltaProduzir) {
             });
 
             // Se quiser deixar '-' nas colunas não numéricas:
-            [0, 1, 2, 3, 4, 5].forEach(i => {
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach(i => {
                 $(api.column(i).footer()).html('-');
             });
         }

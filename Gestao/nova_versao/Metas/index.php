@@ -315,12 +315,14 @@ include_once('../../../templates/headerGestao.php');
                 <table class="table table-bordered table-striped" id="table-cargaOP_fase">
                     <thead id = 'CabecalhoModal'>
                         <tr >
-                            <th>COLECAO<br><input type="search" class="search-input-table-cargaOP_fase"></th>
+                            <th>Colecao<br><input type="search" class="search-input-table-cargaOP_fase"></th>
                             <th>numeroOP<br></th>
                             <th>categoria<br><input type="search" class="search-input-table-cargaOP_fase"></th>
                             <th>codProduto</th>
                             <th id="formato_descricao">descricao<br></th>
                             <th>prioridade</th>
+                            <th>Data<br>Entrada</br></th>
+                            <th>DiasFase</th>
                             <th>Carga</th>
                         </tr>
                     </thead>
@@ -332,6 +334,9 @@ include_once('../../../templates/headerGestao.php');
                             <th>Total</th>
                             <th></th>
                             <th></th>
+                            <th></th> 
+                            <th></th> 
+                            <th></th> 
                             <th></th> 
                             <th></th> 
                             <th></th> 
