@@ -719,44 +719,52 @@ function Tabela_cargaOP_fase(response) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-     footerCallback: function (row, data, start, end, display) {
+        footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
+            // Função para calcular a soma dos valores de uma coluna
             function somaColuna(index) {
                 return api
-                    .column(index)
+                    .column(index, { page: 'current' }) // Garantir que estamos pegando apenas os dados da página atual
                     .data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
+            // Função para calcular a média dos valores de uma coluna
             function mediaColuna(index) {
-                const dados = api.column(index).data();
-                const total = dados.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
+                const dadosVisiveis = api.column(index, { page: 'current' }).data();
+                const total = dadosVisiveis.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
                 const quantidade = dadosVisiveis.length;
                 return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
             }
 
-            const colunas = [6];
-            colunas.forEach(i => {
+            // Exibir a soma das colunas que devem ser somadas (exemplo: Carga)
+            const colunasSoma = [6];  // Coluna de Carga
+            colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
-               $(api.column(i).footer()).html(valor.toLocaleString());
+                $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            [8].forEach(i => {
+            // Exibir a média para a coluna DiasFase
+            const colunasMedia = [8];  // Coluna DiasFase
+            colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            [0, 1, 2, 3, 4, 5, 6, 7].forEach(i => {
+            // Preencher as outras colunas com "-"
+            [0, 1, 2, 3, 4, 5, 7].forEach(i => {
                 $(api.column(i).footer()).html('-');
             });
         }
     });
 
+    // Filtro por coluna
     $('.search-input-table-cargaOP_fase').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
+
 
   
 
