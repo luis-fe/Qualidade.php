@@ -680,7 +680,7 @@ function Tabela_cargaOP_fase(response) {
     // Diagnóstico
     dadosFiltrados.forEach((item, index) => {
         const keys = Object.keys(item);
-        if (keys.length !== 9) {
+        if (keys.length !== 11) {
             console.warn(`Item ${index} tem ${keys.length} propriedades`, item);
         }
     });
