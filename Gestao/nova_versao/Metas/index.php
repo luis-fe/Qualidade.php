@@ -324,6 +324,8 @@ include_once('../../../templates/headerGestao.php');
                             <th>Carga</th>
                             <th>Data<br>Entrada</br></th>
                             <th>DiasFase</th>
+                            <th>Data Ger.<br>OP</br></th>
+                            <th>Lead Time<br>Acum.</br></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -334,6 +336,8 @@ include_once('../../../templates/headerGestao.php');
                             <th>Total</th>
                             <th></th>
                             <th></th>
+                            <th></th> 
+                            <th></th> 
                             <th></th> 
                             <th></th> 
                             <th></th> 

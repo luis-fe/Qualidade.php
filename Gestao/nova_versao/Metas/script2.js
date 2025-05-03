@@ -669,7 +669,8 @@ function Tabela_cargaOP_fase(response) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
-    const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'Carga', 'EntFase', 'DiasFase'];
+    const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'Carga', 'EntFase', 
+        'DiasFase',"dataStartOP",'Lead Time Geral'];
 
     const dadosFiltrados = response.map(item => 
         Object.fromEntries(
@@ -709,6 +710,13 @@ function Tabela_cargaOP_fase(response) {
                 type: 'num-formatted',
                 render: data => parseInt(data).toLocaleString()
             },
+            { data: 'dataStartOP' },
+            { 
+                data: 'Lead Time Geral',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+
         ],
         language: {
             paginate: {
@@ -746,15 +754,15 @@ function Tabela_cargaOP_fase(response) {
             });
 
             // Exibir a média para a coluna DiasFase
-            const colunasMedia = [8];  // Coluna DiasFase
+            const colunasMedia = [8,10];  // Coluna DiasFase
             colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
             // Preencher as outras colunas com "-"
-            [0, 1, 2, 3, 4, 5, 7].forEach(i => {
-                $(api.column(i).footer()).html('-');
+            [0, 1, 2, 3, 4, 5, 7,9].forEach(i => {
+                $(api.column(i).footer()).html('');
             });
         }
     });
