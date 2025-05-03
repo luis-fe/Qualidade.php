@@ -696,10 +696,10 @@ function Tabela_cargaOP_fase(response) {
             },
             { data: 'dataStartOP' },
             { 
-                data: 'Lead Time Geral'
-           //     type: 'num-formatted',
-           //     render: data => parseInt(data).toLocaleString()
-            },
+                data: 'Lead Time Geral',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            }
 
         ],
         language: {
