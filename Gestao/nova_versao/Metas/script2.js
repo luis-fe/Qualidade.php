@@ -670,13 +670,15 @@ function Tabela_cargaOP_fase(response) {
     }
 
     const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'Carga', 'EntFase', 
-        'DiasFase',"dataStartOP",'Lead Time Geral'];
-
-    const dadosFiltrados = response.map(item => 
-        Object.fromEntries(
-            Object.entries(item).filter(([key]) => camposValidos.includes(key))
-        )
-    );
+        'DiasFase', 'dataStartOP', 'Lead Time Geral'];
+    
+    const dadosFiltrados = response.map(item => {
+        const novoItem = {};
+        camposValidos.forEach(campo => {
+            novoItem[campo] = item[campo] ?? '';
+        });
+        return novoItem;
+    });
     // Diagnóstico
     dadosFiltrados.forEach((item, index) => {
         const keys = Object.keys(item);
