@@ -669,18 +669,6 @@ function Tabela_cargaOP_fase(response) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
 
-    const camposValidos = ['COLECAO', 'numeroOP', 'categoria', 'codProduto', 'descricao', 'prioridade', 'Carga', 'EntFase', 
-        'DiasFase', 'dataStartOP', 'Lead Time Geral'];
-    
-    const dadosFiltrados = response.map(item => {
-        const novoItem = {};
-        camposValidos.forEach(campo => {
-            novoItem[campo] = item[campo] ?? '';
-        });
-        return novoItem;
-    });
-
-
     const tabela = $('#table-cargaOP_fase').DataTable({
         searching: true,
         paging: false,
@@ -708,9 +696,9 @@ function Tabela_cargaOP_fase(response) {
             },
             { data: 'dataStartOP' },
             { 
-                data: 'Lead Time Geral',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
+                data: 'Lead Time Geral'
+           //     type: 'num-formatted',
+           //     render: data => parseInt(data).toLocaleString()
             },
 
         ],
@@ -750,7 +738,7 @@ function Tabela_cargaOP_fase(response) {
             });
 
             // Exibir a média para a coluna DiasFase
-            const colunasMedia = [8, 10];  // Coluna DiasFase
+            const colunasMedia = [8];  // Coluna DiasFase
             colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
