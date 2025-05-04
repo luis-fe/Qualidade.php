@@ -151,6 +151,44 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
     } finally {
         $('#loadingModal').modal('hide');
     }
+};
+
+const Consulta_FilaFases = async (Fase, Plano) => {
+
+    $('#loadingModal').modal('show');
+
+    try {
+         const requestData = {
+             acao: "Consulta_Fila_Fases",
+             dados: {
+                 codigoPlano: Plano,
+                 arrayCodLoteCsw: [$('#select-lote').val()],
+                 nomeFase: Fase,
+                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+             }
+         };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(requestData)
+        });
+        
+
+
+        TabelaFilaFases(response);
+        console.log(response)
+        // Atualiza o título do modal com a fase
+       await $('#titulo-filaFases').text(`FILA - ${Fase}`);
+            $('#modal-filaResumoFase').modal('show');
+
+    } catch (error) {
+        console.error('Erro no detalha falta Produzir:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
 }
 
 
@@ -385,7 +423,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Fila',
-                render: data => parseInt(data).toLocaleString()
+                render: (data, type, row) => `<span class="filaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
             },
             {
                 data: 'Falta Produzir',
@@ -491,6 +529,14 @@ function TabelaMetas(listaMetas) {
         const Plano = $('#select-plano').val();
         const Fase = $(this).attr('data-fase'); 
         Consulta_cargaOP_fase(Fase, Plano);
+    });
+
+    $('#table-metas').on('click', '.filaClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
+        Consulta_FilaFases(Fase, Plano);
     });
     
 }
