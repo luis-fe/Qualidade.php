@@ -160,7 +160,7 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
 
     try {
         const requestData = {
-            acao: "Consulta_Falta_Produzir_Categoria",
+            acao: "Consulta_cargaOP_fase",
             dados: {
                 codigoPlano: Plano,
                 arrayCodLoteCsw: [$('#select-lote').val()],
@@ -179,14 +179,14 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
        
 
 
-       TabelaFaltaProduzirCategorias(response);
+       Tabela_cargaOP_fase(response);
        console.log(response)
        // Atualiza o título do modal com a fase
-      await $('#titulo-falta-produzir').text(`Falta Produzir - ${Fase}`);
-           $('#modal-falta-produzir-categorias').modal('show');
+      await $('#titulo-cargaOP_fase').text(`Carga Fase - ${Fase}`);
+           $('#modal-cargaOP_fase').modal('show');
 
    } catch (error) {
-       console.error('Erro no detalha falta Produzir:', error);
+       console.error('Erro no detalha cargaOP_fase:', error);
    } finally {
        $('#loadingModal').modal('hide');
    }
@@ -664,7 +664,7 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
 
 
 
-function Tabela_cargaOP_fase(response) {
+function Tabela_cargaOP_fase(dadosFiltrados) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
