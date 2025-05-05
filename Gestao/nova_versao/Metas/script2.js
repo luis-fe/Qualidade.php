@@ -664,74 +664,7 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
 
 }
 
-function TabelaFilaFases(response){
-    if ($.fn.DataTable.isDataTable('#table-filaFaseResumo')) {
-        $('#table-filaFaseResumo').DataTable().destroy();
-    }
 
-    const tabela = $('#table-filaFaseResumo').DataTable({
-        searching: true,
-        paging: false,
-        lengthChange: false,
-        info: false,
-        pageLength: 10,
-        data: listaFaltaProduzir,
-        columns: [
-            { data: 'categoria' },
-            { 
-                data: 'Carga',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { 
-                data: 'Fila',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            
-        ],
-        language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
-            info: "Página _PAGE_ de _PAGES_",
-            emptyTable: "Nenhum dado disponível na tabela",
-            zeroRecords: "Nenhum registro encontrado"
-        },
-        footerCallback: function (row, data, start, end, display) {
-            const api = this.api();
-        
-            function somaColuna(index) {
-                return api
-                    .column(index)
-                    .data()
-                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
-            }
-        
-            function mediaColuna(index) {
-                const data = api.column(index).data();
-                const total = data.reduce((total, valor) => total + (parseInt(valor) || 0), 0);
-                const count = data.length;
-                return count ? Math.round(total / count) : 0;
-            }
-        
-            // Índices das colunas numéricas (começam do 1)
-            const colunas = [1, 2, 3, 4, 5, 6];
-            colunas.forEach(i => {
-                let valor;
-                if (i === 5) { // coluna "dias"
-                    valor = mediaColuna(i);
-                } else {
-                    valor = somaColuna(i);
-                }
-                $(api.column(i).footer()).html(valor.toLocaleString());
-            });
-        }
-        
-        
-    });
-}
 
 
 function Tabela_cargaOP_fase(lista) {
@@ -812,7 +745,7 @@ function Tabela_cargaOP_fase(lista) {
                 $(api.column(i).footer()).html('');
             });
         }
-    });
+    })
 
     // Filtro por coluna
     $('.search-input-table-cargaOP_fase').on('input', function () {
