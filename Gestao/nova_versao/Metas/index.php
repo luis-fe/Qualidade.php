@@ -303,36 +303,6 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="modal fade modal-custom" id="modal-filaResumoFase" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" style="color: black;" id = 'titulo-filaFases'>Fila Fase</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 800px; overflow: auto">
-                <table class="table table-bordered table-striped" id="table-filaFaseResumo" style="width: 100%;">
-                    <thead id = 'CabecalhoModal'>
-                        <tr >
-                            <th>Fase Atual<br></th>
-                            <th>Fila<br></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Aqui vão os dados da tabela -->
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Total</th>
-                            <th></th> <!-- Fila -->
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div class="modal fade modal-custom" id="modal-cargaOP_fase" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered w-100 m-0">
