@@ -153,43 +153,6 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
     }
 };
 
-const Consulta_FilaFases = async (Fase, Plano) => {
-
-    $('#loadingModal').modal('show');
-
-    try {
-         const requestData = {
-             acao: "Consulta_Fila_Fases",
-             dados: {
-                 codigoPlano: Plano,
-                 arrayCodLoteCsw: [$('#select-lote').val()],
-                 nomeFase: Fase,
-                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
-             }
-         };
-
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(requestData)
-        });
-        
-
-
-        TabelaFilaFases(response);
-        console.log(response)
-        // Atualiza o título do modal com a fase
-       await $('#titulo-filaFases').text(`FILA - ${Fase}`);
-            $('#modal-filaResumoFase').modal('show');
-
-    } catch (error) {
-        console.error('Erro no detalha falta Produzir:', error);
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
-}
 
 
 const Consulta_cargaOP_fase = async (Fase, Plano) => {
@@ -216,9 +179,8 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
         });
         
 
-
-        Tabela_cargaOP_fase(response);
         console.log(response)
+        Tabela_cargaOP_fase(response);
         // Atualiza o título do modal com a fase
        await $('#titulo-cargaOP_fase').text(`Carga Fase - ${Fase}`);
             $('#modal-cargaOP_fase').modal('show');
@@ -778,7 +740,7 @@ function TabelaFilaFases(response){
 }
 
 
-function Tabela_cargaOP_fase(response) {
+function Tabela_cargaOP_fase(lista) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
@@ -789,7 +751,7 @@ function Tabela_cargaOP_fase(response) {
         lengthChange: false,
         info: false,
         pageLength: 10,
-        data: response,
+        data: lista,
         columns: [
             { data: 'COLECAO' },
             { data: 'numeroOP' },
