@@ -151,25 +151,25 @@ const Consulta_Falta_Produzir_Categoria = async (Fase, Plano) => {
     } finally {
         $('#loadingModal').modal('hide');
     }
-};
-
+}
 
 
 const Consulta_cargaOP_fase = async (Fase, Plano) => {
-    console.log('Chamou a funcao Consulta_cargaOP_fase')
+
     $('#loadingModal').modal('show');
 
-    const requestData = {
-        acao: "Consulta_cargaOP_fase",
-        dados: {
-            codigoPlano: Plano,
-            arrayCodLoteCsw: [$('#select-lote').val()],
-            nomeFase: Fase,
-            ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
-        }
+    try {
+         const requestData = {
+             acao: "Consulta_cargaOP_fase",
+             dados: {
+                 codigoPlano: Plano,
+                 arrayCodLoteCsw: [$('#select-lote').val()],
+                 nomeFase: Fase,
+                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+             }
          };
 
-    const response = await $.ajax({
+        const response = await $.ajax({
             type: 'POST',
             url: 'requests.php',
             contentType: 'application/json',
@@ -178,9 +178,9 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
         });
         
 
-        console.log(response)
-    try {
+
         Tabela_cargaOP_fase(response);
+        console.log(response)
         // Atualiza o título do modal com a fase
        await $('#titulo-cargaOP_fase').text(`Carga Fase - ${Fase}`);
             $('#modal-cargaOP_fase').modal('show');
@@ -492,8 +492,6 @@ function TabelaMetas(listaMetas) {
         const Fase = $(this).attr('data-fase'); 
         Consulta_cargaOP_fase(Fase, Plano);
     });
-
-    
     
 }
 
@@ -660,14 +658,13 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
         }
         
         
-    })
+    });
 
-};
-
-
+}
 
 
-function Tabela_cargaOP_fase(lista) {
+
+function Tabela_cargaOP_fase(response) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
         $('#table-cargaOP_fase').DataTable().destroy();
     }
@@ -678,7 +675,7 @@ function Tabela_cargaOP_fase(lista) {
         lengthChange: false,
         info: false,
         pageLength: 10,
-        data: lista,
+        data: dadosFiltrados,
         columns: [
             { data: 'COLECAO' },
             { data: 'numeroOP' },
@@ -688,21 +685,22 @@ function Tabela_cargaOP_fase(lista) {
             { data: 'prioridade' },
             { 
                 data: 'Carga',
-                type: 'num',
-                render: data => (Number(data) || 0).toLocaleString()
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
             },
             { data: 'EntFase' },
             { 
                 data: 'DiasFase',
-                type: 'num',
-                render: data => (Number(data) || 0).toLocaleString()
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
             },
             { data: 'dataStartOP' },
             { 
                 data: 'Lead Time Geral',
-                type: 'num',
-                render: data => (Number(data) || 0).toLocaleString()
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
             }
+
         ],
         language: {
             paginate: {
@@ -716,36 +714,42 @@ function Tabela_cargaOP_fase(lista) {
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
+            // Função para calcular a soma dos valores de uma coluna
             function somaColuna(index) {
-                return api.column(index, { page: 'current' }).data()
-                    .reduce((total, valor) => total + (Number(valor) || 0), 0);
+                return api
+                    .column(index, { page: 'current' }) // Garantir que estamos pegando apenas os dados da página atual
+                    .data()
+                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
+            // Função para calcular a média dos valores de uma coluna
             function mediaColuna(index) {
-                const dados = api.column(index, { page: 'current' }).data();
-                const total = dados.reduce((acc, val) => acc + (Number(val) || 0), 0);
-                const count = dados.length;
-                return count > 0 ? (total / count).toFixed(2) : "0.00";
+                const dadosVisiveis = api.column(index, { page: 'current' }).data();
+                const total = dadosVisiveis.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
+                const quantidade = dadosVisiveis.length;
+                return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
             }
 
-            const colunasSoma = [6]; // Carga
+            // Exibir a soma das colunas que devem ser somadas (exemplo: Carga)
+            const colunasSoma = [6];  // Coluna de Carga
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            const colunasMedia = [8]; // DiasFase
+            // Exibir a média para a coluna DiasFase
+            const colunasMedia = [8];  // Coluna DiasFase
             colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
-                $(api.column(i).footer()).html(Number(valor).toLocaleString(undefined, { minimumFractionDigits: 2 }));
+                $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            // Outras colunas com vazio
-            [0, 1, 2, 3, 4, 5, 7, 9, 10].forEach(i => {
+            // Preencher as outras colunas com "-"
+            [0, 1, 2, 3, 4, 5, 7, 9 ].forEach(i => {
                 $(api.column(i).footer()).html('');
             });
         }
-    })
+    });
 
     // Filtro por coluna
     $('.search-input-table-cargaOP_fase').on('input', function () {
@@ -754,7 +758,5 @@ function Tabela_cargaOP_fase(lista) {
 }
 
 
-
   
-
 
