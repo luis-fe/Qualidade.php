@@ -799,22 +799,21 @@ function Tabela_cargaOP_fase(response) {
             { data: 'prioridade' },
             { 
                 data: 'Carga',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
+                type: 'num',
+                render: data => (Number(data) || 0).toLocaleString()
             },
             { data: 'EntFase' },
             { 
                 data: 'DiasFase',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
+                type: 'num',
+                render: data => (Number(data) || 0).toLocaleString()
             },
             { data: 'dataStartOP' },
             { 
                 data: 'Lead Time Geral',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
+                type: 'num',
+                render: data => (Number(data) || 0).toLocaleString()
             }
-
         ],
         language: {
             paginate: {
@@ -828,38 +827,32 @@ function Tabela_cargaOP_fase(response) {
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
-            // Função para calcular a soma dos valores de uma coluna
             function somaColuna(index) {
-                return api
-                    .column(index, { page: 'current' }) // Garantir que estamos pegando apenas os dados da página atual
-                    .data()
-                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+                return api.column(index, { page: 'current' }).data()
+                    .reduce((total, valor) => total + (Number(valor) || 0), 0);
             }
 
-            // Função para calcular a média dos valores de uma coluna
             function mediaColuna(index) {
-                const dadosVisiveis = api.column(index, { page: 'current' }).data();
-                const total = dadosVisiveis.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
-                const quantidade = dadosVisiveis.length;
-                return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
+                const dados = api.column(index, { page: 'current' }).data();
+                const total = dados.reduce((acc, val) => acc + (Number(val) || 0), 0);
+                const count = dados.length;
+                return count > 0 ? (total / count).toFixed(2) : "0.00";
             }
 
-            // Exibir a soma das colunas que devem ser somadas (exemplo: Carga)
-            const colunasSoma = [6];  // Coluna de Carga
+            const colunasSoma = [6]; // Carga
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            // Exibir a média para a coluna DiasFase
-            const colunasMedia = [8];  // Coluna DiasFase
+            const colunasMedia = [8]; // DiasFase
             colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
-                $(api.column(i).footer()).html(valor.toLocaleString());
+                $(api.column(i).footer()).html(Number(valor).toLocaleString(undefined, { minimumFractionDigits: 2 }));
             });
 
-            // Preencher as outras colunas com "-"
-            [0, 1, 2, 3, 4, 5, 7, 9 ].forEach(i => {
+            // Outras colunas com vazio
+            [0, 1, 2, 3, 4, 5, 7, 9, 10].forEach(i => {
                 $(api.column(i).footer()).html('');
             });
         }
@@ -870,6 +863,7 @@ function Tabela_cargaOP_fase(response) {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
+
 
 
   
