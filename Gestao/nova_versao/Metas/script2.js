@@ -159,7 +159,7 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
 
     $('#loadingModal').modal('show');
 
-    try {
+  //  try {
          const requestData = {
              acao: "Consulta_cargaOP_fase",
              dados: {
@@ -185,11 +185,11 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
        await $('#titulo-cargaOP_fase').text(`Carga Fase - ${Fase}`);
             $('#modal-cargaOP_fase').modal('show');
 
-    } catch (error) {
-        console.error('Erro no detalha cargaOP_fase:', error);
-    } finally {
+  //  } catch (error) {
+    //    console.error('Erro no detalha cargaOP_fase:', error);
+    //} finally {
         $('#loadingModal').modal('hide');
-    }
+    //}
 }
 
 
