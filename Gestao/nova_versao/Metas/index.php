@@ -223,7 +223,7 @@ include_once('../../../templates/headerGestao.php');
             </div>
             <div class="modal-body" style="max-height: 500px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-realizado" style="width: 100%;">
-                    <thead>
+                    <thead id = 'CabecalhoModal'>
                         <tr>
                             <th>Data<br></th>
                             <th>Dia<br></th>
@@ -248,7 +248,7 @@ include_once('../../../templates/headerGestao.php');
             </div>
             <div class="modal-body" style="max-height: 500px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-previsao-categorias" style="width: 100%;">
-                    <thead>
+                    <thead id = 'CabecalhoModal'>
                         <tr>
                             <th>Categoria<br></th>
                             <th>Previsão<br></th>
@@ -257,6 +257,13 @@ include_once('../../../templates/headerGestao.php');
                     <tbody>
                         <!-- Aqui vão os dados da tabela -->
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th> <!-- Carga -->
+                            <th></th> <!-- Previsão -->
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
