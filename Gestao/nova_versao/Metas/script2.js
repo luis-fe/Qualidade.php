@@ -93,19 +93,29 @@ const Consultar_Tipo_Op = async () => {
     }
 };
 
-const Consulta_Previsao_Categoria = async (Fase) => {
+const Consulta_Previsao_Categoria = async (Fase, Plano) => {
     try {
         $('#loadingModal').modal('show');
 
-        const response = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Previsao_Categoria',
-                fase: Fase
-            },
-        });
+
+        const requestData = {
+            acao: "Consulta_Previsao_Categoria",
+            dados: {
+                codigoPlano: Plano,
+                arrayCodLoteCsw: [$('#select-lote').val()],
+                nomeFase: Fase,
+                ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+            }
+        };
+
+       const response = await $.ajax({
+           type: 'POST',
+           url: 'requests.php',
+           contentType: 'application/json',
+           dataType: 'json',
+           data: JSON.stringify(requestData)
+       });
+
         TabelaPrevisaoCategorias(response);
         $('#modal-previsao-categorias').modal('show')
     } catch (error) {
@@ -464,9 +474,12 @@ function TabelaMetas(listaMetas) {
         Consultar_Cronograma(Fase);
     });
 
-    $('#table-metas').on('click', '.previsaoClicado', function () {
-        const Fase = $(this).attr('data-Fase')
-        Consulta_Previsao_Categoria(Fase);
+    $('#table-metas').on('click', '.previsaoClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
+        Consulta_Previsao_Categoria(Fase, Plano);
     });
 
 

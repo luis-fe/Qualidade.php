@@ -34,10 +34,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consultar_Tipo_Op':
                     jsonResponse(ConsultarTipoOp('1'));
                     break;
-                case 'Consulta_Previsao_Categoria':
-                    $fase = $_GET['fase'];
-                    jsonResponse(ConsultaPrevisaoCategoria($fase));
-                    break;
+               
                 case 'ConsultaFaltaProduzirCategoria_Fase':
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
@@ -65,6 +62,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_cargaOP_fase':
                         header('Content-Type: application/json');
                         echo json_encode(ConsultacargaOP_fase($dados));
+                        break;
+                case 'Consulta_Previsao_Categoria':
+                        jsonResponse(ConsultaPrevisaoCategoria($dados));
                         break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
@@ -112,17 +112,24 @@ function ConsultarLotes($empresa, $plano)
     return json_decode($apiResponse, true);
 }
 
-function ConsultaPrevisaoCategoria($Fase)
+function ConsultaPrevisaoCategoria($dados)
 {
-    $fase_encoded = urlencode($Fase);
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
-    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase?nomeFase={$fase_encoded}";
+    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase";
     $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
 
     $apiResponse = curl_exec($ch);
 
