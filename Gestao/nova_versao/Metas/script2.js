@@ -159,37 +159,37 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
     $('#loadingModal').modal('show');
 
     try {
-         const requestData = {
-             acao: "Consulta_cargaOP_fase",
-             dados: {
-                 codigoPlano: Plano,
-                 arrayCodLoteCsw: [$('#select-lote').val()],
-                 nomeFase: Fase,
-                 ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
-             }
-         };
+        const requestData = {
+            acao: "Consulta_Falta_Produzir_Categoria",
+            dados: {
+                codigoPlano: Plano,
+                arrayCodLoteCsw: [$('#select-lote').val()],
+                nomeFase: Fase,
+                ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+            }
+        };
 
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(requestData)
-        });
-        
+       const response = await $.ajax({
+           type: 'POST',
+           url: 'requests.php',
+           contentType: 'application/json',
+           dataType: 'json',
+           data: JSON.stringify(requestData)
+       });
+       
 
 
-        Tabela_cargaOP_fase(response);
-        console.log(response)
-        // Atualiza o título do modal com a fase
-       await $('#titulo-cargaOP_fase').text(`Carga Fase - ${Fase}`);
-            $('#modal-cargaOP_fase').modal('show');
+       TabelaFaltaProduzirCategorias(response);
+       console.log(response)
+       // Atualiza o título do modal com a fase
+      await $('#titulo-falta-produzir').text(`Falta Produzir - ${Fase}`);
+           $('#modal-falta-produzir-categorias').modal('show');
 
-    } catch (error) {
-        console.error('Erro no detalha cargaOP_fase:', error);
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
+   } catch (error) {
+       console.error('Erro no detalha falta Produzir:', error);
+   } finally {
+       $('#loadingModal').modal('hide');
+   }
 }
 
 
