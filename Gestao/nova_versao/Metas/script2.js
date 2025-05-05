@@ -660,9 +660,9 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
         }
         
         
-    });
+    })
 
-}
+};
 
 
 
