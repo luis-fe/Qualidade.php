@@ -751,7 +751,7 @@ function Tabela_cargaOP_fase(dadosFiltrados) {
             });
 
             // Exibir a média para a coluna DiasFase
-            const colunasMedia = [8];  // Coluna DiasFase
+            const colunasMedia = [8, 10];  // Coluna DiasFase
             colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());

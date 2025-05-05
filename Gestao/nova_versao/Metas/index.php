@@ -150,7 +150,7 @@ include_once('../../../templates/headerGestao.php');
 <div class="col-12 div-metas d-none" style="background-color: lightgray; border-radius: 8px; padding: 10px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 800px; border-radius: 8px;">
         <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
-        <thead style="position: sticky; top: 0; background-color: white; z-index: 10;">
+        <thead style="position: sticky; top: 0; background-color: #003366; z-index: 10;">
                 <tr>
                     <th>Sequencia</th>
                     <th>Cód. Fase</th>
