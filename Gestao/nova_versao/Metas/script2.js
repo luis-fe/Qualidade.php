@@ -789,7 +789,7 @@ function Tabela_cargaOP_fase(response) {
         lengthChange: false,
         info: false,
         pageLength: 10,
-        data: dadosFiltrados,
+        data: response,
         columns: [
             { data: 'COLECAO' },
             { data: 'numeroOP' },
