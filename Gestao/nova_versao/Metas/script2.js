@@ -423,7 +423,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Fila',
-                render: (data, type, row) => `<span class="filaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
+                render: data => parseInt(data).toLocaleString()
             },
             {
                 data: 'Falta Produzir',
