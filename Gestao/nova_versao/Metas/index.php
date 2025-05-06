@@ -269,6 +269,43 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
+
+<div class="modal fade modal-custom" id="modal-resumo-fila" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;" id = 'titulo-fila'>Resumo da Fila</h5>
+            <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow: auto">
+                <table class="table table-bordered table-striped" id="table-resumo-fila" style="width: 100%;">
+                    <thead id = 'CabecalhoModal'>
+                        <tr>
+                            <th>Fase<br>Atual</br></th>
+                            <th>Fila <br></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aqui vão os dados da tabela -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th> <!-- Previsão -->
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 <div class="modal fade modal-custom" id="modal-falta-produzir-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">

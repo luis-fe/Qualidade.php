@@ -203,6 +203,44 @@ const Consulta_cargaOP_fase = async (Fase, Plano) => {
 }
 
 
+const Consulta_fila_fase = async (Fase, Plano) => {
+
+    $('#loadingModal').modal('show');
+
+    try {
+        const requestData = {
+            acao: "Consulta_fila_fase",
+            dados: {
+                codigoPlano: Plano,
+                arrayCodLoteCsw: [$('#select-lote').val()],
+                nomeFase: Fase,
+                ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+            }
+        };
+
+       const response = await $.ajax({
+           type: 'POST',
+           url: 'requests.php',
+           contentType: 'application/json',
+           dataType: 'json',
+           data: JSON.stringify(requestData)
+       });
+       
+
+
+       Tabela_fila_fase(response);
+       console.log(response)
+       // Atualiza o título do modal com a fase
+      await $('#titulo-fila').text(`Resumo da Fila : ${Fase}`);
+           $('#modal-resumo-fila').modal('show');
+
+   } catch (error) {
+       console.error('Erro no detalha fila_fase:', error);
+   } finally {
+       $('#loadingModal').modal('hide');
+   }
+}
+
 const Consulta_Lotes = async () => {
     try {
         $('#loadingModal').modal('show');
@@ -395,7 +433,7 @@ function TabelaMetas(listaMetas) {
             },
             {
                 data: 'Fila',
-                render: data => parseInt(data).toLocaleString()
+                render: (data, type, row) => `<span class="filaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
             },
             {
                 data: 'Falta Produzir',
@@ -504,6 +542,14 @@ function TabelaMetas(listaMetas) {
         const Plano = $('#select-plano').val();
         const Fase = $(this).attr('data-fase'); 
         Consulta_cargaOP_fase(Fase, Plano);
+    });
+
+    $('#table-metas').on('click', '.filaClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
+        Consulta_fila_fase(Fase, Plano);
     });
     
 }
@@ -770,6 +816,70 @@ function Tabela_cargaOP_fase(dadosFiltrados) {
     });
 }
 
+function Tabela_fila_fase(dadosFiltrados) {
+    if ($.fn.DataTable.isDataTable('#table-resumo-fila')) {
+        $('#table-resumo-fila').DataTable().destroy();
+    }
+
+    const tabela = $('#table-resumo-fila').DataTable({
+        searching: true,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: dadosFiltrados,
+        columns: [
+            { data: 'faseAtual' },
+           
+            { 
+                data: 'Fila',
+                type: 'num-formatted',
+                render: data => parseInt(data).toLocaleString()
+            },
+ 
+
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            // Função para calcular a soma dos valores de uma coluna
+            function somaColuna(index) {
+                return api
+                    .column(index, { page: 'current' }) // Garantir que estamos pegando apenas os dados da página atual
+                    .data()
+                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+            }
+
+            // Função para calcular a média dos valores de uma coluna
+            function mediaColuna(index) {
+                const dadosVisiveis = api.column(index, { page: 'current' }).data();
+                const total = dadosVisiveis.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
+                const quantidade = dadosVisiveis.length;
+                return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
+            }
+
+            // Exibir a soma das colunas que devem ser somadas (exemplo: Carga)
+            const colunasSoma = [1];  // Coluna de fila
+            colunasSoma.forEach(i => {
+                const valor = somaColuna(i);
+                $(api.column(i).footer()).html(valor.toLocaleString());
+            });
+
+        }
+    });
+
+    // Filtro por coluna
+
+}
 
   
 

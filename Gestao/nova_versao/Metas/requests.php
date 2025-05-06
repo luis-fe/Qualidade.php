@@ -66,6 +66,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Previsao_Categoria':
                         jsonResponse(ConsultaPrevisaoCategoria($dados));
                         break;
+                case 'Consulta_fila_fase':
+                        jsonResponse(ConsultaFilaResumo($dados));
+                        break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
                     break;
@@ -301,6 +304,37 @@ function ConsultacargaOP_fase($dados)
 {
     $baseUrl = 'http://192.168.0.183:7070/pcp';
     $apiUrl = "{$baseUrl}/api/cargaOP_fase";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function ConsultaFilaResumo($dados)
+{
+    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $apiUrl = "{$baseUrl}/api/filaResumo_fase";
     $ch = curl_init($apiUrl);
 
     $options = [
