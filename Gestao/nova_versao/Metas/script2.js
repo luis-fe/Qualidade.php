@@ -834,10 +834,15 @@ function Tabela_fila_fase(dadosFiltrados) {
             {
                 data: 'Fila',
                 type: 'num-formatted',
-                render: (data, type, row) => 
-                    `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color: blue; cursor: pointer;">
-                        ${parseInt(data).toLocaleString()}
-                    </span>`
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color: blue; cursor: pointer;">
+                                    ${parseInt(data).toLocaleString()}
+                                </span>`;
+                    }
+                    // Para ordenação e filtro, retorna o valor puro
+                    return parseInt(data);
+                }
             }
             
         ],
