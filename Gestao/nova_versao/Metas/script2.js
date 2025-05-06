@@ -831,15 +831,15 @@ function Tabela_fila_fase(dadosFiltrados) {
         data: dadosFiltrados,
         columns: [
             { data: 'faseAtual' },
-            { 
+            {
                 data: 'Fila',
-                type: 'num',
-                render: function (data, type, row) {
-                    const valor = parseInt(data) || 0;
-                    const nomeFase = row.faseAtual || ''; // usa o valor da coluna 'faseAtual'
-                    return `<span class="cargaClicado" data-fase="${nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${valor.toLocaleString()}</span>`;
-                }
+                type: 'num-formatted',
+                render: (data, type, row) => 
+                    `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color: blue; cursor: pointer;">
+                        ${parseInt(data).toLocaleString()}
+                    </span>`
             }
+            
         ],
         language: {
             paginate: {
