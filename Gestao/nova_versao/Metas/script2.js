@@ -544,6 +544,7 @@ function TabelaMetas(listaMetas) {
         Consulta_cargaOP_fase(Fase, Plano);
     });
 
+
     $('#table-metas').on('click', '.filaClicado', function (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -863,6 +864,13 @@ function Tabela_fila_fase(dadosFiltrados) {
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
         }
+    });
+    $('#table-resumo-fila').on('click', '.cargaClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
+        Consulta_cargaOP_fase(Fase, Plano);
     });
 }
 
