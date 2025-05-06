@@ -836,7 +836,7 @@ function Tabela_fila_fase(dadosFiltrados) {
                 type: 'num-formatted',
                 render: function (data, type, row) {
                     if (type === 'display') {
-                        return `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color: blue; cursor: pointer;">
+                        return `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color:rgb(0, 68, 255); cursor: pointer;">
                                     ${parseInt(data).toLocaleString()}
                                 </span>`;
                     }
