@@ -830,15 +830,15 @@ function Tabela_fila_fase(dadosFiltrados) {
         data: dadosFiltrados,
         columns: [
             { data: 'faseAtual' },
-           
             { 
                 data: 'Fila',
-                type: 'num-formatted',
-                render: (data, type, row) => `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
-
-            },
- 
-
+                type: 'num',
+                render: function (data, type, row) {
+                    const valor = parseInt(data) || 0;
+                    const nomeFase = row.faseAtual || ''; // usa o valor da coluna 'faseAtual'
+                    return `<span class="cargaClicado" data-fase="${nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${valor.toLocaleString()}</span>`;
+                }
+            }
         ],
         language: {
             paginate: {
@@ -852,35 +852,21 @@ function Tabela_fila_fase(dadosFiltrados) {
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
-            // Função para calcular a soma dos valores de uma coluna
             function somaColuna(index) {
-                return api
-                    .column(index, { page: 'current' }) // Garantir que estamos pegando apenas os dados da página atual
-                    .data()
+                return api.column(index, { page: 'current' }).data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
-            // Função para calcular a média dos valores de uma coluna
-            function mediaColuna(index) {
-                const dadosVisiveis = api.column(index, { page: 'current' }).data();
-                const total = dadosVisiveis.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
-                const quantidade = dadosVisiveis.length;
-                return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
-            }
-
-            // Exibir a soma das colunas que devem ser somadas (exemplo: Carga)
-            const colunasSoma = [1];  // Coluna de fila
+            const colunasSoma = [1];
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
-
         }
     });
-
-    // Filtro por coluna
-
 }
+
+
 
   
 
