@@ -82,6 +82,28 @@ include_once('../../../templates/headerGestao.php');
 }
 
 
+#modal-realizadoDia .modal-dialog {
+    width: 90vw !important;
+    max-width: 90vw !important;
+    margin: auto !important;
+}
+
+#modal-realizadoDia .modal-content {
+    width:
+    
+    100% !important;
+}
+
+
+
+#modal-realizadoDia thead th,
+#modal-realizadoDia tfoot th {
+    position: sticky !important;
+    z-index: 10 !important;
+    padding: 0.5rem !important;
+    height: 60px !important;
+    vertical-align: middle !important;
+}
 
 
 #modal-cargaOP_fase thead th,
@@ -92,6 +114,10 @@ include_once('../../../templates/headerGestao.php');
     height: 60px !important;
     vertical-align: middle !important;
 }
+
+
+
+
 
 #modal-cargaOP_fase thead th {
     top: 0 !important;
@@ -215,8 +241,8 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 <div class="modal fade modal-custom" id="modal-realizado" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered w-100 m-0">
+        <div class="modal-content w-100">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-realizado" style="color: black;"></h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
