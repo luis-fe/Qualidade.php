@@ -27,9 +27,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     jsonResponse(ConsultarRealizados('1', $Fase, $dataInicial, $dataFinal));
                     break;
                 case 'Consultar_RealizadosDia':
-                        $Fase = $_GET['Fase'];
-                        $dataInicial = $_GET['dataInicial'];
-                        jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial));
+                        $Fase = $_GET['nomeFase'];
+                        $dataInicial = $_GET['dataInicio'];
+                        $dataFormatada = DateTime::createFromFormat('d/m/Y', $dataInicial)->format('Y-m-d');
+
+                        jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataFormatada));
                         break;
                 case 'Consultar_Cronograma':
                     $plano = $_GET['plano'];
