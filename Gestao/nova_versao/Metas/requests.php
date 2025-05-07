@@ -27,8 +27,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     jsonResponse(ConsultarRealizados('1', $Fase, $dataInicial, $dataFinal));
                     break;
                 case 'Consultar_RealizadosDia':
-                        $Fase = $_GET['nomeFase'];
-                        $dataInicial = $_GET['dataInicio'];
+                        $Fase = $_GET['Fase'];
+                        $dataInicial = $_GET['dataInicial'];
                         jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial));
                         break;
                 case 'Consultar_Cronograma':
