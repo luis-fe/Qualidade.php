@@ -645,6 +645,7 @@ function TabelaRealizado(listaRealizado, fase) {
     $('#table-realizado').on('click', '.realizadoDiaClicado', function () {
         const Fase = $(this).data('fase');
         const dataIni = $(this).data('dataIni');
+        console.log(`minha data inicial ${dataIni}`)
         Consultar_RealizadosDia(Fase, dataIni);
         $('#titulo-realizadoDia').html(`${Fase}`)
     });
