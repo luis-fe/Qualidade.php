@@ -649,7 +649,7 @@ function TabelaRealizado(listaRealizado, fase) {
         const dataAmericana = `${partes[2]}-${partes[1]}-${partes[0]}`;
         console.log(`minha data inicial ${dataAmericana}`)
         Consultar_RealizadosDia(Fase, dataAmericana);
-        $('#titulo-realizadoDia').html(`Produzido na ${Fase} :${dataIni}`)
+        $('#titulo-realizadoDia').html(`Produzido ${Fase} :${dataIni}`)
     });
 }
 
@@ -705,11 +705,11 @@ function TabelaRealizadoDia(listaRealizado) {
 
             // Só somar a coluna 'Realizado' (índice 2)
             const totalRealizado = somaColuna(5);
-            $(api.column(2).footer()).html(totalRealizado.toLocaleString());
+            $(api.column(5).footer()).html(totalRealizado.toLocaleString());
 
             // Limpa outras colunas do rodapé
             [0, 1, 2, 3 , 4].forEach(i => {
-                $(api.column(i).footer()).html('');
+                $(api.column(i).footer()).html('-');
             });
         }
     });
