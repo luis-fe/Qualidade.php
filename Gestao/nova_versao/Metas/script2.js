@@ -602,7 +602,7 @@ function TabelaRealizado(listaRealizado, fase) {
                     if (type === 'display') {
                         return `<span class="realizadoDiaClicado" 
                         data-Fase="${fase}"
-                        data-dataIni="${row.dataBaixa}" 
+                        data-dataini="${row.dataBaixa}"
                         style="text-decoration: underline; color:rgb(0, 68, 255); cursor: pointer;">
                                     ${parseInt(data).toLocaleString()}
                                 </span>`;
@@ -644,7 +644,7 @@ function TabelaRealizado(listaRealizado, fase) {
     
     $('#table-realizado').on('click', '.realizadoDiaClicado', function () {
         const Fase = $(this).data('fase');
-        const dataIni = $(this).data('dataIni');
+        const dataIni = $(this).data('dataini');
         console.log(`minha data inicial ${dataIni}`)
         Consultar_RealizadosDia(Fase, dataIni);
         $('#titulo-realizadoDia').html(`${Fase}`)
