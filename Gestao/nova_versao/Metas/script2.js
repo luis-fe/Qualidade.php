@@ -355,7 +355,6 @@ const Consultar_RealizadosDia = async (Fase, dataIni) => {
                 acao: 'Consultar_RealizadosDia',
                 Fase: Fase,
                 dataInicial: dataIni,
-                dataFinal: $('#data-inicial').val()
             },
         });
         TabelaRealizadoDia(response);
