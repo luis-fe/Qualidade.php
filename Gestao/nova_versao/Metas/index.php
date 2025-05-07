@@ -275,6 +275,12 @@ include_once('../../../templates/headerGestao.php');
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;" id = 'titulo-fila'>Resumo da Fila</h5>
+                <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-primary btn-sm" id="btn-fase">Fila por Fase</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-categoria">Fila por Categoria</button>
+        <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
             <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height: 800px; overflow: auto">
