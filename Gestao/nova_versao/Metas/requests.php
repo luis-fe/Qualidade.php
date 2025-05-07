@@ -26,6 +26,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $dataFinal = $_GET['dataFinal'];
                     jsonResponse(ConsultarRealizados('1', $Fase, $dataInicial, $dataFinal));
                     break;
+                case 'Consultar_RealizadosDia':
+                        $Fase = $_GET['Fase'];
+                        $dataInicial = $_GET['dataInicial'];
+                        $dataFinal = $_GET['dataFinal'];
+                        jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial, $dataFinal));
+                        break;
                 case 'Consultar_Cronograma':
                     $plano = $_GET['plano'];
                     $fase = $_GET['fase'];
@@ -214,6 +220,31 @@ function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 
     return json_decode($apiResponse, true);
 }
+
+
+function ConsultarRealizadosDia($empresa, $Fase, $dataInicio, $dataFinal)
+{
+    $fase_encoded = urlencode($Fase);
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/realizadoFasePeriodoFase_detalhaDia?nomeFase={$fase_encoded}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 
 function ConsultarCronograma($empresa, $codPlano, $codFase)
 {

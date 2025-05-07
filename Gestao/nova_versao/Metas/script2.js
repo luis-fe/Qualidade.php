@@ -334,8 +334,32 @@ const Consultar_Realizados = async (Fase) => {
                 dataFinal: $('#data-final').val()
             },
         });
-        TabelaRealizado(response);
+        TabelaRealizado(response, Fase);
         $('#modal-realizado').modal('show')
+    } catch (error) {
+        console.error('Erro:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+const Consultar_RealizadosDia = async (Fase, dataIni) => {
+    try {
+        $('#loadingModal').modal('show');
+
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consultar_RealizadosDia',
+                Fase: Fase,
+                dataInicial: dataIni,
+                dataFinal: $('#data-inicial').val()
+            },
+        });
+        TabelaRealizadoDia(response);
+        $('#modal-realizadoDia').modal('show')
     } catch (error) {
         console.error('Erro:', error);
     } finally {
@@ -555,7 +579,7 @@ function TabelaMetas(listaMetas) {
     
 }
 
-function TabelaRealizado(listaRealizado) {
+function TabelaRealizado(listaRealizado, fase) {
     if ($.fn.DataTable.isDataTable('#table-realizado')) {
         $('#table-realizado').DataTable().destroy();
     }
@@ -572,6 +596,82 @@ function TabelaRealizado(listaRealizado) {
         columns: [
             { data: 'dataBaixa' },
             { data: 'dia' },
+            { 
+                data: 'Realizado',
+                type: 'num-formatted',
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return `<span class="realizadoDiaClicado" 
+                        data-Fase="${fase}"
+                        data-dataIni="${row.dataBaixa}" 
+                        style="text-decoration: underline; color:rgb(0, 68, 255); cursor: pointer;">
+                                    ${parseInt(data).toLocaleString()}
+                                </span>`;
+                    }
+                    // Para ordenação e filtro, retorna o valor puro
+                    return parseInt(data);
+            }}
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            function somaColuna(index) {
+                return api
+                    .column(index, { page: 'current' })
+                    .data()
+                    .reduce((total, valor) => total + (Number(valor) || 0), 0);
+            }
+
+            // Só somar a coluna 'Realizado' (índice 2)
+            const totalRealizado = somaColuna(2);
+            $(api.column(2).footer()).html(totalRealizado.toLocaleString());
+
+            // Limpa outras colunas do rodapé
+            [0, 1].forEach(i => {
+                $(api.column(i).footer()).html('');
+            });
+        }
+    });
+
+    
+    $('#table-realizado').on('click', '.realizadoDiaClicado', function () {
+        const Fase = $(this).data('fase');
+        const dataIni = $(this).data('fase');
+        Consultar_RealizadosDias(Fase, dataIni);
+        $('#titulo-realizadoDia').html(`${Fase}`)
+    });
+}
+
+
+function TabelaRealizadoDia(listaRealizado) {
+    if ($.fn.DataTable.isDataTable('#table-realizadoDia')) {
+        $('#table-realizadoDia').DataTable().destroy();
+    }
+
+    const dadosFiltrados = listaRealizado.filter(item => !/^Total:/.test(item.dataBaixa));
+
+    const tabela = $('#table-realizadoDia').DataTable({
+        searching: true,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: dadosFiltrados,
+        columns: [
+            { data: 'COLECAO' },
+            { data: 'numeroop' },
+            { data: 'codEngenharia' },
+            { data: 'dataBaixa' },
+            { data: 'horaMov' },
             { 
                 data: 'Realizado',
                 render: function (data, type, row) {
@@ -602,7 +702,7 @@ function TabelaRealizado(listaRealizado) {
             }
 
             // Só somar a coluna 'Realizado' (índice 2)
-            const totalRealizado = somaColuna(2);
+            const totalRealizado = somaColuna(4);
             $(api.column(2).footer()).html(totalRealizado.toLocaleString());
 
             // Limpa outras colunas do rodapé

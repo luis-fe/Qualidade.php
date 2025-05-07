@@ -246,6 +246,46 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
+
+<div class="modal fade modal-custom" id="modal-realizadoDia" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-realizadoDia" style="color: black;"></h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow: auto">
+                <table class="table table-bordered table-striped" id="table-realizadoDia" style="width: 100%;">
+                    <thead id = 'CabecalhoModal'>
+                        <tr>
+                            <th>Colecao<br></th>
+                            <th>numeroOP<br></th>
+                            <th>Engenharia<br></th>
+                            <th>Data<br></th>
+                            <th>horario<br></th>
+                            <th>Realizado<br></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aqui vão os dados da tabela -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th> <!-- Previsão -->
+                            <th></th> <!-- Previsão -->
+                            <th></th> <!-- Realizado -->
+                            <th></th> <!-- Realizado -->
+                            <th></th> <!-- Realizado -->
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade modal-custom" id="modal-previsao-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top">
         <div class="modal-content">
