@@ -254,8 +254,8 @@ include_once('../../../templates/headerGestao.php');
                 <h5 class="modal-title" id="titulo-realizadoDia" style="color: black;"></h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="max-height: 800px; overflow: auto">
-                <table class="table table-bordered table-striped" id="table-realizadoDia" style="width: 100%;">
+            <div class="modal-body" style="max-height: 900px; overflow: auto">
+                <table class="table table-bordered table-striped" id="table-realizadoDia">
                     <thead id = 'CabecalhoModal'>
                         <tr>
                             <th>Colecao<br></th>
@@ -370,11 +370,6 @@ include_once('../../../templates/headerGestao.php');
         </div>
     </div>
 </div>
-
-
-
-
-
 
 
 <div class="modal fade modal-custom" id="modal-falta-produzir-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
