@@ -561,6 +561,7 @@ function TabelaRealizado(listaRealizado) {
     }
 
     const dadosFiltrados = listaRealizado.filter(item => !/^Total:/.test(item.dataBaixa));
+
     const tabela = $('#table-realizado').DataTable({
         searching: true,
         paging: false,
@@ -569,16 +570,17 @@ function TabelaRealizado(listaRealizado) {
         pageLength: 10,
         data: dadosFiltrados,
         columns: [
-            {
-                data: 'dataBaixa',
-            },
-            {
-                data: 'dia'
-            },
-            {
+            { data: 'dataBaixa' },
+            { data: 'dia' },
+            { 
                 data: 'Realizado',
-                render: data => parseInt(data).toLocaleString()
-            },
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return parseInt(data).toLocaleString();
+                    }
+                    return Number(data) || 0; // para ordenação
+                }
+            }
         ],
         language: {
             paginate: {
@@ -589,8 +591,28 @@ function TabelaRealizado(listaRealizado) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            function somaColuna(index) {
+                return api
+                    .column(index, { page: 'current' })
+                    .data()
+                    .reduce((total, valor) => total + (Number(valor) || 0), 0);
+            }
+
+            // Só somar a coluna 'Realizado' (índice 2)
+            const totalRealizado = somaColuna(2);
+            $(api.column(2).footer()).html(totalRealizado.toLocaleString());
+
+            // Limpa outras colunas do rodapé
+            [0, 1].forEach(i => {
+                $(api.column(i).footer()).html('');
+            });
+        }
     });
 }
+
 
 function TabelaPrevisaoCategorias(listaPrevisao) {
     if ($.fn.DataTable.isDataTable('#table-previsao-categorias')) {

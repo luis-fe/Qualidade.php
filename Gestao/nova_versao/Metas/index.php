@@ -233,6 +233,13 @@ include_once('../../../templates/headerGestao.php');
                     <tbody>
                         <!-- Aqui vão os dados da tabela -->
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th> <!-- Previsão -->
+                            <th></th> <!-- Realizado -->
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
