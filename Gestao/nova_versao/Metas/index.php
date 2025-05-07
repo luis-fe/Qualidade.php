@@ -215,13 +215,13 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 <div class="modal fade modal-custom" id="modal-realizado" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top">
+    <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-realizado" style="color: black;"></h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="max-height: 500px; overflow: auto">
+            <div class="modal-body" style="max-height: 800px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-realizado" style="width: 100%;">
                     <thead id = 'CabecalhoModal'>
                         <tr>
