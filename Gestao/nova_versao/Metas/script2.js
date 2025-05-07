@@ -645,8 +645,10 @@ function TabelaRealizado(listaRealizado, fase) {
     $('#table-realizado').on('click', '.realizadoDiaClicado', function () {
         const Fase = $(this).data('fase');
         const dataIni = $(this).data('dataini');
-        console.log(`minha data inicial ${dataIni}`)
-        Consultar_RealizadosDia(Fase, dataIni);
+        const partes = dataIni.split('/');
+        const dataAmericana = `${partes[2]}-${partes[1]}-${partes[0]}`;
+        console.log(`minha data inicial ${dataAmericana}`)
+        Consultar_RealizadosDia(Fase, dataAmericana);
         $('#titulo-realizadoDia').html(`${Fase}`)
     });
 }
