@@ -29,8 +29,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consultar_RealizadosDia':
                         $Fase = $_GET['Fase'];
                         $dataInicial = $_GET['dataInicial'];
-                        $dataFinal = $_GET['dataFinal'];
-                        jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial, $dataFinal));
+                        jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial));
                         break;
                 case 'Consultar_Cronograma':
                     $plano = $_GET['plano'];
@@ -222,11 +221,11 @@ function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 }
 
 
-function ConsultarRealizadosDia($empresa, $Fase, $dataInicio, $dataFinal)
+function ConsultarRealizadosDia($empresa, $Fase, $dataInicio)
 {
     $fase_encoded = urlencode($Fase);
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
-    $apiUrl = "{$baseUrl}/pcp/api/realizadoFasePeriodoFase_detalhaDia?nomeFase={$fase_encoded}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
+    $apiUrl = "{$baseUrl}/pcp/api/realizadoFasePeriodoFase_detalhaDia?nomeFase={$fase_encoded}&dataInicio={$dataInicio}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
