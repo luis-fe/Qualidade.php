@@ -301,6 +301,24 @@ include_once('../../../templates/headerGestao.php');
                         </tr>
                     </tfoot>
                 </table>
+
+
+            <!-- Tabela por Categoria (inicialmente oculta) -->
+            <table class="table table-bordered table-striped" id="table-resumo-categoria" style="width: 100%; display: none;">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Fila</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>

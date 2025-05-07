@@ -877,6 +877,19 @@ function Tabela_fila_fase(dadosFiltrados) {
         const Fase = $(this).attr('data-fase'); 
         Consulta_cargaOP_fase(Fase, Plano);
     });
+
+    $('#btn-fase').on('click', function () {
+        $('#table-resumo-fila').show();
+        $('#table-resumo-categoria').hide();
+        $('#titulo-fila').text('Resumo da Fila por Fase');
+    });
+    
+    $('#btn-categoria').on('click', function () {
+        $('#table-resumo-fila').hide();
+        $('#table-resumo-categoria').show();
+        $('#titulo-fila').text('Resumo da Fila por Categoria');
+    });
+
 }
 
 
