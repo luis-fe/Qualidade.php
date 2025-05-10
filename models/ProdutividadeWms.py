@@ -83,7 +83,7 @@ class ProdutividadeWms:
 
         record = self.__recordHistorico_CarregarEndereco()
         record1 = record["qtdCaixas"][0]
-        total = consulta['qtdCaixas'].count()
+        total = consulta['qtdCaixas'].sum()
         totalPcs = consulta['qtdPcs'].sum()
 
         data = {
@@ -92,7 +92,7 @@ class ProdutividadeWms:
             '1.1- Record qtdCaixas': f'{record1}',
             '1.2- Record data': f'{record["dataRecord"][0]}',
             '2 Total Caixas':f'{total}',
-            '2.1 Total Pcs': f'{total}',
+            '2.1 Total Pcs': f'{totalPcs}',
             '3- Ranking Carregar Endereco': consulta.to_dict(orient='records')
         }
         return pd.DataFrame([data])
