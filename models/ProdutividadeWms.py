@@ -21,7 +21,7 @@ class ProdutividadeWms:
         sql = """
             INSERT INTO 
                 "Reposicao"."ProducaoRecarregarEndereco"
-                (codEmpresa, usuario_carga, "dataHoraCarga", "endereco", "qtdPcs", "codNatureza")
+                ("codEmpresa", "usuario_carga", "dataHoraCarga", "endereco", "qtdPcs", "codNatureza")
             VALUES 
                 (%s, %s, %s, %s, %s, %s)
         """
