@@ -8,6 +8,7 @@ from flask import Blueprint
 routes_blueprint = Blueprint('routes', __name__)
 
 # Importe as rotas dos arquivos individuais
+from routes.ProdutividadeWms import Produtividade_routes
 from routes.Usuario import usuarios_routes
 from .usuariosPortal import usuariosPortal_routes
 from .linhasPortal import linhas_routes
@@ -45,6 +46,7 @@ from .Pefil import Perfil_routes
 
 
 # Registre as rotas nos blueprints
+routes_blueprint.register_blueprint(Produtividade_routes)
 routes_blueprint.register_blueprint(usuarios_routes)
 routes_blueprint.register_blueprint(usuariosPortal_routes)
 routes_blueprint.register_blueprint(linhas_routes)
