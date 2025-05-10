@@ -176,7 +176,7 @@ def RecarrearEnderecoTeste():
                             RecarregarEndereco.IncrementarCaixa(endereco, epc, usuario)
                             qtdPeca = InfoCaixa['codbarrastag'].count()
 
-                            produtividadeWms = ProdutividadeWms.ProdutividadeWms(codEmpresa, usuario, endereco, qtdPeca,
+                            produtividadeWms = ProdutividadeWms.ProdutividadeWms(codEmpresa, usuario, endereco, int(qtdPeca),
                                                                                  codNatureza)
                             produtividadeWms.inserirProducaoCarregarEndereco()
 
@@ -209,7 +209,7 @@ def RecarrearEnderecoTeste():
                         RecarregarEndereco.LimpandoDuplicidadeFilaOFF()
                         qtdPeca = InfoCaixa['codbarrastag'].count()
 
-                        produtividadeWms = ProdutividadeWms.ProdutividadeWms(codEmpresa,usuario,endereco,qtdPeca,codNatureza)
+                        produtividadeWms = ProdutividadeWms.ProdutividadeWms(codEmpresa,usuario,endereco,int(qtdPeca),codNatureza)
                         produtividadeWms.inserirProducaoCarregarEndereco()
 
 
