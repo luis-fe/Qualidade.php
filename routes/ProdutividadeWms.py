@@ -18,7 +18,6 @@ def token_required(f): # TOKEN FIXO PARA ACESSO AO CONTEUDO
 @Produtividade_routes.route('/api/InserirProdutividadeCarregarEndereco', methods=['POST'])
 @token_required
 def post_InserirProdutividadeCarregarEndereco():
-    try:
         data = request.get_json()
 
         # Validação básica
@@ -41,5 +40,4 @@ def post_InserirProdutividadeCarregarEndereco():
         response = produtividade.inserirProducaoCarregarEndereco()
         return jsonify(response), 200
 
-    except Exception as e:
-        return jsonify({'status': False, 'mensagem': f'Erro interno: {str(e)}'}), 500
+
