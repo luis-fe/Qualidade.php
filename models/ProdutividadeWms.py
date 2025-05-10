@@ -95,7 +95,7 @@ class ProdutividadeWms:
             '2.1 Total Pcs': f'{total}',
             '3- Ranking Carregar Endereco': consulta.to_dict(orient='records')
         }
-        return [data]
+        return pd.DataFrame([data])
 
 
 
