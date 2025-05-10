@@ -5,7 +5,7 @@
 
 import models.configuracoes.empresaConfigurada
 import models.configuracoes.SkusSubstitutos
-from models import ReposicaoQualidade, controle
+from models import ReposicaoQualidade, controle, ProdutividadeWms
 from models.Processo_Reposicao_OFF import RecarregarEndereco
 from flask import Blueprint, jsonify, request
 from functools import wraps
@@ -43,6 +43,8 @@ def RecarrearEnderecoTeste():
         endereco = dados['endereco']
         usuario = dados.get('usuario','-')
         datainicio = controle.obterHoraAtual()
+        codEmpresa = dados.get('empresa','1')
+        codNatureza = dados.get('codNatureza','-')
 
 
 
@@ -172,6 +174,11 @@ def RecarrearEnderecoTeste():
 
 
                             RecarregarEndereco.IncrementarCaixa(endereco, epc, usuario)
+                            qtdPeca = InfoCaixa['codbarrastag'].count()
+
+                            produtividadeWms = ProdutividadeWms.ProdutividadeWms(codEmpresa, usuario, endereco, qtdPeca,
+                                                                                 codNatureza)
+                            produtividadeWms.inserirProducaoCarregarEndereco()
 
                             models.configuracoes.SkusSubstitutos.AtualizarReservadoLiberados()
 
@@ -200,6 +207,12 @@ def RecarrearEnderecoTeste():
                         RecarregarEndereco.IncrementarCaixa(endereco,epc, usuario)
                         ## Limpeza retirada ate achar o erro
                         RecarregarEndereco.LimpandoDuplicidadeFilaOFF()
+                        qtdPeca = InfoCaixa['codbarrastag'].count()
+
+                        produtividadeWms = ProdutividadeWms.ProdutividadeWms(codEmpresa,usuario,endereco,qtdPeca,codNatureza)
+                        produtividadeWms.inserirProducaoCarregarEndereco()
+
+
 
                         # Obtém os nomes das colunas
 
