@@ -11,7 +11,7 @@ class WmsConnectionClass():
         self.empresa = empresa
 
 
-    def conexao():
+    def conexao(self):
         load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
         db_name = os.getenv('POSTGRE_NAME')
