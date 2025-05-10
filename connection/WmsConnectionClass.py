@@ -26,3 +26,18 @@ class WmsConnectionClass():
         portbanco = "5432"
 
         return psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=host, port=portbanco)
+
+    def conexaoEngine(self):
+        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
+        db_name = os.getenv('POSTGRE_NAME')
+        db_user = os.getenv('POSTGRE_USER')
+        db_password = os.getenv('POSTGRE_PASSWORD')
+        if empresaConfigurada.EmpresaEscolhida() == '1':
+            host = "localhost"
+        else:
+            host = "localhost"
+        portbanco = "5432"
+
+        connection_string = f"postgresql://{db_user}:{db_password}@{host}:{portbanco}/{db_name}"
+        return create_engine(connection_string)

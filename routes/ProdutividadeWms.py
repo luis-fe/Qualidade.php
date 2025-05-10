@@ -41,3 +41,24 @@ def post_InserirProdutividadeCarregarEndereco():
         return jsonify(response), 200
 
 
+@Produtividade_routes.route('/api/ProdCarregarEndereco', methods=['GET'])
+@token_required
+def get_ProdCarregarEndereco():
+    empresa = request.args.get('empresa','1')
+    dataInicio = request.args.get('dataInicio','2025-01-01')
+    dataFinal = request.args.get('dataFinal','2025-01-01')
+
+    produtividade = ProdutividadeWms.ProdutividadeWms(empresa, '','','','',dataInicio, dataFinal).consultaProd_CarregarCaixas()
+    # Obtém os nomes das colunas
+    column_names = produtividade.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    enderecos_data = []
+    for index, row in produtividade.iterrows():
+        enderecos_dict = {}
+        for column_name in column_names:
+            enderecos_dict[column_name] = row[column_name]
+        enderecos_data.append(enderecos_dict)
+    return jsonify(enderecos_data)
+
+
+
