@@ -79,8 +79,58 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql, conn, params=(self.dataInicio, self.dataFim, self.codEmpresa))
 
+        Atualizado = self.__obterDataHoraSystem()
+
+        record = self.__recordHistorico_CarregarEndereco()
+        record1 = record["qtdCaixas"][0]
+        total = consulta['qtdCaixas'].count()
+        totalPcs = consulta['qtdPcs'].sum()
+
+        data = {
+            '0- Atualizado:':f'{Atualizado}',
+            '1- Record': f'{record["nome"][0]}',
+            '1.1- Record qtdCaixas': f'{record1}',
+            '1.2- Record data': f'{record["dataRecord"][0]}',
+            '2 Total Caixas':f'{total}',
+            '2.1 Total Pcs': f'{total}',
+            '3- Ranking Carregar Endereco': consulta.to_dict(orient='records')
+        }
+        return [data]
+
+
+
+
+    def __recordHistorico_CarregarEndereco(self):
+        '''Método que busca o record Historico da Atividade de Carregar Endereco'''
+
+        sql = """
+            select 
+                e."codEmpresa",
+                e."usuario_carga",
+                c.nome ,
+                count("endereco") as "qtdCaixas",
+                sum("qtdPcs") as "qtdPcs",
+                e."dataHoraCarga"::Date as "dataRecord"
+            from
+                "Reposicao"."ProducaoRecarregarEndereco" e
+            inner join
+                "Reposicao"."Reposicao".cadusuarios c 
+                on c.codigo::Varchar = e."usuario_carga"
+            where 
+                 e."codEmpresa" = %s
+            group by 
+                e."codEmpresa", e."usuario_carga", c.nome, e."dataHoraCarga"::Date
+            order by 
+                "qtdCaixas" desc 
+           	limit 1
+        """
+
+        conn = WmsConnectionClass.WmsConnectionClass(self.codEmpresa).conexaoEngine()
+
+        consulta = pd.read_sql(sql, conn, params=(self.codEmpresa, ))
 
         return consulta
+
 
 
 
