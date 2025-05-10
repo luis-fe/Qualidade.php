@@ -1,20 +1,27 @@
+import gc
+import os
 import psycopg2
+from sqlalchemy import create_engine
+from models.configuracoes import  empresaConfigurada
+from dotenv import load_dotenv, dotenv_values
 
 class WmsConnectionClass():
     '''Class que faz a conexao com o banco WMS'''
     def __init__(self, empresa = None):
         self.empresa = empresa
 
-    def conectar(self):
 
-        db_name = "WMS"
-        db_user = "postgres"
-        db_password = "Master100"
+    def conexao():
+        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 
-        if self.empresa == None:
-            host = '10.162.0.190'
+        db_name = os.getenv('POSTGRE_NAME')
+        db_user = os.getenv('POSTGRE_USER')
+        db_password = os.getenv('POSTGRE_PASSWORD')
+
+        if empresaConfigurada.EmpresaEscolhida() == '1':
+            host = "localhost"
         else:
-            host = ''
+            host = "localhost"
 
         portbanco = "5432"
 
