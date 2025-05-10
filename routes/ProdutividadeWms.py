@@ -45,8 +45,8 @@ def post_InserirProdutividadeCarregarEndereco():
 @token_required
 def get_ProdCarregarEndereco():
     empresa = request.args.get('empresa','1')
-    dataInicio = request.args.get('dataInicio','2025-01-01')
-    dataFinal = request.args.get('dataFinal','2025-01-01')
+    dataInicio = request.args.get('dataInicio')
+    dataFinal = request.args.get('dataFinal')
 
     produtividade = ProdutividadeWms.ProdutividadeWms(empresa, '','','','',dataInicio, dataFinal).consultaProd_CarregarCaixas()
     # Obtém os nomes das colunas
