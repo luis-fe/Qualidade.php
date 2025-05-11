@@ -1,315 +1,444 @@
 <!DOCTYPE html>
-<html lang="pt-Br">
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtividade Wms</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.2.1/css/fixedHeader.dataTables.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.1/css/buttons.dataTables.min.css">
-
-    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produtividade WMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
     <style>
-        #infos label {
-            font-size: 28px;
-            font-weight: 600;
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #ffffff);
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        .table-responsive {
-            min-height: 55vh;
-            max-height: 55vh;
-            overflow: auto;
-        }
-
-        .table {
-            padding: auto;
-            margin: auto;
-            width: 100%;
-            min-width: 100%;
-            max-width: 100%;
-            min-height: 100%;
-            max-height: 100%;
-            overflow: auto;
-        }
-
-        .table tbody tr:hover {
-            text-align: center;
-            background-color: gray;
-        }
-
-        .table th {
-            background-color: #0e2238;
+        .titulo-dashboard {
+            background-color: #112d7e;
             color: white;
+            padding: 3px;
             text-align: center;
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+
+        .card-kpi {
+            background: white;
+            border-left: 6px solid #112d7e;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.2s ease;
+            padding-left: 10px;
+        }
+
+        .card-kpi:hover {
+            transform: scale(1.02);
+        }
+
+        .card-kpi i {
+            font-size: 2.5rem;
+            color: #112d7e;
+            margin-right: 10px;
+        }
+
+        .table thead {
+            background-color: #112d7e;
+            color: white;
+        }
+
+        .table thead th {
+            font-size: 1.5rem;
+            background-color: #112d7e;
+            /* azul apenas no cabeçalho */
+            color: white;
+            padding: 4px 8px;
+            line-height: 1.2;
+            vertical-align: middle;
         }
 
         .table tbody td {
             font-size: 30px;
-            text-align: center;
+            padding: 4px 8px;
+            line-height: 1;
+            vertical-align: middle;
+            font-weight: 600;
         }
 
-        .table thead th {
-            font-size: 22px;
+        .table tbody tr {
+            background-color: white;
+            /* ou remova para manter padrão */
+        }
+
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+        }
+
+        @media (min-width: 992px) {
+            .tabela-prod {
+                display: flex;
+                gap: 20px;
+            }
+
+            .tabela-prod>div {
+                flex: 1;
+            }
+        }
+
+        .fa-trophy{
+            color: yellow;
         }
     </style>
 </head>
 
 <body>
-    <div class="main h-100" style="width: 100%; min-height: 100vh; max-height: 100vh">
-        <div class="row" style="justify-content: center;">
-            <h2 style="width: 100%; background-color: #0e2238; color: white; font-size: 50px; text-align: center; padding: 5px">Produtividade</h2>
-            <div class="row col-12">
-                <div class="row col-9 col-md-10">
-                    <div class="col-12 col-md-6">
-                        <label for="dataInicio" class="form-label">Data Início</label>
-                        <input type="date" id="dataInicio" class="form-control">
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <label for="dataFim" class="form-label">Data Final</label>
-                        <input type="date" id="dataFim" class="form-control">
-                    </div>
-                </div>
-                <div class="col-3 col-md-2 d-flex justify-content-center align-items-md-end align-items-center">
-                    <button type="button" id="ButtonFiltrar" class="btn btn-primary">Filtrar</button>
-                </div>
+
+    <div class="titulo-dashboard">Dashboard de Produtividade</div>
+
+    <div class="" style="padding-left: 5px; padding-right:5px">
+        <!-- Filtros -->
+        <div class="row mb-2 mt-2">
+            <div class="col-md-5">
+                <input type="date" id="dataInicio" class="form-control">
             </div>
-            <div class="row col-12 justify-content-center" id="infos" style="margin-top: 20px">
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelRetornaPcs" for="text"></label>
-                </div>
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelRetornaPcsMplus" for="text"></label>
-                </div>
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelProntaEntregaPcs" for="text"></label>
-                </div>
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelFaturadoPcs" for="text"></label>
-                </div>
+            <div class="col-md-5">
+                <input type="date" id="dataFim" class="form-control">
             </div>
-            <div class="row col-12 justify-content-center" id="infos" style="margin-top: 10px">
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelRetornaRS" for="text"></label>
-                </div>
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelRetornaMplusRS" for="text"></label>
-                </div>
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelProntaEntregaRS" for="text"></label>
-                </div>
-                <div class="card col-11 col-md-3 col-sm-5 text-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
-                    <label id="LabelFaturadoRS" for="text"></label>
-                </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-primary w-100" onclick="Consultas()" id="btnFiltrar">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
             </div>
-            <div class="row col-12" style="margin-top: 10px">
-                <div class="col-12 col-md-6" style="border: 2px solid #0e2238">
-                    <h2 style="width: 100%; text-align: center">Reposição</h2>
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="TabelaReposicao">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Rank</th>
-                                    <th scope="col">Colaborador</th>
-                                    <th scope="col">Qtd</th>
-                                    <th scope="col">Ritmo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <div class="col-12 col-md-6" style="border: 2px solid #0e2238">
-                    <h2 style="width: 100%; text-align: center">Separação</h2>
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="TabelaSeparacao">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Rank</th>
-                                    <th scope="col">Colaborador</th>
-                                    <th scope="col">Qtd</th>
-                                    <th scope="col">Ritmo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row col-12" style="margin-top: 10px">
-                <div class="col-12 col-md-6 d-flex flex-wrap align-items-center p-2" style="background-color: #0e2238; color: white; border-right: 1px solid white">
-                    <div class="col-2 text-center mb-2 mb-md-0">
-                        <i class="fa-solid fa-trophy" style="color: yellow; font-size: 85px"></i>
-                    </div>
-                    <div class="col-12 col-md-5 text-left text-md-start mb-2 mb-md-0">
-                        <label for="" class="mb-0" id="RecordReposicao" style="font-size: 25px;"></label>
-                    </div>
-                    <div class="col-12 col-md-5 text-center text-md-start mb-2 mb-md-0">
-                        <label for="" class="mb-0" id="totalDiaReposicao" style="font-size: 25px;"></label>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 d-flex flex-wrap align-items-center p-2" style="background-color: #0e2238; color: white; border-left: 1px solid white">
-                    <div class="col-2 text-center mb-2 mb-md-0">
-                        <i class="fa-solid fa-trophy" style="color: yellow; font-size: 85px"></i>
-                    </div>
-                    <div class="col-12 col-md-5 text-left text-md-start mb-2 mb-md-0">
-                        <label for="" id="RecordSeparacao" class="mb-0" style="font-size: 25px;"></label>
-                    </div>
-                    <div class="col-12 col-md-5 text-center text-md-start mb-2 mb-md-0">
-                        <label for=""  id="totalDiaSeparacao" class="mb-0" style="font-size: 25px;"></label>
-                    </div>
-                </div>
-            </div>
-            
         </div>
+
+        <!-- KPIs -->
+        <div class="row g-4 mb-3">
+            <div class="col-md-4">
+                <div class="card card-kpi">
+                    <div class="d-flex align-items-center ">
+                        <i class="fa-solid fa-truck-ramp-box fa-2x me-3"></i> <!-- Ícone à esquerda -->
+                        <div class="text-center w-100"> <!-- Centraliza apenas os textos -->
+                            <h3 class="mb-0">Retorna</h3>
+                            <h3 id="retorna-pc" class="mb-1"></h3>
+                            <h3 id="retorna-rs"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-kpi">
+                    <div class="d-flex align-items-center ">
+                        <i class="fa-solid fa-check fa-2x me-3"></i> <!-- Ícone à esquerda -->
+                        <div class="text-center w-100"> <!-- Centraliza apenas os textos -->
+                            <h3 class="mb-0">Pronta Entrega</h3>
+                            <h3 id="pronta-entrega-pc"></h3>
+                            <h3 id="pronta-entrega-rs"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-kpi">
+                    <div class="d-flex align-items-center ">
+                        <i class="fa-solid fa-truck fa-2x me-3"></i> <!-- Ícone à esquerda -->
+                        <div class="text-center w-100"> <!-- Centraliza apenas os textos -->
+                            <h3 class="mb-0">Faturado</h3>
+                            <h3 id="faturado-pc" class="mb-1"></h3>
+                            <h3 id="faturado-rs"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabelas lado a lado -->
+        <!-- Tabelas lado a lado e uma abaixo -->
+        <div class="tabela-prod mb-3" style="min-height: 65vh; max-height: 65vh;">
+            <div class="row g-3">
+                <!-- Repositores (lado esquerdo) -->
+                <div class="col-md-6">
+                    <div class="card p-3 shadow-sm h-100" style="overflow: auto;">
+                        <h5 class="d-flex justify-content-between align-items-center" style="font-size: 23px; font-weight: 600" id="repositores"></h5>
+                        <div class="table-responsive">
+                            <table id="tabelaRepositores" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Ranking</th>
+                                        <th>Colaborador</th>
+                                        <th>Qtd.</th>
+                                        <th>Ritmo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Os dados serão preenchidos aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Separadores (lado direito) -->
+                <div class="col-md-6">
+                    <div class="card p-3 shadow-sm h-100" style="overflow: auto;">
+                        <h5 class="d-flex justify-content-between align-items-center" style="font-size: 23px; font-weight: 600" id="separadores"></h5>
+                        <div class="table-responsive">
+                            <table id="tabelaSeparadores" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Rank.</th>
+                                        <th style="min-width: 220px; max-width: 220px">Colaborador</th>
+                                        <th>Qtd</th>
+                                        <th>Qtd. Ped.</th>
+                                        <th>Méd. Pçs</th>
+                                        <th>Ritmo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Os dados serão preenchidos aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caixas (embaixo das duas) -->
+                <div class="col-12">
+                    <div class="card p-3 shadow-sm" style="overflow: auto;">
+                        <h5 class="d-flex justify-content-between align-items-center" style="font-size: 23px; font-weight: 600" id="caixas"></h5>
+                        <div class="table-responsive">
+                            <table id="tabelaCaixas" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Rank.</th>
+                                        <th>Colaborador</th>
+                                        <th>Qtd. Caixas</th>
+                                        <th>Qtd. Peças</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Os dados serão preenchidos aqui -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-</body>
+    <script>
+        $(document).ready(async function() {
+            const currentDate = new Date();
+            const formattedDate = FormatarData(currentDate);
+            $("#dataInicio").val(formattedDate);
+            $("#dataFim").val(formattedDate);
 
-
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.2.1/js/dataTables.fixedHeader.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.colVis.min.js"></script>
-
-<script>
-    $(document).ready(async () => {
-        await ConsultaFaturamento();
-        await ConsultaProdutividade('TagsReposicao', 'TabelaReposicao');
-        ConsultaProdutividade('TagsSeparacao', 'TabelaSeparacao');
-    })
-
-    $('#ButtonFiltrar').click(async () => {
-        await  ConsultaFaturamento();
-        await ConsultaProdutividade('TagsReposicao', 'TabelaReposicao');
-        ConsultaProdutividade('TagsSeparacao', 'TabelaSeparacao');
-    })
-
-    const hoje = new Date().toISOString().split('T')[0];
-    document.getElementById('dataInicio').value = hoje;
-    document.getElementById('dataFim').value = hoje;
-
-
-
-    const ConsultaFaturamento = () => {
-        console.log($('#dataInicio').val())
-        $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consultar_Faturamentos',
-                dataInicio: $('#dataInicio').val(),
-                dataFim: $('#dataFim').val(),
-            },
-            success: (data) => {
-                console.log(data);
-                $('#LabelRetornaPcs').text(`Retorna Pçs: ${data[0]['Pcs Retorna']}`);
-                $('#LabelRetornaPcsMplus').text(`Retorna Mplus Pçs: ${data[0]['Pcs Retorna Mplus']}`);
-                $('#LabelProntaEntregaPcs').text(`Pronta Entrega Pçs: ${data[0]['Pç Pronta Entrega']}`);
-                $('#LabelFaturadoPcs').text(`Faturado Pçs: ${data[0]['qtdePecas Faturado']}`);
-                $('#LabelRetornaRS').text(`Retorna R$: ${data[0]['No Retorna']}`);
-                $('#LabelRetornaMplusRS').text(`Retorna Mplus R$: ${data[0]['No Retorna MPlus']}`);
-                $('#LabelProntaEntregaRS').text(`Pronta Ent. R$: ${data[0]['Retorna ProntaEntrega']}`);
-                $('#LabelFaturadoRS').text(`Faturado R$: ${data[0]['Total Faturado']}`);
-
-            },
-        });
-    }
-
-    const ConsultaProdutividade = (Consulta, tabela) => {
-        $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consultar_Produtividade',
-                dataInicio: $('#dataInicio').val(),
-                dataFim: $('#dataFim').val(),
-                Consulta: Consulta,
-                HoraInicio: '00:01',
-                HoraFim: '23:59'
-            },
-            success: (data) => {
-                console.log(data);
-                criarTabelaProdutividade(data[0]['3- Ranking Repositores'], tabela);
-                if(Consulta == 'TagsReposicao'){
-                $('#RecordReposicao').text(`${data[0]['1- Record Repositor']}: ${data[0]['1.1- Record qtd']}`);
-                $('#totalDiaReposicao').text(`Total Reposto: ${data[0]['2 Total Periodo']}`);
-                }
-                else if(Consulta == 'TagsSeparacao'){
-                $('#RecordSeparacao').text(`${data[0]['1- Record Repositor']}: ${data[0]['1.1- Record qtd']}`);
-                $('#totalDiaSeparacao').text(`Total Separado: ${data[0]['2 Total Periodo']}`);
-                }
-                
-            },
-        });
-    }
-
-    function criarTabelaProdutividade(listaNomes, tabela) {
-        // Adiciona a coluna de rank aos dados
-        listaNomes.forEach((item, index) => {
-            item.rank = index + 1;
+            await Consultar_Faturamentos();
+            await Consultar_Produtividade_Separacao('TagsSeparacao');
+            await Consultar_Produtividade_Reposicao('TagsReposicao');
+            await Consultar_Produtividade_Caixa()
 
         });
 
-        if ($.fn.DataTable.isDataTable(`#${tabela}`)) {
-            $(`#${tabela}`).DataTable().destroy();
+        async function Consultas() {
+            await Consultar_Faturamentos();
+            await Consultar_Produtividade_Separacao('TagsSeparacao');
+            await Consultar_Produtividade_Reposicao('TagsReposicao');
+            await Consultar_Produtividade_Caixa()
         }
 
-        const tabelaDataTable = $(`#${tabela}`).DataTable({
-            excel: true,
-            responsive: true,
-            paging: false,
-            info: false,
-            searching: false,
-            colReorder: false,
-            data: listaNomes,
-            lengthChange: false,
-            columns: [{
-                    data: 'rank'
-                },
-                {
-                    data: 'nome'
-                },
-                {
-                    data: 'qtde'
-                },
-                {
-                    data: 'ritmo'
+        const Consultar_Faturamentos = async () => {
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Consultar_Faturamentos',
+                        "dataInicio": $('#dataInicio').val(),
+                        "dataFim": $('#dataFim').val(),
+                    },
+                });
+                console.log(response[0]['Pcs Retorna'])
+                $('#retorna-pc').text(response[0]['Pcs Retorna']);
+                $('#retorna-rs').text(response[0]['No Retorna']);
+                $('#pronta-entrega-pc').text(response[0]['Pç Pronta Entrega']);
+                $('#pronta-entrega-rs').text(response[0]['Retorna ProntaEntrega']);
+                $('#faturado-pc').text(response[0]['qtdePecas Faturado']);
+                $('#faturado-rs').text(response[0]['Total Faturado']);
+            } catch (error) {
+                console.error('Erro:', error);
+            } finally {}
+        };
+
+        function FormatarData(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        const Consultar_Produtividade_Reposicao = async (Cosulta) => {
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Consultar_Produtividade',
+                        dataInicio: $('#dataInicio').val(),
+                        dataFim: $('#dataFim').val(),
+                        Consulta: Cosulta,
+                        HoraInicio: "00:01",
+                        HoraFim: "23:59"
+                    },
+                });
+
+                if (!response || !response[0] || !response[0]['3- Ranking Repositores']) {
+                    console.log("Nenhum dado encontrado.");
+                } else {
+                    console.log(response[0]['3- Ranking Repositores']);
+                    $('#repositores').html(`
+                        <span><i class="fa-solid fa-trophy"></i> ${response[0]['1- Record Repositor']} ${response[0]['1.1- Record qtd']} Pçs</span>
+                        <span>Total Reposto: ${response[0]['2 Total Periodo']} Pçs</span>
+                    `);
+                    let colaboradores = response[0]['3- Ranking Repositores'];
+                    colaboradores.sort((a, b) => b.qtde - a.qtde); // Ordena de maior para menor produção
+
+                    // Cria o corpo da tabela com o ranking
+                    let tbodyHTML = '';
+                    colaboradores.forEach((item, index) => {
+                        let ranking = `${index + 1}º`; // A posição começa de 1, então adicionamos 1 ao índice
+                        tbodyHTML += `
+                    <tr class="text-center">
+                        <td>${ranking}</td>
+                        <td>${item.nome}</td>
+                        <td>${item.qtde.toLocaleString('pt-BR')}</td>
+                        <td>${item.ritmo}%</td>
+                    </tr>
+                `;
+                    });
+
+                    // Atualiza o tbody da tabela existente
+                    $('#tabelaRepositores tbody').html(tbodyHTML);
                 }
-            ],
-            dom: 'Bfrtip',
-            buttons: [{
-                extend: 'excelHtml5',
-                text: '<i class="fa-solid fa-file-excel"></i>',
-                title: 'Produtividade',
-                className: 'ButtonExcel'
-            }]
-        });
-    }
-</script>
+
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        };
+
+        const Consultar_Produtividade_Separacao = async (Cosulta) => {
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Consultar_Produtividade',
+                        dataInicio: $('#dataInicio').val(),
+                        dataFim: $('#dataFim').val(),
+                        Consulta: Cosulta,
+                        HoraInicio: "00:01",
+                        HoraFim: "23:59"
+                    },
+                });
+
+                if (!response || !response[0] || !response[0]['3- Ranking Repositores']) {
+                    console.log("Nenhum dado encontrado.");
+                } else {
+                    console.log(response[0]['3- Ranking Repositores']);
+
+                    let colaboradores = response[0]['3- Ranking Repositores'];
+                    colaboradores.sort((a, b) => b.qtde - a.qtde); // Ordena de maior para menor produção
+
+                    $('#separadores').html(`
+                        <span><i class="fa-solid fa-trophy"></i> ${response[0]['1- Record Repositor']} ${response[0]['1.1- Record qtd']} Pçs</span>
+                        <span>Total Separado: ${response[0]['2 Total Periodo']} Pçs</span>
+                    `);
+                    // Cria o corpo da tabela com o ranking
+                    let tbodyHTML = '';
+                    colaboradores.forEach((item, index) => {
+                        let ranking = `${index + 1}º`; // A posição começa de 1, então adicionamos 1 ao índice
+                        tbodyHTML += `
+                    <tr class="text-center">
+                        <td>${ranking}</td>
+                        <td>${item.nome}</td>
+                        <td>${item.qtde.toLocaleString('pt-BR')}</td>
+                        <td>${item["Qtd Pedido"].toLocaleString('pt-BR')}</td>
+                        <td>${item["Méd pçs/ped."].toLocaleString('pt-BR')}</td>
+                        <td>${item.ritmo}%</td>
+                    </tr>
+                `;
+                    });
+
+                    // Atualiza o tbody da tabela existente
+                    $('#tabelaSeparadores tbody').html(tbodyHTML);
+                }
+
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        };
+
+        const Consultar_Produtividade_Caixa = async (Cosulta) => {
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Consultar_Produtividade_Caixa',
+                        dataInicio: $('#dataInicio').val(),
+                        dataFim: $('#dataFim').val()
+                    },
+                });
+
+                if (!response || !response[0] || !response[0]['3- Ranking Carregar Endereco']) {
+                    console.log("Nenhum dado encontrado.");
+                } else {
+                    console.log(response[0]['3- Ranking Carregar Endereco']);
+
+                    let colaboradores = response[0]['3- Ranking Carregar Endereco'];
+                    colaboradores.sort((a, b) => b.qtde - a.qtde); // Ordena de maior para menor produção
+
+                    $('#caixas').html(`
+                        <span><i class="fa-solid fa-trophy"></i> ${response[0]['1- Record']}: ${response[0]['1.1- Record qtdCaixas']} Caixas</span>
+                        <span>Total Caixas: ${response[0]['2 Total Caixas']} Caixas</span>
+                    `);
+                    // Cria o corpo da tabela com o ranking
+                    let tbodyHTML = '';
+                    colaboradores.forEach((item, index) => {
+                        let ranking = `${index + 1}º`; // A posição começa de 1, então adicionamos 1 ao índice
+                        tbodyHTML += `
+                    <tr class="text-center">
+                        <td>${ranking}</td>
+                        <td>${item.nome}</td>
+                        <td>${item.qtdCaixas.toLocaleString('pt-BR')}</td>
+                        <td>${item.qtdPcs.toLocaleString('pt-BR')}</td>
+                    </tr>
+                `;
+                    });
+
+                    // Atualiza o tbody da tabela existente
+                    $('#tabelaCaixas tbody').html(tbodyHTML);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        };
+    </script>
+</body>
 
 </html>
