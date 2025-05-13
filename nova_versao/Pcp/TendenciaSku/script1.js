@@ -602,6 +602,31 @@ function TabelaTendencia(listaTendencia) {
         const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();
         console.log(`Plano selecionado: ${codPlan}`)
         
-        //Detalha_Pedidos(codReduzido,codPlano);
+        Detalha_Pedidos(codReduzido,consideraPedidosBloqueado, codPlan);
     });
+}
+
+async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) {
+    $('#loadingModal').modal('show');
+    try {
+        const params = new URLSearchParams({
+            acao: "Detalha_Pedidos",
+            codPlano: codPlan,
+            consideraPedidosBloqueado: consideraPedidosBloqueado,
+            codReduzido: codReduzido
+        });
+
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php?' + params.toString(),
+        });
+
+        TabelaDetalhamento(response);
+        $('#modal-detalhamentoPedidoSku').modal('show');
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
 }
