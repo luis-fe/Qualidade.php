@@ -633,11 +633,11 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
 
 
 function TabelaDetalhamentoPedidos(listaDetalhes) {
-    if ($.fn.DataTable.isDataTable('#table-detalhamento')) {
-        $('#table-detalhamento').DataTable().destroy();
+    if ($.fn.DataTable.isDataTable('#table-detalhamentoPedidoSku')) {
+        $('#table-detalhamentoPedidoSku').DataTable().destroy();
     }
 
-    const tabela = $('#table-detalhamento').DataTable({
+    const tabela = $('#table-detalhamentoPedidoSku').DataTable({
         searching: true,
         paging: true,
         lengthChange: false,
@@ -645,68 +645,31 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
         pageLength: 10,
         data: listaDetalhes,
         columns: [{
-            data: '01-codEngenharia'
+            data: 'codPedido'
         },
         {
-            data: '04-tam'
+            data: 'codTipoNota'
         },
         {
-            data: '05-codCor'
+            data: 'dataEmissao'
         },
         {
-            data: '03-nome'
+            data: 'dataPrevFat'
         },
         {
-            data: '02-codReduzido'
+            data: 'marca'
         },
         {
-            data: '07-Ocorrencia em Pedidos',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
-            }
+            data: 'qtdeFaturada'
         },
-        {
-            data: '09-previcaoVendas',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
-            }
+                {
+            data: 'qtdePedida'
         },
-        {
-            data: '06-qtdePedida',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
-            }
+                {
+            data: 'valorVendido'
         },
-        {
-            data: '10-faltaProg (Tendencia)',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
-            }
-        },
-        {
-            data: 'class'
-        },
-        {
-            data: 'classCategoria'
-        },
-        {
-            data: '08-statusAFV'
-        },
-        {
-            data: '11-CodComponente'
-        },
-        {
-            data: '12-unid'
-        },
-        {
-            data: '13-consumoUnit'
-        },
-        {
-            data: '14-Necessidade faltaProg (Tendencia)',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
-            }
-        },
+
+
         ],
         language: {
             paginate: {
@@ -718,9 +681,9 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
             zeroRecords: "Nenhum registro encontrado"
         },
         drawCallback: function () {
-            $('#pagination-detalhamento').html($('.dataTables_paginate').html());
-            $('#pagination-detalhamento span').remove();
-            $('#pagination-detalhamento a').off('click').on('click', function (e) {
+            $('#pagination-detalhamentoPedidoSku').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamentoPedidoSku span').remove();
+            $('#pagination-detalhamentoPedidoSku a').off('click').on('click', function (e) {
                 e.preventDefault();
                 if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
@@ -729,14 +692,14 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
         }
     });
 
-    $('#itens-detalhamento').on('input', function () {
+    $('#itens-detalhamentoPedidoSku').on('input', function () {
         const valor = parseInt($(this).val(), 10);
         if (!isNaN(valor) && valor > 0) {
             tabela.page.len(valor).draw();
         }
     });
 
-    $('.search-input-detalhamento').on('input', function () {
+    $('.search-input-detalhamentoPedidoSku').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }

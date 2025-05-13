@@ -202,9 +202,9 @@ include_once('../../templates/headerPcp.php');
                 <div class="custom-pagination-container pagination-detalhamento d-md-flex col-12 text-center text-md-start">
                     <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
                         <label for="text">Itens por página</label>
-                        <input id="itens-detalhamento" class="input-itens" type="text" value="10" min="1">
+                        <input id="itens-detalhamentoPedidoSku" class="input-itens" type="text" value="15" min="1">
                     </div>
-                    <div id="pagination-detalhamento" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    <div id="pagination-detalhamentoPedidoSku" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
                     </div>
                 </div>
             </div>
