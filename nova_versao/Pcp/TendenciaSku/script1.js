@@ -621,7 +621,7 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
             url: 'requests.php?' + params.toString(),
         });
 
-        TabelaDetalhamento(response);
+        TabelaDetalhamentoPedidos(response);
         $('#modal-detalhamentoPedidoSku').modal('show');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
@@ -629,4 +629,114 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
     } finally {
         $('#loadingModal').modal('hide');
     }
+}
+
+
+function TabelaDetalhamentoPedidos(listaDetalhes) {
+    if ($.fn.DataTable.isDataTable('#table-detalhamento')) {
+        $('#table-detalhamento').DataTable().destroy();
+    }
+
+    const tabela = $('#table-detalhamento').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: listaDetalhes,
+        columns: [{
+            data: '01-codEngenharia'
+        },
+        {
+            data: '04-tam'
+        },
+        {
+            data: '05-codCor'
+        },
+        {
+            data: '03-nome'
+        },
+        {
+            data: '02-codReduzido'
+        },
+        {
+            data: '07-Ocorrencia em Pedidos',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: '09-previcaoVendas',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: '06-qtdePedida',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: '10-faltaProg (Tendencia)',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        {
+            data: 'class'
+        },
+        {
+            data: 'classCategoria'
+        },
+        {
+            data: '08-statusAFV'
+        },
+        {
+            data: '11-CodComponente'
+        },
+        {
+            data: '12-unid'
+        },
+        {
+            data: '13-consumoUnit'
+        },
+        {
+            data: '14-Necessidade faltaProg (Tendencia)',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-detalhamento').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamento span').remove();
+            $('#pagination-detalhamento a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    $('#itens-detalhamento').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
+    $('.search-input-detalhamento').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
 }

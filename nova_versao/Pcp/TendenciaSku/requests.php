@@ -46,7 +46,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $consideraPedidosBloqueado = $_GET['consideraPedidosBloqueado'];
                     $codReduzido = $_GET['codReduzido'];
 
-                    jsonResponse(Detalha_PedidsoSku($codReduzido, $codPlano, $consideraPedidosBloqueado));
+                    jsonResponse(Detalha_PedidosSku($codReduzido, $codPlano, $consideraPedidosBloqueado));
                     break;
 
                 default:
@@ -235,7 +235,7 @@ function ConsultaAbcPlano($empresa, $plano)
 }
 
 
-function Detalha_PedidsoSku($codReduzido, $plano, $consideraBloq)
+function Detalha_PedidosSku($codReduzido, $plano, $consideraBloq,$empresa='1')
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/DetalhaPedidosSKU?codPlano={$plano}&consideraPedidosBloqueado={$consideraBloq}&codReduzido={$codReduzido}";
