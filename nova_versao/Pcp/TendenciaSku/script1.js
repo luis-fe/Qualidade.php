@@ -642,7 +642,7 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
         paging: true,
         lengthChange: false,
         info: false,
-        pageLength: 10,
+        pageLength: 15,
         data: listaDetalhes,
         columns: [{
             data: 'codPedido'
