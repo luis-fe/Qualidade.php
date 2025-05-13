@@ -480,7 +480,7 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'qtdePedida',
             render: function (data, type, row) {
-                return `<span class="detalha-pedidos" data-codReduzido="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                return `<span class="detalha-pedidos" data-codReduzido="${row.codReduzido}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
 
             }
         },
