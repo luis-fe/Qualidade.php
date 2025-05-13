@@ -643,33 +643,36 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
         lengthChange: false,
         info: false,
         pageLength: 15,
+        dom: 'Bfrtip', // <-- necessário para os botões aparecerem
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                title: 'Tendências de Vendas',
+                className: 'btn-tabelas',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (typeof data === 'string') {
+                                return data.replace(/\./g, '').replace(',', '.');
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+        ],
         data: listaDetalhes,
-        columns: [{
-            data: 'codPedido'
-        },
-        {
-            data: 'codTipoNota'
-        },
-        {
-            data: 'dataEmissao'
-        },
-        {
-            data: 'dataPrevFat'
-        },
-        {
-            data: 'marca'
-        },
-        {
-            data: 'qtdeFaturada'
-        },
-                {
-            data: 'qtdePedida'
-        },
-                {
-            data: 'valorVendido'
-        },
-
-
+        columns: [
+            { data: 'codPedido' },
+            { data: 'codTipoNota' },
+            { data: 'dataEmissao' },
+            { data: 'dataPrevFat' },
+            { data: 'marca' },
+            { data: 'qtdeFaturada' },
+            { data: 'qtdePedida' },
+            { data: 'valorVendido' }
         ],
         language: {
             paginate: {
@@ -692,6 +695,9 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
         }
     });
 
+    // Adiciona os botões à interface
+    tabela.buttons().container().appendTo('#table-detalhamentoPedidoSku_wrapper .col-md-6:eq(0)');
+
     $('#itens-detalhamentoPedidoSku').on('input', function () {
         const valor = parseInt($(this).val(), 10);
         if (!isNaN(valor) && valor > 0) {
@@ -703,3 +709,4 @@ function TabelaDetalhamentoPedidos(listaDetalhes) {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
+
