@@ -479,8 +479,9 @@ function TabelaTendencia(listaTendencia) {
         },
         {
             data: 'qtdePedida',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            render: function (data, type, row) {
+                return `<span class="detalha-pedidos" data-codReduzido="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+
             }
         },
         {
@@ -591,5 +592,16 @@ function TabelaTendencia(listaTendencia) {
         } else {
             Vincular_Colecoes();
         }
+    });
+
+        // Clique no hiperlink "codReduzido"
+    $('#table-tendencia').on('click', '.detalha-pedidos', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codReduzido');
+        const codPlan = $('#select-plano').val();
+        const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();
+        console.log(`Plano selecionado: ${codPlan}`)
+        
+        //Detalha_Pedidos(codReduzido,codPlano);
     });
 }
