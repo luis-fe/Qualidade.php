@@ -600,7 +600,7 @@ function TabelaTendencia(listaTendencia) {
         const codReduzido = $(this).attr('data-codReduzido');
         const codPlan = $('#select-plano').val();
         const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();
-        console.log(`Plano selecionado: ${codPlan}`)
+        console.log(`Teste2 Plano selecionado: ${codPlan}`)
         
         Detalha_Pedidos(codReduzido,consideraPedidosBloqueado, codPlan);
     });

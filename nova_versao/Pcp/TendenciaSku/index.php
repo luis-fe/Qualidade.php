@@ -117,7 +117,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="modal fade modal-custom" id="modal-detalhamentoPedidoSku" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+<div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
