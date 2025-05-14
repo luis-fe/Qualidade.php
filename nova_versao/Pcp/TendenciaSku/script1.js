@@ -147,8 +147,8 @@ async function Consulta_Tendencias() {
 };
 
 async function Simular_Programacao() {
-    const descricao = document.getElementById('descricao-simulacao');
-    console.log(`minha descricao: ${descricao}`)
+            const descricao = $('#descricao-simulacao').val();
+            console.log(`minha descricao: ${descricao}`);
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -156,7 +156,7 @@ async function Simular_Programacao() {
             dados: {
                 codPlano: $('#select-plano').val(),
                 consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
-                nomeSimulacao: descricao.value // ✅ aqui é o valor
+                nomeSimulacao:  descricao// ✅ aqui é o valor
             }
         };
 
