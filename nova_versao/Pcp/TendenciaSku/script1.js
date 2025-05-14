@@ -36,16 +36,10 @@ $(document).ready(async () => {
     $('#form-simulacao').on('submit', async function (e) {
         e.preventDefault();
 
-        const campoDescricao = document.getElementById('campo-desc-simulacao');
         const inputDescricao = document.getElementById('descricao-simulacao');
 
-        if (!campoDescricao.classList.contains('d-none')) {
-            if (!inputDescricao.value.trim()) {
-                alert('Por favor, preencha a descrição da simulação.');
-                inputDescricao.focus();
-                return;
-            }
-        }
+        console.log('Valor da descrição:', inputDescricao.value);
+
 
         await Cadastro_Simulacao();
         await Consulta_Simulacoes();
