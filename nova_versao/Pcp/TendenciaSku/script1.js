@@ -788,6 +788,7 @@ function TabeldetalhamentoSkuSimulado(listaDetalhes) {
             { data: 'nomeSimulacao' },
             { data: 'codReduzido' },
             { data: 'previcaoVendasOriginal' },
+            { data: 'percentualMarca' },
             { data: 'percentualABC' },
             { data: 'percentualCategoria' },
             { data: '_%Considerado' },
