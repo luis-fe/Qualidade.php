@@ -148,6 +148,7 @@ async function Consulta_Tendencias() {
 
 async function Simular_Programacao() {
     const descricao = document.getElementById('descricao-simulacao');
+    console.log(`minha descricao: ${descricao}`)
     $('#loadingModal').modal('show');
     try {
         const requestData = {
