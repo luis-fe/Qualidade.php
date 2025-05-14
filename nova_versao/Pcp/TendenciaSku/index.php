@@ -225,14 +225,14 @@ include_once('../../templates/headerPcp.php');
                     <table class="table table-bordered" id="table-detalhamentoSkuSimulado" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>nomeSimulacao<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>Nome<br>Simulacao</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
                                 <th>codReduzido<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>previcaoVendasOriginal<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>percentualMarca<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>percentualABC<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>percentualCategoria<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>_%Considerado<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>NovaPrevicao<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>                               
+                                <th>previcao Vendas<br>Original</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>%<br>lMarca</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>%<br>ABC</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>%<br>Categoria</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>%<br>Considerado</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>Nova Previcao</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>                               
                             </tr>
                         </thead>
                         <tbody>
