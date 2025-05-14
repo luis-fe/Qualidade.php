@@ -31,8 +31,30 @@ $(document).ready(async () => {
 
     $('#btn-vendas').addClass('btn-menu-clicado');
 
-});
 
+// Aqui está o onsubmit do form
+    $('#form-simulacao').on('submit', async function (e) {
+        e.preventDefault();
+
+        const campoDescricao = document.getElementById('campo-desc-simulacao');
+        const inputDescricao = document.getElementById('descricao-simulacao');
+
+        if (!campoDescricao.classList.contains('d-none')) {
+            if (!inputDescricao.value.trim()) {
+                alert('Por favor, preencha a descrição da simulação.');
+                inputDescricao.focus();
+                return;
+            }
+        }
+
+        await Cadastro_Simulacao();
+        await Consulta_Simulacoes();
+        await Simular_Programacao();
+
+        $('#descricao-simulacao').removeAttr('disabled');
+        $('#modal-simulacao').modal('hide');
+    });
+});
 
 async function Consulta_Simulacoes() {
     $('#loadingModal').modal('show');

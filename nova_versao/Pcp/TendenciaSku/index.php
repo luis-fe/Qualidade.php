@@ -124,27 +124,7 @@ include_once('../../templates/headerPcp.php');
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <form id="form-simulacao" onsubmit="async function simulacao() {
-                                        const campoDescricao = document.getElementById('campo-desc-simulacao');
-                                        const inputDescricao = document.getElementById('descricao-simulacao');
-
-                            // Validação manual apenas se o campo estiver visível
-                            if (!campoDescricao.classList.contains('d-none')) {
-                                if (!inputDescricao.value.trim()) {
-                                    alert('Por favor, preencha a descrição da simulação.');
-                                    inputDescricao.focus();
-                                    return false;
-                                }
-                            }
-
-                            await Cadastro_Simulacao();
-                            await Consulta_Simulacoes();
-                            await Simular_Programacao();
-
-                            $('#descricao-simulacao').removeAttr('disabled');
-                            $('#modal-simulacao').modal('hide');
-                        }
-                        simulacao(); return false;">                
+                <form id="form-simulacao">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
                     <div class="select mb-4 text-start d-none" id="campo-simulacao">
                         <label for="select-simulacao" class="form-label">Simulação</label>
