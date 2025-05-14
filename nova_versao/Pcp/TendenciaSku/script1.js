@@ -125,6 +125,7 @@ async function Consulta_Tendencias() {
 };
 
 async function Simular_Programacao() {
+    const descricao = document.getElementById('descricao-simulacao')
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -133,7 +134,7 @@ async function Simular_Programacao() {
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "nomeSimulacao": $('#select-simulacao').val()
+                "nomeSimulacao": descricao
             }
 
         };
