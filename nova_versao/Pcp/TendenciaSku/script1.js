@@ -125,18 +125,16 @@ async function Consulta_Tendencias() {
 };
 
 async function Simular_Programacao() {
-    const descricao = document.getElementById('descricao-simulacao')
+    const descricao = document.getElementById('descricao-simulacao');
     $('#loadingModal').modal('show');
     try {
         const requestData = {
             acao: "Simular_Programacao",
-
             dados: {
-                "codPlano": $('#select-plano').val(),
-                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "nomeSimulacao": descricao
+                codPlano: $('#select-plano').val(),
+                consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
+                nomeSimulacao: descricao.value // ✅ aqui é o valor
             }
-
         };
 
         const response = await $.ajax({
@@ -145,14 +143,16 @@ async function Simular_Programacao() {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
+
         TabelaTendencia(response);
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
+        Mensagem_Canto('Erro', 'error');
     } finally {
         $('#loadingModal').modal('hide');
     }
-};
+}
+
 
 async function Cadastro_Simulacao() {
     $('#loadingModal').modal('show');
