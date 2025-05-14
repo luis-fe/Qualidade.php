@@ -211,6 +211,46 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
+
+<div class="modal fade modal-custom" id="modal-detalhamentoSkuSimulado" tabindex="-1" aria-labelledby="customModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Detalhamento Pedidos</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="align-items: start; text-align: left">
+                <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+                    <table class="table table-bordered" id="table-detalhamentoSkuSimulado" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>nomeSimulacao<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>codReduzido<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>previcaoVendasOriginal<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>percentualMarca<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>percentualABC<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>percentualCategoria<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>_%Considerado<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>NovaPrevicao<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados da tabela -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="custom-pagination-container pagination-detalhamento d-md-flex col-12 text-center text-md-start">
+                    <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
+                        <label for="text">Itens por página</label>
+                        <input id="itens-detalhamentoSkuSimulado" class="input-itens" type="text" value="15" min="1">
+                    </div>
+                    <div id="pagination-detalhamentoSkuSimulado" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

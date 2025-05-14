@@ -71,6 +71,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(Simular_Programacao('1', $dadosObjeto));
                     break;
+                case 'simulacaoDetalhadaPorSku':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(simulacaoDetalhadaPorSku('1', $dadosObjeto));
+                    break;
                 case 'Cadastro_Simulacao':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
@@ -170,7 +175,7 @@ function ConsultaCategorias($empresa)
 
 function ConsultaAbc($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaParametrizacaoABC";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -192,7 +197,7 @@ function ConsultaAbc($empresa)
 
 function ConsultaSimulacoes($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaSimulacoes";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -214,7 +219,7 @@ function ConsultaSimulacoes($empresa)
 
 function ConsultaAbcPlano($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaPlanejamentoABC_plano?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -293,8 +298,40 @@ function ConsultaTendencias($empresa, $dados)
 
 function Simular_Programacao($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/simulacaoProgramacao";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function simulacaoDetalhadaPorSku($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/simulacaoDetalhadaPorSku";
 
     $ch = curl_init($apiUrl);
 
@@ -326,7 +363,7 @@ function Simular_Programacao($empresa, $dados)
 
 function CadastroSimulacao($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/atualizaInserirSimulacao";
 
     $ch = curl_init($apiUrl);
