@@ -609,7 +609,6 @@ function TabelaTendencia(listaTendencia) {
         $('#table-tendencia').on('click', '.detalha-SimulacaoSku', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
-        console.log(`Teste2 Plano selecionado: ${codPlan}`)
         
         Detalha_SimulacaoSku(codReduzido);
     });
