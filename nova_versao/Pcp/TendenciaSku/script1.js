@@ -36,7 +36,7 @@ $(document).ready(async () => {
     $('#form-simulacao').on('submit', async function (e) {
         e.preventDefault();
 
-        const inputDescricao = document.getElementById('descricao-simulacao');
+        const inputDescricao = document.getElementById('select-simulacao');
 
         console.log('Valor da descrição:', inputDescricao.value);
 
