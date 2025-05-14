@@ -225,14 +225,14 @@ include_once('../../templates/headerPcp.php');
                     <table class="table table-bordered" id="table-detalhamentoSkuSimulado" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>Nome<br>Simulacao</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>codReduzido<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>previcao Vendas<br>Original</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>%<br>lMarca</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>Nome<br>Simulação</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>Reduzido<br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>Previsão Vendas<br>Original</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
+                                <th>%<br>Marca</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
                                 <th>%<br>ABC</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
                                 <th>%<br>Categoria</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
                                 <th>%<br>Considerado</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>
-                                <th>Nova Previcao</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>                               
+                                <th>Nova<br>Previsão</br><input type="search" class="search-input search-input-detalhamentoSkuSimulado"></th>                               
                             </tr>
                         </thead>
                         <tbody>
