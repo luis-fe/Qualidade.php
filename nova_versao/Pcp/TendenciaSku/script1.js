@@ -49,7 +49,7 @@ $(document).ready(async () => {
 
         await Cadastro_Simulacao();
         await Consulta_Simulacoes();
-        await Simular_Programacao();
+        await Simular_Programacao(campoDescricao);
 
         $('#descricao-simulacao').removeAttr('disabled');
         $('#modal-simulacao').modal('hide');
@@ -146,9 +146,8 @@ async function Consulta_Tendencias() {
     }
 };
 
-async function Simular_Programacao() {
-            const descricao = $('#descricao-simulacao').val();
-            console.log(`minha descricao: ${descricao}`);
+async function Simular_Programacao(campoDescricao) {
+     console.log(`minha descricao: ${campoDescricao}`);
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -156,7 +155,7 @@ async function Simular_Programacao() {
             dados: {
                 codPlano: $('#select-plano').val(),
                 consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
-                nomeSimulacao:  descricao// ✅ aqui é o valor
+                nomeSimulacao:  campoDescricao// ✅ aqui é o valor
             }
         };
 
