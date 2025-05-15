@@ -39,6 +39,8 @@ $(document).ready(async () => {
         const inputDescricao = document.getElementById('select-simulacao');
 
         console.log('Valor da descrição:', inputDescricao.value);
+        var cacheDescricao = inputDescricao.value; // salva antes de fechar
+
 
 
         await Cadastro_Simulacao();
@@ -661,7 +663,7 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
 async function Detalha_SimulacaoSku(codReduzido) {
     $('#loadingModal').modal('show');
         const inputDescricao = document.getElementById('select-simulacao');
-        console.log('Valor da descrição da simulacao detalhado:', inputDescricao.value);
+        console.log('Valor da descrição da simulacao detalhado:', cacheDescricao);
     try {
 
         const requestData = {
@@ -672,7 +674,7 @@ async function Detalha_SimulacaoSku(codReduzido) {
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "codSku": codReduzido,
 
-                "nomeSimulacao":  inputDescricao.value
+                "nomeSimulacao":  cacheDescricao
             }
 
         };
