@@ -48,7 +48,7 @@ $(document).ready(async () => {
         await Consulta_Simulacoes();
         await Simular_Programacao(inputDescricao.value);
 
-        //$('#descricao-simulacao').removeAttr('disabled');
+        $('#descricao-simulacao').removeAttr('disabled');
         $('#modal-simulacao').modal('hide');
     });
 });
@@ -152,7 +152,7 @@ async function Simular_Programacao(campoDescricao) {
             dados: {
                 codPlano: $('#select-plano').val(),
                 consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
-                nomeSimulacao:  campoDescricao// ✅ aqui é o valor
+                nomeSimulacao:  campoDescricao
             }
         };
 
