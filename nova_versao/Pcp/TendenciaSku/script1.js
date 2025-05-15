@@ -663,7 +663,6 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
 
 async function Detalha_SimulacaoSku(codReduzido) {
     $('#loadingModal').modal('show');
-        const inputDescricao = document.getElementById('select-simulacao');
         console.log('Valor da descrição da simulacao detalhado:', cacheDescricao);
     try {
 
@@ -674,7 +673,6 @@ async function Detalha_SimulacaoSku(codReduzido) {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "codSku": codReduzido,
-
                 "nomeSimulacao":  cacheDescricao
             }
 
@@ -686,7 +684,7 @@ const response = await $.ajax({
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-
+        console.log(response)
         TabeldetalhamentoSkuSimulado(response);
         $('#modal-detalhamentoSkuSimulado').modal('show');
     } catch (error) {
