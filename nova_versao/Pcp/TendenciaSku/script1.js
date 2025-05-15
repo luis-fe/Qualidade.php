@@ -1,3 +1,4 @@
+let cacheDescricao = ''
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
@@ -39,7 +40,7 @@ $(document).ready(async () => {
         const inputDescricao = document.getElementById('select-simulacao');
 
         console.log('Valor da descrição:', inputDescricao.value);
-        var cacheDescricao = inputDescricao.value; // salva antes de fechar
+        cacheDescricao = inputDescricao.value; // salva antes de fechar
 
 
 
