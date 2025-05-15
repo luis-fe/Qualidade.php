@@ -160,6 +160,8 @@ async function Simular_Programacao(campoDescricao) {
             data: JSON.stringify(requestData),
         });
 
+        console.log(response)
+
         TabelaTendencia(response);
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
