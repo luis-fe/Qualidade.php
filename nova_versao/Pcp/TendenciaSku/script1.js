@@ -45,7 +45,7 @@ $(document).ready(async () => {
         await Consulta_Simulacoes();
         await Simular_Programacao(inputDescricao.value);
 
-        $('#descricao-simulacao').removeAttr('disabled');
+        //$('#descricao-simulacao').removeAttr('disabled');
         $('#modal-simulacao').modal('hide');
     });
 });
@@ -160,7 +160,6 @@ async function Simular_Programacao(campoDescricao) {
             data: JSON.stringify(requestData),
         });
 
-        console.log(response)
 
         TabelaTendencia(response);
     } catch (error) {
@@ -661,6 +660,8 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
 
 async function Detalha_SimulacaoSku(codReduzido) {
     $('#loadingModal').modal('show');
+        const inputDescricao = document.getElementById('select-simulacao');
+        console.log('Valor da descrição da simulacao detalhado:', inputDescricao.value);
     try {
 
         const requestData = {
@@ -670,7 +671,8 @@ async function Detalha_SimulacaoSku(codReduzido) {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "codSku": codReduzido,
-                "nomeSimulacao":  $('#select-simulacao').val()
+
+                "nomeSimulacao":  inputDescricao.value
             }
 
         };
