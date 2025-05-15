@@ -89,7 +89,7 @@
             }
         }
 
-        .fa-trophy{
+        .fa-trophy {
             color: yellow;
         }
     </style>
@@ -109,7 +109,7 @@
                 <input type="date" id="dataFim" class="form-control">
             </div>
             <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-primary w-100" onclick="Consultas()" id="btnFiltrar">
+                <button class="btn btn-primary w-100" onclick="AtualizarDados()" id="btnFiltrar">
                     <i class="bi bi-search"></i> Filtrar
                 </button>
             </div>
@@ -238,24 +238,36 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
+        let isAtualizando = false;
+
         $(document).ready(async function() {
             const currentDate = new Date();
             const formattedDate = FormatarData(currentDate);
             $("#dataInicio").val(formattedDate);
             $("#dataFim").val(formattedDate);
 
-            await Consultar_Faturamentos();
-            await Consultar_Produtividade_Separacao('TagsSeparacao');
-            await Consultar_Produtividade_Reposicao('TagsReposicao');
-            await Consultar_Produtividade_Caixa()
+            await AtualizarDados();
 
+            // Atualiza os dados a cada 1 minuto, somente se não estiver atualizando
+            setInterval(async () => {
+                if (!isAtualizando) {
+                    await AtualizarDados();
+                }
+            }, 60000);
         });
 
-        async function Consultas() {
-            await Consultar_Faturamentos();
-            await Consultar_Produtividade_Separacao('TagsSeparacao');
-            await Consultar_Produtividade_Reposicao('TagsReposicao');
-            await Consultar_Produtividade_Caixa()
+        async function AtualizarDados() {
+            isAtualizando = true;
+            try {
+                await Consultar_Faturamentos();
+                await Consultar_Produtividade_Separacao('TagsSeparacao');
+                await Consultar_Produtividade_Reposicao('TagsReposicao');
+                await Consultar_Produtividade_Caixa();
+            } catch (error) {
+                console.error("Erro ao atualizar dados:", error);
+            } finally {
+                isAtualizando = false;
+            }
         }
 
         const Consultar_Faturamentos = async () => {
@@ -416,6 +428,7 @@
                     $('#caixas').html(`
                         <span><i class="fa-solid fa-trophy"></i> ${response[0]['1- Record']}: ${response[0]['1.1- Record qtdCaixas']} Caixas</span>
                         <span>Total Caixas: ${response[0]['2 Total Caixas']} Caixas</span>
+                        <span>Total Peças: ${response[0]['2.1 Total Pcs']} Caixas</span>
                     `);
                     // Cria o corpo da tabela com o ranking
                     let tbodyHTML = '';
