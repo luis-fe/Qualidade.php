@@ -432,7 +432,6 @@ function TabelaTendencia(listaTendencia) {
             action: async function (e, dt, node, config) {
                 $('#modal-simulacao').modal('show');
                 $('#campo-simulacao').removeClass('d-none');
-                $('#campo-desc-simulacao').addClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
 
@@ -454,7 +453,6 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-cadastrar-nova-simulacao').modal('show');
-                $('#campo-desc-simulacao').addClass('d-none');
 
                 await Consulta_Abc();
                 await Consulta_Categorias();

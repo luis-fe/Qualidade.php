@@ -135,10 +135,7 @@ include_once('../../templates/headerPcp.php');
                         <select id="select-simulacao" class="form-select">
                         </select>
                     </div>
-                    <div class="mb-4 col-12 d-none" id="campo-desc-simulacao">
-                        <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
-                        <input type="text"  id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" />
-                    </div>
+
                     <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
