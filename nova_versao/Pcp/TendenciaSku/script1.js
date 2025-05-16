@@ -54,7 +54,6 @@ $(document).ready(async () => {
         await Simular_Programacao(inputDescricao.value);
 
         $('#descricao-simulacao').removeAttr('disabled');
-        inputDescricao2.value = ''; // limpa apenas o campo digitável
 
         $('#modal-simulacao').modal('hide');
     });
