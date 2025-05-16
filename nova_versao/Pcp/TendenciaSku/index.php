@@ -26,8 +26,8 @@ include_once('../../templates/headerPcp.php');
         background-color: #fff;
     }
 
-    table th:nth-child(3),
-    table td:nth-child(3) {
+  #modal-detalhamentoSkuSimulado table th:nth-child(3),
+  #modal-detalhamentoSkuSimulado table td:nth-child(3)  {
         background-color: #007BFF !important; /* azul */
         color: white!important;
         font-weight: bold!important;
