@@ -130,6 +130,11 @@ include_once('../../templates/headerPcp.php');
             </div>
                 <form id="form-simulacao">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                    <div class="select mb-4 text-start d-none" id="campo-simulacao">
+                        <label for="select-simulacao" class="form-label">Simulação</label>
+                        <select id="select-simulacao" class="form-select">
+                        </select>
+                    </div>
                     <div class="mb-4 col-12 d-none" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text"  id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" />
