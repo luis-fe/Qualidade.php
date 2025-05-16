@@ -436,6 +436,7 @@ function TabelaTendencia(listaTendencia) {
             action: async function (e, dt, node, config) {
                 $('#modal-simulacao').modal('show');
                 $('#campo-simulacao').removeClass('d-none');
+                $('#campo-desc-simulacao').addClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
 
