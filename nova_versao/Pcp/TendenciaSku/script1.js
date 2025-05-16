@@ -455,9 +455,8 @@ function TabelaTendencia(listaTendencia) {
             },
         },
                 {
-            text: `<i class="text-primary fw-bold" style="margin-right: 5px;"></i>${cacheDescricao}`,
+            text: `<i class="text-primary fw-bold" style="margin-right: 10px;"></i>${cacheDescricao}`,
             title: cacheDescricao,
-            className: 'btn-tabelas',
         },
         ],
         columns: [{
