@@ -26,7 +26,12 @@ include_once('../../templates/headerPcp.php');
         background-color: #fff;
     }
 
-
+    table th:nth-child(3),
+    table td:nth-child(3) {
+        background-color: #007BFF !important; /* azul */
+        color: white!important;
+        font-weight: bold!important;
+    }
 
 
 </style>
@@ -180,11 +185,11 @@ include_once('../../templates/headerPcp.php');
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <form id="form-cadastrar-nova-simulacao">
-                    <div class="mb-4 col-12 d-none" id="campo-desc-simulacao">
+                    <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text"  id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" />
                     </div>
-                    <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
+                    <div class="mb-4 col-12" id="inputs-container-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
                             <div class="col-12 col-md-3">
