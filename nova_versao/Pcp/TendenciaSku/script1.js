@@ -153,6 +153,9 @@ async function Consulta_Tendencias() {
         Mensagem_Canto('Erro', 'error')
     } finally {
         cacheDescricao = ''
+        document.querySelector('.text-primary.fw-bold').innerText = '';
+
+
         $('#loadingModal').modal('hide');
     }
 };
