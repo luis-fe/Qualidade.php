@@ -38,9 +38,12 @@ $(document).ready(async () => {
         e.preventDefault();
 
         const inputDescricao = document.getElementById('select-simulacao');
+        const inputDescricao2 = document.getElementById('descricao-simulacao');
+
 
         console.log('Valor da descrição:', inputDescricao.value);
         cacheDescricao = inputDescricao.value; // salva antes de fechar
+        cacheDescricao = inputDescricao2.value; 
 
 
 
@@ -455,7 +458,7 @@ function TabelaTendencia(listaTendencia) {
             },
         },
             {
-                text: `<span class="text-primary fw-bold" style="background-color: transparent !important; margin-right: 10px;">${cacheDescricao}</span>`,
+                text: `<span class="text-primary fw-bold" style="background-color: transparent !important; margin-right: 10px !important;">${cacheDescricao}</span>`,
                 className: 'bg-transparent border-0 p-0 m-0'  // aparência mínima
             }
         ],
