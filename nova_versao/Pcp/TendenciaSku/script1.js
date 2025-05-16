@@ -1,4 +1,5 @@
 let cacheDescricao = ''
+
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
@@ -151,6 +152,7 @@ async function Consulta_Tendencias() {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
     } finally {
+        cacheDescricao = ''
         $('#loadingModal').modal('hide');
     }
 };
