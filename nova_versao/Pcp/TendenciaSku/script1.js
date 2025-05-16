@@ -40,27 +40,25 @@ $(document).ready(async () => {
         const inputDescricao = document.getElementById('select-simulacao');
         const inputDescricao2 = document.getElementById('descricao-simulacao');
 
+        // Decide qual descrição usar
+        if (inputDescricao2.value.trim() !== '') {
+            cacheDescricao = inputDescricao2.value.trim();
+        } else {
+            cacheDescricao = inputDescricao.value.trim();
+        }
 
-        console.log('Valor da descrição:', inputDescricao.value);
-        cacheDescricao = inputDescricao.value; // salva antes de fechar
-        cacheDescricao = inputDescricao2.value; 
-
-
+        console.log('cacheDescricao:', cacheDescricao);
 
         await Cadastro_Simulacao();
         await Consulta_Simulacoes();
         await Simular_Programacao(inputDescricao.value);
-        
-
 
         $('#descricao-simulacao').removeAttr('disabled');
-        document.getElementById('descricao-simulacao').value = '';
+        inputDescricao2.value = ''; // limpa apenas o campo digitável
 
         $('#modal-simulacao').modal('hide');
-
-
-
     });
+
 });
 
 async function Consulta_Simulacoes() {
