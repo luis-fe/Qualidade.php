@@ -454,8 +454,6 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-cadastrar-nova-simulacao').modal('show');
-                $('#campo-desc-simulacao').removeClass('d-none');
-                $('#inputs-container-marcas').removeClass('d-none');
                 await Consulta_Abc();
                 await Consulta_Categorias();
 
