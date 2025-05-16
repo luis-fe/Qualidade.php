@@ -59,7 +59,6 @@ $(document).ready(async () => {
     await Cadastro_Simulacao();
     await Consulta_Simulacoes();
 
-    $('#descricao-simulacao').removeAttr('disabled');
 
     $('#modal-cadastrar-nova-simulacao"').modal('hide');
     });
@@ -452,17 +451,17 @@ function TabelaTendencia(listaTendencia) {
                 }
             }
         },
-        {
+         {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Nova Simulação',
             title: 'Nova Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-cadastrar-nova-simulacao').modal('show');
-
+                $('#modal-simulacao').modal('show');
+                $('#campo-simulacao').addClass('d-none');
+                $('#campo-desc-simulacao').removeClass('d-none');
+                $('#inputs-container-marcas').removeClass('d-none');
                 await Consulta_Abc();
-                await Consulta_Categorias();
-
-
+                Consulta_Categorias();
             },
         },
             {
