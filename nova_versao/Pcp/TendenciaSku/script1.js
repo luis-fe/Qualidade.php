@@ -60,7 +60,7 @@ $(document).ready(async () => {
 
     $('#descricao-simulacao').removeAttr('disabled');
 
-    $('#modal-simulacao').modal('hide');
+    $('#modal-cadastrar-nova-simulacao"').modal('hide');
     });
 
 });
@@ -454,6 +454,8 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-cadastrar-nova-simulacao').modal('show');
+                $('#campo-desc-simulacao').addClass('d-none');
+
                 await Consulta_Abc();
                 await Consulta_Categorias();
 
