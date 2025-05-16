@@ -29,7 +29,8 @@ include_once('../../templates/headerPcp.php');
 
     table caption {
     caption-side: top !important; /* força para cima */
-    text-align: center;
+    /*text-align: center;*/
+    margin-right: 10px;
     font-weight: bold;
     color:rgb(253, 57, 13); /* azul bootstrap */
 }
