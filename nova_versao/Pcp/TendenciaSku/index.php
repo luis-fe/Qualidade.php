@@ -27,13 +27,6 @@ include_once('../../templates/headerPcp.php');
     }
 
 
-    table caption {
-    caption-side: top !important; /* força para cima */
-    /*text-align: center;*/
-    margin-right: 10px;
-    font-weight: bold;
-    color:rgb(253, 57, 13); /* azul bootstrap */
-}
 
 
 </style>
@@ -72,7 +65,6 @@ include_once('../../templates/headerPcp.php');
 <div class="col-12 div-tendencia mt-3 d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-tendencia" style="width: 100%;">
-            <caption class="text-center text-primary fw-bold">Tabela de Tendência de Vendas</caption>
             <thead>
                 <tr>
                     <th>Marca<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
