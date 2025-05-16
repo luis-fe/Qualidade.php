@@ -25,6 +25,16 @@ include_once('../../templates/headerPcp.php');
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         background-color: #fff;
     }
+
+
+    table caption {
+    caption-side: top !important; /* força para cima */
+    text-align: center;
+    font-weight: bold;
+    color:rgb(253, 57, 13); /* azul bootstrap */
+}
+
+
 </style>
 <div class="titulo-tela">
     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas

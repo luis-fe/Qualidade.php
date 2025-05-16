@@ -47,9 +47,14 @@ $(document).ready(async () => {
         await Cadastro_Simulacao();
         await Consulta_Simulacoes();
         await Simular_Programacao(inputDescricao.value);
+        
+
 
         $('#descricao-simulacao').removeAttr('disabled');
         $('#modal-simulacao').modal('hide');
+
+
+
     });
 });
 
