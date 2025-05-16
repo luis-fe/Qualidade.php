@@ -25,12 +25,14 @@ include_once('../../templates/headerPcp.php');
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         background-color: #fff;
     }
-
-  #modal-detalhamentoSkuSimulado table th:nth-child(7),
-  #modal-detalhamentoSkuSimulado table td:nth-child(7)  {
+    /* ESTILO DA TABELA DETALHAMENTO SIMULADO DESTACANDO A COLUNA %CONSIDERADO E A NOVA PREVISAO PARA O ANALISTA !!! */
+    #modal-detalhamentoSkuSimulado table th:nth-child(7),
+    #modal-detalhamentoSkuSimulado table th:nth-child(8),
+    #modal-detalhamentoSkuSimulado table td:nth-child(7),
+    #modal-detalhamentoSkuSimulado table td:nth-child(8) {
         background-color: #007BFF !important; /* azul */
-        color: white!important;
-        font-weight: bold!important;
+        color: white !important;
+        font-weight: bold !important;
     }
 
 
@@ -133,14 +135,17 @@ include_once('../../templates/headerPcp.php');
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <form id="form-simulacao">
+            <form id="form-simulacao" onsubmit="async function simulacao (){await Cadastro_Simulacao(); await Consulta_Simulacoes(); await Simular_Programacao(); $('#descricao-simulacao').removeAttr('disabled'); $('#modal-simulacao').modal('hide');}; simulacao(); return false;">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
                     <div class="select mb-4 text-start d-none" id="campo-simulacao">
                         <label for="select-simulacao" class="form-label">Simulação</label>
                         <select id="select-simulacao" class="form-select">
                         </select>
                     </div>
-
+                    <div class="mb-4 col-12 d-none" id="campo-desc-simulacao">
+                        <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
+                        <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
+                    </div>
                     <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
