@@ -455,7 +455,7 @@ function TabelaTendencia(listaTendencia) {
             },
         },
             {
-                text: `<span class="text-primary fw-bold" style="background-color: transparent !important;">${cacheDescricao}</span>`,
+                text: `<span class="text-primary fw-bold" style="background-color: transparent !important; margin-right: 10px;">${cacheDescricao}</span>`,
                 className: 'bg-transparent border-0 p-0 m-0'  // aparência mínima
             }
         ],
