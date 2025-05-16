@@ -454,9 +454,10 @@ function TabelaTendencia(listaTendencia) {
                 Consulta_Categorias();
             },
         },
-        {
-        text: `<span style="background-color: transparent !important;" class="text-primary fw-bold">${cacheDescricao}</span>`,
-        },
+            {
+                text: `<span class="text-primary fw-bold" style="background-color: transparent !important;">${cacheDescricao}</span>`,
+                className: 'bg-transparent border-0 p-0 m-0'  // aparência mínima
+            }
         ],
         columns: [{
             data: 'marca'
