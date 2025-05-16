@@ -38,14 +38,10 @@ $(document).ready(async () => {
         e.preventDefault();
 
         const inputDescricao = document.getElementById('select-simulacao');
-        const inputDescricao2 = document.getElementById('descricao-simulacao');
 
-        // Decide qual descrição usar
-        if (inputDescricao2.value.trim() !== '') {
-            cacheDescricao = inputDescricao2.value.trim();
-        } else {
-            cacheDescricao = inputDescricao.value.trim();
-        }
+
+        cacheDescricao = inputDescricao.value;
+
 
         console.log('cacheDescricao:', cacheDescricao);
 
@@ -53,9 +49,18 @@ $(document).ready(async () => {
         await Consulta_Simulacoes();
         await Simular_Programacao(inputDescricao.value);
 
-        $('#descricao-simulacao').removeAttr('disabled');
-
         $('#modal-simulacao').modal('hide');
+    });
+
+    $('#form-cadastrar-nova-simulacao').on('submit', async function (e) {
+    e.preventDefault();
+
+    await Cadastro_Simulacao();
+    await Consulta_Simulacoes();
+
+    $('#descricao-simulacao').removeAttr('disabled');
+
+    $('#modal-simulacao').modal('hide');
     });
 
 });
@@ -448,7 +453,7 @@ function TabelaTendencia(listaTendencia) {
             title: 'Nova Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-simulacao').modal('show');
+                $('#modal-cadastrar-nova-simulacao').modal('show');
                 $('#campo-simulacao').addClass('d-none');
                 $('#campo-desc-simulacao').removeClass('d-none');
                 $('#inputs-container-marcas').removeClass('d-none');
