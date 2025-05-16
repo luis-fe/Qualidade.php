@@ -454,8 +454,8 @@ function TabelaTendencia(listaTendencia) {
                 Consulta_Categorias();
             },
         },
-                {
-            text: `<i class="text-primary fw-bold" style="margin-right: 10px;"></i>${cacheDescricao}`,
+        {
+            text: `<i class="text-primary fw-bold" style="margin-right: 10px; background-color: transparent;">${cacheDescricao}</i>`,
             title: cacheDescricao,
         },
         ],
