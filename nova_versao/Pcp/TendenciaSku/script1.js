@@ -54,6 +54,8 @@ $(document).ready(async () => {
 
 
         $('#descricao-simulacao').removeAttr('disabled');
+        document.getElementById('descricao-simulacao').value = '';
+
         $('#modal-simulacao').modal('hide');
 
 
