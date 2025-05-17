@@ -53,11 +53,7 @@ $('#form-simulacao').on('submit', async function (e) {
             // Fecha o modal
     $('#modal-simulacao').modal('hide');
     $('#loadingModal').modal('hide');
-
-
-
-
-});
+    });
 
 
     $('#form-cad_simulacao').on('submit', async function (e) {
@@ -71,6 +67,12 @@ $('#form-simulacao').on('submit', async function (e) {
     $('#modal-cad_simulacao').modal('hide');
     });
 
+    $(document).on('click', '#btn-zerar-categorias', function () {
+    $('.input-categoria').val('0,00%');
+    
+    });
+
+ 
 });
 
 async function Consulta_Simulacoes() {
