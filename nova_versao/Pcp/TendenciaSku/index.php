@@ -191,7 +191,7 @@ include_once('../../templates/headerPcp.php');
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
-                    <div class="mb-4 col-12" id="inputs-container-marcas">
+                    <div class="mb-4 col-12" id="inputs-container-Cadmarcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
                             <div class="col-12 col-md-3">
@@ -206,12 +206,12 @@ include_once('../../templates/headerPcp.php');
                     </div>
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-container" class="row">
+                        <div id="inputs-Cadcontainer" class="row">
                         </div>
                     </div>
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias" class="row">
+                        <div id="inputs-Cadcontainer-categorias" class="row">
                         </div>
                     </div>
                 </div>
