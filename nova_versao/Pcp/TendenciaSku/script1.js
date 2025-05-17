@@ -415,7 +415,7 @@ const Consulta_Categorias2 = async () => {
             }
         });
 
-        const inputsContainer = $('#inputs-Cadcontainer-categorias');
+        const inputsContainer = $('#inputs-Cadcontainer-Cadcategorias');
         inputsContainer.empty();
 
         data.forEach((item) => {
@@ -532,7 +532,7 @@ function TabelaTendencia(listaTendencia) {
             action: async function (e, dt, node, config) {
                 $('#modal-cad_simulacao').modal('show');
                 await Consulta_Abc2();
-                Consulta_Categorias2();
+                Consulta_Categorias2(); 
             },
         },
             {
