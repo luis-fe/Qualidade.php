@@ -38,8 +38,6 @@ $(document).ready(async () => {
 $('#form-simulacao').on('submit', async function (e) {
     e.preventDefault();
 
-    // Habilite o campo ANTES de submeter
-    $('#descricao-simulacao').removeAttr('disabled');
 
     const inputDescricao = document.getElementById('select-simulacao');
 
@@ -50,8 +48,6 @@ $('#form-simulacao').on('submit', async function (e) {
     await Consulta_Simulacoes();
     await Simular_Programacao(inputDescricao.value);
 
-    // Limpa o campo
-    document.getElementById('descricao-simulacao').value = '';
 
     // Fecha o modal
     $('#modal-simulacao').modal('hide');

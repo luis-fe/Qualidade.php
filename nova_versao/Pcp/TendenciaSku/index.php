@@ -142,7 +142,52 @@ include_once('../../templates/headerPcp.php');
                         <select id="select-simulacao" class="form-select">
                         </select>
                     </div>
-                    <div class="mb-4 col-12 d-none" id="campo-desc-simulacao">
+                    <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
+                        <h6 class="fw-bold">MARCA</h6>
+                        <div class="row">
+                            <div class="col-12 col-md-3">
+                                <label class="fw-bold">M.POLLO</label>
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca col-12" placeholder="%" />
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <label class="fw-bold">PACO</label>
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca col-12" placeholder="%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 col-12">
+                        <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
+                        <div id="inputs-container" class="row">
+                        </div>
+                    </div>
+                    <div class="mt-5 col-12">
+                        <h6 class="fw-bold">CATEGORIAS</h6>
+                        <div id="inputs-container-categorias" class="row">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-salvar">
+                        <span><i class="bi bi-floppy"></i></span>
+                        Salvar e Simular
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-custom" id="modal-cad_simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Cadastro De Simulações</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form id="form-simulacao">
+                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                    <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
@@ -180,8 +225,6 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
-
-
 
 
 
