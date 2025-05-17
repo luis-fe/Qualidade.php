@@ -35,22 +35,30 @@ $(document).ready(async () => {
 
 
 // Aqui está o onsubmit do form
-    $('#form-simulacao').on('submit', async function (e) {
+   $('#form-simulacao').on('submit', async function (e) {
         e.preventDefault();
 
         const inputDescricao = document.getElementById('select-simulacao');
 
 
-        cacheDescricao = inputDescricao.value;
+        console.log('Valor da descrição:', inputDescricao.value);
+        cacheDescricao = inputDescricao.value; // salva antes de fechar
 
 
-        console.log('cacheDescricao:', cacheDescricao);
 
         await Cadastro_Simulacao();
         await Consulta_Simulacoes();
         await Simular_Programacao(inputDescricao.value);
+        
+
+
+        $('#descricao-simulacao').removeAttr('disabled');
+        document.getElementById('descricao-simulacao').value = '';
 
         $('#modal-simulacao').modal('hide');
+
+
+
     });
 
     $('#form-cadastrar-nova-simulacao').on('submit', async function (e) {
