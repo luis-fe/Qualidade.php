@@ -34,25 +34,26 @@ $(document).ready(async () => {
     $('#btn-vendas').addClass('btn-menu-clicado');
 
 
-// Aqui está o onsubmit do form
-$('#form-simulacao').on('submit', async function (e) {
-    e.preventDefault();
+    // Aqui está o onsubmit do form
+    $('#form-simulacao').on('submit', async function (e) {
+        e.preventDefault();
 
 
-    const inputDescricao = document.getElementById('select-simulacao');
+        const inputDescricao = document.getElementById('select-simulacao');
 
-    console.log('Valor da descrição:', inputDescricao.value);
-    cacheDescricao = inputDescricao.value;
+        console.log('Valor da descrição:', inputDescricao.value);
+        cacheDescricao = inputDescricao.value;
 
-    await Cadastro_Simulacao();
-    await Consulta_Simulacoes();
+        await Cadastro_Simulacao();
+        await Consulta_Simulacoes();
 
-    await Simular_Programacao(inputDescricao.value);
-    $('#loadingModal').modal('show');
+        await Simular_Programacao(inputDescricao.value);
+        $('#loadingModal').modal('show');
 
-            // Fecha o modal
-    $('#modal-simulacao').modal('hide');
-    $('#loadingModal').modal('hide');
+                // Fecha o modal
+        $('#modal-simulacao').modal('hide');
+        $('#loadingModal').modal('hide');
+    
     });
 
 
@@ -247,7 +248,7 @@ async function Cadastro_Simulacao() {
         const requestData = {
             acao: "Cadastro_Simulacao",
             dados: {
-                "nomeSimulacao": $('#descricao-simulacao').val(),
+                "nomeSimulacao": cacheDescricao,
                 arrayAbc: [
                     abcs,
                     percentuais_abc
