@@ -48,8 +48,10 @@ $('#form-simulacao').on('submit', async function (e) {
     await Consulta_Simulacoes();
 
     await Simular_Programacao(inputDescricao.value);
+    $('#loadingModal').modal('show');
+
             // Fecha o modal
-    await $('#modal-simulacao').modal('hide');
+    $('#modal-simulacao').modal('hide');
     $('#loadingModal').modal('hide');
 
 
@@ -191,6 +193,8 @@ async function Simular_Programacao(campoDescricao) {
         Mensagem_Canto('Erro', 'error');
     } finally {
         console.log('carregao com sucesso')
+        $('#loadingModal').modal('hide');
+
     }
 }
 
