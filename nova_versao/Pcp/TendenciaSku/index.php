@@ -191,7 +191,7 @@ include_once('../../templates/headerPcp.php');
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
-                    <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
+                    <div class="mb-4 col-12" id="inputs-container-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
                             <div class="col-12 col-md-3">

@@ -49,7 +49,7 @@ $('#form-simulacao').on('submit', async function (e) {
 
     await Simular_Programacao(inputDescricao.value);
             // Fecha o modal
-    $('#modal-simulacao').modal('hide');
+    await $('#modal-simulacao').modal('hide');
     $('#loadingModal').modal('hide');
 
 
@@ -463,9 +463,6 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-cad_simulacao').modal('show');
-                $('#campo-simulacao').addClass('d-none');
-                $('#campo-desc-simulacao').removeClass('d-none');
-                $('#inputs-container-marcas').removeClass('d-none');
                 await Consulta_Abc();
                 Consulta_Categorias();
             },
