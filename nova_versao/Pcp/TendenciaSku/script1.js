@@ -46,22 +46,23 @@ $('#form-simulacao').on('submit', async function (e) {
 
     await Cadastro_Simulacao();
     await Consulta_Simulacoes();
+        // Fecha o modal
+    $('#modal-simulacao').modal('hide');
     await Simular_Programacao(inputDescricao.value);
 
 
-    // Fecha o modal
-    $('#modal-simulacao').modal('hide');
+
 });
 
 
-    $('#form-cadastrar-nova-simulacao').on('submit', async function (e) {
+    $('#form-cad_simulacao').on('submit', async function (e) {
     e.preventDefault();
 
     await Cadastro_Simulacao();
     await Consulta_Simulacoes();
 
 
-    $('#modal-cadastrar-nova-simulacao"').modal('hide');
+    $('#modal-cad_simulacao').modal('hide');
     });
 
 });

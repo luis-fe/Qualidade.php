@@ -185,7 +185,7 @@ include_once('../../templates/headerPcp.php');
                 <h5 class="modal-title" style="color: black;">Cadastro De Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <form id="form-simulacao">
+                <form id="form-cad_simulacao">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
                     <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
@@ -218,7 +218,7 @@ include_once('../../templates/headerPcp.php');
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-salvar">
                         <span><i class="bi bi-floppy"></i></span>
-                        Salvar e Simular
+                        Cadastar
                     </button>
                 </div>
             </form>
