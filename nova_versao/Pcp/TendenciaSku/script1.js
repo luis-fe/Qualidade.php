@@ -399,6 +399,38 @@ const Consulta_Categorias = async () => {
     }
 };
 
+const Consulta_Categorias2 = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Categorias',
+            }
+        });
+
+        const inputsContainer = $('#inputs-Cadcontainer-categorias');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">${item.nomeCategoria}</label>
+                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
+                    </div>
+                `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-categoria').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
 const Consulta_Simulacao_Especifica = async () => {
     try {
         const data = await $.ajax({
@@ -473,7 +505,6 @@ function TabelaTendencia(listaTendencia) {
             action: async function (e, dt, node, config) {
                 $('#modal-simulacao').modal('show');
                 $('#campo-simulacao').removeClass('d-none');
-                $('#campo-desc-simulacao').addClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
 
@@ -496,7 +527,7 @@ function TabelaTendencia(listaTendencia) {
             action: async function (e, dt, node, config) {
                 $('#modal-cad_simulacao').modal('show');
                 await Consulta_Abc2();
-                Consulta_Categorias();
+                Consulta_Categorias2();
             },
         },
             {
