@@ -196,11 +196,11 @@ include_once('../../templates/headerPcp.php');
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca col-12" placeholder="%" value="100%" />
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca2 col-12" placeholder="%" value="100%" />
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca col-12" placeholder="%" value="100%"/>
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca2 col-12" placeholder="%" value="100%"/>
                             </div>
                         </div>
                     </div>

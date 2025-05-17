@@ -59,7 +59,7 @@ $('#form-simulacao').on('submit', async function (e) {
     $('#form-cad_simulacao').on('submit', async function (e) {
     e.preventDefault();
 
-    await Cadastro_Simulacao();
+    await Cadastro_Simulacao2();
     await Consulta_Simulacoes();
     $('#descricao-simulacao').val('');
 
@@ -277,6 +277,87 @@ async function Cadastro_Simulacao() {
     }
 };
 
+
+
+async function Cadastro_Simulacao2() {
+    $('#loadingModal').modal('show');
+    try {
+        const categorias = [];
+        const percentuais_categorias = [];
+
+        $('.input-categoria2').each(function () {
+            const categoria = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (categoria && !isNaN(percentual)) {
+                categorias.push(categoria);
+                percentuais_categorias.push(percentual);
+            }
+        });
+
+        const abcs = [];
+        const percentuais_abc = [];
+
+        $('.input-abc2').each(function () {
+            const abc = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (abc && !isNaN(percentual)) {
+                abcs.push(abc);
+                percentuais_abc.push(percentual);
+            }
+        });
+
+        const marcas = [];
+        const percentuais_marca = [];
+
+        $('.input-marca2').each(function () {
+            const marca = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (marca && !isNaN(percentual)) {
+                marcas.push(marca);
+                percentuais_marca.push(percentual);
+            }
+        });
+
+        const requestData = {
+            acao: "Cadastro_Simulacao",
+            dados: {
+                "nomeSimulacao": $('#descricao-simulacao').val(),
+                arrayAbc: [
+                    abcs,
+                    percentuais_abc
+
+                ],
+                arrayCategoria: [
+                    categorias,
+                    percentuais_categorias
+                ],
+                arrayMarca: [
+                    marcas,
+                    percentuais_marca
+                ]
+            }
+        };
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+
+
+
+
 const Consulta_Abc_Plano = async () => {
     try {
         const data = await $.ajax({
@@ -360,13 +441,13 @@ const Consulta_Abc2 = async () => {
             const inputHtml = `
                 <div class="col-md-3 mb-3">
                     <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
+                    <input type="text" class="inputs-percentuais input-abc2 col-12" id="${item.nomeABC}" placeholder="%" value="0%">
                 </div>
             `;
             inputsContainer.append(inputHtml);
         });
 
-        $('.input-abc').mask("##0,00%", {
+        $('.input-abc2').mask("##0,00%", {
             reverse: true
         });
     } catch (error) {
@@ -424,13 +505,13 @@ const Consulta_Categorias2 = async () => {
             const inputHtml = `
                     <div class="col-md-3 mb-3">
                         <label class="form-label">${item.nomeCategoria}</label>
-                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%" value="10000%">
+                        <input type="text" class="inputs-percentuais input-categoria2 col-12" id="${item.nomeCategoria}" placeholder="%" value="10000%">
                     </div>
                 `;
             inputsContainer.append(inputHtml);
         });
 
-        $('.input-categoria').mask("##0,00%", {
+        $('.input-categoria2').mask("##0,00%", {
             reverse: true
         });
     } catch (error) {
