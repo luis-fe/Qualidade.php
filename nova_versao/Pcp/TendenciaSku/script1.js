@@ -35,31 +35,28 @@ $(document).ready(async () => {
 
 
 // Aqui está o onsubmit do form
-   $('#form-simulacao').on('submit', async function (e) {
-        e.preventDefault();
+$('#form-simulacao').on('submit', async function (e) {
+    e.preventDefault();
 
-        const inputDescricao = document.getElementById('select-simulacao');
+    // Habilite o campo ANTES de submeter
+    $('#descricao-simulacao').removeAttr('disabled');
 
+    const inputDescricao = document.getElementById('select-simulacao');
 
-        console.log('Valor da descrição:', inputDescricao.value);
-        cacheDescricao = inputDescricao.value; // salva antes de fechar
+    console.log('Valor da descrição:', inputDescricao.value);
+    cacheDescricao = inputDescricao.value;
 
+    await Cadastro_Simulacao();
+    await Consulta_Simulacoes();
+    await Simular_Programacao(inputDescricao.value);
 
+    // Limpa o campo
+    document.getElementById('descricao-simulacao').value = '';
 
-        await Cadastro_Simulacao();
-        await Consulta_Simulacoes();
-        await Simular_Programacao(inputDescricao.value);
-        
+    // Fecha o modal
+    $('#modal-simulacao').modal('hide');
+});
 
-
-        $('#descricao-simulacao').removeAttr('disabled');
-        document.getElementById('descricao-simulacao').value = '';
-
-        $('#modal-simulacao').modal('hide');
-
-
-
-    });
 
     $('#form-cadastrar-nova-simulacao').on('submit', async function (e) {
     e.preventDefault();
