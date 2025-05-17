@@ -46,9 +46,12 @@ $('#form-simulacao').on('submit', async function (e) {
 
     await Cadastro_Simulacao();
     await Consulta_Simulacoes();
-        // Fecha o modal
-    $('#modal-simulacao').modal('hide');
+
     await Simular_Programacao(inputDescricao.value);
+            // Fecha o modal
+    $('#modal-simulacao').modal('hide');
+    $('#loadingModal').modal('hide');
+
 
 
 
@@ -187,7 +190,7 @@ async function Simular_Programacao(campoDescricao) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error');
     } finally {
-        $('#loadingModal').modal('hide');
+        console.log('carregao com sucesso')
     }
 }
 
@@ -459,7 +462,7 @@ function TabelaTendencia(listaTendencia) {
             title: 'Nova Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-simulacao').modal('show');
+                $('#modal-cad_simulacao').modal('show');
                 $('#campo-simulacao').addClass('d-none');
                 $('#campo-desc-simulacao').removeClass('d-none');
                 $('#inputs-container-marcas').removeClass('d-none');
