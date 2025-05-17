@@ -422,7 +422,7 @@ const Consulta_Categorias2 = async () => {
             const inputHtml = `
                     <div class="col-md-3 mb-3">
                         <label class="form-label">${item.nomeCategoria}</label>
-                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%" value="100%">
+                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%" value="10000%">
                     </div>
                 `;
             inputsContainer.append(inputHtml);

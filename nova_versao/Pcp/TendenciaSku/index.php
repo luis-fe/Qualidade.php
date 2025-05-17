@@ -210,6 +210,7 @@ include_once('../../templates/headerPcp.php');
                         </div>
                     </div>
                     <div class="mt-5 col-12">
+                        <button id="btn-zerar-categorias" type="button" class="btn btn-warning mb-3">Zerar Percentuais</button>
                         <h6 class="fw-bold">CATEGORIAS</h6>
                         <div id="inputs-Cadcontainer-categorias" class="row">
                         </div>
