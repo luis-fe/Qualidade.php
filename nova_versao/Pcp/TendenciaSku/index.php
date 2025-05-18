@@ -88,6 +88,7 @@ include_once('../../templates/headerPcp.php');
                     <th>Previsão de Vendas<br></th>
                     <th>Qtd. Pedida<br></th>
                     <th>Qtd. Faturada<br></th>
+                    <th>Saldo Col<br>Anterior</br></th>
                     <th>Qtd. em Estoque<br></th>
                     <th>Qtd. em Processo<br></th>
                     <th>Falta Programar<br></th>
