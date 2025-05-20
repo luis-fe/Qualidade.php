@@ -14,7 +14,7 @@ def detalhaSku(codreduzido, empresa,natureza):
     """
 
 
-    df_op2 = pd.read_sql(query, conn, params=(codreduzido, natureza))
+    df_op2 = pd.read_sql(query, conn, params=(codreduzido, str(natureza)))
 
 
 
