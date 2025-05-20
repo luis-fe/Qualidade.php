@@ -77,37 +77,34 @@ def ProdutividadeGarantiaIndividual(dataInico, dataFim , horaInicio, horaFim):
 
     consulta1 = pd.read_sql('''
                             select 
-                                operador1 as operador,  qtd  
+                                operador1 as operador,  qtd::int  
                            from 
                                 "off"."ProdutividadeGarantiaEquipe1" pce 
                            where 
                                 dataapontamento::Date >= %s and 
-                                dataapontamento::Date  <= %s and 
-                                horario >= %s and horario <= %s ''',
+                                dataapontamento::Date  <= %s ''',
                            conn,
-                           params=(dataInico, dataFim, horaInicio, horaFim,))
+                           params=(dataInico, dataFim,))
     consulta2 = pd.read_sql('''
                             select 
-                                operador2 as operador,  qtd  
+                                operador2 as operador,  qtd::int  
                            from 
                                 "off"."ProdutividadeGarantiaEquipe1" pce 
                            where 
                                 dataapontamento::Date >= %s and 
-                                dataapontamento::Date  <= %s and 
-                                horario >= %s and horario <= %s ''',
+                                dataapontamento::Date  <= %s ''',
                            conn,
-                           params=(dataInico, dataFim, horaInicio, horaFim,))
+                           params=(dataInico, dataFim,))
     consulta3 = pd.read_sql('''
                             select 
-                                operador3 as operador,  qtd  
+                                operador3 as operador,  qtd::int  
                            from 
                                 "off"."ProdutividadeGarantiaEquipe1" pce 
                            where 
                                 dataapontamento::Date >= %s and 
-                                dataapontamento::Date  <= %s and 
-                                horario >= %s and horario <= %s ''',
+                                dataapontamento::Date  <= %s ''',
                            conn,
-                           params=(dataInico, dataFim, horaInicio, horaFim,))
+                           params=(dataInico, dataFim,))
 
     conn.close()
 
