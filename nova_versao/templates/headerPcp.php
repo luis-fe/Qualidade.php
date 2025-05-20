@@ -591,6 +591,9 @@
                     <a href="../../Pcp/AnaliseNecessidade/" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Análise de Necessidade <!-- PCP -->
                     </a>
+                    <a href="../../Pcp/Necessidade_pcs/" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i>Necessidade x pçs <!-- PCP -->
+                    </a>
                     <!-- <a href="#" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Análise de Substitutos PCP
                     </a> -->
