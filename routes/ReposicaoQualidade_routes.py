@@ -5,7 +5,7 @@
 
 import models.configuracoes.empresaConfigurada
 import models.configuracoes.SkusSubstitutos
-from models import ReposicaoQualidade, controle, ProdutividadeWms
+from models import ReposicaoQualidade, controle, Novo_ProdutividadeWms
 from models.Processo_Reposicao_OFF import RecarregarEndereco
 from flask import Blueprint, jsonify, request
 from functools import wraps

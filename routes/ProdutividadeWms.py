@@ -1,7 +1,7 @@
 
 from flask import Blueprint, jsonify, request
 from functools import wraps
-from models import ProdutividadeWms
+from models import Novo_ProdutividadeWms
 
 Produtividade_routes = Blueprint('Produtividade_routes', __name__)
 

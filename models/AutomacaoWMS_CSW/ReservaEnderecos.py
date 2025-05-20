@@ -179,12 +179,17 @@ def ReservaPedidosNaoRepostos(empresa, natureza, consideraSobra, ordem,repeticao
     # ----------------------------------------------------------------------------------------------------------------------------------
         # 1 Filtra oa reserva de sku somente para os skus em pedidos:
         skuEmPedios = """
-        select distinct produto from "Reposicao".pedidossku 
-        where necessidade > 0 and reservado = 'nao'
+                select distinct 
+                    produto 
+                from 
+                    "Reposicao".pedidossku 
+                where 
+                    necessidade > 0 
+                    and reservado = 'nao'
         """
         queue2 = pd.read_sql(skuEmPedios,conn)
 
-        # Etappa 2 Verifica se no Modelo de Calculo é para considerar uma distribuicao Normal x somente SUBSTITUOS X somente NAO-SUBSTITUTOS
+        # Etapa 2 Verifica se no Modelo de Calculo é para considerar uma distribuicao Normal x somente SUBSTITUOS X somente NAO-SUBSTITUTOS
     #-------------------------------------------------------------------------------------------------------------------------------------------
         if modelo == 'Substitutos' and ordem == 'asc':
             calculoEnderecos = """
@@ -250,8 +255,23 @@ def ReservaPedidosNaoRepostos(empresa, natureza, consideraSobra, ordem,repeticao
 
     # ----------------------------------------------------------------------------------------------------------------------------------
         # Consulto os skus que serao reservados, que sao aqueles com necessidade maior que 0 na tabela PEDIDOSSKU do banco de dados
-        queue = pd.read_sql('select codpedido, produto, necessidade from "Reposicao".pedidossku '
-                            "where necessidade > 0 and reservado = 'nao' ",conn)
+        queue = pd.read_sql('''
+                                select  
+                                    produto, codpedido,necessidade  
+                                from 
+                                    "Reposicao".pedidossku ps
+                                join 
+                                    "Reposicao".filaseparacaopedidos f
+                                left join 
+                                    "Reposicao".configuracoes.tiponota_nat tn 
+                                on
+                                    tn.tiponota = f.codtiponota 
+                                on
+                                    f.codigopedido = ps.codpedido 
+                                where 
+                                    necessidade > 0 
+                                    and reservado = 'nao'
+                                    and natureza = %s ''',conn, params=(natureza,))
     # ----------------------------------------------------------------------------------------------------------------------------------
         # Calculando a necessidade de cada endereco
 
