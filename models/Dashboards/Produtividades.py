@@ -73,7 +73,7 @@ def ProdutividadeGarantiaEquipe(dataInico, dataFim , horaInicio, horaFim):
     return [data]
 
 def ProdutividadeGarantiaIndividual(dataInico, dataFim , horaInicio, horaFim):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
 
     consulta1 = pd.read_sql('''
                             select 
@@ -105,8 +105,6 @@ def ProdutividadeGarantiaIndividual(dataInico, dataFim , horaInicio, horaFim):
                                 dataapontamento::Date  <= %s ''',
                            conn,
                            params=(dataInico, dataFim,))
-
-    conn.close()
 
     consulta = pd.concat([consulta1,consulta2,consulta3])
 
