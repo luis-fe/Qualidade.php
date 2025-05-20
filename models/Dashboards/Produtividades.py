@@ -77,17 +77,17 @@ def ProdutividadeGarantiaIndividual(dataInico, dataFim , horaInicio, horaFim):
 
     consulta1 = pd.read_sql('select operador1 as operador,  qtd  '
                            'from "off"."ProdutividadeGarantiaEquipe1" pce '
-                           'where dataapontamento >= %s and dataapontamento <= %s and horario >= %s and horario <= %s ',
+                           'where dataapontamento::Date >= %s and dataapontamento::Date  <= %s and horario >= %s and horario <= %s ',
                            conn,
                            params=(dataInico, dataFim, horaInicio, horaFim,))
     consulta2 = pd.read_sql('select operador2 as operador,  qtd  '
                            'from "off"."ProdutividadeGarantiaEquipe1" pce '
-                           'where dataapontamento >= %s and dataapontamento <= %s and horario >= %s and horario <= %s ',
+                           'where dataapontamento::Date  >= %s and dataapontamento::Date  <= %s and horario >= %s and horario <= %s ',
                            conn,
                            params=(dataInico, dataFim, horaInicio, horaFim,))
     consulta3 = pd.read_sql('select operador3 as operador,  qtd  '
                            'from "off"."ProdutividadeGarantiaEquipe1" pce '
-                           'where dataapontamento >= %s and dataapontamento <= %s and horario >= %s and horario <= %s ',
+                           'where dataapontamento::Date  >= %s and dataapontamento::Date  <= %s and horario >= %s and horario <= %s ',
                            conn,
                            params=(dataInico, dataFim, horaInicio, horaFim,))
 
