@@ -76,19 +76,36 @@ def ProdutividadeGarantiaIndividual(dataInico, dataFim , horaInicio, horaFim):
     conn = ConexaoPostgreMPL.conexao()
 
     consulta1 = pd.read_sql('''
-                            select operador1 as operador,  qtd  
-                           from "off"."ProdutividadeGarantiaEquipe1" pce 
-                           where dataapontamento::Date >= %s and dataapontamento::Date  <= %s and horario >= %s and horario <= %s ''',
+                            select 
+                                operador1 as operador,  qtd  
+                           from 
+                                "off"."ProdutividadeGarantiaEquipe1" pce 
+                           where 
+                                dataapontamento::Date >= %s and 
+                                dataapontamento::Date  <= %s and 
+                                horario >= %s and horario <= %s ''',
                            conn,
                            params=(dataInico, dataFim, horaInicio, horaFim,))
-    consulta2 = pd.read_sql('select operador2 as operador,  qtd  '
-                           'from "off"."ProdutividadeGarantiaEquipe1" pce '
-                           'where dataapontamento::Date  >= %s and dataapontamento::Date  <= %s and horario >= %s and horario <= %s ',
+    consulta2 = pd.read_sql('''
+                            select 
+                                operador2 as operador,  qtd  
+                           from 
+                                "off"."ProdutividadeGarantiaEquipe1" pce 
+                           where 
+                                dataapontamento::Date >= %s and 
+                                dataapontamento::Date  <= %s and 
+                                horario >= %s and horario <= %s ''',
                            conn,
                            params=(dataInico, dataFim, horaInicio, horaFim,))
-    consulta3 = pd.read_sql('select operador3 as operador,  qtd  '
-                           'from "off"."ProdutividadeGarantiaEquipe1" pce '
-                           'where dataapontamento::Date  >= %s and dataapontamento::Date  <= %s and horario >= %s and horario <= %s ',
+    consulta3 = pd.read_sql('''
+                            select 
+                                operador3 as operador,  qtd  
+                           from 
+                                "off"."ProdutividadeGarantiaEquipe1" pce 
+                           where 
+                                dataapontamento::Date >= %s and 
+                                dataapontamento::Date  <= %s and 
+                                horario >= %s and horario <= %s ''',
                            conn,
                            params=(dataInico, dataFim, horaInicio, horaFim,))
 
