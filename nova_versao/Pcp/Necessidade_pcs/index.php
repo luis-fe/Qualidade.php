@@ -38,7 +38,7 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 <div class="col-12 mt-4 mb-4 div-analise d-none" style="background-color: lightgray; border-radius: 8px;">    
-        <div class="mb-3 text-end">
+        <div class="mb-3 d-flex justify-content-end gap-2 align-items-center">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoriaModal">
                 Selecionar Categoria MP
             </button>
