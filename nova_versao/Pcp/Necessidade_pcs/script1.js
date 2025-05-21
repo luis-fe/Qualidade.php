@@ -51,7 +51,8 @@ async function AnaliseProgramacaoPelaMP() {
             acao: "CalculoPcs_baseaado_MP",
             dados: {
                 "codPlano": $('#select-plano').val(),
-                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "arrayCategoriaMP":arrayCategoriaMP.value
             }
         };
 
@@ -133,6 +134,7 @@ async function TabelaAnalise(listaAnalise) {
             action: async function (e, dt, node, config) {
                 carregarCheckboxes(); // <-- Chamada direta
                 $('#categoriaModal').modal('show');
+                await AnaliseProgramacaoPelaMP();
             },
         },
 
