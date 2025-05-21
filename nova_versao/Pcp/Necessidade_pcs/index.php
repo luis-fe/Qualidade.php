@@ -37,31 +37,7 @@ include_once('../../templates/headerPcp.php');
     </form>
 </div>
 
-<div class="col-12 mt-4 mb-4 div-analise d-none" style="background-color: lightgray; border-radius: 8px;">    
-        <div class="mb-3 text-start">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoriaModal">
-                Selecionar Categoria MP
-            </button>
-            <!-- Modal para Selecionar Categoria MP -->
-            <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="categoriaModalLabel">Escolha uma Categoria MP</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <select id="categoriaSelect" class="form-select">
-                    <option value="">Carregando...</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-success" onclick="confirmarCategoria()">Confirmar</button>
-                </div>
-                </div>
-            </div>
-        </div>
+<div class="col-12 mt-4 mb-4 div-analise d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-analise" style="width: 100%;">
             <thead>

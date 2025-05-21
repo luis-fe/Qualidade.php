@@ -92,6 +92,12 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Necessidade de Materiais',
             className: 'btn-tabelas'
         },
+                 {
+            text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Selecionar Categoria MP.',
+            title: 'Selecionar Categoria MP.',
+            className: 'btn-tabelas'
+        },
+
         ],
         columns: [{
             data: 'categoria'
@@ -178,6 +184,8 @@ async function TabelaAnalise(listaAnalise) {
             filtrarTabelas('');
         }
     });
+
+    
 
 }
 
