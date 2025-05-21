@@ -70,6 +70,29 @@ async function AnaliseProgramacaoPelaMP() {
         $('#loadingModal').modal('hide');
     }
 }
+    const categoriasMP = [
+      "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
+      "GOLAS", "MALHA", "RIBANA", "TECIDO PLANO", "ZIPER"
+    ];
+
+    
+    function carregarCategorias() {
+      const select = document.getElementById('categoriaSelect');
+      select.innerHTML = ''; // Limpa
+      categoriasMP.forEach(categoria => {
+        const opt = document.createElement('option');
+        opt.value = categoria;
+        opt.textContent = categoria;
+        select.appendChild(opt);
+      });
+    }
+
+    function confirmarCategoria() {
+      const selecionada = document.getElementById('categoriaSelect').value;
+      document.getElementById('categoriaSelecionada').textContent = selecionada || 'Nenhuma';
+      const modal = bootstrap.Modal.getInstance(document.getElementById('categoriaModal'));
+      modal.hide();
+    }
 
 
 
@@ -97,6 +120,7 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Selecionar Categoria MP.',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
+                carregarCategorias(); // <-- Chamada direta
                 $('#categoriaModal').modal('show');
             },
         },
