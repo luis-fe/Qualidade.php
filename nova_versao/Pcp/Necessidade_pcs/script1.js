@@ -44,7 +44,7 @@ const Consulta_Planos = async () => {
     }
 };
 
-async function AnaliseProgramacaoPelaMP() {
+async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -95,18 +95,18 @@ async function AnaliseProgramacaoPelaMP() {
     });
   }
 
-   async function confirmarCategoria() {
-    arrayCategoriaMP = Array.from(
-        document.querySelectorAll('#categoriaCheckboxes input:checked')
-    ).map(el => el.value);
+    function confirmarCategoria() {
+        arrayCategoriaMP = Array.from(
+            document.querySelectorAll('#categoriaCheckboxes input:checked')
+        ).map(el => el.value);
 
-    console.log("Categorias selecionadas:", arrayCategoriaMP);
-    await AnaliseProgramacaoPelaMP();
-    // Fecha o modal
-    bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
+        console.log("Categorias selecionadas:", arrayCategoriaMP);
+        AnaliseProgramacaoPelaMP(arrayCategoriaMP);
+        // Fecha o modal
+        bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
 
-   
-    }
+    
+        }
 
 
 
