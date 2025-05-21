@@ -45,7 +45,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $dados = $requestData['dados'] ?? null;
         if ($acao) {
             switch ($acao) {
-                case 'CalculoPcs_baseaado_M':
+                case 'CalculoPcs_baseaado_MP':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(AnaliseMateriais('1', $dadosObjeto));
