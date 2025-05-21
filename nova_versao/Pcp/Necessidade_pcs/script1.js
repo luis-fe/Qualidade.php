@@ -71,30 +71,33 @@ async function AnaliseProgramacaoPelaMP() {
     }
 }
     const categoriasMP = [
-      "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
-      "GOLAS", "MALHA", "RIBANA", "TECIDO PLANO", "ZIPER"
-    ];
+  "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
+  "GOLAS", "MALHA", "RIBANA", "TECIDO PLANO", "ZIPER"
+];
 
-    
-    function carregarCategorias() {
-      const select = document.getElementById('categoriaSelect');
-      select.innerHTML = ''; // Limpa
-      categoriasMP.forEach(categoria => {
-        const opt = document.createElement('option');
-        opt.value = categoria;
-        opt.textContent = categoria;
-        select.appendChild(opt);
-      });
+    function carregarCategoriasCheckboxes() {
+    const container = document.getElementById('categoriaCheckboxes');
+    container.innerHTML = ''; // Limpa
+
+    categoriasMP.forEach((categoria, index) => {
+        const id = `categoria_${index}`;
+        container.innerHTML += `
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="${categoria}" id="${id}">
+            <label class="form-check-label" for="${id}">
+            ${categoria}
+            </label>
+        </div>
+        `;
+    });
     }
 
     function confirmarCategoria() {
-    const select = document.getElementById('categoriaSelect');
-    const selecionadas = Array.from(select.selectedOptions).map(opt => opt.value);
+    const selecionadas = Array.from(document.querySelectorAll('#categoriaCheckboxes input:checked'))
+        .map(el => el.value);
+
     console.log("Categorias selecionadas:", selecionadas);
 
-    // Aqui você pode fazer o que quiser com as selecionadas:
-    // Exibir na tela, aplicar filtro, armazenar, etc.
-    // Exemplo: mostrar em algum <div> ou <p>:
     document.getElementById('categoriaSelecionada').textContent = selecionadas.join(', ') || 'Nenhuma';
 
     bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
