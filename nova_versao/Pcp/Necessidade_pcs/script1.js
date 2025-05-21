@@ -71,37 +71,34 @@ async function AnaliseProgramacaoPelaMP() {
     }
 }
     const categoriasMP = [
-  "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
-  "GOLAS", "MALHA", "RIBANA", "TECIDO PLANO", "ZIPER"
-];
+    "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
+    "GOLAS", "MALHA", "RIBANA", "TECIDO PLANO", "ZIPER"
+  ];
 
-    function carregarCategoriasCheckboxes() {
+  function carregarCheckboxes() {
     const container = document.getElementById('categoriaCheckboxes');
-    container.innerHTML = ''; // Limpa
-
+    container.innerHTML = ''; // limpa checkboxes anteriores
     categoriasMP.forEach((categoria, index) => {
-        const id = `categoria_${index}`;
-        container.innerHTML += `
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="${categoria}" id="${id}">
-            <label class="form-check-label" for="${id}">
-            ${categoria}
-            </label>
-        </div>
-        `;
+      const checkbox = document.createElement('div');
+      checkbox.className = 'form-check';
+
+      checkbox.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="${categoria}" id="categoria${index}">
+        <label class="form-check-label" for="categoria${index}">
+          ${categoria}
+        </label>
+      `;
+      container.appendChild(checkbox);
     });
-    }
+  }
 
-    function confirmarCategoria() {
+  function confirmarCategoria() {
     const selecionadas = Array.from(document.querySelectorAll('#categoriaCheckboxes input:checked'))
-        .map(el => el.value);
-
+                              .map(el => el.value);
     console.log("Categorias selecionadas:", selecionadas);
-
-    document.getElementById('categoriaSelecionada').textContent = selecionadas.join(', ') || 'Nenhuma';
-
     bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
-    }
+
+  }
 
 
 
@@ -129,7 +126,7 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Selecionar Categoria MP.',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                carregarCategoriasCheckboxes(); // <-- Chamada direta
+                carregarCheckboxes(); // <-- Chamada direta
                 $('#categoriaModal').modal('show');
             },
         },
