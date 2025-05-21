@@ -1,3 +1,5 @@
+let arrayCategoriaMP = ''
+
 $(document).ready(async () => {
     Consulta_Planos();
     $('#select-plano').select2({
@@ -92,13 +94,16 @@ async function AnaliseProgramacaoPelaMP() {
     });
   }
 
-  function confirmarCategoria() {
-    const selecionadas = Array.from(document.querySelectorAll('#categoriaCheckboxes input:checked'))
-                              .map(el => el.value);
-    console.log("Categorias selecionadas:", selecionadas);
-    bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
+    function confirmarCategoria() {
+    arrayCategoriaMP = Array.from(
+        document.querySelectorAll('#categoriaCheckboxes input:checked')
+    ).map(el => el.value);
 
-  }
+    console.log("Categorias selecionadas:", arrayCategoriaMP);
+
+    // Fecha o modal
+    bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
+    }
 
 
 
