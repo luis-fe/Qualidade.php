@@ -55,7 +55,7 @@ async function AnaliseProgramacaoPelaMP() {
                 "arrayCategoriaMP":arrayCategoriaMP.value
             }
         };
-
+        
         const response = await $.ajax({
             type: 'POST',
             url: 'requests.php',
