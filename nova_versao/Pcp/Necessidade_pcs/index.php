@@ -68,7 +68,6 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-</div>
 
 <?php
 include_once('../../templates/footerPcp.php');
