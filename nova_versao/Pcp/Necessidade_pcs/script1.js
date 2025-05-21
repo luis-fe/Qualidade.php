@@ -100,7 +100,7 @@ async function TabelaAnalise(listaAnalise) {
             data: 'marca'
         },
         {
-            data: 'engenharia',
+            data: 'codEngenharia',
             
         },
         {
@@ -111,7 +111,7 @@ async function TabelaAnalise(listaAnalise) {
             data: 'nome',
         },
         {
-            data: 'cor',
+            data: 'AnaliseProgramacaoPelaMP',
 
         },
         {
