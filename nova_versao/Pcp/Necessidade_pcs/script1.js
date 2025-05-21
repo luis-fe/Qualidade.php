@@ -102,8 +102,7 @@ async function AnaliseProgramacaoPelaMP() {
 
     console.log("Categorias selecionadas:", arrayCategoriaMP);
 
-    // Fecha o modal
-    bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
+   
     }
 
 
@@ -135,6 +134,8 @@ async function TabelaAnalise(listaAnalise) {
                 carregarCheckboxes(); // <-- Chamada direta
                 $('#categoriaModal').modal('show');
                 await AnaliseProgramacaoPelaMP();
+                 // Fecha o modal
+                bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
             },
         },
 
