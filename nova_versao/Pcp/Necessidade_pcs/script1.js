@@ -52,7 +52,7 @@ async function AnaliseProgramacaoPelaMP() {
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "arrayCategoriaMP":arrayCategoriaMP.value
+                arrayCategoriaMP: typeof arrayCategoriaMP !== 'undefined' ? arrayCategoriaMP : [] // Garante que esteja definido
             }
         };
         
