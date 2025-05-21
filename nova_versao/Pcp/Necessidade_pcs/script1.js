@@ -93,6 +93,10 @@ async function TabelaAnalise(listaAnalise) {
             className: 'btn-tabelas'
         },
         ],
+        initComplete: function () {
+            // Mover botão para a esquerda do botão de categoria
+            $('.dt-buttons').prependTo('#categoriaModal');
+        },
         columns: [{
             data: 'categoria'
         },
