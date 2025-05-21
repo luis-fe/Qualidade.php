@@ -88,10 +88,16 @@ async function AnaliseProgramacaoPelaMP() {
     }
 
     function confirmarCategoria() {
-      const selecionada = document.getElementById('categoriaSelect').value;
-      document.getElementById('categoriaSelecionada').textContent = selecionada || 'Nenhuma';
-      const modal = bootstrap.Modal.getInstance(document.getElementById('categoriaModal'));
-      modal.hide();
+    const select = document.getElementById('categoriaSelect');
+    const selecionadas = Array.from(select.selectedOptions).map(opt => opt.value);
+    console.log("Categorias selecionadas:", selecionadas);
+
+    // Aqui você pode fazer o que quiser com as selecionadas:
+    // Exibir na tela, aplicar filtro, armazenar, etc.
+    // Exemplo: mostrar em algum <div> ou <p>:
+    document.getElementById('categoriaSelecionada').textContent = selecionadas.join(', ') || 'Nenhuma';
+
+    bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
     }
 
 

@@ -77,9 +77,9 @@ include_once('../../templates/headerPcp.php');
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
-          <select id="categoriaSelect" class="form-select">
-            <option value="">Carregando...</option>
-          </select>
+        <select id="categoriaSelect" class="form-select" multiple size="8">
+        <!-- opções serão preenchidas via JS -->
+        </select>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
