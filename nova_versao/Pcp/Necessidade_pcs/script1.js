@@ -129,7 +129,7 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Selecionar Categoria MP.',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                carregarCategorias(); // <-- Chamada direta
+                carregarCategoriasCheckboxes(); // <-- Chamada direta
                 $('#categoriaModal').modal('show');
             },
         },
