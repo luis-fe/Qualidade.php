@@ -85,7 +85,7 @@ async function TabelaAnalise(listaAnalise) {
         info: false,
         pageLength: 10,
         data: listaAnalise,
-        dom: 'Bfrtip',
+        dom: '<"top"B>rt',
         buttons: [{
             extend: 'excelHtml5',
             text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
