@@ -95,7 +95,10 @@ async function TabelaAnalise(listaAnalise) {
                  {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Selecionar Categoria MP.',
             title: 'Selecionar Categoria MP.',
-            className: 'btn-tabelas'
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('#categoriaModal').modal('show');
+            },
         },
 
         ],

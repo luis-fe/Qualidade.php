@@ -68,6 +68,27 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="categoriaModalLabel">Escolha uma Categoria MP</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <select id="categoriaSelect" class="form-select">
+            <option value="">Carregando...</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-success" onclick="confirmarCategoria()">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 <?php
 include_once('../../templates/footerPcp.php');
