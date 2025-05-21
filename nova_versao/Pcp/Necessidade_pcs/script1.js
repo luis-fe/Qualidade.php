@@ -111,7 +111,7 @@ async function TabelaAnalise(listaAnalise) {
             data: 'nome',
         },
         {
-            data: 'AnaliseProgramacaoPelaMP',
+            data: 'codCor',
 
         },
         {
