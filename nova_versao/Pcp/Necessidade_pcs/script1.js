@@ -99,11 +99,11 @@ const Consulta_Comprometidos_Compras = async () => {
 
 
 
-async function Analise_Materiais() {
+async function AnaliseProgramacaoPelaMP() {
     $('#loadingModal').modal('show');
     try {
         const requestData = {
-            acao: "Analise_Materiais",
+            acao: "CalculoPcs_baseaado_MP",
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
@@ -119,9 +119,6 @@ async function Analise_Materiais() {
 
         await $('.div-analise').removeClass('d-none');
         await TabelaAnalise(response);
-        await Consulta_Naturezas();
-        await Consulta_Comprometidos();
-        Consulta_Comprometidos_Compras();
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
@@ -180,99 +177,38 @@ async function TabelaAnalise(listaAnalise) {
         },
         ],
         columns: [{
-            data: '02-codCompleto'
+            data: 'categoria'
         },
         {
-            data: '03-descricaoComponente'
+            data: 'marca'
         },
         {
-            data: '01-codReduzido',
-            render: function (data, type, row) {
-                return `<span class="codReduzido" data-codigoReduzido="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
-            }
+            data: 'engenharia',
+            
         },
         {
-            data: '10-Necessidade Compra (Tendencia)',
-            render: function (data, type) {
-                if (type === 'display') {
-                    // Exibe os dados formatados com separador de milhares
-                    return data.toLocaleString('pt-BR');
-                }
-                // Para ordenação e outros tipos, retorna o número bruto
-                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
-            }
+            data: 'codReduzido',
+
         },
         {
-            data: '12-Necessidade Ajustada Compra (Tendencia)',
-            render: function (data, type) {
-                if (type === 'display') {
-                    // Exibe os dados formatados com separador de milhares
-                    return data.toLocaleString('pt-BR');
-                }
-                // Para ordenação e outros tipos, retorna o número bruto
-                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
-            }
+            data: 'nome',
         },
         {
-            data: '08-estoqueAtual',
-            render: function (data, type) {
-                if (type === 'display') {
-                    // Exibe os dados formatados com separador de milhares
-                    return data.toLocaleString('pt-BR');
-                }
-                // Para ordenação e outros tipos, retorna o número bruto
-                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
-            }
+            data: 'cor',
+
         },
         {
-            data: '09-SaldoPedCompras',
-            render: function (data, type) {
-                if (type === 'display') {
-                    // Exibe os dados formatados com separador de milhares
-                    return data.toLocaleString('pt-BR');
-                }
-                // Para ordenação e outros tipos, retorna o número bruto
-                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
-            }
+            data: 'tam',
+
         },
         {
-            data: '07-EmRequisicao',
-            render: function (data, type) {
-                if (type === 'display') {
-                    // Exibe os dados formatados com separador de milhares
-                    return data.toLocaleString('pt-BR');
-                }
-                // Para ordenação e outros tipos, retorna o número bruto
-                return parseFloat(data.replace(/\./g, '').replace(',', '.')) || 0;
-            }
+            data: 'faltaProg (Tendencia)',
+
         },
         {
-            data: '04-fornencedorPreferencial'
+            data: 'Sugestao_PCs'
         },
-        {
-            data: '05-unidade'
-        },
-        {
-            data: '14-Lote Mínimo'
-        },
-        {
-            data: '11-Lote Mutiplo'
-        },
-        {
-            data: '13-LeadTime'
-        },
-        {
-            data: 'fatorConversao'
-        },
-        {
-            data: '15-CodSubstituto'
-        },
-        {
-            data: '16-NomeSubstituto'
-        },
-        {
-            data: '17-SaldoSubs'
-        },
+        
         ],
         language: {
             paginate: {

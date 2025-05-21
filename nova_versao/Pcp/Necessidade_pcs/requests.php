@@ -45,7 +45,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $dados = $requestData['dados'] ?? null;
         if ($acao) {
             switch ($acao) {
-                case 'Analise_Materiais':
+                case 'CalculoPcs_baseaado_M':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(AnaliseMateriais('1', $dadosObjeto));
@@ -206,7 +206,7 @@ function DetalhaNecessidade($empresa, $dados)
 function AnaliseMateriais($empresa, $dados)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
-    $apiUrl = "{$baseUrl}/pcp/api/AnaliseMateriaisPelaTendencia";
+    $apiUrl = "{$baseUrl}/pcp/api/CalculoPcs_baseaado_MP";
 
     $ch = curl_init($apiUrl);
 
