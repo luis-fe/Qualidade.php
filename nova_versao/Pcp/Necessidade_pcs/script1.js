@@ -95,12 +95,15 @@ async function AnaliseProgramacaoPelaMP() {
     });
   }
 
-    function confirmarCategoria() {
+   async function confirmarCategoria() {
     arrayCategoriaMP = Array.from(
         document.querySelectorAll('#categoriaCheckboxes input:checked')
     ).map(el => el.value);
 
     console.log("Categorias selecionadas:", arrayCategoriaMP);
+    await AnaliseProgramacaoPelaMP();
+    // Fecha o modal
+    bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
 
    
     }
@@ -133,9 +136,7 @@ async function TabelaAnalise(listaAnalise) {
             action: async function (e, dt, node, config) {
                 carregarCheckboxes(); // <-- Chamada direta
                 $('#categoriaModal').modal('show');
-                await AnaliseProgramacaoPelaMP();
-                 // Fecha o modal
-                bootstrap.Modal.getInstance(document.getElementById('categoriaModal')).hide();
+
             },
         },
 
