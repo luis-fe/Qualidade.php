@@ -285,7 +285,7 @@ const response = await $.ajax({
         });
         console.log(response)
         TabeldetalhamentoSku(response);
-        $('#modal-detalhamentoSkuSimulado').modal('show');
+        $('#modal-detalhamentoSku').modal('show');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error');
