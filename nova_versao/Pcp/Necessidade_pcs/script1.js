@@ -621,6 +621,7 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
         },
            
             rowCallback: function (row, data) {
+                console.log("Verificando linha:", data.Sugestao_PCs);
                 let valorLinha = data.Sugestao_PCs
 
                 if (typeof valorLinha === 'string') {
@@ -632,7 +633,14 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
                 if (!isNaN(valorLinha) && valorLinha.toFixed(3) === menorSugestaoPC.toFixed(3)) {
                     $(row).css('background-color', '#ffcccc');
                 }
+
+                            if (Math.abs(valorLinha - menorSugestaoPC) < 0.001) {
+                $(row).css('background-color', '#ffcccc');
             }
+                console.log("Valor da linha:", valorLinha, "| Menor valor:", menorSugestaoPC);
+    
+        }
+            
     });
 
     // Adiciona os botões à interface
