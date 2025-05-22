@@ -640,10 +640,8 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
                     
     });
 
-    // Adiciona os botões à interface
-    tabela.buttons().container().appendTo('#table-detalhamentoSkuSimulado_wrapper .col-md-6:eq(0)');
 
-    $('#itens-detalhamentoSkuSimulado').on('input', function () {
+    $('#itens-detalhamentoSku').on('input', function () {
         const valor = parseInt($(this).val(), 10);
         if (!isNaN(valor) && valor > 0) {
             tabela.page.len(valor).draw();
@@ -652,7 +650,7 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
 
     
     
-    $('.search-input-detalhamentoSkuSimulado').on('input', function () {
+    $('.search-input-detalhamentoSku').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 
