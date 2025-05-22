@@ -243,25 +243,7 @@ async function TabelaAnalise(listaAnalise) {
         }
     });
 
-    $('#table-analise tbody').on('click', 'tr', function (event) {
-        // Verifica se o clique foi em um hiperlink
-        if ($(event.target).hasClass('codReduzido')) {
-            return; // Não executa o código para seleção de linha
-        }
-
-        const isSelected = $(this).hasClass('selected');
-        $('#table-analise tbody tr').removeClass('selected');
-
-        if (!isSelected) {
-            $(this).addClass('selected');
-            const rowData = tabela.row(this).data();
-            const filtro = rowData['01-codReduzido'];
-            filtrarTabelas(filtro);
-        } else {
-            // Remove o filtro e reseta a tabela de naturezas
-            filtrarTabelas('');
-        }
-    });
+    
 
       // Clique no hiperlink "codReduzido"
     $('#table-tendencia').on('click', '.detalhamentoSku', function (event) {
