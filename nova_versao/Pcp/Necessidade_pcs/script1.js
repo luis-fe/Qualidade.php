@@ -500,8 +500,30 @@ function TabeldetalhamentoSku(listaDetalhes) {
             { data: 'codReduzido' },
             { data: 'CodComponente' },
             { data: 'descricaoComponente' },
-            { data: 'estoqueAtualMP' },
-            { data: 'EmRequisicao' },
+            { data: 'estoqueAtualMP',
+                 render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                    return new Intl.NumberFormat('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(data);
+                    }
+                    // Para ordenação e exportação, retorna o valor original numérico
+                    return parseFloat(data);
+                }
+             },
+            { data: 'EmRequisicao',
+                 render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                    return new Intl.NumberFormat('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(data);
+                    }
+                    // Para ordenação e exportação, retorna o valor original numérico
+                    return parseFloat(data);
+                }
+             },
             {
                 data: 'EstoqueAtualMPLiquido',
                 render: function(data, type, row) {
@@ -515,8 +537,30 @@ function TabeldetalhamentoSku(listaDetalhes) {
                     return parseFloat(data);
                 }
             },
-            { data: 'faltaProg (Tendencia)MP_total'},
-            { data: 'EstoqueDistMP' },
+            { data: 'faltaProg (Tendencia)MP_total',
+                 render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                    return new Intl.NumberFormat('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(data);
+                    }
+                    // Para ordenação e exportação, retorna o valor original numérico
+                    return parseFloat(data);
+                }
+            },
+            { data: 'EstoqueDistMP',
+                 render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                    return new Intl.NumberFormat('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(data);
+                    }
+                    // Para ordenação e exportação, retorna o valor original numérico
+                    return parseFloat(data);
+                }
+             },
             { data: 'faltaProg (Tendencia)' },
             { data: 'Sugestao_PCs' },
         ],
