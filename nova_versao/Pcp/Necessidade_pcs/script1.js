@@ -632,6 +632,7 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
             console.log("Valor da linha:", valorLinha, "| Menor valor:", menorSugestaoPC);
 
             if (!isNaN(valorLinha) && Math.abs(valorLinha - menorSugestaoPC) < 0.001) {
+                console.log(`Linha detectada `)
                 $(row).addClass('linha-destacada');
             } else {
                 $(row).removeClass('linha-destacada'); // importante para evitar reaplicação indevida
