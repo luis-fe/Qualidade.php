@@ -203,7 +203,7 @@ include_once('../../templates/headerPcp.php');
     <div class="modal-dialog modal-dialog-top ">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Detalhamento Matéria Prima</h5>
+                <h5 class="modal-title" id="titulo-detalhamentoSku" style="color: black;">Detalhamento Matéria Prima: </h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="align-items: start; text-align: left">
@@ -214,11 +214,13 @@ include_once('../../templates/headerPcp.php');
                                 <th>Cód.<br>Red.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Cód<br>Componente</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Descricao<br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Comprometido<br>Requisicao</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Estoque<br>Líquido</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Necessidade<br>Total</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
-                                <th>Estoque<br>Dist%</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Estoque MP.<br>Distr.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
-                                <th>Sugestao<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Sugestão<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                             </tr>
                         </thead>
                         <tbody>

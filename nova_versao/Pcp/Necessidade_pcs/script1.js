@@ -494,12 +494,14 @@ function TabeldetalhamentoSku(listaDetalhes) {
             { data: 'CodComponente' },
             { data: 'descricaoComponente' },
             { data: 'estoqueAtualMP' },
-            { data: 'EstoqueDistMP' },
+            { data: 'EmRequisicao' },
+            { data: 'EstoqueAtualMPLiquido' },
             { data: 'faltaProg (Tendencia)MP_total',             
                 render: function(data, type, row) {
                 // Verifica se o valor é numérico e formata com 3 casas decimais
                 return type === 'display' && !isNaN(data) ? data.toFixed(3) : data;}
             },
+            { data: 'EstoqueDistMP' },
             { data: 'faltaProg (Tendencia)' },
             { data: 'Sugestao_PCs' },
         ],
