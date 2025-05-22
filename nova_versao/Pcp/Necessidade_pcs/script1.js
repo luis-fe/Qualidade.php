@@ -502,12 +502,20 @@ function TabeldetalhamentoSku(listaDetalhes) {
             { data: 'descricaoComponente' },
             { data: 'estoqueAtualMP' },
             { data: 'EmRequisicao' },
-            { data: 'EstoqueAtualMPLiquido' },
-            { data: 'faltaProg (Tendencia)MP_total',             
+            {
+                data: 'EstoqueAtualMPLiquido',
                 render: function(data, type, row) {
-                // Verifica se o valor é numérico e formata com 3 casas decimais
-                return type === 'display' && !isNaN(data) ? data.toFixed(3) : data;}
+                    if (type === 'display' || type === 'filter') {
+                    return new Intl.NumberFormat('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(data);
+                    }
+                    // Para ordenação e exportação, retorna o valor original numérico
+                    return parseFloat(data);
+                }
             },
+            { data: 'faltaProg (Tendencia)MP_total'},
             { data: 'EstoqueDistMP' },
             { data: 'faltaProg (Tendencia)' },
             { data: 'Sugestao_PCs' },
