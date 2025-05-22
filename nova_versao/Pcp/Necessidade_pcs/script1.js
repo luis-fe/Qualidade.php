@@ -17,6 +17,13 @@ $(document).ready(async () => {
     $('#btn-vendas').addClass('btn-menu-clicado')
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+    new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+});
+
 const Consulta_Planos = async () => {
     $('#loadingModal').modal('show');
     try {

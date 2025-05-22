@@ -237,7 +237,7 @@ include_once('../../templates/headerPcp.php');
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
                                     title="Estoque Líquido = Estoque - Requisição">
-                                    Estoque<br>Líquido
+                                    Estoque<br>Líquido</br>
                                 </span>
                                 <input type="search" class="search-input search-input-detalhamentoSku">
                                 </th>
