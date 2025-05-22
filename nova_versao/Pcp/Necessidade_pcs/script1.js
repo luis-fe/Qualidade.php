@@ -493,8 +493,12 @@ let valoresNumericos = listaDetalhes
     })
     .filter(v => !isNaN(v));
 
-let menorSugestaoPC = Math.min(...valoresNumericos);
-
+    let menorSugestaoPC = Math.min(
+        ...listaDetalhes
+            .filter(l => l.obs === "Restringe") // <-- só valores "Restringe"
+            .map(l => parseFloat(l.Sugestao_PCs))
+            .filter(v => !isNaN(v))
+    );
     const tabela = $('#table-detalhamentoSku').DataTable({
         searching: true,
         paging: true,
@@ -600,7 +604,7 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
                     return parseFloat(data);
                 }
             },
-                        { data: 'obs' },
+            { data: 'obs' },
 
         ],            
         language: {
@@ -632,13 +636,10 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
 
             valorLinha = parseFloat(valorLinha);
 
-            console.log("Valor da linha:", valorLinha, "| Menor valor:", menorSugestaoPC);
+            const isRestricao = data.obs === "Restringe";
 
-            if (!isNaN(valorLinha) && Math.abs(valorLinha - menorSugestaoPC) < 0.001) {
-                console.log(`Linha detectada `)
+            if (!isNaN(valorLinha) && isRestricao && Math.abs(valorLinha - menorSugestaoPC) < 0.001) {
                 $(row).addClass('linha-destacada');
-            } else {
-                $(row).removeClass('linha-destacada'); // importante para evitar reaplicação indevida
             }
         }
                     
