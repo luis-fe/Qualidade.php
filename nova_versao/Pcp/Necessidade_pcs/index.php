@@ -16,9 +16,11 @@ include_once('../../templates/headerPcp.php');
 .tooltip .tooltip-inner {
     background-color: #000 !important; /* fundo preto */
     color: #fff !important;            /* texto branco */
-    font-size: 16px !important;        /* tamanho da fonte */
+    font-size: 18px !important;        /* tamanho da fonte */
     padding: 10px 12px !important;                 /* espaçamento opcional */
     border-radius: 4px !important;                /* borda levemente arredondada */
+    max-width: 300px !important;       /* aumenta a largura máxima da caixa */
+    white-space: normal !important;    /* permite quebra de linha */
 }
 
 .tooltip.bs-tooltip-top .tooltip-arrow::before,
@@ -241,7 +243,15 @@ include_once('../../templates/headerPcp.php');
                                 </span>
                                 <input type="search" class="search-input search-input-detalhamentoSku">
                                 </th>
-                                <th>Necessidade<br>Total</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>
+                                    <span 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    title="É a Necessidade Total dessa Matéria Prima de 'TODOS' os Skus Necessarios(negativo)">
+                                    Necessidade<br>Total</br>
+                                    </span>
+
+                                <input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Estoque MP.<br>Distr.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Sugestão<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
