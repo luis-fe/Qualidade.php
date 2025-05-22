@@ -474,8 +474,25 @@ function TabeldetalhamentoSku(listaDetalhes) {
         $('#table-detalhamentoSku').DataTable().destroy();
     }
     
-    let menorSugestaoPC = Math.min(...listaDetalhes.map(l => parseFloat(l.Sugestao_PCs)));
+        if (!Array.isArray(listaDetalhes)) {
+        console.error("Erro: listaDetalhes não é um array", listaDetalhes);
+        return;
+    }
 
+let valoresNumericos = listaDetalhes
+    .map(l => {
+        let valor = l.Sugestao_PCs;
+
+        // Converte "1.234,56" → 1234.56 (caso venha formatado como string)
+        if (typeof valor === 'string') {
+            valor = valor.replace(/\./g, '').replace(',', '.');
+        }
+
+        return parseFloat(valor);
+    })
+    .filter(v => !isNaN(v));
+
+let menorSugestaoPC = Math.min(...valoresNumericos);
 
     const tabela = $('#table-detalhamentoSku').DataTable({
         searching: true,
@@ -604,10 +621,18 @@ function TabeldetalhamentoSku(listaDetalhes) {
         },
            
             rowCallback: function (row, data) {
-                if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
+                let valorLinha = data.Sugestao_PCs;
+
+                if (typeof valorLinha === 'string') {
+                    valorLinha = valorLinha.replace(/\./g, '').replace(',', '.');
+                }
+
+                valorLinha = parseFloat(valorLinha);
+
+                if (!isNaN(valorLinha) && valorLinha.toFixed(3) === menorSugestaoPC.toFixed(3)) {
                     $(row).css('background-color', '#ffcccc');
                 }
-    },
+            }
     });
 
     // Adiciona os botões à interface
