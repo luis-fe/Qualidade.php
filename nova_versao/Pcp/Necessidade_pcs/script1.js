@@ -1,5 +1,4 @@
-let arrayCategoriaMP = '';
-let menorSugestaoPC = null;
+let arrayCategoriaMP = ''
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
- menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
+ const menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
 
 
 const Consulta_Planos = async () => {
