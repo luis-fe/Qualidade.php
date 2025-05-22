@@ -228,8 +228,8 @@ include_once('../../templates/headerPcp.php');
                 <h5 class="modal-title" id="titulo-detalhamentoSku" style="color: black;">Detalhamento Matéria Prima: </h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="d-flex align-items-center mt-2">
-                <span style="width: 15px; height: 15px; background-color: red; display: inline-block; margin-right: 8px;"></span>
+            <div class="d-flex  mt-2">
+                <span style="width: 25px; height: 25px; background-color: red; display: inline-block; margin-right: 16px;"></span>
                 <span style="color: black;">Legenda: itens que restringe a Sugestao</span>
             </div>
             <div class="modal-body" style="align-items: start; text-align: left">
