@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
- const menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
 
 
 const Consulta_Planos = async () => {
@@ -53,6 +52,9 @@ const Consulta_Planos = async () => {
         $('#loadingModal').modal('hide');
     }
 };
+
+ const menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
+
 
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
     $('#loadingModal').modal('show');
