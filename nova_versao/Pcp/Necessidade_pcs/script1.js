@@ -599,15 +599,15 @@ function TabeldetalhamentoSku(listaDetalhes) {
             });
             $('.dataTables_paginate').hide();
         },
-        initComplete: function () {
-        const api = this.api();
-        const dadosColuna = api.column(9, { search: 'applied' }).data(); // índice da coluna 'Sugestao_PCs'
-        menorSugestaoPC = Math.min(...dadosColuna.map(v => parseFloat(v)));
-    },
-    rowCallback: function (row, data) {
-        if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
-            $(row).css('background-color', '#ffcccc');
-        }
+            initComplete: function () {
+                const api = this.api();
+                const dadosColuna = api.column(9, { search: 'applied' }).data().toArray(); // <-- .toArray() é essencial aqui
+                menorSugestaoPC = Math.min(...dadosColuna.map(v => parseFloat(v)));
+        },
+            rowCallback: function (row, data) {
+                if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
+                    $(row).css('background-color', '#ffcccc');
+                }
     },
     });
 
