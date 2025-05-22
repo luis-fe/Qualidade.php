@@ -1,5 +1,5 @@
 let arrayCategoriaMP = '';
-let menorValor = null;
+let menorSugestaoPC = null;
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new bootstrap.Tooltip(tooltipTriggerEl);
   });
 });
+
+ menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
+
 
 const Consulta_Planos = async () => {
     $('#loadingModal').modal('show');
@@ -621,4 +624,3 @@ function TabeldetalhamentoSku(listaDetalhes) {
 
 
 }
-const menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
