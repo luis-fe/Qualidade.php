@@ -212,12 +212,12 @@ include_once('../../templates/headerPcp.php');
                         <thead>
                             <tr>
                                 <th>Cód.<br>Red.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
-                                <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Cód<br>Componente</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Descricao<br><input type="search" class="search-input search-input-detalhamentoSku"></th>
-                                <th>Estoque<br>Líq.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Estoque<br>Líquido</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Necessidade<br>Total</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Estoque<br>Dist%</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Sugestao<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                             </tr>
                         </thead>

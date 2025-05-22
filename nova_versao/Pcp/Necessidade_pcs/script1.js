@@ -491,12 +491,16 @@ function TabeldetalhamentoSku(listaDetalhes) {
         data: listaDetalhes,
         columns: [
             { data: 'codReduzido' },
-            { data: 'faltaProg (Tendencia)' },
             { data: 'CodComponente' },
             { data: 'descricaoComponente' },
             { data: 'estoqueAtualMP' },
             { data: 'EstoqueDistMP' },
-            { data: 'faltaProg (Tendencia)MP_total' },
+            { data: 'faltaProg (Tendencia)MP_total',             
+                render: function(data, type, row) {
+                // Verifica se o valor é numérico e formata com 3 casas decimais
+                return type === 'display' && !isNaN(data) ? data.toFixed(3) : data;}
+            },
+            { data: 'faltaProg (Tendencia)' },
             { data: 'Sugestao_PCs' },
         ],
         language: {
