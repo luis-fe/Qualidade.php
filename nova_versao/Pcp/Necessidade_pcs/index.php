@@ -13,9 +13,19 @@ include_once('../../templates/headerPcp.php');
     max-width: 80% !important; /* Define a largura do modal para 80% */
 }
 
-/* Aplica a todos os tooltips do Bootstrap */
-.tooltip-inner {
-  font-size: 16px !important;
+.tooltip .tooltip-inner {
+    background-color: #000 !important; /* fundo preto */
+    color: #fff !important;            /* texto branco */
+    font-size: 14px !important;        /* tamanho da fonte */
+    padding: 8px 10px;                 /* espaçamento opcional */
+    border-radius: 4px;                /* borda levemente arredondada */
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before,
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before,
+.tooltip.bs-tooltip-start .tooltip-arrow::before,
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-color: #000 !important; /* cor da setinha do tooltip */
 }
 
 </style>
@@ -223,10 +233,13 @@ include_once('../../templates/headerPcp.php');
                                 <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Comprometido<br>Requisicao</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>
-                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque Líquido = Estoque - Requisição" >
-                                        Estoque<br>Líquido</br>
-                                          </span>
-                                         <input type="search" class="search-input search-input-detalhamentoSku">
+                                <span 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    title="Estoque Líquido = Estoque - Requisição">
+                                    Estoque<br>Líquido
+                                </span>
+                                <input type="search" class="search-input search-input-detalhamentoSku">
                                 </th>
                                 <th>Necessidade<br>Total</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Estoque MP.<br>Distr.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
