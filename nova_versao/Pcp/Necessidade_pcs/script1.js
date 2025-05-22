@@ -1,4 +1,5 @@
 let arrayCategoriaMP = ''
+let menorSugestaoPC = null;
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -53,7 +54,6 @@ const Consulta_Planos = async () => {
     }
 };
 
- const menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
 
 
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
@@ -599,11 +599,16 @@ function TabeldetalhamentoSku(listaDetalhes) {
             });
             $('.dataTables_paginate').hide();
         },
-        rowCallback: function(row, data) {
-            if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
-                $(row).css('background-color', '#ffcccc');
-            }
+        initComplete: function () {
+        const api = this.api();
+        const dadosColuna = api.column(9, { search: 'applied' }).data(); // índice da coluna 'Sugestao_PCs'
+        menorSugestaoPC = Math.min(...dadosColuna.map(v => parseFloat(v)));
+    },
+    rowCallback: function (row, data) {
+        if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
+            $(row).css('background-color', '#ffcccc');
         }
+    },
     });
 
     // Adiciona os botões à interface
