@@ -1,4 +1,5 @@
-let arrayCategoriaMP = ''
+let arrayCategoriaMP = '';
+let menorValor = null;
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -562,22 +563,19 @@ function TabeldetalhamentoSku(listaDetalhes) {
                 }
              },
             { data: 'faltaProg (Tendencia)' },
-            { data: 'Sugestao_PCs' },
-        ],
-        initComplete: function(settings, json) {
-                    // Após o carregamento da tabela, localiza o menor valor
-                    let allData = tabela.column('Sugestao_PCs:name').data().toArray();
-                    menorValor = Math.min(...allData.map(val => parseFloat(val)));
-                },
-                rowCallback: function(row, data) {
-                    if (parseFloat(data.Sugestao_PCs) === menorValor) {
-                    $(row).css('background-color', '#ffcccc'); // fundo vermelho claro
+            {
+                data: 'Sugestao_PCs',
+                render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                        return new Intl.NumberFormat('pt-BR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(data);
                     }
-                },
-                columnDefs: [
-                    { name: 'Sugestao_PCs', targets: [9] }
-        ],
-            
+                    return parseFloat(data);
+                }
+            }
+        ],            
         language: {
             paginate: {
                 previous: '<i class="fa-solid fa-backward-step"></i>',
@@ -596,6 +594,11 @@ function TabeldetalhamentoSku(listaDetalhes) {
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
             });
             $('.dataTables_paginate').hide();
+        },
+        rowCallback: function(row, data) {
+            if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
+                $(row).css('background-color', '#ffcccc');
+            }
         }
     });
 
@@ -618,3 +621,4 @@ function TabeldetalhamentoSku(listaDetalhes) {
 
 
 }
+const menorSugestaoPC = Math.min(...listaDetalhes.map(item => parseFloat(item.Sugestao_PCs)));
