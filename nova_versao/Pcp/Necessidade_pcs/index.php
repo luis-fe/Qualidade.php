@@ -6,6 +6,14 @@ include_once('../../templates/headerPcp.php');
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+    /* Aplica a largura de 80% somente ao modal com id 'modal-detalhamentoSku' */
+#modal-detalhamentoSku .modal-dialog {
+    max-width: 80% !important; /* Define a largura do modal para 80% */
+}
+</style>
+
 <div class="titulo-tela">
     <span class="span-icone"><i class="bi bi-bag-check"></i></span> Necessidade x Pçs a Programar
 </div>
