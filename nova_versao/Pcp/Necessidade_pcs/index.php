@@ -30,8 +30,9 @@ include_once('../../templates/headerPcp.php');
     border-color: #000 !important; /* cor da setinha do tooltip */
 }
 
-#modal-detalhamentoSku tbody tr.linha-destacada {
-    background-color:rgb(224, 33, 33) !important;
+#table-detalhamentoSku tbody tr.linha-destacada td {
+    background-color: rgb(224, 33, 33) !important;
+    color: white !important;
 }
 </style>
 
