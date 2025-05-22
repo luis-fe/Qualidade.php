@@ -217,7 +217,7 @@ include_once('../../templates/headerPcp.php');
                                 <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Comprometido<br>Requisicao</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>
-                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque Líquido = Estoque - Requisição" style="font-size: 14px;">
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque Líquido = Estoque - Requisição" >
                                         Estoque<br>Líquido</br>
                                           </span>
                                          <input type="search" class="search-input search-input-detalhamentoSku">
