@@ -621,7 +621,7 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
         },
            
             rowCallback: function (row, data) {
-                let valorLinha = data.Sugestao_PCs;
+                let valorLinha = data.Sugestao_PCs
 
                 if (typeof valorLinha === 'string') {
                     valorLinha = valorLinha.replace(/\./g, '').replace(',', '.');
