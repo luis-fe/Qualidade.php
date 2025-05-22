@@ -271,7 +271,7 @@ async function Detalhar_Sku(codReduzido) {
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
-                "codSku": codReduzido,
+                "codReduzido": codReduzido,
                // "nomeSimulacao":  cacheDescricao
             }
 
