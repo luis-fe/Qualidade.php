@@ -284,6 +284,7 @@ async function Detalhar_Sku(codReduzido) {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "codReduzido": codReduzido,
+                "arrayCategoriaMP" : arrayCategoriaMP
                // "nomeSimulacao":  cacheDescricao
             }
 
@@ -598,7 +599,9 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
                     }
                     return parseFloat(data);
                 }
-            }
+            },
+                        { data: 'obs' },
+
         ],            
         language: {
             paginate: {

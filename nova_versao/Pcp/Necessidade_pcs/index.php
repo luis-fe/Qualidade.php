@@ -266,6 +266,7 @@ include_once('../../templates/headerPcp.php');
                                     <input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Sugestão<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>obs.:<br></br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                             </tr>
                         </thead>
                         <tbody>
