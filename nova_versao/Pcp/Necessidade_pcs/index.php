@@ -16,8 +16,8 @@ include_once('../../templates/headerPcp.php');
 .tooltip .tooltip-inner {
     background-color: #000 !important; /* fundo preto */
     color: #fff !important;            /* texto branco */
-    font-size: 14px !important;        /* tamanho da fonte */
-    padding: 8px 10px;                 /* espaçamento opcional */
+    font-size: 16px !important;        /* tamanho da fonte */
+    padding: 10px 12px;                 /* espaçamento opcional */
     border-radius: 4px;                /* borda levemente arredondada */
 }
 
