@@ -473,6 +473,9 @@ function TabeldetalhamentoSku(listaDetalhes) {
     if ($.fn.DataTable.isDataTable('#table-detalhamentoSku')) {
         $('#table-detalhamentoSku').DataTable().destroy();
     }
+    
+    let menorSugestaoPC = Math.min(...listaDetalhes.map(l => parseFloat(l.Sugestao_PCs)));
+
 
     const tabela = $('#table-detalhamentoSku').DataTable({
         searching: true,
@@ -572,8 +575,8 @@ function TabeldetalhamentoSku(listaDetalhes) {
                 render: function(data, type, row) {
                     if (type === 'display' || type === 'filter') {
                         return new Intl.NumberFormat('pt-BR', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
                         }).format(data);
                     }
                     return parseFloat(data);
@@ -599,11 +602,7 @@ function TabeldetalhamentoSku(listaDetalhes) {
             });
             $('.dataTables_paginate').hide();
         },
-            initComplete: function () {
-                const api = this.api();
-                const dadosColuna = api.column(9, { search: 'applied' }).data().toArray(); // <-- .toArray() é essencial aqui
-                menorSugestaoPC = Math.min(...dadosColuna.map(v => parseFloat(v)));
-        },
+           
             rowCallback: function (row, data) {
                 if (parseFloat(data.Sugestao_PCs) === menorSugestaoPC) {
                     $(row).css('background-color', '#ffcccc');
