@@ -12,6 +12,12 @@ include_once('../../templates/headerPcp.php');
 #modal-detalhamentoSku .modal-dialog {
     max-width: 80% !important; /* Define a largura do modal para 80% */
 }
+
+/* Aplica a todos os tooltips do Bootstrap */
+.tooltip-inner {
+  font-size: 16px !important;
+}
+
 </style>
 
 <div class="titulo-tela">
