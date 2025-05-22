@@ -217,10 +217,10 @@ include_once('../../templates/headerPcp.php');
                                 <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Comprometido<br>Requisicao</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>
-                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque Líquido = Estoque - Requisição" style="font-size: 14px;">
-                                    Necessidade<br>Total
-                                </span>
-                                <input type="search" class="search-input search-input-detalhamentoSku">
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque Líquido = Estoque - Requisição" style="font-size: 14px;">
+                                        Estoque<br>Líquido</br>
+                                          </span>
+                                         <input type="search" class="search-input search-input-detalhamentoSku">
                                 </th>
                                 <th>Necessidade<br>Total</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Estoque MP.<br>Distr.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
