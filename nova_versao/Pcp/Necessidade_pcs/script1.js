@@ -243,10 +243,9 @@ async function TabelaAnalise(listaAnalise) {
         }
     });
 
-    
 
       // Clique no hiperlink "codReduzido"
-    $('#table-tendencia').on('click', '.detalhamentoSku', function (event) {
+    $('#table-analise').on('click', '.detalhamentoSku', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
         const codPlan = $('#select-plano').val();
