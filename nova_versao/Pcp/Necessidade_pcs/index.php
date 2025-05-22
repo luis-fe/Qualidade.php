@@ -17,9 +17,9 @@ include_once('../../templates/headerPcp.php');
     background-color: #000 !important; /* fundo preto */
     color: #fff !important;            /* texto branco */
     font-size: 18px !important;        /* tamanho da fonte */
-    padding: 10px 12px !important;                 /* espaçamento opcional */
+    padding: 6px 8px !important;                 /* espaçamento opcional */
     border-radius: 4px !important;                /* borda levemente arredondada */
-    max-width: 300px !important;       /* aumenta a largura máxima da caixa */
+    max-width: 500px !important;       /* aumenta a largura máxima da caixa */
     white-space: normal !important;    /* permite quebra de linha */
 }
 
@@ -247,7 +247,7 @@ include_once('../../templates/headerPcp.php');
                                     <span 
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
-                                    title="É a Necessidade Total dessa Matéria Prima de 'TODOS' os Skus Necessarios(negativo)">
+                                    title="É a Necessidade Total dessa Matéria Prima em 'TODOS' os Skus Necessarios(negativo)">
                                     Necessidade<br>Total</br>
                                     </span>
 
