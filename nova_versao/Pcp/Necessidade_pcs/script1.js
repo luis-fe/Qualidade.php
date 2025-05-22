@@ -250,7 +250,7 @@ async function TabelaAnalise(listaAnalise) {
         const codReduzido = $(this).attr('data-codReduzido');
         const codPlan = $('#select-plano').val();
         const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();
-        console.log(`Teste2 Plano selecionado: ${codPlan}`)
+        console.log(`Teste2 Plano selecionado: ${codPlan}, reduzido: ${codReduzido}`)
         
         Detalhar_Sku(codReduzido,consideraPedidosBloqueado, codPlan);
     });
