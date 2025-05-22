@@ -30,6 +30,10 @@ include_once('../../templates/headerPcp.php');
     border-color: #000 !important; /* cor da setinha do tooltip */
 }
 
+.linha-destacada {
+    background-color: #ffcccc !important;
+}
+
 </style>
 
 <div class="titulo-tela">
