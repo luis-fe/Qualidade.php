@@ -252,7 +252,14 @@ include_once('../../templates/headerPcp.php');
                                     </span>
 
                                 <input type="search" class="search-input search-input-detalhamentoSku"></th>
-                                <th>Estoque MP.<br>Distr.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>
+                                     <span 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top" 
+                                    title="É o total de Matéria Prima distribuida para esse SKU, utilizada para saber o rendimento de PCs">
+                                    Estoque MP.<br>Distr.</br>
+                                    </span>
+                                    <input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Sugestão<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                             </tr>

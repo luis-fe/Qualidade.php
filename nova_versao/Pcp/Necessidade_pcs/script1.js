@@ -564,6 +564,20 @@ function TabeldetalhamentoSku(listaDetalhes) {
             { data: 'faltaProg (Tendencia)' },
             { data: 'Sugestao_PCs' },
         ],
+        initComplete: function(settings, json) {
+                    // Após o carregamento da tabela, localiza o menor valor
+                    let allData = tabela.column('Sugestao_PCs:name').data().toArray();
+                    menorValor = Math.min(...allData.map(val => parseFloat(val)));
+                },
+                rowCallback: function(row, data) {
+                    if (parseFloat(data.Sugestao_PCs) === menorValor) {
+                    $(row).css('background-color', '#ffcccc'); // fundo vermelho claro
+                    }
+                },
+                columnDefs: [
+                    { name: 'Sugestao_PCs', targets: [9] }
+        ],
+            
         language: {
             paginate: {
                 previous: '<i class="fa-solid fa-backward-step"></i>',
@@ -595,7 +609,12 @@ function TabeldetalhamentoSku(listaDetalhes) {
         }
     });
 
+    
+    
     $('.search-input-detalhamentoSkuSimulado').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
+
+
+
 }
