@@ -620,27 +620,24 @@ let menorSugestaoPC = Math.min(...valoresNumericos);
             $('.dataTables_paginate').hide();
         },
            
-            rowCallback: function (row, data) {
-                console.log("Verificando linha:", data.Sugestao_PCs);
-                let valorLinha = data.Sugestao_PCs
+        rowCallback: function (row, data) {
+            let valorLinha = data.Sugestao_PCs;
 
-                if (typeof valorLinha === 'string') {
-                    valorLinha = valorLinha.replace(/\./g, '').replace(',', '.');
-                }
-
-                valorLinha = parseFloat(valorLinha);
-
-                if (!isNaN(valorLinha) && valorLinha.toFixed(3) === menorSugestaoPC.toFixed(3)) {
-                    $(row).css('background-color', '#ffcccc');
-                }
-
-                            if (Math.abs(valorLinha - menorSugestaoPC) < 0.001) {
-                $(row).css('background-color', '#ffcccc');
+            if (typeof valorLinha === 'string') {
+                valorLinha = valorLinha.replace(/\./g, '').replace(',', '.');
             }
-                console.log("Valor da linha:", valorLinha, "| Menor valor:", menorSugestaoPC);
-    
+
+            valorLinha = parseFloat(valorLinha);
+
+            console.log("Valor da linha:", valorLinha, "| Menor valor:", menorSugestaoPC);
+
+            if (!isNaN(valorLinha) && Math.abs(valorLinha - menorSugestaoPC) < 0.001) {
+                $(row).addClass('linha-destacada');
+            } else {
+                $(row).removeClass('linha-destacada'); // importante para evitar reaplicação indevida
+            }
         }
-            
+                    
     });
 
     // Adiciona os botões à interface
