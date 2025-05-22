@@ -87,7 +87,7 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
 }
     const categoriasMP = [
     "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
-    "GOLAS", "MALHA", "RIBANA", "TECIDO PLANO", "ZIPER"
+    "GOLAS", "MALHA","MOLETOM", "RIBANA", "TECIDO PLANO", "ZIPER"
   ];
 
   function carregarCheckboxes() {
