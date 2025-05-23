@@ -483,25 +483,43 @@ const Consulta_Categorias2 = async () => {
 
 function abrirModal() {
   return new Promise((resolve) => {
-    const modal = new bootstrap.Modal(document.getElementById('modal-question'));
+    const modalEl = document.getElementById('modal-question');
 
-    // Captura os cliques nos botões
-    document.getElementById('btn-sim').onclick = () => {
-      resolve('sim');
-      modal.hide();
-    };
-    document.getElementById('btn-nao').onclick = () => {
+    // Aguarda até garantir que o modal está no DOM
+    if (!modalEl) {
+      console.error("Modal não encontrado no DOM");
       resolve('nao');
-      modal.hide();
-    };
+      return;
+    }
 
-    // Mostra o modal
-    modal.show();
+    const modal = new bootstrap.Modal(modalEl);
 
-    // Foca o botão "Não" ao abrir
-    modal._element.addEventListener('shown.bs.modal', () => {
-      document.getElementById('btn-nao').focus();
+    // Espera até o modal abrir para associar os botões
+    modalEl.addEventListener('shown.bs.modal', () => {
+      const btnSim = document.getElementById('btn-sim');
+      const btnNao = document.getElementById('btn-nao');
+
+      if (!btnSim || !btnNao) {
+        console.error("Botões do modal não encontrados");
+        resolve('nao');
+        modal.hide();
+        return;
+      }
+
+      btnSim.onclick = () => {
+        resolve('sim');
+        modal.hide();
+      };
+
+      btnNao.onclick = () => {
+        resolve('nao');
+        modal.hide();
+      };
+
+      btnNao.focus();
     }, { once: true });
+
+    modal.show();
   });
 }
 
