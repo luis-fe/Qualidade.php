@@ -254,23 +254,30 @@ async function TabelaAnalise(listaAnalise) {
             });
             $('.dataTables_paginate').hide();
         },
-         footerCallback: function (row, data, start, end, display) {
-            const api = this.api();
+        footerCallback: function (row, data, start, end, display) {
+                    const api = this.api();
 
-            // Colunas que precisam de total
-            const columnsToSum = ['faltaProg (Tendencia)', 'Sugestao_PCs'];
+                    // Função segura para converter em número
+                    const intVal = function (i) {
+                        return typeof i === 'string'
+                            ? parseFloat(i.replace(/[^\d.-]/g, '')) || 0
+                            : typeof i === 'number'
+                            ? i
+                            : 0;
+                    };
 
-            columnsToSum.forEach((columnName, idx) => {
-                const colIndex = idx + 10; // Índice da coluna no DataTables
+                    // Total da coluna "FaltaProg (Tendência)" (índice 7)
+                    const totalFalta = api.column(7, { filter: 'applied' }).data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
 
-                // Total considerando todos os dados após filtro
-                const total = api.column(colIndex, {
-                    filter: 'applied'
-                }).data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+                    // Total da coluna "Sugestao_PCs" (índice 8)
+                    const totalSugestao = api.column(8, { filter: 'applied' }).data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
 
-            });
-        },
+                    // Exibe os totais no footer
+                    $('#total-faltaProg').html(totalFalta.toLocaleString('pt-BR'));
+                    $('#total-sugestao').html(totalSugestao.toLocaleString('pt-BR'));
+                }
     });
 
     $('.search-input-analise').on('input', function () {
