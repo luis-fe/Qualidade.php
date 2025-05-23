@@ -57,6 +57,8 @@ const Consulta_Planos = async () => {
 
 
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
+    await abrirModal();
+
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -86,7 +88,7 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
     }
 }
     const categoriasMP = [
-    "-", "CADARCO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
+    "-", "CADARCO/CORDAO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
     "GOLAS", "MALHA","MOLETOM", "RIBANA", "TECIDO PLANO", "ZIPER"
   ];
 
@@ -469,6 +471,18 @@ const Consulta_Categorias2 = async () => {
         console.error('Erro ao consultar planos:', error);
     }
 };
+
+
+  function abrirModal() {
+    const modal = document.getElementById("modal-question");
+    modal.style.display = "flex";
+
+    // Aguarda o modal renderizar antes de dar foco
+    setTimeout(() => {
+      document.getElementById("btn-nao").focus();
+    }, 0);
+  };
+
 
 function TabeldetalhamentoSku(listaDetalhes) {
     if ($.fn.DataTable.isDataTable('#table-detalhamentoSku')) {

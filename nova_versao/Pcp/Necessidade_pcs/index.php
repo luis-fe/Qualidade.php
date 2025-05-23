@@ -219,6 +219,16 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+<div class="modal" id="modal-question">
+  <div class="modal-content">
+    <p>Deseja Recalular a Análise de Materiais?</p>
+    <div class="modal-buttons">
+      <button onclick="responder('sim')">Sim</button>
+      <button id="btn-nao" onclick="responder('nao')">Não</button>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade modal-custom" id="modal-detalhamentoSku" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
