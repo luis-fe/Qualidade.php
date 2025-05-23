@@ -87,6 +87,7 @@ include_once('../../templates/headerPcp.php');
                     <th>Tam<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Falta<br>Prog</br><input type="search" class="search-input search-input-analise"></th>
                     <th>Sugestao <br>Pela MP</br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Disponivel <br>Vendido</br><input type="search" class="search-input search-input-analise"></th>
                 </tr>
             </thead>
             <tbody>
@@ -97,6 +98,7 @@ include_once('../../templates/headerPcp.php');
                 <th colspan="7" style="text-align:right">Totais:</th>
                 <th id="total-faltaProg"></th>
                 <th id="total-sugestao"></th>
+                <th id="total-disponivel"></th>
                 </tr>
             </tfoot>
         </table>

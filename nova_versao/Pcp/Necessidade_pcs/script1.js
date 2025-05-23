@@ -233,6 +233,9 @@ async function TabelaAnalise(listaAnalise) {
             }
 
         },
+                {
+            data: 'disponivel'
+            }
         
         ],
         language: {
@@ -277,6 +280,8 @@ async function TabelaAnalise(listaAnalise) {
                     // Exibe os totais no footer
                     $('#total-faltaProg').html(totalFalta.toLocaleString('pt-BR'));
                     $('#total-sugestao').html(totalSugestao.toLocaleString('pt-BR'));
+                    $('#total-disponivel').html(totalSugestao.toLocaleString('pt-BR'));
+
                 }
     });
 
