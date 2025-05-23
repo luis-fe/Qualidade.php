@@ -219,15 +219,27 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="modal" id="modal-question">
-  <div class="modal-content">
-    <p>Deseja Recalular a Análise de Materiais?</p>
-    <div class="modal-buttons">
-      <button onclick="responder('sim')">Sim</button>
-      <button id="btn-nao" onclick="responder('nao')">Não</button>
+<div class="modal fade" id="modal-question" tabindex="-1" aria-labelledby="modalQuestionLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalQuestionLabel">Confirmação</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      
+      <div class="modal-body text-center">
+        <p>Deseja Recalcular a Análise de Materiais?</p>
+      </div>
+      
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-success" onclick="responder('sim')">Sim</button>
+        <button type="button" class="btn btn-secondary" id="btn-nao" data-bs-dismiss="modal" onclick="responder('nao')">Não</button>
+      </div>
     </div>
   </div>
 </div>
+
 
 
 <div class="modal fade modal-custom" id="modal-detalhamentoSku" tabindex="-1" aria-labelledby="customModalLabel"

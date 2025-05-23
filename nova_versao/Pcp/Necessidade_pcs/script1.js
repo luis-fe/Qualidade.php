@@ -57,36 +57,44 @@ const Consulta_Planos = async () => {
 
 
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
-    await abrirModal();
+  const resposta = await abrirModal();
 
-    $('#loadingModal').modal('show');
-    try {
-        const requestData = {
-            acao: "CalculoPcs_baseaado_MP",
-            dados: {
-                "codPlano": $('#select-plano').val(),
-                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                arrayCategoriaMP: typeof arrayCategoriaMP !== 'undefined' ? arrayCategoriaMP : [] // Garante que esteja definido
-            }
-        };
-        
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-        });
+  if (resposta !== 'sim') {
+    return; // Cancela se o usuário clicou em "Não"
+  }
 
-        TabelaAnalise(response);
-        $('.div-analise').removeClass('d-none');
+  $('#loadingModal').modal('show');
+  try {
+    const requestData = {
+      acao: "CalculoPcs_baseaado_MP",
+      dados: {
+        codPlano: $('#select-plano').val(),
+        consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
+        arrayCategoriaMP: arrayCategoriaMP || [],
+      }
+    };
 
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
+    const response = await $.ajax({
+      type: 'POST',
+      url: 'requests.php',
+      contentType: 'application/json',
+      data: JSON.stringify(requestData),
+    });
+
+    TabelaAnalise(response);
+    $('.div-analise').removeClass('d-none');
+
+  } catch (error) {
+    console.error('Erro na solicitação AJAX:', error);
+    Mensagem_Canto('Erro', 'error');
+  } finally {
+    $('#loadingModal').modal('hide');
+  }
 }
+
+
+
+
     const categoriasMP = [
     "-", "CADARCO/CORDAO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
     "GOLAS", "MALHA","MOLETOM", "RIBANA", "TECIDO PLANO", "ZIPER"
@@ -473,15 +481,29 @@ const Consulta_Categorias2 = async () => {
 };
 
 
-  function abrirModal() {
-    const modal = document.getElementById("modal-question");
-    modal.style.display = "flex";
+function abrirModal() {
+  return new Promise((resolve) => {
+    const modal = new bootstrap.Modal(document.getElementById('modal-question'));
 
-    // Aguarda o modal renderizar antes de dar foco
-    setTimeout(() => {
-      document.getElementById("btn-nao").focus();
-    }, 0);
-  };
+    // Captura os cliques nos botões
+    document.getElementById('btn-sim').onclick = () => {
+      resolve('sim');
+      modal.hide();
+    };
+    document.getElementById('btn-nao').onclick = () => {
+      resolve('nao');
+      modal.hide();
+    };
+
+    // Mostra o modal
+    modal.show();
+
+    // Foca o botão "Não" ao abrir
+    modal._element.addEventListener('shown.bs.modal', () => {
+      document.getElementById('btn-nao').focus();
+    }, { once: true });
+  });
+}
 
 
 function TabeldetalhamentoSku(listaDetalhes) {
