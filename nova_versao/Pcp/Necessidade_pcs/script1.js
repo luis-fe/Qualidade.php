@@ -484,17 +484,8 @@ const Consulta_Categorias2 = async () => {
 function abrirModal() {
   return new Promise((resolve) => {
     const modalEl = document.getElementById('modal-question');
-
-    // Aguarda até garantir que o modal está no DOM
-    if (!modalEl) {
-      console.error("Modal não encontrado no DOM");
-      resolve('nao');
-      return;
-    }
-
     const modal = new bootstrap.Modal(modalEl);
 
-    // Espera até o modal abrir para associar os botões
     modalEl.addEventListener('shown.bs.modal', () => {
       const btnSim = document.getElementById('btn-sim');
       const btnNao = document.getElementById('btn-nao');
@@ -506,22 +497,34 @@ function abrirModal() {
         return;
       }
 
+      // Aplica estilo ao focar
+      [btnSim, btnNao].forEach(btn => {
+        btn.addEventListener('focus', () => {
+          btn.classList.remove('btn-secondary');
+          btn.classList.add('btn-success');
+        });
+        btn.addEventListener('blur', () => {
+          btn.classList.remove('btn-success');
+          btn.classList.add('btn-secondary');
+        });
+      });
+
       btnSim.onclick = () => {
         resolve('sim');
         modal.hide();
       };
-
       btnNao.onclick = () => {
         resolve('nao');
         modal.hide();
       };
 
-      btnNao.focus();
+      btnNao.focus(); // Foco inicial no botão "Não"
     }, { once: true });
 
     modal.show();
   });
 }
+
 
 
 function TabeldetalhamentoSku(listaDetalhes) {

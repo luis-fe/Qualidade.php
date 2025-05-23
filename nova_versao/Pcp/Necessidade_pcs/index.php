@@ -227,8 +227,8 @@ include_once('../../templates/headerPcp.php');
         <p>Deseja Recalcular a Análise de Materiais?</p>
       </div>
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-success" id="btn-sim">Sim</button>
-        <button type="button" class="btn btn-secondary" id="btn-nao">Não</button>
+            <button type="button" class="btn btn-secondary" id="btn-sim">Sim</button>
+            <button type="button" class="btn btn-secondary" id="btn-nao">Não</button>
       </div>
     </div>
   </div>
