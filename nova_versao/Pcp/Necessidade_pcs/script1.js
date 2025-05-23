@@ -59,37 +59,39 @@ const Consulta_Planos = async () => {
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
   const resposta = await abrirModal();
 
-  if (resposta !== 'sim') {
-    return; // Cancela se o usuário clicou em "Não"
-  }
+    if (resposta !== 'sim') {
+        $('#loadingModal').modal('show');
+            try {
+                const requestData = {
+                acao: "CalculoPcs_baseaado_MP",
+                dados: {
+                    codPlano: $('#select-plano').val(),
+                    consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
+                    arrayCategoriaMP: arrayCategoriaMP || [],
+                }
+                };
 
-  $('#loadingModal').modal('show');
-  try {
-    const requestData = {
-      acao: "CalculoPcs_baseaado_MP",
-      dados: {
-        codPlano: $('#select-plano').val(),
-        consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
-        arrayCategoriaMP: arrayCategoriaMP || [],
-      }
+                const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                });
+
+                TabelaAnalise(response);
+                $('.div-analise').removeClass('d-none');
+
+            } catch (error) {
+                console.error('Erro na solicitação AJAX:', error);
+                Mensagem_Canto('Erro', 'error');
+            } finally {
+                $('#loadingModal').modal('hide');
+            }
+    }else{
+    console.log('clicou nao');
     };
 
-    const response = await $.ajax({
-      type: 'POST',
-      url: 'requests.php',
-      contentType: 'application/json',
-      data: JSON.stringify(requestData),
-    });
-
-    TabelaAnalise(response);
-    $('.div-analise').removeClass('d-none');
-
-  } catch (error) {
-    console.error('Erro na solicitação AJAX:', error);
-    Mensagem_Canto('Erro', 'error');
-  } finally {
-    $('#loadingModal').modal('hide');
-  }
+  
 }
 
 
