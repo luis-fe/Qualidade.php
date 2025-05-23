@@ -230,7 +230,7 @@ include_once('../../templates/headerPcp.php');
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body text-center">
-        <p>Deseja Recalcular a Análise de Materiais?</p>
+        <p class="fs-4">Deseja Recalcular a Análise de Materiais?</p>
       </div>
       <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" id="btn-sim">Sim</button>
