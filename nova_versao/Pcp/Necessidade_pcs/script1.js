@@ -497,16 +497,32 @@ function abrirModal() {
         return;
       }
 
+      const resetBtnStyle = (btn) => {
+        btn.style.backgroundColor = '#6c757d'; // cinza Bootstrap
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#6c757d';
+      };
+
+      const highlightBtn = (btn) => {
+        btn.style.backgroundColor = '#198754'; // verde Bootstrap
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#198754';
+      };
+
       [btnSim, btnNao].forEach(btn => {
         btn.addEventListener('focus', () => {
-          btn.classList.remove('btn-secondary');
-          btn.classList.add('btn-success');
+          highlightBtn(btn);
         });
+
         btn.addEventListener('blur', () => {
-          btn.classList.remove('btn-success');
-          btn.classList.add('btn-secondary');
+          resetBtnStyle(btn);
         });
       });
+
+      // Estilo inicial
+      resetBtnStyle(btnSim);
+      resetBtnStyle(btnNao);
+      highlightBtn(btnNao);
 
       btnSim.onclick = () => {
         resolve('sim');
@@ -518,12 +534,13 @@ function abrirModal() {
         modal.hide();
       };
 
-      btnNao.focus(); // Foco inicial
+      btnNao.focus();
     }, { once: true });
 
     modal.show();
   });
 }
+
 
 
 
