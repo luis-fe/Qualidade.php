@@ -497,7 +497,6 @@ function abrirModal() {
         return;
       }
 
-      // Aplica estilo ao focar
       [btnSim, btnNao].forEach(btn => {
         btn.addEventListener('focus', () => {
           btn.classList.remove('btn-secondary');
@@ -513,17 +512,19 @@ function abrirModal() {
         resolve('sim');
         modal.hide();
       };
+
       btnNao.onclick = () => {
         resolve('nao');
         modal.hide();
       };
 
-      btnNao.focus(); // Foco inicial no botão "Não"
+      btnNao.focus(); // Foco inicial
     }, { once: true });
 
     modal.show();
   });
 }
+
 
 
 

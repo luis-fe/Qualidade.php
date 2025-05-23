@@ -34,6 +34,12 @@ include_once('../../templates/headerPcp.php');
     background-color: rgb(224, 33, 33) !important;
     color: white !important;
 }
+
+#btn-sim, #btn-nao {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
 </style>
 
 <div class="titulo-tela">
