@@ -253,7 +253,35 @@ async function TabelaAnalise(listaAnalise) {
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
             });
             $('.dataTables_paginate').hide();
-        }
+        },
+         footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            // Helper para converter strings para número
+            const intVal = (i) => {
+                if (typeof i === 'string') {
+                    // Remover "R$", pontos e substituir vírgula por ponto
+                    return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
+                } else if (typeof i === 'number') {
+                    return i;
+                }
+                return 0;
+            };
+
+            // Colunas que precisam de total
+            const columnsToSum = ['faltaProg (Tendencia)', 'Sugestao_PCs'];
+
+            columnsToSum.forEach((columnName, idx) => {
+                const colIndex = idx + 10; // Índice da coluna no DataTables
+
+                // Total considerando todos os dados após filtro
+                const total = api.column(colIndex, {
+                    filter: 'applied'
+                }).data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+            });
+        },
     });
 
     $('.search-input-analise').on('input', function () {
@@ -703,6 +731,7 @@ let valoresNumericos = listaDetalhes
             });
             $('.dataTables_paginate').hide();
         },
+       
            
         rowCallback: function (row, data) {
             let valorLinha = data.Sugestao_PCs;

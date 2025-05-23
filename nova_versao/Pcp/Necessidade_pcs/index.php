@@ -98,7 +98,6 @@ include_once('../../templates/headerPcp.php');
                                     <th colspan="2"></th>
                                     <th id="Falta Prog"></th>
                                     <th id="Sugestão"></th>
-                                    <th></th>
                                 </tr>
         </table>
     </div>
