@@ -257,17 +257,6 @@ async function TabelaAnalise(listaAnalise) {
          footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
-            // Helper para converter strings para número
-            const intVal = (i) => {
-                if (typeof i === 'string') {
-                    // Remover "R$", pontos e substituir vírgula por ponto
-                    return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
-                } else if (typeof i === 'number') {
-                    return i;
-                }
-                return 0;
-            };
-
             // Colunas que precisam de total
             const columnsToSum = ['faltaProg (Tendencia)', 'Sugestao_PCs'];
 

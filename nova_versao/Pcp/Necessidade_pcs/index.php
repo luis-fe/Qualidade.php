@@ -92,13 +92,13 @@ include_once('../../templates/headerPcp.php');
             <tbody>
                 <!-- Dados da tabela -->
             </tbody>
-                                     <tfoot>
-                                <tr>
-                                    <th>Total:</th>
-                                    <th colspan="2"></th>
-                                    <th id="Falta Prog"></th>
-                                    <th id="Sugestão"></th>
-                                </tr>
+            <tfoot>
+                <tr>
+                <th colspan="7" style="text-align:right">Totais:</th>
+                <th id="total-faltaProg"></th>
+                <th id="total-sugestao"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     <div class="custom-pagination-container pagination-analise d-md-flex col-12 text-center text-md-start">
