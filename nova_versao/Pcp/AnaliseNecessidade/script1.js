@@ -178,6 +178,38 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Necessidade de Materiais',
             className: 'btn-tabelas'
         },
+                {
+            text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Simulação',
+            title: 'Simulação',
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('#modal-simulacao').modal('show');
+                $('#campo-simulacao').removeClass('d-none');
+
+                const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
+
+                if (simulacaoValue === "") {
+                    $('#inputs-container-categorias').empty();
+                    $('#inputs-container').empty();
+                    $('#inputs-container-marcas').addClass('d-none')
+                } else {
+                    await Consulta_Abc_Plano();
+                    await Consulta_Categorias();
+                    await Consulta_Simulacao_Especifica();
+                    $('#inputs-container-marcas').removeClass('d-none')
+                }
+            }
+        },
+         {
+            text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Nova Simulação',
+            title: 'Nova Simulação',
+            className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('#modal-cad_simulacao').modal('show');
+                await Consulta_Abc2();
+                Consulta_Categorias2(); 
+            },
+        },
         ],
         columns: [{
             data: '02-codCompleto'
@@ -293,6 +325,7 @@ async function TabelaAnalise(listaAnalise) {
             });
             $('.dataTables_paginate').hide();
         }
+    
     });
 
     $('.search-input-analise').on('input', function () {
@@ -305,6 +338,10 @@ async function TabelaAnalise(listaAnalise) {
             tabela.page.len(valor).draw();
         }
     });
+
+    
+
+
 
     $('#table-analise tbody').on('click', 'tr', function (event) {
         // Verifica se o clique foi em um hiperlink
@@ -332,6 +369,7 @@ async function TabelaAnalise(listaAnalise) {
         const codReduzido = $(this).attr('data-codigoReduzido');
         Detalha_Necessidade(codReduzido);
     });
+
 }
 
 
