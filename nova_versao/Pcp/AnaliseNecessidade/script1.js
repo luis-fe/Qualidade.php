@@ -373,6 +373,171 @@ async function TabelaAnalise(listaAnalise) {
 }
 
 
+
+const Consulta_Abc_Plano = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Abc_Plano',
+                plano: $('#select-plano').val()
+            }
+        });
+
+        const inputsContainer = $('#inputs-container');
+        inputsContainer.empty();
+
+        data[0]['3- Detalhamento:'].forEach((item) => {
+            const inputHtml = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}">
+                </div>
+            `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-abc').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Abc = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Abc',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
+                </div>
+            `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-abc').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Abc2 = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Abc',
+            }
+        });
+
+        const inputsContainer = $('#inputs-Cadcontainer');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc2 col-12" id="${item.nomeABC}" placeholder="%" value="0%">
+                </div>
+            `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-abc2').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Categorias = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Categorias',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container-categorias');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">${item.nomeCategoria}</label>
+                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
+                    </div>
+                `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-categoria').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Categorias2 = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Categorias',
+            }
+        });
+
+        const inputsContainer = $('#inputs-Cadcontainer-Cadcategorias');
+        inputsContainer.empty();
+
+        data.forEach((item) => {
+            const inputHtml = `
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">${item.nomeCategoria}</label>
+                        <input type="text" class="inputs-percentuais input-categoria2 col-12" id="${item.nomeCategoria}" placeholder="%" value="10000%">
+                    </div>
+                `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-categoria2').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+
+
+
 function TabelaNaturezas(listaNaturezas) {
     if ($.fn.DataTable.isDataTable('#table-naturezas')) {
         $('#table-naturezas').DataTable().destroy();
