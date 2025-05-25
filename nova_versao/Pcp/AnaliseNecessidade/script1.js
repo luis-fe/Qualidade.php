@@ -194,8 +194,8 @@ async function TabelaAnalise(listaAnalise) {
                     $('#inputs-container-marcas').addClass('d-none')
                 } else {
                     await Consulta_Abc_Plano_();
-                    await Consulta_Categorias();
-                    await Consulta_Simulacao_Especifica();
+                    await Consulta_Categorias_();
+                    await Consulta_Simulacao_Especifica_();
                     $('#inputs-container-marcas').removeClass('d-none')
                 }
             }
@@ -207,7 +207,7 @@ async function TabelaAnalise(listaAnalise) {
             action: async function (e, dt, node, config) {
                 $('#modal-cad_simulacao').modal('show');
                 await Consulta_Abc2_();
-                Consulta_Categorias2(); 
+                Consulta_Categorias2_(); 
             },
         },
         ],
@@ -373,6 +373,40 @@ async function TabelaAnalise(listaAnalise) {
 }
 
 
+const Consulta_Simulacao_Especifica_ = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Simulacao_Especifica',
+                simulacao: $('#select-simulacao').val()
+            }
+        });
+
+        if (!data) {
+            Mensagem_Canto('Não possui simulação para editar', 'warning');
+            $('#modal-simulacao').modal('hide');
+            return;
+        }
+
+        const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
+        campos.forEach(campo => {
+            if (data[0][campo]) {
+                data[0][campo].forEach(item => {
+                    const key = item.class || item.categoria || item.marca;
+                    const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
+                    if (input.length) {
+                        input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
 
 const Consulta_Abc_Plano_ = async () => {
     try {
