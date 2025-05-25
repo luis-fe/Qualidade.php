@@ -32,6 +32,23 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Comprometidos_Compras':
                     jsonResponse(ConsultarComprometidoCompras('1'));
                     break;
+                case 'Consulta_Abc_Plano':
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultaAbcPlano('1', $plano));
+                    break;
+                case 'Consulta_Simulacoes':
+                    jsonResponse(ConsultaSimulacoes('1'));
+                    break;
+                case 'Consulta_Categorias':
+                    jsonResponse(ConsultaCategorias('1'));
+                    break;
+                case 'Consulta_Abc':
+                    jsonResponse(ConsultaAbc('1'));
+                    break;
+                case 'Consulta_Simulacao_Especifica':
+                    $simulacao = urldecode($_GET['simulacao']);
+                    jsonResponse(ConsultaSimulacaoEspecifica('1', $simulacao));
+                    break;
 
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
