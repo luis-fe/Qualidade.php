@@ -193,7 +193,7 @@ async function TabelaAnalise(listaAnalise) {
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
                 } else {
-                    await Consulta_Abc_Plano();
+                    await Consulta_Abc_Plano_();
                     await Consulta_Categorias();
                     await Consulta_Simulacao_Especifica();
                     $('#inputs-container-marcas').removeClass('d-none')
@@ -206,7 +206,7 @@ async function TabelaAnalise(listaAnalise) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-cad_simulacao').modal('show');
-                await Consulta_Abc2();
+                await Consulta_Abc2_();
                 Consulta_Categorias2(); 
             },
         },
@@ -374,7 +374,7 @@ async function TabelaAnalise(listaAnalise) {
 
 
 
-const Consulta_Abc_Plano = async () => {
+const Consulta_Abc_Plano_ = async () => {
     try {
         const data = await $.ajax({
             type: 'GET',
@@ -439,7 +439,7 @@ const Consulta_Abc = async () => {
     }
 };
 
-const Consulta_Abc2 = async () => {
+const Consulta_Abc2_ = async () => {
     try {
         const data = await $.ajax({
             type: 'GET',
