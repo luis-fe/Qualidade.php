@@ -23,6 +23,8 @@ $(document).ready(async () => {
         await Consulta_Abc_Plano();
         await Consulta_Categorias()
         await Consulta_Simulacao_Especifica();
+
+
     });
 
     $('#select-pedidos-bloqueados').select2({
@@ -69,7 +71,7 @@ $(document).ready(async () => {
     });
 
     $(document).on('click', '#btn-zerar-categorias', function () {
-    $('.input-categoria').val('0,00%');
+    $('.input-categoria2').val('0,00%');
     
     });
 

@@ -187,7 +187,7 @@ include_once('../../templates/headerPcp.php');
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <form id="form-cad_simulacao">
-                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 500px; overflow-y: auto;">
                     <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
