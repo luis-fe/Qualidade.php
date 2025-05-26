@@ -103,9 +103,10 @@ const Consulta_Comprometidos_Compras = async () => {
 
 
 async function Analise_Materiais() {
-    const respostaCalculo = await Consulta_UltimoCalculo_($('#select-plano').val())
-    console.log(respostaCalculo)
     console.log($('#select-plano').val())
+    codPlano = await $('#select-plano').val()
+    const respostaCalculo = await Consulta_UltimoCalculo_(codPlano)
+    console.log(respostaCalculo)
 
     $('#loadingModal').modal('show');
     try {
