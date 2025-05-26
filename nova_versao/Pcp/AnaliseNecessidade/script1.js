@@ -462,6 +462,7 @@ const Consulta_Abc_Plano_ = async () => {
 
 
 const Consulta_UltimoCalculo_ = async (plano) => {
+    console.log(`o parametro da funcao é:  ${plano}`)
     try {
         const data = await $.ajax({
             type: 'GET',
