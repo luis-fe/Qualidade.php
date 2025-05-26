@@ -470,7 +470,7 @@ const Consulta_UltimoCalculo_ = async (plano) => {
             dataType: 'json',
             data: {
                 acao: 'ConsultaUltimoCalculo',
-                plano: plano
+                plano
             }
         });
         return data[0]['status'];  // <-- retorna o valor
