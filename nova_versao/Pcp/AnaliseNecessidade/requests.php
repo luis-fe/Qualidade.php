@@ -20,6 +20,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (isset($_GET["acao"])) {
             $acao = $_GET["acao"];
             switch ($acao) {
+                case 'ConsultaUltimoCalculo':
+                    jsonResponse(ConsultaUltimoCalculo('1', $plano));
+                    break;
                 case 'Consulta_Planos':
                     jsonResponse(ConsultarPlanos('1'));
                     break;
@@ -366,6 +369,30 @@ function ConsultaAbcPlano($empresa, $plano)
 
     return json_decode($apiResponse, true);
 }
+
+
+function ConsultaUltimoCalculo($empresa, $plano)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/obtendoUltimaAnalise_porPlano?codPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 
 function CadastroSimulacao($empresa, $dados)
 {

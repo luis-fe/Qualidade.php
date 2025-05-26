@@ -103,6 +103,7 @@ const Consulta_Comprometidos_Compras = async () => {
 
 
 async function Analise_Materiais() {
+    await Consulta_UltimoCalculo_()
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -455,6 +456,25 @@ const Consulta_Abc_Plano_ = async () => {
     }
 };
 
+
+const Consulta_UltimoCalculo_ = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'ConsultaUltimoCalculo',
+                plano: $('#select-plano').val()
+            }
+        });
+
+        console.log(data[0]['status'])
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
 const Consulta_Abc = async () => {
     try {
         const data = await $.ajax({
@@ -582,6 +602,7 @@ const Consulta_Categorias2_ = async () => {
         console.error('Erro ao consultar planos:', error);
     }
 };
+
 
 
 
