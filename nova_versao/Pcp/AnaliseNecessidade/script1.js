@@ -551,7 +551,7 @@ const Consulta_Categorias = async () => {
     }
 };
 
-const Consulta_Categorias2 = async () => {
+const Consulta_Categorias2_ = async () => {
     try {
         const data = await $.ajax({
             type: 'GET',
