@@ -103,7 +103,8 @@ const Consulta_Comprometidos_Compras = async () => {
 
 
 async function Analise_Materiais() {
-    await Consulta_UltimoCalculo_()
+    const respostaCalculo = await Consulta_UltimoCalculo_($('#select-plano').val())
+    console.log(respostaCalculo)
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -457,7 +458,7 @@ const Consulta_Abc_Plano_ = async () => {
 };
 
 
-const Consulta_UltimoCalculo_ = async () => {
+const Consulta_UltimoCalculo_ = async (plano) => {
     try {
         const data = await $.ajax({
             type: 'GET',
@@ -465,13 +466,16 @@ const Consulta_UltimoCalculo_ = async () => {
             dataType: 'json',
             data: {
                 acao: 'ConsultaUltimoCalculo',
-                plano: $('#select-plano').val()
+                plano: plano
             }
         });
+        return data[0]['status'];  // <-- retorna o valor
 
-        console.log(data[0]['status'])
+
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
+        return null; // ou algum valor padrão indicando erro
+
     }
 };
 
