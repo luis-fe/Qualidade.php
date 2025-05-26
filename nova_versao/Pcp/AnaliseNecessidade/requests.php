@@ -21,6 +21,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $acao = $_GET["acao"];
             switch ($acao) {
                 case 'ConsultaUltimoCalculo':
+                    $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
                     jsonResponse(ConsultaUltimoCalculo('1', $plano));
                     break;
                 case 'Consulta_Planos':
