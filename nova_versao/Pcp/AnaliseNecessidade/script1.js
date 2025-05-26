@@ -1,3 +1,6 @@
+let cacheDescricao = ''
+
+
 $(document).ready(async () => {
     Consulta_Planos();
     $('#select-plano').select2({
@@ -368,6 +371,17 @@ async function TabelaAnalise(listaAnalise) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codigoReduzido');
         Detalha_Necessidade(codReduzido);
+    });
+
+    $('#form-cad_simulacao').on('submit', async function (e) {
+    e.preventDefault();
+
+    await Cadastro_Simulacao2();
+    await Consulta_Simulacoes();
+    $('#descricao-simulacao').val('');
+
+
+    $('#modal-cad_simulacao').modal('hide');
     });
 
 }
@@ -891,5 +905,112 @@ function filtrarTabelas(filtro) {
     }
 
 
+}
+
+async function Cadastro_Simulacao2() {
+    $('#loadingModal').modal('show');
+    try {
+        const categorias = [];
+        const percentuais_categorias = [];
+
+        $('.input-categoria2').each(function () {
+            const categoria = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (categoria && !isNaN(percentual)) {
+                categorias.push(categoria);
+                percentuais_categorias.push(percentual);
+            }
+        });
+
+        const abcs = [];
+        const percentuais_abc = [];
+
+        $('.input-abc2').each(function () {
+            const abc = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (abc && !isNaN(percentual)) {
+                abcs.push(abc);
+                percentuais_abc.push(percentual);
+            }
+        });
+
+        const marcas = [];
+        const percentuais_marca = [];
+
+        $('.input-marca2').each(function () {
+            const marca = $(this).attr('id');
+            const percentual = parseFloat($(this).val().replace(',', '.'));
+
+            if (marca && !isNaN(percentual)) {
+                marcas.push(marca);
+                percentuais_marca.push(percentual);
+            }
+        });
+
+        const requestData = {
+            acao: "Cadastro_Simulacao",
+            dados: {
+                "nomeSimulacao": $('#descricao-simulacao').val(),
+                arrayAbc: [
+                    abcs,
+                    percentuais_abc
+
+                ],
+                arrayCategoria: [
+                    categorias,
+                    percentuais_categorias
+                ],
+                arrayMarca: [
+                    marcas,
+                    percentuais_marca
+                ]
+            }
+        };
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+async function Consulta_Simulacoes() {
+    $('#loadingModal').modal('show');
+    $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+            acao: 'Consulta_Simulacoes',
+        },
+        success: function (data) {
+            $('#select-simulacao').empty();
+            $('#select-simulacao').append('<option value="" disabled selected>Selecione uma simulação...</option>');
+            data.forEach(function (item) {
+                $('#select-simulacao').append(`
+                        <option value="${item['nomeSimulacao']}">
+                            ${item['nomeSimulacao']}
+                        </option>
+                    `);
+            });
+            $('#loadingModal').modal('hide');
+            const descricao = $('#descricao-simulacao').val();
+            console.log(descricao)
+            $('#select-simulacao').val(descricao);
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Erro ao consultar planos:', error);
+            $('#loadingModal').modal('hide');
+        }
+    });
 }
 
