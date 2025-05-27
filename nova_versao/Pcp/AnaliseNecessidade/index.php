@@ -310,6 +310,22 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="modal-question" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p class="fs-4">?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" id="btn-sim">Sim</button>
+            <button type="button" class="btn btn-secondary" id="btn-nao">Não</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </div>
 
 <?php

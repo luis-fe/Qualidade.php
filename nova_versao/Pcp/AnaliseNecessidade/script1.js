@@ -100,6 +100,66 @@ const Consulta_Comprometidos_Compras = async () => {
 };
 
 
+function abrirModal() {
+  return new Promise((resolve) => {
+    const modalEl = document.getElementById('modal-question');
+    const modal = new bootstrap.Modal(modalEl);
+
+    modalEl.addEventListener('shown.bs.modal', () => {
+      const btnSim = document.getElementById('btn-sim');
+      const btnNao = document.getElementById('btn-nao');
+
+      if (!btnSim || !btnNao) {
+        console.error("Botões do modal não encontrados");
+        resolve('nao');
+        modal.hide();
+        return;
+      }
+
+      const resetBtnStyle = (btn) => {
+        btn.style.backgroundColor = '#6c757d'; // cinza Bootstrap
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#6c757d';
+      };
+
+      const highlightBtn = (btn) => {
+        btn.style.backgroundColor = '#198754'; // verde Bootstrap
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#198754';
+      };
+
+      [btnSim, btnNao].forEach(btn => {
+        btn.addEventListener('focus', () => {
+          highlightBtn(btn);
+        });
+
+        btn.addEventListener('blur', () => {
+          resetBtnStyle(btn);
+        });
+      });
+
+      // Estilo inicial
+      resetBtnStyle(btnSim);
+      resetBtnStyle(btnNao);
+      highlightBtn(btnNao);
+
+      btnSim.onclick = () => {
+        resolve('sim');
+        modal.hide();
+      };
+
+      btnNao.onclick = () => {
+        resolve('nao');
+        modal.hide();
+      };
+
+      btnNao.focus();
+    }, { once: true });
+
+    modal.show();
+  });
+}
+
 
 
 async function Analise_Materiais() {
@@ -107,6 +167,7 @@ async function Analise_Materiais() {
     const codPlano = $('#select-plano').val();     
     const respostaCalculo = await Consulta_UltimoCalculo_(codPlano)
     console.log(respostaCalculo)
+    abrirModal()
 
     $('#loadingModal').modal('show');
     try {
