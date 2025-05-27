@@ -542,7 +542,7 @@ const Consulta_UltimoCalculo_ = async (plano) => {
         });
         return {
         status: data[0]['status'],
-        mensagem: data[0]['mensagem']
+        mensagem: data[0]['Mensagem']
 };
 
 
