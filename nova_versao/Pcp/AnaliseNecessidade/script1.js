@@ -164,11 +164,11 @@ function abrirModal() {
 async function Analise_Materiais() {
     const codPlano = $('#select-plano').val();     
     const respostaCalculo = await Consulta_UltimoCalculo_(codPlano);
-
+    console.log(`o retorno foi ${respostaCalculo}`)
     if (respostaCalculo === false) {
         ChamadaatualizarAnalise();
     } else {
-        abrirModal();
+        await abrirModal();
         ChamadaatualizarAnalise();
     }
 }
