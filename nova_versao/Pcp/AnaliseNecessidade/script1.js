@@ -22,7 +22,7 @@ $(document).ready(async () => {
         $('#inputs-container-marcas').removeClass('d-none')
         await Consulta_Abc_Plano_();
         await Consulta_Categorias()
-        await Consulta_Simulacao_Especifica();
+        await Consulta_Simulacao_Especifica_();
 
  
     });
@@ -340,7 +340,7 @@ async function TabelaAnalise(listaAnalise) {
                 } else {
                     await Consulta_Abc_Plano_();
                     await Consulta_Categorias();
-                    await Consulta_Simulacao_Especifica();
+                    await Consulta_Simulacao_Especifica_();
                     $('#inputs-container-marcas').removeClass('d-none')
                 }
             }
