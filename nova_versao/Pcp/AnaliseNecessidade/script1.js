@@ -10,27 +10,29 @@ $(document).ready(async () => {
         width: '100%'
     });
 
-    $('#select-pedidos-bloqueados').select2({
-        placeholder: "Pedidos Bloqueados?",
-        allowClear: false,
-        width: '100%'
-    });
-
-        $('#select-simulacao').select2({
+    $('#select-simulacao').select2({
         placeholder: "Selecione uma simulação",
         allowClear: false,
         width: '100%',
         dropdownParent: $('#modal-simulacao')
     });
 
+    
     $('#select-simulacao').on('change', async function () {
         $('#inputs-container-marcas').removeClass('d-none')
-        await Consulta_Abc_Plano();
+        await Consulta_Abc_Plano_();
         await Consulta_Categorias()
         await Consulta_Simulacao_Especifica();
 
-
+ 
     });
+
+    $('#select-pedidos-bloqueados').select2({
+        placeholder: "Pedidos Bloqueados?",
+        allowClear: false,
+        width: '100%'
+    });
+
 
     $('#btn-vendas').addClass('btn-menu-clicado')
 
@@ -336,7 +338,7 @@ async function TabelaAnalise(listaAnalise) {
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
                 } else {
-                    await Consulta_Abc_Plano();
+                    await Consulta_Abc_Plano_();
                     await Consulta_Categorias();
                     await Consulta_Simulacao_Especifica();
                     $('#inputs-container-marcas').removeClass('d-none')
