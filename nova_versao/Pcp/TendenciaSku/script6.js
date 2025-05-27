@@ -1,5 +1,3 @@
-let cacheDescricao = ''
-
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
@@ -23,8 +21,6 @@ $(document).ready(async () => {
         await Consulta_Abc_Plano();
         await Consulta_Categorias()
         await Consulta_Simulacao_Especifica();
-
-
     });
 
     $('#select-pedidos-bloqueados').select2({
@@ -35,48 +31,19 @@ $(document).ready(async () => {
 
     $('#btn-vendas').addClass('btn-menu-clicado');
 
-
-    // Aqui está o onsubmit do form
-    $('#form-simulacao').on('submit', async function (e) {
-        e.preventDefault();
-
-
-        const inputDescricao = document.getElementById('select-simulacao');
-
-        console.log('Valor da descrição:', inputDescricao.value);
-        cacheDescricao = inputDescricao.value;
-
-        await Cadastro_Simulacao();
-        await Consulta_Simulacoes();
-
-        await Simular_Programacao(inputDescricao.value);
-        $('#loadingModal').modal('show');
-
-                // Fecha o modal
-        $('#modal-simulacao').modal('hide');
-        $('#loadingModal').modal('hide');
-    
-    });
-
-
-    $('#form-cad_simulacao').on('submit', async function (e) {
-    e.preventDefault();
-
-    await Cadastro_Simulacao2();
-    await Consulta_Simulacoes();
-    $('#descricao-simulacao').val('');
-
-
-    $('#modal-cad_simulacao').modal('hide');
-    });
-
-    $(document).on('click', '#btn-zerar-categorias', function () {
-    $('.input-categoria2').val('0,00%');
-    
-    });
-
- 
 });
+
+
+let nomeSimulacao = ''
+async function simulacao(texto, tipo) {
+    await Cadastro_Simulacao(texto, tipo);
+    await Consulta_Simulacoes();
+    await Simular_Programacao(texto);
+    $('#modal-simulacao').modal('hide');
+    $('#modal-nova-simulacao').modal('hide');
+    nomeSimulacao = texto
+};
+
 
 async function Consulta_Simulacoes() {
     $('#loadingModal').modal('show');
@@ -108,6 +75,49 @@ async function Consulta_Simulacoes() {
             $('#loadingModal').modal('hide');
         }
     });
+}
+
+async function Deletar_Simulacao() {
+
+    try {
+        const result = await Swal.fire({
+            title: "Deseja deletar a simulação?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+        });
+
+        if (result.isConfirmed) {
+            $('#loadingModal').modal('show');
+
+            const dados = {
+                "nomeSimulacao": $('#select-simulacao').val(),
+            };
+            const requestData = {
+                acao: "Deletar_Simulacao",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+            if (response['resposta'][0]['status'] === true) {
+                Mensagem_Canto('Simulação deletada', 'success');
+                Consulta_Simulacoes();
+                $('#modal-simulacao').modal('hide')
+            }
+        }
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
 }
 
 
@@ -164,25 +174,22 @@ async function Consulta_Tendencias() {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
     } finally {
-        cacheDescricao = ''
-        document.querySelector('.text-primary.fw-bold').innerText = '';
-
-
         $('#loadingModal').modal('hide');
     }
 };
 
-async function Simular_Programacao(campoDescricao) {
-     console.log(`minha descricao: ${campoDescricao}`);
+async function Simular_Programacao(simulacao) {
     $('#loadingModal').modal('show');
     try {
         const requestData = {
             acao: "Simular_Programacao",
+
             dados: {
-                codPlano: $('#select-plano').val(),
-                consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
-                nomeSimulacao:  campoDescricao
+                "codPlano": $('#select-plano').val(),
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "nomeSimulacao": simulacao
             }
+
         };
 
         const response = await $.ajax({
@@ -191,66 +198,94 @@ async function Simular_Programacao(campoDescricao) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-
-
         TabelaTendencia(response);
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error');
+        Mensagem_Canto('Erro', 'error')
     } finally {
-        console.log('carregao com sucesso')
         $('#loadingModal').modal('hide');
-
     }
-}
+};
 
-
-async function Cadastro_Simulacao() {
+async function Cadastro_Simulacao(simulacao, tipo) {
     $('#loadingModal').modal('show');
     try {
         const categorias = [];
         const percentuais_categorias = [];
 
-        $('.input-categoria').each(function () {
-            const categoria = $(this).attr('id');
-            const percentual = parseFloat($(this).val().replace(',', '.'));
-
-            if (categoria && !isNaN(percentual)) {
-                categorias.push(categoria);
-                percentuais_categorias.push(percentual);
-            }
-        });
-
         const abcs = [];
         const percentuais_abc = [];
-
-        $('.input-abc').each(function () {
-            const abc = $(this).attr('id');
-            const percentual = parseFloat($(this).val().replace(',', '.'));
-
-            if (abc && !isNaN(percentual)) {
-                abcs.push(abc);
-                percentuais_abc.push(percentual);
-            }
-        });
 
         const marcas = [];
         const percentuais_marca = [];
 
-        $('.input-marca').each(function () {
-            const marca = $(this).attr('id');
-            const percentual = parseFloat($(this).val().replace(',', '.'));
+        if (tipo === "cadastro") {
+            $('.input-categoria-2').each(function () {
+                const categoria = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
 
-            if (marca && !isNaN(percentual)) {
-                marcas.push(marca);
-                percentuais_marca.push(percentual);
-            }
-        });
+                if (categoria && !isNaN(percentual)) {
+                    categorias.push(categoria);
+                    percentuais_categorias.push(percentual);
+                }
+            });
+
+            $('.input-abc-2').each(function () {
+                const abc = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (abc && !isNaN(percentual)) {
+                    abcs.push(abc);
+                    percentuais_abc.push(percentual);
+                }
+            });
+
+            $('.input-marca-nova').each(function () {
+                const marca = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (marca && !isNaN(percentual)) {
+                    marcas.push(marca);
+                    percentuais_marca.push(percentual);
+                }
+            });
+        } else {
+            $('.input-categoria').each(function () {
+                const categoria = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (categoria && !isNaN(percentual)) {
+                    categorias.push(categoria);
+                    percentuais_categorias.push(percentual);
+                }
+            });
+
+            $('.input-abc').each(function () {
+                const abc = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (abc && !isNaN(percentual)) {
+                    abcs.push(abc);
+                    percentuais_abc.push(percentual);
+                }
+            });
+
+            $('.input-marca').each(function () {
+                const marca = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (marca && !isNaN(percentual)) {
+                    marcas.push(marca);
+                    percentuais_marca.push(percentual);
+                }
+            });
+        }
+
 
         const requestData = {
             acao: "Cadastro_Simulacao",
             dados: {
-                "nomeSimulacao": cacheDescricao,
+                "nomeSimulacao": simulacao,
                 arrayAbc: [
                     abcs,
                     percentuais_abc
@@ -279,87 +314,6 @@ async function Cadastro_Simulacao() {
         $('#loadingModal').modal('hide');
     }
 };
-
-
-
-async function Cadastro_Simulacao2() {
-    $('#loadingModal').modal('show');
-    try {
-        const categorias = [];
-        const percentuais_categorias = [];
-
-        $('.input-categoria2').each(function () {
-            const categoria = $(this).attr('id');
-            const percentual = parseFloat($(this).val().replace(',', '.'));
-
-            if (categoria && !isNaN(percentual)) {
-                categorias.push(categoria);
-                percentuais_categorias.push(percentual);
-            }
-        });
-
-        const abcs = [];
-        const percentuais_abc = [];
-
-        $('.input-abc2').each(function () {
-            const abc = $(this).attr('id');
-            const percentual = parseFloat($(this).val().replace(',', '.'));
-
-            if (abc && !isNaN(percentual)) {
-                abcs.push(abc);
-                percentuais_abc.push(percentual);
-            }
-        });
-
-        const marcas = [];
-        const percentuais_marca = [];
-
-        $('.input-marca2').each(function () {
-            const marca = $(this).attr('id');
-            const percentual = parseFloat($(this).val().replace(',', '.'));
-
-            if (marca && !isNaN(percentual)) {
-                marcas.push(marca);
-                percentuais_marca.push(percentual);
-            }
-        });
-
-        const requestData = {
-            acao: "Cadastro_Simulacao",
-            dados: {
-                "nomeSimulacao": $('#descricao-simulacao').val(),
-                arrayAbc: [
-                    abcs,
-                    percentuais_abc
-
-                ],
-                arrayCategoria: [
-                    categorias,
-                    percentuais_categorias
-                ],
-                arrayMarca: [
-                    marcas,
-                    percentuais_marca
-                ]
-            }
-        };
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-        });
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
-};
-
-
-
-
 
 const Consulta_Abc_Plano = async () => {
     try {
@@ -375,18 +329,31 @@ const Consulta_Abc_Plano = async () => {
 
         const inputsContainer = $('#inputs-container');
         inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-nova');
+        inputsContainerNova.empty();
 
         data[0]['3- Detalhamento:'].forEach((item) => {
-            const inputHtml = `
+            const inputHtml1 = `
                 <div class="col-md-3 mb-3">
                     <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}">
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
                 </div>
             `;
-            inputsContainer.append(inputHtml);
+            const inputHtml2 = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc-2 col-12" id="nova-${item.nomeABC}" placeholder="%">
+                </div>
+            `;
+            inputsContainer.append(inputHtml1);
+            inputsContainerNova.append(inputHtml2);
         });
 
         $('.input-abc').mask("##0,00%", {
+            reverse: true
+        });
+
+        $('.input-abc-2').mask("##0,00%", {
             reverse: true
         });
     } catch (error) {
@@ -407,6 +374,9 @@ const Consulta_Abc = async () => {
 
         const inputsContainer = $('#inputs-container');
         inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-nova');
+        inputsContainerNova.empty();
+
 
         data.forEach((item) => {
             const inputHtml = `
@@ -419,38 +389,6 @@ const Consulta_Abc = async () => {
         });
 
         $('.input-abc').mask("##0,00%", {
-            reverse: true
-        });
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    }
-};
-
-const Consulta_Abc2 = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Abc',
-            }
-        });
-
-        const inputsContainer = $('#inputs-Cadcontainer');
-        inputsContainer.empty();
-
-        data.forEach((item) => {
-            const inputHtml = `
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc2 col-12" id="${item.nomeABC}" placeholder="%" value="0%">
-                </div>
-            `;
-            inputsContainer.append(inputHtml);
-        });
-
-        $('.input-abc2').mask("##0,00%", {
             reverse: true
         });
     } catch (error) {
@@ -471,50 +409,32 @@ const Consulta_Categorias = async () => {
 
         const inputsContainer = $('#inputs-container-categorias');
         inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-categorias-nova');
+        inputsContainerNova.empty();
 
         data.forEach((item) => {
-            const inputHtml = `
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">${item.nomeCategoria}</label>
-                        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
-                    </div>
-                `;
-            inputsContainer.append(inputHtml);
+            const inputHtml1 = `
+    <div class="col-md-3 mb-3">
+        <label class="form-label">${item.nomeCategoria}</label>
+        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
+    </div>
+`;
+
+            const inputHtml2 = `
+    <div class="col-md-3 mb-3">
+        <label class="form-label">${item.nomeCategoria}</label>
+        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" placeholder="%">
+    </div>
+`;
+            inputsContainer.append(inputHtml1);
+            inputsContainerNova.append(inputHtml2);
         });
 
         $('.input-categoria').mask("##0,00%", {
             reverse: true
         });
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    }
-};
 
-const Consulta_Categorias2 = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Categorias',
-            }
-        });
-
-        const inputsContainer = $('#inputs-Cadcontainer-Cadcategorias');
-        inputsContainer.empty();
-
-        data.forEach((item) => {
-            const inputHtml = `
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">${item.nomeCategoria}</label>
-                        <input type="text" class="inputs-percentuais input-categoria2 col-12" id="${item.nomeCategoria}" placeholder="%" value="10000%">
-                    </div>
-                `;
-            inputsContainer.append(inputHtml);
-        });
-
-        $('.input-categoria2').mask("##0,00%", {
+        $('.input-categoria-2').mask("##0,00%", {
             reverse: true
         });
     } catch (error) {
@@ -606,25 +526,21 @@ function TabelaTendencia(listaTendencia) {
                 } else {
                     await Consulta_Abc_Plano();
                     await Consulta_Categorias();
-                    await Consulta_Simulacao_Especifica();
                     $('#inputs-container-marcas').removeClass('d-none')
                 }
             }
         },
-         {
+        {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Nova Simulação',
             title: 'Nova Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-cad_simulacao').modal('show');
-                await Consulta_Abc2();
-                Consulta_Categorias2(); 
+                $('#modal-nova-simulacao').modal('show');
+                $('#inputs-container-novas-marcas').removeClass('d-none');
+                await Consulta_Abc_Plano();
+                await Consulta_Categorias();
             },
         },
-            {
-                text: `<span class="text-primary fw-bold" style="background-color: transparent !important; margin-right: 10px !important;">${cacheDescricao}</span>`,
-                className: 'bg-transparent border-0 p-0 m-0'  // aparência mínima
-            }
         ],
         columns: [{
             data: 'marca'
@@ -688,7 +604,7 @@ function TabelaTendencia(listaTendencia) {
                 return type === 'display' ? data.toLocaleString('pt-BR') : data;
             }
         },
-                {
+        {
             data: 'SaldoColAnt',
             render: function (data, type) {
                 return type === 'display' ? data.toLocaleString('pt-BR') : data;
@@ -762,7 +678,7 @@ function TabelaTendencia(listaTendencia) {
             };
 
             // Colunas que precisam de total
-            const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'SaldoColAnt','estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'Prev Sobra'];
+            const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'Prev Sobra'];
 
             columnsToSum.forEach((columnName, idx) => {
                 const colIndex = idx + 10; // Índice da coluna no DataTables
@@ -786,89 +702,48 @@ function TabelaTendencia(listaTendencia) {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 
-    $('#btn-selecionar-colecoes').off('click').on('click', () => {
-        ColecoesSelecionadas = tabela.rows().nodes().toArray()
-            .filter(row => $(row).find('.row-checkbox').is(':checked'))
-            .map(row => String(tabela.row(row).data().codColecao));
 
-        if (ColecoesSelecionadas.length === 0) {
-            Mensagem('Nenhuma Coleção selecionada!', 'warning');
-        } else {
-            Vincular_Colecoes();
-        }
+    $('#table-tendencia').on('click', '.detalha-SimulacaoSku', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codReduzido');
+
+        Detalha_SimulacaoSku(codReduzido);
     });
 
-        // Clique no hiperlink "codReduzido"
     $('#table-tendencia').on('click', '.detalha-pedidos', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
         const codPlan = $('#select-plano').val();
-        const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();
-        console.log(`Teste2 Plano selecionado: ${codPlan}`)
-        
+        const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();        
         Detalha_Pedidos(codReduzido,consideraPedidosBloqueado, codPlan);
     });
-
-        $('#table-tendencia').on('click', '.detalha-SimulacaoSku', function (event) {
-        event.stopPropagation(); // Impede a propagação do clique
-        const codReduzido = $(this).attr('data-codReduzido');
-        
-        Detalha_SimulacaoSku(codReduzido);
-    });
-}
-
-async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) {
-    $('#loadingModal').modal('show');
-    try {
-        const params = new URLSearchParams({
-            acao: "Detalha_Pedidos",
-            codPlano: codPlan,
-            consideraPedidosBloqueado: consideraPedidosBloqueado,
-            codReduzido: codReduzido
-        });
-
-        const response = await $.ajax({
-            type: 'GET',
-            url: 'requests.php?' + params.toString(),
-        });
-
-        TabelaDetalhamentoPedidos(response);
-        $('#modal-detalhamentoPedidoSku').modal('show');
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error');
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
 }
 
 
 async function Detalha_SimulacaoSku(codReduzido) {
     $('#loadingModal').modal('show');
-        console.log('Valor da descrição da simulacao detalhado:', cacheDescricao);
     try {
 
         const requestData = {
             acao: "simulacaoDetalhadaPorSku",
-
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "codSku": codReduzido,
-                "nomeSimulacao":  cacheDescricao
+                "nomeSimulacao": nomeSimulacao
             }
 
         };
 
-const response = await $.ajax({
+        const response = await $.ajax({
             type: 'POST',
             url: 'requests.php',
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
         console.log(response)
-        TabeldetalhamentoSkuSimulado(response);
-        $('#modal-detalhamentoSkuSimulado').modal('show');
+        TabelaDetalhamentoSku(response);
+        $('#modal-detalhamento-skus').modal('show');
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error');
@@ -877,91 +752,12 @@ const response = await $.ajax({
     }
 }
 
-
-function TabelaDetalhamentoPedidos(listaDetalhes) {
-    if ($.fn.DataTable.isDataTable('#table-detalhamentoPedidoSku')) {
-        $('#table-detalhamentoPedidoSku').DataTable().destroy();
+function TabelaDetalhamentoSku(listaDetalhes) {
+    if ($.fn.DataTable.isDataTable('#table-detalhamento-skus')) {
+        $('#table-detalhamento-skus').DataTable().destroy();
     }
 
-    const tabela = $('#table-detalhamentoPedidoSku').DataTable({
-        searching: true,
-        paging: true,
-        lengthChange: false,
-        info: false,
-        pageLength: 15,
-        dom: 'Bfrtip', // <-- necessário para os botões aparecerem
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-                title: 'Tendências de Vendas',
-                className: 'btn-tabelas',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: function (data, row, column, node) {
-                            if (typeof data === 'string') {
-                                return data.replace(/\./g, '').replace(',', '.');
-                            }
-                            return data;
-                        }
-                    }
-                }
-            }
-        ],
-        data: listaDetalhes,
-        columns: [
-            { data: 'codPedido' },
-            { data: 'codTipoNota' },
-            { data: 'dataEmissao' },
-            { data: 'dataPrevFat' },
-            { data: 'marca' },
-            { data: 'qtdeFaturada' },
-            { data: 'qtdePedida' },
-            { data: 'valorVendido' }
-        ],
-        language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
-            info: "Página _PAGE_ de _PAGES_",
-            emptyTable: "Nenhum dado disponível na tabela",
-            zeroRecords: "Nenhum registro encontrado"
-        },
-        drawCallback: function () {
-            $('#pagination-detalhamentoPedidoSku').html($('.dataTables_paginate').html());
-            $('#pagination-detalhamentoPedidoSku span').remove();
-            $('#pagination-detalhamentoPedidoSku a').off('click').on('click', function (e) {
-                e.preventDefault();
-                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
-                if ($(this).hasClass('next')) tabela.page('next').draw('page');
-            });
-            $('.dataTables_paginate').hide();
-        }
-    });
-
-    // Adiciona os botões à interface
-    tabela.buttons().container().appendTo('#table-detalhamentoPedidoSku_wrapper .col-md-6:eq(0)');
-
-    $('#itens-detalhamentoPedidoSku').on('input', function () {
-        const valor = parseInt($(this).val(), 10);
-        if (!isNaN(valor) && valor > 0) {
-            tabela.page.len(valor).draw();
-        }
-    });
-
-    $('.search-input-detalhamentoPedidoSku').on('input', function () {
-        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
-    });
-}
-
-function TabeldetalhamentoSkuSimulado(listaDetalhes) {
-    if ($.fn.DataTable.isDataTable('#table-detalhamentoSkuSimulado')) {
-        $('#table-detalhamentoSkuSimulado').DataTable().destroy();
-    }
-
-    const tabela = $('#table-detalhamentoSkuSimulado').DataTable({
+    const tabela = $('#table-detalhamento-skus').DataTable({
         searching: true,
         paging: true,
         lengthChange: false,
@@ -1008,9 +804,9 @@ function TabeldetalhamentoSkuSimulado(listaDetalhes) {
             zeroRecords: "Nenhum registro encontrado"
         },
         drawCallback: function () {
-            $('#pagination-detalhamentoSkuSimulado').html($('.dataTables_paginate').html());
-            $('#pagination-detalhamentoSkuSimulado span').remove();
-            $('#pagination-detalhamentoSkuSimulado a').off('click').on('click', function (e) {
+            $('#pagination-detalhamento-skus').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamento-skus span').remove();
+            $('#pagination-detalhamento-skus a').off('click').on('click', function (e) {
                 e.preventDefault();
                 if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
@@ -1020,7 +816,7 @@ function TabeldetalhamentoSkuSimulado(listaDetalhes) {
     });
 
     // Adiciona os botões à interface
-    tabela.buttons().container().appendTo('#table-detalhamentoSkuSimulado_wrapper .col-md-6:eq(0)');
+    tabela.buttons().container().appendTo('#table-detalhamento-skus_wrapper .col-md-6:eq(0)');
 
     $('#itens-detalhamentoSkuSimulado').on('input', function () {
         const valor = parseInt($(this).val(), 10);
@@ -1030,6 +826,108 @@ function TabeldetalhamentoSkuSimulado(listaDetalhes) {
     });
 
     $('.search-input-detalhamentoSkuSimulado').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+};
+
+
+async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) {
+    try {
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "Detalha_Pedidos",
+                codPlano: codPlan,
+                consideraPedidosBloqueado: consideraPedidosBloqueado,
+                codReduzido: codReduzido
+            }
+        });
+        console.log(response)
+        TabelaDetalhamentoPedidos(response);
+        $('#modal-detalhamento-pedidos').modal('show')
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+
+
+function TabelaDetalhamentoPedidos(listaDetalhes) {
+    if ($.fn.DataTable.isDataTable('#table-detalhamento-pedidos')) {
+        $('#table-detalhamento-pedidos').DataTable().destroy();
+    }
+
+    const tabela = $('#table-detalhamento-pedidos').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 15,
+        dom: 'Bfrtip', // <-- necessário para os botões aparecerem
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                title: 'Tendências de Vendas',
+                className: 'btn-tabelas',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (typeof data === 'string') {
+                                return data.replace(/\./g, '').replace(',', '.');
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+        ],
+        data: listaDetalhes,
+        columns: [
+            { data: 'codPedido' },
+            { data: 'codTipoNota' },
+            { data: 'dataEmissao' },
+            { data: 'dataPrevFat' },
+            { data: 'marca' },
+            { data: 'qtdeFaturada' },
+            { data: 'qtdePedida' },
+            { data: 'valorVendido' }
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-detalhamento-pedidos').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamento-pedidos span').remove();
+            $('#pagination-detalhamento-pedidos a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    // Adiciona os botões à interface
+    tabela.buttons().container().appendTo('#table-detalhamento-pedidos_wrapper .col-md-6:eq(0)');
+
+    $('#itens-detalhamento-pedidos').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
+    $('.search-input-detalhamento-pedidos').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
