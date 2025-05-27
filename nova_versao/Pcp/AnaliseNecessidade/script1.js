@@ -167,9 +167,8 @@ async function Analise_Materiais() {
         ChamadaatualizarAnalise(false);
     } else {
         console.log(`o retorno foi ${respostaCalculo.mensagem}`)
-        await abrirModal(respostaCalculo.mensagem);
 
-        const respostaModal = await abrirModal();
+        const respostaModal = await abrirModal(respostaCalculo.mensagem);
         console.log(`o retorno resposta do modal foi ${respostaModal}`)
 
         if(respostaModal == 'sim'){
