@@ -164,23 +164,32 @@ async function Analise_Materiais() {
     const respostaCalculo = await Consulta_UltimoCalculo_(codPlano);
     console.log(`o retorno foi ${respostaCalculo.status}`)
     if (respostaCalculo.status === false) {
-        ChamadaatualizarAnalise();
+        ChamadaatualizarAnalise(false);
     } else {
         console.log(`o retorno foi ${respostaCalculo.mensagem}`)
         await abrirModal(respostaCalculo.mensagem);
-        ChamadaatualizarAnalise();
+
+        const respostaModal = await abrirModal();
+        console.log(`o retorno resposta do modal foi ${respostaCalculo.mensagem}`)
+
+        if(respostaModal == 'sim'){
+            ChamadaatualizarAnalise(true);
+        }else{
+            ChamadaatualizarAnalise(false);
+        }
     }
 }
 
 
-async function ChamadaatualizarAnalise() {
+async function ChamadaatualizarAnalise(congelamento) {
         $('#loadingModal').modal('show');
         try {
             const requestData = {
                 acao: "Analise_Materiais",
                 dados: {
                     "codPlano": $('#select-plano').val(),
-                    "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
+                    "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                    "congelar":congelamento
                 }
             };
 
