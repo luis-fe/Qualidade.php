@@ -16,6 +16,25 @@ $(document).ready(async () => {
     });
 
     $('#btn-vendas').addClass('btn-menu-clicado')
+
+    $('#form-cad_simulacao').on('submit', async function (e) {
+    e.preventDefault();
+
+    await Cadastro_Simulacao2();
+    await Consulta_Simulacoes();
+    $('#descricao-simulacao').val('');
+
+
+    $('#modal-cad_simulacao').modal('hide');
+    });
+
+    $(document).on('click', '#btn-zerar-categorias', function () {
+    $('.input-categoria2').val('0,00%');
+    
+    });
+
+
+
 });
 
 const Consulta_Planos = async () => {
@@ -451,17 +470,6 @@ async function TabelaAnalise(listaAnalise) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codigoReduzido');
         Detalha_Necessidade(codReduzido);
-    });
-
-    $('#form-cad_simulacao').on('submit', async function (e) {
-    e.preventDefault();
-
-    await Cadastro_Simulacao2();
-    await Consulta_Simulacoes();
-    $('#descricao-simulacao').val('');
-
-
-    $('#modal-cad_simulacao').modal('hide');
     });
 
 }
