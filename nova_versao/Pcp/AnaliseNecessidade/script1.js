@@ -166,7 +166,7 @@ async function Analise_Materiais() {
     if (respostaCalculo.status === false) {
         ChamadaatualizarAnalise();
     } else {
-
+        console.log(`o retorno foi ${respostaCalculo.mensagem}`)
         await abrirModal(respostaCalculo.mensagem);
         ChamadaatualizarAnalise();
     }
