@@ -164,6 +164,7 @@ async function TabelaAnalise(listaAnalise) {
         $('#table-analise').DataTable().destroy();
     }
 
+    
     const tabela = $('#table-analise').DataTable({
         searching: true,
         paging: true,
