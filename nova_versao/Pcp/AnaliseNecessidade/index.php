@@ -249,9 +249,8 @@ include_once('../../templates/headerPcp.php');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-floppy"></i></span>
-                        Salvar e Simular
+                    <button type="submit" name="action" value="salvar" class="btn btn-salvar">
+                        <i class="bi bi-floppy"></i> Salvar e Simular
                     </button>
                 </div>
             </form>
