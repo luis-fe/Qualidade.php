@@ -15,6 +15,22 @@ $(document).ready(async () => {
         width: '100%'
     });
 
+        $('#select-simulacao').select2({
+        placeholder: "Selecione uma simulação",
+        allowClear: false,
+        width: '100%',
+        dropdownParent: $('#modal-simulacao')
+    });
+
+    $('#select-simulacao').on('change', async function () {
+        $('#inputs-container-marcas').removeClass('d-none')
+        await Consulta_Abc_Plano();
+        await Consulta_Categorias()
+        await Consulta_Simulacao_Especifica();
+
+
+    });
+
     $('#btn-vendas').addClass('btn-menu-clicado')
 
 
@@ -304,7 +320,7 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Necessidade de Materiais',
             className: 'btn-tabelas'
         },
-                {
+        {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Simulação',
             title: 'Simulação',
             className: 'btn-tabelas',
@@ -319,9 +335,9 @@ async function TabelaAnalise(listaAnalise) {
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
                 } else {
-                    await Consulta_Abc_Plano_();
-                    await Consulta_Categorias_();
-                    await Consulta_Simulacao_Especifica_();
+                    await Consulta_Abc_Plano();
+                    await Consulta_Categorias();
+                    await Consulta_Simulacao_Especifica();
                     $('#inputs-container-marcas').removeClass('d-none')
                 }
             }
