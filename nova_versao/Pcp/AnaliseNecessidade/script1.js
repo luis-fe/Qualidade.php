@@ -162,42 +162,54 @@ function abrirModal() {
 
 
 
-async function Analise_Materiais() {
+function Analise_Materiais() {
     console.log($('#select-plano').val())
     const codPlano = $('#select-plano').val();     
-    const respostaCalculo = await Consulta_UltimoCalculo_(codPlano)
+    const respostaCalculo = Consulta_UltimoCalculo_(codPlano)
     console.log(respostaCalculo)
     abrirModal()
 
-    $('#loadingModal').modal('show');
-    try {
-        const requestData = {
-            acao: "Analise_Materiais",
-            dados: {
-                "codPlano": $('#select-plano').val(),
-                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
-            }
-        };
-
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-        });
-
-        await $('.div-analise').removeClass('d-none');
-        await TabelaAnalise(response);
-        await Consulta_Naturezas();
-        await Consulta_Comprometidos();
-        Consulta_Comprometidos_Compras();
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
-    } finally {
-        $('#loadingModal').modal('hide');
+    if(respostaCalculo=false){
+    ChamadaatualizarAnalise();
+    }else{
+    abrirModal()
+    ChamadaatualizarAnalise();
     }
+
+
 }
+
+async function ChamadaatualizarAnalise() {
+        $('#loadingModal').modal('show');
+        try {
+            const requestData = {
+                acao: "Analise_Materiais",
+                dados: {
+                    "codPlano": $('#select-plano').val(),
+                    "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
+                }
+            };
+
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            await $('.div-analise').removeClass('d-none');
+            await TabelaAnalise(response);
+            await Consulta_Naturezas();
+            await Consulta_Comprometidos();
+            Consulta_Comprometidos_Compras();
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+            Mensagem_Canto('Erro', 'error');
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    }
+
 
 async function Detalha_Necessidade(codReduzido) {
     $('#loadingModal').modal('show');
