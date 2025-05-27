@@ -130,9 +130,10 @@ def RecarregarPedidos():
     ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,natureza,bool(consideraSobra),ordem,int(5),'Retirar Substitutos')
     ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,'7',bool(consideraSobra),ordem,int(5),'Retirar Substitutos')
     ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,natureza,bool(True),'desc',int(5),'Retirar Substitutos')
-    ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,'7',bool(True),'desc',int(5),'Retirar Substitutos')
+
     ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,natureza,bool(consideraSobra),ordem,int(3),'Substitutos')
     ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,natureza,bool(True),'desc',int(3),'')
+    ReservaEnderecos.ReservaPedidosNaoRepostos(empresa,'7',bool(True),'desc',int(3),'')
 
     necessidadeReposicaoModel.RelatorioNecessidadeReposicaoDisponivel(empresa, natureza)
     try:
