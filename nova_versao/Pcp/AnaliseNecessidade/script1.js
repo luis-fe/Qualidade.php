@@ -100,10 +100,12 @@ const Consulta_Comprometidos_Compras = async () => {
 };
 
 
-function abrirModal() {
+function abrirModal(mensagem) {
   return new Promise((resolve) => {
+    
     const modalEl = document.getElementById('modal-question');
     const modal = new bootstrap.Modal(modalEl);
+        $('#modal-mensagem').text(mensagem);
 
     modalEl.addEventListener('shown.bs.modal', () => {
       const btnSim = document.getElementById('btn-sim');
@@ -164,11 +166,12 @@ function abrirModal() {
 async function Analise_Materiais() {
     const codPlano = $('#select-plano').val();     
     const respostaCalculo = await Consulta_UltimoCalculo_(codPlano);
-    console.log(`o retorno foi ${respostaCalculo}`)
-    if (respostaCalculo === false) {
+    console.log(`o retorno foi ${respostaCalculo.status}`)
+    if (respostaCalculo.status === false) {
         ChamadaatualizarAnalise();
     } else {
-        await abrirModal();
+
+        await abrirModal(respostaCalculo.mensagem);
         ChamadaatualizarAnalise();
     }
 }
@@ -541,7 +544,10 @@ const Consulta_UltimoCalculo_ = async (plano) => {
                 plano
             }
         });
-        return data[0]['status'];  // <-- retorna o valor
+        return {
+        status: data[0]['status'],
+        mensagem: data[0]['mensagem']
+};
 
 
     } catch (error) {
