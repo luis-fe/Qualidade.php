@@ -161,23 +161,18 @@ function abrirModal() {
 }
 
 
-
-function Analise_Materiais() {
-    console.log($('#select-plano').val())
+async function Analise_Materiais() {
     const codPlano = $('#select-plano').val();     
-    const respostaCalculo = Consulta_UltimoCalculo_(codPlano)
-    console.log(respostaCalculo)
-    abrirModal()
+    const respostaCalculo = await Consulta_UltimoCalculo_(codPlano);
 
-    if(respostaCalculo=false){
-    ChamadaatualizarAnalise();
-    }else{
-    abrirModal()
-    ChamadaatualizarAnalise();
+    if (respostaCalculo === false) {
+        ChamadaatualizarAnalise();
+    } else {
+        abrirModal();
+        ChamadaatualizarAnalise();
     }
-
-
 }
+
 
 async function ChamadaatualizarAnalise() {
         $('#loadingModal').modal('show');
