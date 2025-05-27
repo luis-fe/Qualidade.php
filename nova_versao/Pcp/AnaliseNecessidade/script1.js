@@ -3,6 +3,7 @@ let cacheDescricao = ''
 
 $(document).ready(async () => {
     Consulta_Planos();
+    Consulta_Simulacoes();
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
         allowClear: false,
