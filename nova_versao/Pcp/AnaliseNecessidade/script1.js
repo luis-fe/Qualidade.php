@@ -173,9 +173,9 @@ async function Analise_Materiais() {
         console.log(`o retorno resposta do modal foi ${respostaModal}`)
 
         if(respostaModal == 'sim'){
-            ChamadaatualizarAnalise(true);
-        }else{
             ChamadaatualizarAnalise(false);
+        }else{
+            ChamadaatualizarAnalise(true);
         }
     }
 }
