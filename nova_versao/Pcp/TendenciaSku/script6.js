@@ -36,11 +36,11 @@ $(document).ready(async () => {
 
 let nomeSimulacao = ''
 async function simulacao(texto, tipo) {
+    $('#modal-simulacao').modal('hide');
+    $('#modal-nova-simulacao').modal('hide');
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
     await Simular_Programacao(texto);
-    $('#modal-simulacao').modal('hide');
-    $('#modal-nova-simulacao').modal('hide');
     nomeSimulacao = texto
 };
 
@@ -423,7 +423,7 @@ const Consulta_Categorias = async () => {
             const inputHtml2 = `
     <div class="col-md-3 mb-3">
         <label class="form-label">${item.nomeCategoria}</label>
-        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" placeholder="%">
+        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" value="100,00%" placeholder="%">
     </div>
 `;
             inputsContainer.append(inputHtml1);
