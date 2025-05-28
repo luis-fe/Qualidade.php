@@ -502,7 +502,8 @@ function TabelaTendencia(listaTendencia) {
                 format: {
                     body: function (data, row, column, node) {
                         if (typeof data === 'string') {
-                            return data.replace(/\./g, '').replace(',', '.');
+                            const textoSemHtml = data.replace(/<[^>]*>?/gm, '');
+                            return textoSemHtml.replace(/\./g, '').replace(',', '.');
                         }
                         return data;
                     }
