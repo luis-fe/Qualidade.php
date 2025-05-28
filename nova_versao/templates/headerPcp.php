@@ -258,6 +258,20 @@
             color: white;
         }
 
+         .btn-excluir{
+            background-color: darkred;
+            border: 1px solid darkred;
+            color: white;
+            border: 1px solid rgb(163, 9, 9);
+            border-radius: 30px;    
+        }
+
+        .btn-excluir:hover{
+            background-color: rgb(163, 9, 9);
+            border: 1px solid rgb(163, 9, 9);
+            color: white !important
+        }
+
         .btn-table {
             border-radius: 10px;
             font-size: 15px;
