@@ -210,6 +210,10 @@ include_once('../../templates/headerPcp.php');
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
+                        <span><i class="bi bi-floppy"></i></span>
+                        Zerar Categorias
+                    </button>
                     <button type="submit" class="btn btn-salvar">
                         <span><i class="bi bi-floppy"></i></span>
                         Salvar e Simular
