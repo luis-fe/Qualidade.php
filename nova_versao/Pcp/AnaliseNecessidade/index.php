@@ -3,15 +3,37 @@ include_once('requests.php');
 include_once("../../templates/Loading.php");
 include_once('../../templates/headerPcp.php');
 ?>
+<!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
+<style>
+    .form-label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .inputs-percentuais {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px 15px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .inputs-percentuais:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        background-color: #fff;
+    }
+</style>
 
 <div class="titulo-tela">
     <span class="span-icone"><i class="bi bi-bag-check"></i></span> Análise de Materiais
 </div>
 
 <div class="mt-3 row justify-content-center" id="selecao-plano">
-    <form id="form-vendas" class="row" onsubmit="Analise_Materiais(); return false;">
+    <form id="form-vendas" class="row" onsubmit="Selecionar_Calculo(); return false;">
         <div class="col-12 col-md-6">
             <div class="select text-start">
                 <label for="select-plano" class="form-label">Selecionar plano</label>
@@ -209,6 +231,7 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
+</div>
 
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
@@ -217,7 +240,7 @@ include_once('../../templates/headerPcp.php');
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <form id="form-simulacao">
+            <form id="form-simulacao" onsubmit="simulacao($('#select-simulacao').val(), ''); return false;">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
                     <div class="select mb-4 text-start d-none" id="campo-simulacao">
                         <label for="select-simulacao" class="form-label">Simulação</label>
@@ -249,8 +272,13 @@ include_once('../../templates/headerPcp.php');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="action" value="salvar" class="btn btn-salvar">
-                        <i class="bi bi-floppy"></i> Salvar e Simular
+                    <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
+                        <span><i class="bi bi-trash3-fill"></i></span>
+                        Excluir Simulação
+                    </button>
+                    <button type="submit" class="btn btn-salvar">
+                        <span><i class="bi bi-floppy"></i></span>
+                        Salvar e Simular
                     </button>
                 </div>
             </form>
@@ -258,49 +286,51 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-
-<div class="modal fade modal-custom" id="modal-cad_simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+<div class="modal fade modal-custom" id="modal-nova-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Cadastro De Simulações</h5>
+                <h5 class="modal-title" style="color: black;">Nova Simulação</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-                <form id="form-cad_simulacao">
-                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 500px; overflow-y: auto;">
+            <form id="form-nova-simulacao" onsubmit="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
                     <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
-                    <div class="mb-4 col-12" id="inputs-container-Cadmarcas">
+                    <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca2 col-12" placeholder="%" value="100%" />
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" /> 100,00%
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca2 col-12" placeholder="%" value="100%"/>
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" />
                             </div>
                         </div>
                     </div>
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-Cadcontainer" class="row">
+                        <div id="inputs-container-nova" class="row">
                         </div>
                     </div>
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold">CATEGORIAS</h6>
-                        <button id="btn-zerar-categorias" type="button" class="btn btn-primary mb-3">Zerar Percentuais</button>
-                        <div id="inputs-Cadcontainer-Cadcategorias" class="row">
+                        <div id="inputs-container-categorias-nova" class="row">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
+                        <span><i class="bi bi-x-octagon"></i></span>
+                        Zerar Categorias
+                    </button>
                     <button type="submit" class="btn btn-salvar">
                         <span><i class="bi bi-floppy"></i></span>
-                        Cadastar
+                        Salvar e Simular
                     </button>
                 </div>
             </form>
@@ -308,26 +338,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-
-<!-- Modal Bootstrap -->
-<div class="modal fade" id="modal-question" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <p class="fs-4" id="modal-mensagem">?</p>
-      </div>
-      <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-secondary" id="btn-sim">Sim</button>
-            <button type="button" class="btn btn-secondary" id="btn-nao">Não</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-</div>
-
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script1.js"></script>
+<script src="script4.js"></script>
