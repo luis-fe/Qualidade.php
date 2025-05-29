@@ -229,133 +229,6 @@ async function Cadastro_Simulacao(simulacao, tipo) {
     }
 };
 
-const Consulta_Abc_Plano = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Abc_Plano',
-                plano: $('#select-plano').val()
-            }
-        });
-
-        const inputsContainer = $('#inputs-container');
-        inputsContainer.empty();
-        const inputsContainerNova = $('#inputs-container-nova');
-        inputsContainerNova.empty();
-
-        data[0]['3- Detalhamento:'].forEach((item) => {
-            const inputHtml1 = `
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
-                </div>
-            `;
-            const inputHtml2 = `
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="nova-${item.nomeABC}" placeholder="%">
-                </div>
-            `;
-            inputsContainer.append(inputHtml1);
-            inputsContainerNova.append(inputHtml2);
-        });
-
-        $('.input-abc').mask("##0,00%", {
-            reverse: true
-        });
-
-        $('.input-abc-2').mask("##0,00%", {
-            reverse: true
-        });
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    }
-};
-
-const Consulta_Abc = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Abc',
-            }
-        });
-
-        const inputsContainer = $('#inputs-container');
-        inputsContainer.empty();
-        const inputsContainerNova = $('#inputs-container-nova');
-        inputsContainerNova.empty();
-
-
-        data.forEach((item) => {
-            const inputHtml = `
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
-                </div>
-            `;
-            inputsContainer.append(inputHtml);
-        });
-
-        $('.input-abc').mask("##0,00%", {
-            reverse: true
-        });
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    }
-};
-
-const Consulta_Categorias = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Categorias',
-            }
-        });
-
-        const inputsContainer = $('#inputs-container-categorias');
-        inputsContainer.empty();
-        const inputsContainerNova = $('#inputs-container-categorias-nova');
-        inputsContainerNova.empty();
-
-        data.forEach((item) => {
-            const inputHtml1 = `
-    <div class="col-md-3 mb-3">
-        <label class="form-label">${item.nomeCategoria}</label>
-        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
-    </div>
-`;
-
-            const inputHtml2 = `
-    <div class="col-md-3 mb-3">
-        <label class="form-label">${item.nomeCategoria}</label>
-        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" value="100,00%" placeholder="%">
-    </div>
-`;
-            inputsContainer.append(inputHtml1);
-            inputsContainerNova.append(inputHtml2);
-        });
-
-        $('.input-categoria').mask("##0,00%", {
-            reverse: true
-        });
-
-        $('.input-categoria-2').mask("##0,00%", {
-            reverse: true
-        });
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    }
-};
-
 async function Consulta_Simulacoes() {
     $('#loadingModal').modal('show');
     $.ajax({
@@ -448,40 +321,7 @@ async function Selecionar_Calculo() {
 
 
 
-const Consulta_Simulacao_Especifica = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Simulacao_Especifica',
-                simulacao: $('#select-simulacao').val()
-            }
-        });
 
-        if (!data) {
-            Mensagem_Canto('Não possui simulação para editar', 'warning');
-            $('#modal-simulacao').modal('hide');
-            return;
-        }
-
-        const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
-        campos.forEach(campo => {
-            if (data[0][campo]) {
-                data[0][campo].forEach(item => {
-                    const key = item.class || item.categoria || item.marca;
-                    const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
-                    if (input.length) {
-                        input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
-                    }
-                });
-            }
-        });
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    }
-};
 
 const Consulta_Comprometidos = async () => {
     try {
@@ -1152,4 +992,165 @@ async function Deletar_Simulacao() {
     }
 }
 
+const Consulta_Abc_Plano = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Abc_Plano',
+                plano: $('#select-plano').val()
+            }
+        });
+
+        const inputsContainer = $('#inputs-container');
+        inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-nova');
+        inputsContainerNova.empty();
+
+        data[0]['3- Detalhamento:'].forEach((item) => {
+            const inputHtml1 = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
+                </div>
+            `;
+            const inputHtml2 = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="nova-${item.nomeABC}" placeholder="%">
+                </div>
+            `;
+            inputsContainer.append(inputHtml1);
+            inputsContainerNova.append(inputHtml2);
+        });
+
+        $('.input-abc').mask("##0,00%", {
+            reverse: true
+        });
+
+        $('.input-abc-2').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Abc = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Abc',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container');
+        inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-nova');
+        inputsContainerNova.empty();
+
+
+        data.forEach((item) => {
+            const inputHtml = `
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
+                </div>
+            `;
+            inputsContainer.append(inputHtml);
+        });
+
+        $('.input-abc').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Categorias = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Categorias',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container-categorias');
+        inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-categorias-nova');
+        inputsContainerNova.empty();
+
+        data.forEach((item) => {
+            const inputHtml1 = `
+    <div class="col-md-3 mb-3">
+        <label class="form-label">${item.nomeCategoria}</label>
+        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
+    </div>
+`;
+
+            const inputHtml2 = `
+    <div class="col-md-3 mb-3">
+        <label class="form-label">${item.nomeCategoria}</label>
+        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" placeholder="%">
+    </div>
+`;
+            inputsContainer.append(inputHtml1);
+            inputsContainerNova.append(inputHtml2);
+        });
+
+        $('.input-categoria').mask("##0,00%", {
+            reverse: true
+        });
+
+        $('.input-categoria-2').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
+
+const Consulta_Simulacao_Especifica = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Simulacao_Especifica',
+                simulacao: $('#select-simulacao').val()
+            }
+        });
+
+        if (!data) {
+            Mensagem_Canto('Não possui simulação para editar', 'warning');
+            $('#modal-simulacao').modal('hide');
+            return;
+        }
+
+        const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
+        campos.forEach(campo => {
+            if (data[0][campo]) {
+                data[0][campo].forEach(item => {
+                    const key = item.class || item.categoria || item.marca;
+                    const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
+                    if (input.length) {
+                        input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
 
