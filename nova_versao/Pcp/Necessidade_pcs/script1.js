@@ -3,6 +3,7 @@ let menorSugestaoPC = null;
 
 $(document).ready(async () => {
     Consulta_Planos();
+    Consulta_Simulacoes();
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
         allowClear: false,
@@ -15,6 +16,20 @@ $(document).ready(async () => {
         width: '100%'
     });
 
+     $('#select-simulacao').select2({
+        placeholder: "Selecione uma simulação",
+        allowClear: false,
+        width: '100%',
+        dropdownParent: $('#modal-simulacao')
+    });
+
+    $('#select-simulacao').on('change', async function () {
+        $('#inputs-container-marcas').removeClass('d-none')
+        await Consulta_Abc_Plano();
+        await Consulta_Categorias()
+        await Consulta_Simulacao_Especifica();
+    });
+
     $('#btn-vendas').addClass('btn-menu-clicado')
 });
 
@@ -25,7 +40,40 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+const Consulta_Simulacao_Especifica = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Simulacao_Especifica',
+                simulacao: $('#select-simulacao').val()
+            }
+        });
 
+        if (!data) {
+            Mensagem_Canto('Não possui simulação para editar', 'warning');
+            $('#modal-simulacao').modal('hide');
+            return;
+        }
+
+        const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
+        campos.forEach(campo => {
+            if (data[0][campo]) {
+                data[0][campo].forEach(item => {
+                    const key = item.class || item.categoria || item.marca;
+                    const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
+                    if (input.length) {
+                        input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
 
 const Consulta_Planos = async () => {
     $('#loadingModal').modal('show');
@@ -768,4 +816,78 @@ let valoresNumericos = listaDetalhes
 
 
 
+}
+async function Consulta_Simulacoes() {
+    $('#loadingModal').modal('show');
+    $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+            acao: 'Consulta_Simulacoes',
+        },
+        success: function (data) {
+            $('#select-simulacao').empty();
+            $('#select-simulacao').append('<option value="" disabled selected>Selecione uma simulação...</option>');
+            data.forEach(function (item) {
+                $('#select-simulacao').append(`
+                        <option value="${item['nomeSimulacao']}">
+                            ${item['nomeSimulacao']}
+                        </option>
+                    `);
+            });
+            $('#loadingModal').modal('hide');
+            const descricao = $('#descricao-simulacao').val();
+            console.log(descricao)
+            $('#select-simulacao').val(descricao);
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Erro ao consultar planos:', error);
+            $('#loadingModal').modal('hide');
+        }
+    });
+}
+
+async function Deletar_Simulacao() {
+
+    try {
+        const result = await Swal.fire({
+            title: "Deseja deletar a simulação?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+        });
+
+        if (result.isConfirmed) {
+            $('#loadingModal').modal('show');
+
+            const dados = {
+                "nomeSimulacao": $('#select-simulacao').val(),
+            };
+            const requestData = {
+                acao: "Deletar_Simulacao",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+            if (response['resposta'][0]['status'] === true) {
+                Mensagem_Canto('Simulação deletada', 'success');
+                Consulta_Simulacoes();
+                $('#modal-simulacao').modal('hide')
+            }
+        }
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
 }
