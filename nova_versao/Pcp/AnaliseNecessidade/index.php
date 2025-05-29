@@ -304,7 +304,7 @@ include_once('../../templates/headerPcp.php');
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" /> 100,00%
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" />
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
