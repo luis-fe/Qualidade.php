@@ -35,9 +35,17 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Simulacoes':
                     jsonResponse(ConsultaSimulacoes('1'));
                     break;
+                case 'Consulta_Abc_Plano':
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultaAbcPlano('1', $plano));
+                    break;
+                 case 'Consulta_Categorias':
+                    jsonResponse(ConsultaCategorias('1'));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
+
             }
         }
         break;
@@ -274,6 +282,51 @@ function ConsultaSimulacoes($empresa)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaSimulacoes";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function ConsultaAbcPlano($empresa, $plano)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/consultaPlanejamentoABC_plano?codPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultaCategorias($empresa)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/CategoriasDisponiveis";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
