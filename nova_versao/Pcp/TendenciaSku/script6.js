@@ -342,7 +342,7 @@ const Consulta_Abc_Plano = async () => {
             const inputHtml2 = `
                 <div class="col-md-3 mb-3">
                     <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc-2 col-12" id="nova-${item.nomeABC}" placeholder="%">
+                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="nova-${item.nomeABC}" placeholder="%">
                 </div>
             `;
             inputsContainer.append(inputHtml1);
@@ -423,7 +423,7 @@ const Consulta_Categorias = async () => {
             const inputHtml2 = `
     <div class="col-md-3 mb-3">
         <label class="form-label">${item.nomeCategoria}</label>
-        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" value="100,00%" placeholder="%">
+        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" placeholder="%">
     </div>
 `;
             inputsContainer.append(inputHtml1);
@@ -502,7 +502,9 @@ function TabelaTendencia(listaTendencia) {
                 format: {
                     body: function (data, row, column, node) {
                         if (typeof data === 'string') {
+                            // Remove qualquer tag HTML (ex: <span>, <i>, etc.)
                             const textoSemHtml = data.replace(/<[^>]*>?/gm, '');
+                            // Substitui pontos por vazio e vírgula por ponto (ex: 1.234,56 → 1234.56)
                             return textoSemHtml.replace(/\./g, '').replace(',', '.');
                         }
                         return data;
@@ -715,8 +717,8 @@ function TabelaTendencia(listaTendencia) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
         const codPlan = $('#select-plano').val();
-        const consideraPedidosBloqueado =  $('#select-pedidos-bloqueados').val();        
-        Detalha_Pedidos(codReduzido,consideraPedidosBloqueado, codPlan);
+        const consideraPedidosBloqueado = $('#select-pedidos-bloqueados').val();
+        Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan);
     });
 }
 
