@@ -32,7 +32,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Comprometidos_Compras':
                     jsonResponse(ConsultarComprometidoCompras('1'));
                     break;
-
+                case 'Consulta_Simulacoes':
+                    jsonResponse(ConsultaSimulacoes('1'));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -261,6 +263,28 @@ function detalharSku_x_AnaliseEmpenho($empresa, $dados)
         $error = curl_error($ch);
         error_log("Erro na solicitação cURL: {$error}");
         return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultaSimulacoes($empresa)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/ConsultaSimulacoes";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
     }
 
     curl_close($ch);
