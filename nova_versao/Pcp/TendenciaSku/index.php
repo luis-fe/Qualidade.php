@@ -159,7 +159,7 @@ include_once('../../templates/headerPcp.php');
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
-                        <span><i class="bi bi-floppy"></i></span>
+                        <span><i class="bi bi-trash3-fill"></i></span>
                         Excluir Simulação
                     </button>
                     <button type="submit" class="btn btn-salvar">
@@ -190,11 +190,11 @@ include_once('../../templates/headerPcp.php');
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100%" placeholder="%" />
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%" />
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" value="100%" placeholder="%" />
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%" />
                             </div>
                         </div>
                     </div>
@@ -210,12 +210,12 @@ include_once('../../templates/headerPcp.php');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="$('.input-categoria-2').val('0,00%')">
-                        <span><i class="bi bi-floppy"></i></span>
+                    <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
+                        <span><i class="bi bi-x-octagon"></i></span>
                         Zerar Categorias
                     </button>
                     <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-floppy"></i></span>
+                        <span><i class="bi bi-x-octagon"></i></span>
                         Salvar e Simular
                     </button>
                 </div>
