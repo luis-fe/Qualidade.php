@@ -92,6 +92,19 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             }
         }
         break;
+    case "DELETE":
+        $requestData = json_decode(file_get_contents('php://input'), true);
+        $acao = $requestData['acao'] ?? null;
+        $dados = $requestData['dados'] ?? null;
+
+        switch ($acao) {
+            case 'Deletar_Simulacao':
+                $dadosObjeto = (object)$dados;
+                header('Content-Type: application/json');
+                echo DeleteSimulacao("1", $dadosObjeto);
+                break;
+        }
+        break;
     default:
         jsonResponse(['status' => false, 'message' => 'Método de requisição não suportado.']);
         break;
@@ -395,4 +408,43 @@ function Consulta_Ultimo_Calculo($empresa, $plano)
     curl_close($ch);
 
     return json_decode($apiResponse, true);
+}
+
+function DeleteSimulacao($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? '192.168.0.183:9000' : 'http://10.162.0.190:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/deletarSimulacao";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
+    }
+
+    curl_close($ch);
+
+    return json_encode($response);
 }
