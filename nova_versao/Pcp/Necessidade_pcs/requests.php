@@ -42,6 +42,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                  case 'Consulta_Categorias':
                     jsonResponse(ConsultaCategorias('1'));
                     break;
+                case 'Consulta_Simulacao_Especifica':
+                    $simulacao = urldecode($_GET['simulacao']);
+                    jsonResponse(ConsultaSimulacaoEspecifica('1', $simulacao));
+                    break;
+                case 'Consulta_Ultimo_Calculo':
+                    $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
+                    jsonResponse(Consulta_Ultimo_Calculo('1', $plano));
+                    break;        
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -327,6 +335,50 @@ function ConsultaCategorias($empresa)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
     $apiUrl = "{$baseUrl}/pcp/api/CategoriasDisponiveis";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultaSimulacaoEspecifica($empresa, $simulacao)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/consultaDetalhadaSimulacao?nomeSimulacao=" . urlencode($simulacao);
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function Consulta_Ultimo_Calculo($empresa, $plano)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/obtendoUltimaAnalise_porPlano?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
