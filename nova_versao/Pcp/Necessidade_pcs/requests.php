@@ -68,6 +68,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(AnaliseMateriais('1', $dadosObjeto));
                     break;
+                case 'CalculoPcs_baseaado_MP_Simulacao':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(CalculoPcs_baseaado_MP_Simulacao('1', $dadosObjeto));
+                    break;
                 case 'detalharSku_x_AnaliseEmpenho':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
@@ -265,6 +270,40 @@ function AnaliseMateriais($empresa, $dados)
 
     return json_decode($apiResponse, true);
 }
+
+function CalculoPcs_baseaado_MP_Simulacao($empresa, $dados)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/CalculoPcs_baseaado_MP";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
 
 
 function detalharSku_x_AnaliseEmpenho($empresa, $dados)

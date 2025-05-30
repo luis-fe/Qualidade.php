@@ -109,6 +109,44 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
   
 }
 
+async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
+  const resposta = await abrirModal();
+
+    if (resposta !== 'sim') {
+        $('#loadingModal').modal('show');
+            try {
+                const requestData = {
+                acao: "CalculoPcs_baseaado_MP_Simulacao",
+                dados: {
+                    codPlano: $('#select-plano').val(),
+                    consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
+                    arrayCategoriaMP: arrayCategoriaMP || [],
+                    nomeSimulacao: $('#select-simulacao').val()
+                }
+                };
+
+                const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                });
+
+                TabelaAnalise(response);
+                $('.div-analise').removeClass('d-none');
+
+            } catch (error) {
+                console.error('Erro na solicitação AJAX:', error);
+                Mensagem_Canto('Erro', 'error');
+            } finally {
+                $('#loadingModal').modal('hide');
+            }
+    }else{
+    console.log('clicou nao');
+    };
+
+  
+}
 
 
 
@@ -325,9 +363,6 @@ async function TabelaAnalise(listaAnalise) {
 
 }
 
-
-
-
 async function Detalhar_Sku(codReduzido) {
     $('#loadingModal').modal('show');
         console.log('Valor da descrição da simulacao detalhado:');
@@ -362,11 +397,6 @@ const response = await $.ajax({
         $('#loadingModal').modal('hide');
     }
 }
-
-
-
-
-
 
 
 const Consulta_Abc2 = async () => {
@@ -924,5 +954,50 @@ const Consulta_Simulacao_Especifica = async () => {
         });
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
+    }
+};
+
+async function simulacao(texto, tipo) {
+    $('#modal-simulacao').modal('hide');
+    $('#modal-nova-simulacao').modal('hide');
+    await Cadastro_Simulacao(texto, tipo);
+    await Consulta_Simulacoes();
+    await Simular_Programacao(texto);
+    nomeSimulacao = texto
+};
+
+async function Simular_Programacao(simulacao) {
+    $('#loadingModal').modal('show');
+    try {
+        const requestData = {
+            acao: "CalculoPcs_baseaado_MP_Simulacao",
+
+            dados: {
+                "codPlano": $('#select-plano').val(),
+                "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
+                "nomeSimulacao": simulacao,
+                "empresa": "1"
+            }
+
+        };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+        if (response === null) {
+
+        } else {
+            TabelaAnalise(response);
+
+        }
+
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
     }
 };
