@@ -987,6 +987,7 @@ async function Simular_Programacao(simulacao) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
+        console.log(response)
         if (response === null) {
 
         } else {
