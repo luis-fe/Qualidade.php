@@ -1163,6 +1163,8 @@ const Consulta_Ultimo_Calculo = async () => {
 
 
 async function Analise_Materiais(congelar, arrayCategoriaMP) {
+    $('#loadingModal').modal('show');
+
     try {
         const requestData = {
             acao: "Analise_Materiais2",
