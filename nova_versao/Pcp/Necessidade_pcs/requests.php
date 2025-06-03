@@ -71,7 +71,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Analise_Materiais':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
-                    echo json_encode(AnaliseMateriais('1', $dadosObjeto));
+                    echo json_encode(AnaliseMateriais2('1', $dadosObjeto));
                     break;
                 case 'CalculoPcs_baseaado_MP_Simulacao':
                     $dadosObjeto = (object) $dados;
@@ -493,7 +493,7 @@ function DeleteSimulacao($empresa, $dados)
     return json_encode($response);
 }
 
-function AnaliseMateriais($empresa, $dados)
+function AnaliseMateriais2($empresa, $dados)
 {
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
     $apiUrl = "{$baseUrl}/pcp/api/AnaliseMateriaisPelaTendencia";
