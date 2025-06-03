@@ -26,7 +26,7 @@ include_once('../../templates/headerPcp.php');
         background-color: #fff;
     }
 </style>
-<div class="titulo-tela">
+<div class="titulo-tela" id="titulo">
     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas
 </div>
 
