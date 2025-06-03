@@ -1162,7 +1162,7 @@ const Consulta_Ultimo_Calculo = async () => {
 
 
 
-async function Analise_Materiais(congela, arrayCategoriaMP) {
+async function Analise_Materiais(congelar, arrayCategoriaMP) {
     try {
         const requestData = {
             acao: "Analise_Materiais2",
