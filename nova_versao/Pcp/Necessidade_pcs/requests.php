@@ -522,5 +522,5 @@ function AnaliseMateriais2($empresa, $dados)
 
     curl_close($ch);
 
-    return json_decode($apiResponse, true);
+    return json_decode($apiResponse,true);
 }
