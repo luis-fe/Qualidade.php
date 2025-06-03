@@ -3,51 +3,59 @@ include_once('requests.php');
 include_once("../../templates/Loading.php");
 include_once('../../templates/headerPcp.php');
 ?>
+<!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
-
 <style>
+    .form-label {
+        font-weight: bold;
+        color: #555;
+    }
 
-    /* Aplica a largura de 80% somente ao modal com id 'modal-detalhamentoSku' */
-#modal-detalhamentoSku .modal-dialog {
-    max-width: 80% !important; /* Define a largura do modal para 80% */
-}
+    .inputs-percentuais {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px 15px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
 
-.tooltip .tooltip-inner {
-    background-color: #000 !important; /* fundo preto */
-    color: #fff !important;            /* texto branco */
-    font-size: 18px !important;        /* tamanho da fonte */
-    padding: 6px 8px !important;                 /* espaçamento opcional */
-    border-radius: 4px !important;                /* borda levemente arredondada */
-    max-width: 500px !important;       /* aumenta a largura máxima da caixa */
-    white-space: normal !important;    /* permite quebra de linha */
-}
+    .inputs-percentuais:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        background-color: #fff;
+    }
 
-.tooltip.bs-tooltip-top .tooltip-arrow::before,
-.tooltip.bs-tooltip-bottom .tooltip-arrow::before,
-.tooltip.bs-tooltip-start .tooltip-arrow::before,
-.tooltip.bs-tooltip-end .tooltip-arrow::before {
-    border-color: #000 !important; /* cor da setinha do tooltip */
-}
+    #table-detalhamentoSku tbody tr.linha-destacada td {
+        background-color: rgb(224, 33, 33) !important;
+        color: white !important;
+    }
 
-#table-detalhamentoSku tbody tr.linha-destacada td {
-    background-color: rgb(224, 33, 33) !important;
-    color: white !important;
-}
+    .tooltip .tooltip-inner {
+        background-color: #000 !important;
+        color: #fff !important;
+        font-size: 18px !important;
+        padding: 6px 8px !important;
+        border-radius: 4px !important;
+        max-width: 500px !important;
+        white-space: normal !important;
+    }
 
-#btn-sim, #btn-nao {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-
+    .tooltip.bs-tooltip-top .tooltip-arrow::before,
+    .tooltip.bs-tooltip-bottom .tooltip-arrow::before,
+    .tooltip.bs-tooltip-start .tooltip-arrow::before,
+    .tooltip.bs-tooltip-end .tooltip-arrow::before {
+        border-color: #000 !important;
+    }
 </style>
 
-<div class="titulo-tela">
+<div class="titulo-tela" id="titulo">
     <span class="span-icone"><i class="bi bi-bag-check"></i></span> Necessidade x Pçs a Programar
 </div>
 
 <div class="mt-3 row justify-content-center" id="selecao-plano">
-    <form id="form-vendas" class="row" onsubmit="AnaliseProgramacaoPelaMP(); return false;">
+    <form id="form-vendas" class="row" onsubmit="Selecionar_Calculo(); return false;">
         <div class="col-12 col-md-6">
             <div class="select text-start">
                 <label for="select-plano" class="form-label">Selecionar plano</label>
@@ -78,29 +86,21 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered" id="table-analise" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Categoria<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Catagoria<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Marca<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Engenharia<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Código red.<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Descricao<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Cód. Reduzido<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Cor<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Tam<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Falta<br>Prog</br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Sugestao <br>Pela MP</br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Disponivel <br>Vendido</br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Falta Prog<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Sugestão pela MP<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Disponível Vendido<br><input type="search" class="search-input search-input-analise"></th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Dados da tabela -->
             </tbody>
-            <tfoot>
-                <tr>
-                <th colspan="7" style="text-align:right">Totais:</th>
-                <th id="total-faltaProg"></th>
-                <th id="total-sugestao"></th>
-                <th id="total-disponivel"></th>
-                </tr>
-            </tfoot>
         </table>
     </div>
     <div class="custom-pagination-container pagination-analise d-md-flex col-12 text-center text-md-start">
@@ -113,28 +113,6 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="categoriaModalLabel">Escolha uma Categoria MP</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body">
-            <div id="categoriaCheckboxes" class="d-flex flex-column text-start ps-2">
-            <!-- Checkboxes serão inseridos aqui via JavaScript -->
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button class="btn btn-success" onclick="confirmarCategoria()">Confirmar</button>
-        </div>
-        </div>
-    </div>
-    </div>
-
-    
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
@@ -206,11 +184,11 @@ include_once('../../templates/headerPcp.php');
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%" />
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" /> 100,00%
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%" />
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" />
                             </div>
                         </div>
                     </div>
@@ -231,7 +209,7 @@ include_once('../../templates/headerPcp.php');
                         Zerar Categorias
                     </button>
                     <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-x-octagon"></i></span>
+                        <span><i class="bi bi-floppy"></i></span>
                         Salvar e Simular
                     </button>
                 </div>
@@ -240,26 +218,30 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<!-- Modal Bootstrap -->
-<div class="modal fade" id="modal-question" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <p class="fs-4">Deseja Recalcular a Análise de Materiais?</p>
-      </div>
-      <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-secondary" id="btn-sim">Sim</button>
-            <button type="button" class="btn btn-secondary" id="btn-nao">Não</button>
-      </div>
+<div class="modal fade" id="modal-categoria" tabindex="-1" aria-labelledby="modal-categoria" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoriaModalLabel">Escolha as Categorias MP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div id="categoriaCheckboxes" class="d-flex flex-column text-start ps-2">
+                    <!-- Checkboxes serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" onclick="confirmarCategoria()">Confirmar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
 
 
 <div class="modal fade modal-custom" id="modal-detalhamentoSku" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top ">
+    <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-detalhamentoSku" style="color: black;">Detalhamento Matéria Prima: </h5>
@@ -280,31 +262,33 @@ include_once('../../templates/headerPcp.php');
                                 <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Comprometido<br>Requisicao</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>
-                                <span 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="top" 
-                                    title="Estoque Líquido = Estoque - Requisição">
-                                    Estoque<br>Líquido</br>
-                                </span>
-                                <input type="search" class="search-input search-input-detalhamentoSku">
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Estoque Líquido = Estoque - Requisição">
+                                        Estoque<br>Líquido</br>
+                                    </span>
+                                    <input type="search" class="search-input search-input-detalhamentoSku">
                                 </th>
                                 <th>
-                                    <span 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="top" 
-                                    title="É a Necessidade Total dessa Matéria Prima em 'TODOS' os Skus Necessarios(negativo)">
-                                    Necessidade<br>Total</br>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="É a Necessidade Total dessa Matéria Prima em 'TODOS' os Skus Necessarios(negativo)">
+                                        Necessidade<br>Total</br>
                                     </span>
 
-                                <input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                    <input type="search" class="search-input search-input-detalhamentoSku">
+                                </th>
                                 <th>
-                                     <span 
-                                    data-bs-toggle="tooltip" 
-                                    data-bs-placement="top" 
-                                    title="É o total de Matéria Prima distribuida para esse SKU, utilizada para saber o rendimento de PCs">
-                                    Estoque MP.<br>Distr.</br>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="É o total de Matéria Prima distribuida para esse SKU, utilizada para saber o rendimento de PCs">
+                                        Estoque MP.<br>Distr.</br>
                                     </span>
-                                    <input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                    <input type="search" class="search-input search-input-detalhamentoSku">
+                                </th>
                                 <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Sugestão<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>obs.:<br></br><input type="search" class="search-input search-input-detalhamentoSku"></th>
@@ -328,9 +312,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-
-
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script1.js"></script>
+<script src="script6.js"></script>
