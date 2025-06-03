@@ -74,31 +74,33 @@ const Consulta_Planos = async () => {
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
     const respostaCalculo = await Consulta_Ultimo_Calculo();
 
-        try{
-            const result = await Swal.fire({
-                    title: `${respostaCalculo.mensagem}`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: "Recalcular",
-                    cancelButtonText: "Não"
-                });
+    try {
+        const result = await Swal.fire({
+            title: `${respostaCalculo.mensagem}`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Recalcular",
+            cancelButtonText: "Não"
+        });
 
-                // Aguarda o modal fechar visualmente
-                setTimeout(() => {
-                    if (result.isConfirmed) {
-                        calcularAnalise(arrayCategoriaMP);
-                    } else {
-                        Analise_Materiais(true);
-                        calcularAnalise(arrayCategoriaMP);
-                    }
-                }, 300); // Tempo suficiente para animação de fechamento
-            } catch (error) {
-                console.error('Erro na solicitação AJAX:', error);
-                Mensagem('Erro na solicitação', 'error');
-            } finally {
-                $('#loadingModal').modal('hide');
+        // Aguarda o modal fechar visualmente
+        setTimeout(async () => {
+            if (result.isConfirmed) {
+                await Analise_Materiais(false);
+                calcularAnalise(arrayCategoriaMP);
+            } else {
+                calcularAnalise(arrayCategoriaMP);
             }
-        }
+        }, 300); // Tempo suficiente para animação de fechamento
+
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
 async function calcularAnalise(arrayCategoriaMP){
 $('#loadingModal').modal('show');
             try {
