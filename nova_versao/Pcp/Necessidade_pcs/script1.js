@@ -1,5 +1,6 @@
-let arrayCategoriaMP = ''
+let arrayCategoriaMP = '';
 let menorSugestaoPC = null;
+let nomeSimulacaoTitulo = '';
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -121,6 +122,7 @@ $('#loadingModal').modal('show');
 
                 TabelaAnalise(response);
                 $('.div-analise').removeClass('d-none');
+                
 
             } catch (error) {
                 console.error('Erro na solicitação AJAX:', error);
@@ -158,6 +160,10 @@ async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
 
                 TabelaAnalise(response);
                 $('.div-analise').removeClass('d-none');
+                nomeSimulacaoTitulo = $('#select-simulacao').val()
+                document.getElementById("titulo-tabela-analise").textContent = nomeSimulacaoTitulo
+
+
 
             } catch (error) {
                 console.error('Erro na solicitação AJAX:', error);
