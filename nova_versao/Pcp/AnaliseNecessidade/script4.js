@@ -34,10 +34,12 @@ let nomeSimulacao = ''
 async function simulacao(texto, tipo) {
     $('#modal-simulacao').modal('hide');
     $('#modal-nova-simulacao').modal('hide');
+     $('#modal-loading').modal('show');
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
     await Simular_Programacao(texto);
-    nomeSimulacao = texto
+    nomeSimulacao = texto;
+     $('#modal-loading').modal('hide');
 };
 
 const Consulta_Planos = async () => {
@@ -110,7 +112,22 @@ async function Simular_Programacao(simulacao) {
 
         } else {
             TabelaAnalise(response);
+            $('#titulo').html(`
+            <span class="span-icone"><i class="bi bi-bag-check"></i></span>
+            Análise de Materiais
+          `);
 
+            $('#titulo').html(`
+            <span class="span-icone"><i class="bi bi-bag-check"></i></span>
+            Análise de Materiais - 
+            <span style="display: inline-block; position: relative;">
+              <strong>${simulacao}</strong>
+              <button onclick="Selecionar_Calculo()" 
+                      style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
+                ×
+              </button>
+            </span>
+          `);
         }
 
     } catch (error) {
@@ -122,7 +139,6 @@ async function Simular_Programacao(simulacao) {
 };
 
 async function Cadastro_Simulacao(simulacao, tipo) {
-    $('#loadingModal').modal('show');
     try {
         const categorias = [];
         const percentuais_categorias = [];
@@ -225,12 +241,10 @@ async function Cadastro_Simulacao(simulacao, tipo) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
     } finally {
-        $('#loadingModal').modal('hide');
     }
 };
 
 async function Consulta_Simulacoes() {
-    $('#loadingModal').modal('show');
     $.ajax({
         type: 'GET',
         url: 'requests.php',
@@ -248,7 +262,6 @@ async function Consulta_Simulacoes() {
                         </option>
                     `);
             });
-            $('#loadingModal').modal('hide');
             const descricao = $('#descricao-simulacao').val();
             console.log(descricao)
             $('#select-simulacao').val(descricao);
@@ -256,7 +269,6 @@ async function Consulta_Simulacoes() {
 
         error: function (xhr, status, error) {
             console.error('Erro ao consultar planos:', error);
-            $('#loadingModal').modal('hide');
         }
     });
 }
@@ -383,6 +395,11 @@ async function Analise_Materiais(congelar) {
         await Consulta_Naturezas();
         await Consulta_Comprometidos();
         Consulta_Comprometidos_Compras();
+        $('#titulo').html(`
+            <span class="span-icone"><i class="bi bi bi-bag-check"></i></span>
+            Análise de Materiais
+          `);
+        nomeSimulacao = "";
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
