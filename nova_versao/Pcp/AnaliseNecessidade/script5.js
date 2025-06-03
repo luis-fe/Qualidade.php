@@ -34,12 +34,12 @@ let nomeSimulacao = ''
 async function simulacao(texto, tipo) {
     $('#modal-simulacao').modal('hide');
     $('#modal-nova-simulacao').modal('hide');
-     $('#modal-loading').modal('show');
+    $('#loadingModal').modal('show');
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
     await Simular_Programacao(texto);
     nomeSimulacao = texto;
-     $('#modal-loading').modal('hide');
+    $('#loadingModal').modal('hide');
 };
 
 const Consulta_Planos = async () => {
