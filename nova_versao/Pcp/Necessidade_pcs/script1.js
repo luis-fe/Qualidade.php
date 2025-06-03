@@ -74,8 +74,32 @@ const Consulta_Planos = async () => {
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
     const respostaCalculo = await Consulta_Ultimo_Calculo();
 
-    if (respostaCalculo !== 'sim') {
-        $('#loadingModal').modal('show');
+        try{
+            const result = await Swal.fire({
+                    title: `${respostaCalculo.mensagem}`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: "Recalcular",
+                    cancelButtonText: "Não"
+                });
+
+                // Aguarda o modal fechar visualmente
+                setTimeout(() => {
+                    if (result.isConfirmed) {
+                        calcularAnalise();
+                    } else {
+                        calcularAnalise();
+                    }
+                }, 300); // Tempo suficiente para animação de fechamento
+            } catch (error) {
+                console.error('Erro na solicitação AJAX:', error);
+                Mensagem('Erro na solicitação', 'error');
+            } finally {
+                $('#loadingModal').modal('hide');
+            }
+        }
+async function calcularAnalise(){
+$('#loadingModal').modal('show');
             try {
                 const requestData = {
                 acao: "CalculoPcs_baseaado_MP",
@@ -102,12 +126,10 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
             } finally {
                 $('#loadingModal').modal('hide');
             }
-    }else{
-    console.log('clicou nao');
-    };
 
-  
 }
+
+
 
 async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
   const resposta = await abrirModal();
