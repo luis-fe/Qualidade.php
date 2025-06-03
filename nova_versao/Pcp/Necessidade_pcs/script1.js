@@ -72,10 +72,37 @@ const Consulta_Planos = async () => {
 
 
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
-  const resposta = await abrirModal();
+    try {
+        const respostaCalculo = await Consulta_Ultimo_Calculo();
 
-    if (resposta !== 'sim') {
-        $('#loadingModal').modal('show');
+        const result = await Swal.fire({
+            title: `${respostaCalculo.mensagem}`, // Corrigido: template literal com crase
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Recalcular",
+            cancelButtonText: "Não"
+        });
+
+        // Aguarda o modal fechar visualmente (com delay real)
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        if (result.isConfirmed) {
+            await Analise_Materiais(false, arrayCategoriaMP); // Garantir await se for async
+        } else {
+            calcularAnalise(arrayCategoriaMP);
+        }
+
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+
+async function calcularAnalise(arrayCategoriaMP){
+$('#loadingModal').modal('show');
             try {
                 const requestData = {
                 acao: "CalculoPcs_baseaado_MP",
@@ -102,11 +129,7 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
             } finally {
                 $('#loadingModal').modal('hide');
             }
-    }else{
-    console.log('clicou nao');
-    };
 
-  
 }
 
 async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
@@ -1110,3 +1133,35 @@ async function Cadastro_Simulacao(simulacao, tipo) {
         $('#loadingModal').modal('hide');
     }
 };
+
+async function Analise_Materiais(congelar, arrayCategoriaMP) {
+    $('#loadingModal').modal('show');
+
+    try {
+        const requestData = {
+            acao: "Analise_Materiais2",
+            dados: {
+                "codPlano": $('#select-plano').val(),
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "congelar": congelar
+            }
+        };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+
+        calcularAnalise(arrayCategoriaMP);
+
+
+
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
