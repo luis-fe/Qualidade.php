@@ -1,6 +1,5 @@
-let arrayCategoriaMP = '';
+let arrayCategoriaMP = ''
 let menorSugestaoPC = null;
-let nomeSimulacaoTitulo = '';
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -73,25 +72,25 @@ const Consulta_Planos = async () => {
 
 
 async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
-    const respostaCalculo = await Consulta_Ultimo_Calculo();
-
     try {
+        const respostaCalculo = await Consulta_Ultimo_Calculo();
+
         const result = await Swal.fire({
-            title: `${respostaCalculo.mensagem}`,
+            title: `${respostaCalculo.mensagem}`, // Corrigido: template literal com crase
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: "Recalcular",
             cancelButtonText: "Não"
         });
 
-        // Aguarda o modal fechar visualmente
-        setTimeout(async () => {
-            if (result.isConfirmed) {
-                Analise_Materiais(false, arrayCategoriaMP);
-            } else {
-                calcularAnalise(arrayCategoriaMP);
-            }
-        }, 300); // Tempo suficiente para animação de fechamento
+        // Aguarda o modal fechar visualmente (com delay real)
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        if (result.isConfirmed) {
+            await Analise_Materiais(false, arrayCategoriaMP); // Garantir await se for async
+        } else {
+            calcularAnalise(arrayCategoriaMP);
+        }
 
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
@@ -100,6 +99,7 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
         $('#loadingModal').modal('hide');
     }
 }
+
 
 async function calcularAnalise(arrayCategoriaMP){
 $('#loadingModal').modal('show');
@@ -122,7 +122,6 @@ $('#loadingModal').modal('show');
 
                 TabelaAnalise(response);
                 $('.div-analise').removeClass('d-none');
-                
 
             } catch (error) {
                 console.error('Erro na solicitação AJAX:', error);
@@ -132,8 +131,6 @@ $('#loadingModal').modal('show');
             }
 
 }
-
-
 
 async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
   const resposta = await abrirModal();
@@ -158,14 +155,8 @@ async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
                 data: JSON.stringify(requestData),
                 });
 
-                await TabelaAnalise(response);
+                TabelaAnalise(response);
                 $('.div-analise').removeClass('d-none');
-                nomeSimulacaoTitulo = $('#select-simulacao').val()
-                console.log(`nome da simulacao: ${nomeSimulacaoTitulo}`);
-
-                document.getElementById("titulo-tabela-analise").textContent = nomeSimulacaoTitulo
-
-
 
             } catch (error) {
                 console.error('Erro na solicitação AJAX:', error);
@@ -1142,33 +1133,6 @@ async function Cadastro_Simulacao(simulacao, tipo) {
         $('#loadingModal').modal('hide');
     }
 };
-
-
-const Consulta_Ultimo_Calculo = async () => {
-    try {
-        const data = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consulta_Ultimo_Calculo',
-                plano: $('#select-plano').val()
-            }
-        });
-        return {
-            status: data[0]['status'],
-            mensagem: data[0]['Mensagem']
-        };
-
-
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-        return null; // ou algum valor padrão indicando erro
-
-    }
-};
-
-
 
 async function Analise_Materiais(congelar, arrayCategoriaMP) {
     $('#loadingModal').modal('show');
