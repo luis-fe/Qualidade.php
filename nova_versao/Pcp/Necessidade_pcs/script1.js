@@ -1165,3 +1165,27 @@ async function Analise_Materiais(congelar, arrayCategoriaMP) {
         $('#loadingModal').modal('hide');
     }
 }
+
+const Consulta_Ultimo_Calculo = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Ultimo_Calculo',
+                plano: $('#select-plano').val()
+            }
+        });
+        return {
+            status: data[0]['status'],
+            mensagem: data[0]['Mensagem']
+        };
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+        return null; // ou algum valor padrão indicando erro
+
+    }
+};
