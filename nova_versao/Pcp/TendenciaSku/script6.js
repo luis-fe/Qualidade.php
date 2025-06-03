@@ -170,6 +170,11 @@ async function Consulta_Tendencias() {
         });
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
+        $('#titulo').html(`
+            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span>
+            Tendência de Vendas
+          `);
+        nomeSimulacao = "";
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
@@ -198,6 +203,17 @@ async function Simular_Programacao(simulacao) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
+        $('#titulo').html(`
+            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span>
+            Tendência de Vendas - 
+            <span style="display: inline-block; position: relative;">
+              <strong>${simulacao}</strong>
+              <button onclick="Consulta_Tendencias()" 
+                      style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
+                ×
+              </button>
+            </span>
+          `);
         TabelaTendencia(response);
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
@@ -724,35 +740,40 @@ function TabelaTendencia(listaTendencia) {
 
 
 async function Detalha_SimulacaoSku(codReduzido) {
-    $('#loadingModal').modal('show');
-    try {
+    if (nomeSimulacao === "") {
+        Mensagem_Canto("Nenhuma simulação selecionada", "warning")
+    } else {
+        $('#loadingModal').modal('show');
+        try {
 
-        const requestData = {
-            acao: "simulacaoDetalhadaPorSku",
-            dados: {
-                "codPlano": $('#select-plano').val(),
-                "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
-                "codSku": codReduzido,
-                "nomeSimulacao": nomeSimulacao
-            }
+            const requestData = {
+                acao: "simulacaoDetalhadaPorSku",
+                dados: {
+                    "codPlano": $('#select-plano').val(),
+                    "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
+                    "codSku": codReduzido,
+                    "nomeSimulacao": nomeSimulacao
+                }
 
-        };
+            };
 
-        const response = await $.ajax({
-            type: 'POST',
-            url: 'requests.php',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-        });
-        console.log(response)
-        TabelaDetalhamentoSku(response);
-        $('#modal-detalhamento-skus').modal('show');
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error');
-    } finally {
-        $('#loadingModal').modal('hide');
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+            console.log(response)
+            TabelaDetalhamentoSku(response);
+            $('#modal-detalhamento-skus').modal('show');
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+            Mensagem_Canto('Erro', 'error');
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
     }
+
 }
 
 function TabelaDetalhamentoSku(listaDetalhes) {
