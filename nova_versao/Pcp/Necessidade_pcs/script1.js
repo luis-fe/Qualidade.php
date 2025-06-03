@@ -158,9 +158,11 @@ async function AnaliseProgramacaoPelaMPSimulacao(arrayCategoriaMP) {
                 data: JSON.stringify(requestData),
                 });
 
-                TabelaAnalise(response);
+                await TabelaAnalise(response);
                 $('.div-analise').removeClass('d-none');
                 nomeSimulacaoTitulo = $('#select-simulacao').val()
+                console.log(`nome da simulacao: ${nomeSimulacaoTitulo}`);
+
                 document.getElementById("titulo-tabela-analise").textContent = nomeSimulacaoTitulo
 
 
