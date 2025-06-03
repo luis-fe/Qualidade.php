@@ -26,10 +26,15 @@ include_once('../../templates/headerPcp.php');
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         background-color: #fff;
     }
+
+    #table-detalhamentoSku tbody tr.linha-destacada td {
+        background-color: rgb(224, 33, 33) !important;
+        color: white !important;
+    }
 </style>
 
 <div class="titulo-tela" id="titulo">
-    <span class="span-icone"><i class="bi bi-bag-check"></i></span> Análise de Materiais
+    <span class="span-icone"><i class="bi bi-bag-check"></i></span> Necessidade x Pçs a Programar
 </div>
 
 <div class="mt-3 row justify-content-center" id="selecao-plano">
@@ -64,23 +69,16 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered" id="table-analise" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Código<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Catagoria<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Marca<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Engenharia<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Cód. Reduzido<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Código red.<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Necessidade Calculada<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Necessidade Ajustada<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Estoque Atual<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Compra<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Requisições<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Fornecedor Principal<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Medida<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Lote Mínimo<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Lote Múltiplo<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Lead Time<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Fator de Conversão<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Item Substituto<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Saldo<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Cor<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Tam<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Falta Prog<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Sugestão pela MP<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Disponível Vendido<br><input type="search" class="search-input search-input-analise"></th>
                 </tr>
             </thead>
             <tbody>
@@ -96,141 +94,6 @@ include_once('../../templates/headerPcp.php');
         <div id="pagination-analise" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
         </div>
     </div>
-</div>
-
-<div class="row mt-3">
-    <div class="col-12 col-md-6 div-naturezas d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
-        <p class="fs-4 fw-bold text-dark">Naturezas</p>
-        <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-            <table class="table table-bordered" id="table-naturezas" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th>Código<br><input type="search" class="search-input search-input-naturezas"></th>
-                        <th>Descrição<br><input type="search" class="search-input search-input-naturezas"></th>
-                        <th>Natureza<br><input type="search" class="search-input search-input-naturezas"></th>
-                        <th>Estoque<br><input type="search" class="search-input search-input-naturezas"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dados da tabela -->
-                </tbody>
-            </table>
-        </div>
-        <div class="custom-pagination-container pagination-naturezas d-md-flex col-12 text-center text-md-start">
-            <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
-                <label for="text">Itens por página</label>
-                <input id="itens-naturezas" class="input-itens" type="text" value="10" min="1">
-            </div>
-            <div id="pagination-naturezas" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 div-comprometido d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
-        <p class="fs-4 fw-bold text-dark">Comprometido com Requisições</p>
-        <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-            <table class="table table-bordered" id="table-comprometido" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th>Código<br><input type="search" class="search-input search-input-comprometido"></th>
-                        <th>Descrição<br><input type="search" class="search-input search-input-comprometido"></th>
-                        <th>Op<br><input type="search" class="search-input search-input-comprometido"></th>
-                        <th>Em requisição<br><input type="search" class="search-input search-input-comprometido"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dados da tabela -->
-                </tbody>
-            </table>
-        </div>
-        <div class="custom-pagination-container pagination-comprometido d-md-flex col-12 text-center text-md-start">
-            <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
-                <label for="text">Itens por página</label>
-                <input id="itens-comprometido" class="input-itens" type="text" value="10" min="1">
-            </div>
-            <div id="pagination-comprometido" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-12 mt-3 div-comprometido-compras d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
-    <p class="fs-4 fw-bold text-dark">Solicitações e Pedidos de Compra</p>
-    <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered" id="table-comprometido-compras" style="width: 100%;">
-            <thead>
-                <tr>
-                    <th>Código<br><input type="search" class="search-input search-input-comprometido-compras"></th>
-                    <th>Descrição<br><input type="search" class="search-input search-input-comprometido-compras"></th>
-                    <th>Número<br><input type="search" class="search-input search-input-comprometido-compras"></th>
-                    <th>Tipo<br><input type="search" class="search-input search-input-comprometido-compras"></th>
-                    <th>Quantidade<br><input type="search" class="search-input search-input-comprometido-compras"></th>
-                    <th>Previsão<br><input type="search" class="search-input search-input-comprometido-compras"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados da tabela -->
-            </tbody>
-        </table>
-    </div>
-    <div class="custom-pagination-container pagination-comprometido-compras d-md-flex col-12 text-center text-md-start">
-        <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
-            <label for="text">Itens por página</label>
-            <input id="itens-comprometido-compras" class="input-itens" type="text" value="10" min="1">
-        </div>
-        <div id="pagination-comprometido-compras" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
-        </div>
-    </div>
-</div>
-
-<div class="modal fade modal-custom" id="modal-detalhamento" tabindex="-1" aria-labelledby="customModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Detalhamento</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="align-items: start; text-align: left">
-                <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-                    <table class="table table-bordered" id="table-detalhamento" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th>Referência<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Tamanho<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Cor<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Descrição<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Reduzido<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Qtd. de Pedidos<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Previsão de Vendas<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Qtd. Pedida<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Falta Programar<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Classificação<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Classificação Categoria<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Status Afv<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Cód. Componente<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Unidade<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Consumo<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Necessidade<br><input type="search" class="search-input search-input-detalhamento"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Dados da tabela -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="custom-pagination-container pagination-detalhamento d-md-flex col-12 text-center text-md-start">
-                    <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
-                        <label for="text">Itens por página</label>
-                        <input id="itens-detalhamento" class="input-itens" type="text" value="10" min="1">
-                    </div>
-                    <div id="pagination-detalhamento" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
@@ -304,7 +167,7 @@ include_once('../../templates/headerPcp.php');
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" />
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" /> 100,00%
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
@@ -338,7 +201,101 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+<div class="modal fade" id="modal-categoria" tabindex="-1" aria-labelledby="modal-categoria" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoriaModalLabel">Escolha as Categorias MP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div id="categoriaCheckboxes" class="d-flex flex-column text-start ps-2">
+                    <!-- Checkboxes serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" onclick="confirmarCategoria()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-custom" id="modal-detalhamentoSku" tabindex="-1" aria-labelledby="customModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titulo-detalhamentoSku" style="color: black;">Detalhamento Matéria Prima: </h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="d-flex  mt-2">
+                <span style="width: 25px; height: 25px; background-color: red; display: inline-block; margin-right: 16px;"></span>
+                <span style="color: black;">Legenda: itens que restringe a Sugestao</span>
+            </div>
+            <div class="modal-body" style="align-items: start; text-align: left">
+                <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+                    <table class="table table-bordered" id="table-detalhamentoSku" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Cód.<br>Red.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Cód<br>Componente</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Descricao<br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Comprometido<br>Requisicao</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Estoque Líquido = Estoque - Requisição">
+                                        Estoque<br>Líquido</br>
+                                    </span>
+                                    <input type="search" class="search-input search-input-detalhamentoSku">
+                                </th>
+                                <th>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="É a Necessidade Total dessa Matéria Prima em 'TODOS' os Skus Necessarios(negativo)">
+                                        Necessidade<br>Total</br>
+                                    </span>
+
+                                    <input type="search" class="search-input search-input-detalhamentoSku">
+                                </th>
+                                <th>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="É o total de Matéria Prima distribuida para esse SKU, utilizada para saber o rendimento de PCs">
+                                        Estoque MP.<br>Distr.</br>
+                                    </span>
+                                    <input type="search" class="search-input search-input-detalhamentoSku">
+                                </th>
+                                <th>Falta<br>Prog.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>Sugestão<br>PC</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                                <th>obs.:<br></br><input type="search" class="search-input search-input-detalhamentoSku"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados da tabela -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="custom-pagination-container pagination-detalhamentoSku d-md-flex col-12 text-center text-md-start">
+                    <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
+                        <label for="text">Itens por página</label>
+                        <input id="itens-detalhamentoSku" class="input-itens" type="text" value="15" min="1">
+                    </div>
+                    <div id="pagination-detalhamentoSku" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
-<script src="script5.js"></script>
+<script src="script6.js"></script>
