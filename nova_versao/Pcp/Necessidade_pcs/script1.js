@@ -86,9 +86,10 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
                 // Aguarda o modal fechar visualmente
                 setTimeout(() => {
                     if (result.isConfirmed) {
-                        calcularAnalise();
+                        calcularAnalise(arrayCategoriaMP);
                     } else {
-                        calcularAnalise();
+                        Analise_Materiais(true);
+                        calcularAnalise(arrayCategoriaMP);
                     }
                 }, 300); // Tempo suficiente para animação de fechamento
             } catch (error) {
@@ -98,7 +99,7 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
                 $('#loadingModal').modal('hide');
             }
         }
-async function calcularAnalise(){
+async function calcularAnalise(arrayCategoriaMP){
 $('#loadingModal').modal('show');
             try {
                 const requestData = {
@@ -1157,3 +1158,30 @@ const Consulta_Ultimo_Calculo = async () => {
 
     }
 };
+
+
+
+async function Analise_Materiais(congelar) {
+    try {
+        const requestData = {
+            acao: "Analise_Materiais",
+            dados: {
+                "codPlano": $('#select-plano').val(),
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "congelar": congelar
+            }
+        };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
