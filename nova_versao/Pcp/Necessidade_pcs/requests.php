@@ -68,7 +68,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(AnaliseMateriais('1', $dadosObjeto));
                     break;
-                case 'Analise_Materiais':
+                case 'Analise_Materiais2':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(AnaliseMateriais2('1', $dadosObjeto));

@@ -86,8 +86,7 @@ async function AnaliseProgramacaoPelaMP(arrayCategoriaMP) {
         // Aguarda o modal fechar visualmente
         setTimeout(async () => {
             if (result.isConfirmed) {
-                await Analise_Materiais(false);
-                calcularAnalise(arrayCategoriaMP);
+                Analise_Materiais(false, arrayCategoriaMP);
             } else {
                 calcularAnalise(arrayCategoriaMP);
             }
@@ -1163,10 +1162,10 @@ const Consulta_Ultimo_Calculo = async () => {
 
 
 
-async function Analise_Materiais(congelar) {
+async function Analise_Materiais(congela, arrayCategoriaMP) {
     try {
         const requestData = {
-            acao: "Analise_Materiais",
+            acao: "Analise_Materiais2",
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
@@ -1180,6 +1179,11 @@ async function Analise_Materiais(congelar) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
+
+        calcularAnalise(arrayCategoriaMP);
+
+
+
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
