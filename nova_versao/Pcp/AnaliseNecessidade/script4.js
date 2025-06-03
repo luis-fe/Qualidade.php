@@ -88,7 +88,6 @@ const Consulta_Naturezas = async () => {
 };
 
 async function Simular_Programacao(simulacao) {
-    $('#loadingModal').modal('show');
     try {
         const requestData = {
             acao: "Simular_Programacao",
