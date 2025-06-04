@@ -928,30 +928,29 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
 
 
 async function Detalha_PedidosGeral() {
-            $('#loadingModal').modal('show');
+  const response = await $.ajax({
+    type: 'GET',
+    url: 'requests.php',
+    dataType: 'json',
+    data: {
+      acao: "Detalha_PedidosGeral",
+      codPlano: $('#select-plano').val(),
+      consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val()
+    }
+  });
 
-        const response = await $.ajax({
-            type: 'GET',
-            url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: "Detalha_PedidosGeral",
-                codPlano: $('#select-plano').val(),
-                consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val()            
-            }
-        });
-        // gerar o excel
-        // Transforma o JSON em uma planilha
-        const ws = XLSX.utils.json_to_sheet(response);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
+  console.log("Response:", response); // para inspecionar a estrutura
 
-        // Exporta para arquivo Excel
-        XLSX.writeFile(wb, "Conf_Pedidos_Saldo.xlsx");
+  // Use a propriedade correta com os dados
+  const dados = response.dados || response; // ajuste se necessário
 
-            $('#loadingModal').modal('hide');
-        
-};
+  const ws = XLSX.utils.json_to_sheet(dados);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
+
+  XLSX.writeFile(wb, "Conf_Pedidos_Saldo.xlsx");
+}
+
 
 
 
