@@ -930,7 +930,6 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
 async function Detalha_PedidosGeral() {
             $('#loadingModal').modal('show');
 
-    try {
         const response = await $.ajax({
             type: 'GET',
             url: 'requests.php',
@@ -950,11 +949,8 @@ async function Detalha_PedidosGeral() {
         // Exporta para arquivo Excel
         XLSX.writeFile(wb, "Conf_Pedidos_Saldo.xlsx");
 
-    } catch (error) {
-        console.error('Erro ao consultar planos:', error);
-    } finally {
             $('#loadingModal').modal('hide');
-        }
+        
 };
 
 
