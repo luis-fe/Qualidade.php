@@ -53,6 +53,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $codReduzido = $_GET['codReduzido'];
                     jsonResponse(Detalha_PedidosSkuSaldo($codReduzido, $codPlano, $consideraPedidosBloqueado));
                     break;
+                case 'Detalha_PedidosSaldoGeral':
+                    $codPlano = $_GET['codPlano'];
+                    $consideraPedidosBloqueado = $_GET['consideraPedidosBloqueado'];
+                    $codReduzido = $_GET['codReduzido'];
+                    jsonResponse(Detalha_PedidosGeralSaldo($codPlano, $consideraPedidosBloqueado));
+                    break;
 
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
@@ -236,6 +242,31 @@ function Detalha_PedidosSkuSaldo($codReduzido, $plano, $consideraBloq, $empresa 
 
     return json_decode($apiResponse, true);
 }
+
+
+function Detalha_PedidosGeralSaldo($plano, $consideraBloq, $empresa = '1')
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/DetalhaPedidosGeralSaldo?codPlano={$plano}&consideraPedidosBloqueado={$consideraBloq}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
 
 function ConsultaAbc($empresa)
 {

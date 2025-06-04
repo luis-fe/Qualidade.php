@@ -16,6 +16,12 @@ $(document).ready(async () => {
         dropdownParent: $('#modal-simulacao')
     });
 
+    // Vincula evento ao clique do botão
+    document.getElementById("ConfPedidosSaldo").addEventListener("click", function () {
+      Detalha_PedidosGeral(true, 123); // Altere os valores conforme necessário
+    });
+
+
     $('#select-simulacao').on('change', async function () {
         $('#inputs-container-marcas').removeClass('d-none')
         await Consulta_Abc_Plano();
@@ -913,6 +919,37 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
         console.log(response)
         TabelaDetalhamentoPedidosSaldo(response);
         $('#modal-detalhamento-pedidosSaldo').modal('show')
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+            $('#loadingModal').modal('hide');
+        }
+};
+
+
+async function Detalha_PedidosGeral(consideraPedidosBloqueado, codPlan) {
+            $('#loadingModal').modal('show');
+
+    try {
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "Detalha_PedidosGeral",
+                codPlano: codPlan,
+                consideraPedidosBloqueado: consideraPedidosBloqueado            
+            }
+        });
+        // gerar o excel
+        // Transforma o JSON em uma planilha
+        const ws = XLSX.utils.json_to_sheet(response);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
+
+        // Exporta para arquivo Excel
+        XLSX.writeFile(wb, "Conf_Pedidos_Saldo.xlsx");
+
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
     } finally {
