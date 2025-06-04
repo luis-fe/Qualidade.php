@@ -202,19 +202,19 @@ include_once('../../templates/headerPcp.php');
                         <thead>
                             <tr>
                                 <th>Referência<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Tamanho<br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Tam<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Cor<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Descrição<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Reduzido<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Qtd. de Pedidos<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Previsão de Vendas<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Qtd. Pedida<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Falta Programar<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Classificação<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Classificação Categoria<br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Qtd. de<br>Pedidos</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Previsão<br>de Vendas</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Qtd.<br>Pedida</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Falta<br>Programar</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Class.<br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Class.<br>Categoria</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Status Afv<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Cód. Componente<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Unidade<br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Cód.<br>Componente</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Unid.<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Consumo<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Necessidade<br><input type="search" class="search-input search-input-detalhamento"></th>
                             </tr>
