@@ -18,7 +18,7 @@ $(document).ready(async () => {
 
     // Vincula evento ao clique do botão
     document.getElementById("ConfPedidosSaldo").addEventListener("click", function () {
-      Detalha_PedidosGeral(true, 123); // Altere os valores conforme necessário
+      Detalha_PedidosGeral();
     });
 
 
@@ -937,8 +937,8 @@ async function Detalha_PedidosGeral(consideraPedidosBloqueado, codPlan) {
             dataType: 'json',
             data: {
                 acao: "Detalha_PedidosGeral",
-                codPlano: codPlan,
-                consideraPedidosBloqueado: consideraPedidosBloqueado            
+                codPlano: $('#select-plano').val(),
+                consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val()            
             }
         });
         // gerar o excel
