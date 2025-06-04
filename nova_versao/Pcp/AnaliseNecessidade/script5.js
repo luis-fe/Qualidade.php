@@ -841,9 +841,22 @@ function TabelaComprometidoCompras(listaComprometido) {
 }
 
 function TabelaDetalhamento(listaDetalhes) {
+        // Atualiza o título com base no primeiro item da lista
+    if (listaDetalhes.length > 0) {
+        const cod = listaDetalhes[0]["11-CodComponente"] || "Sem código";
+        document.getElementById("titulo-detalhamento").textContent = `Detalhamento - ${cod}`;
+    } else {
+        document.getElementById("titulo-detalhamento").textContent = "Detalhamento - (Sem dados)";
+    }
+
+
+
+
     if ($.fn.DataTable.isDataTable('#table-detalhamento')) {
         $('#table-detalhamento').DataTable().destroy();
     }
+
+    
 
     const tabela = $('#table-detalhamento').DataTable({
         searching: true,
@@ -978,11 +991,6 @@ function TabelaDetalhamento(listaDetalhes) {
     $('.search-input-detalhamento').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
-
-
-    document.getElementById("titulo-detalhamento").textContent = `Detalhamento - ${data[0]["11-CodComponente"]}`;
-
-
 }
 
 function filtrarTabelas(filtro) {
