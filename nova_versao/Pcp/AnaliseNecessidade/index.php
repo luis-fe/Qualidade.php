@@ -215,7 +215,7 @@ include_once('../../templates/headerPcp.php');
                                 <th>Status<br>Afv</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Cód.<br>Compon.</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Unid.<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Consumo.br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Consumo<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Necessidade<br><input type="search" class="search-input search-input-detalhamento"></th>
                             </tr>
                         </thead>
@@ -225,7 +225,7 @@ include_once('../../templates/headerPcp.php');
                           <tfoot>
                 <tr>
                     <th>Total:</th>
-                    <th colspan="1"></th>
+                    <th colspan="15"></th>
                     <th id="Necessidade"></th>
                     <th></th>
                 </tr>
