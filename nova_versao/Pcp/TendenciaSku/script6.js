@@ -928,6 +928,8 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
 
 
 async function Detalha_PedidosGeral() {
+   $('#loadingModal').modal('show');
+
   const response = await $.ajax({
     type: 'GET',
     url: 'requests.php',
@@ -949,6 +951,7 @@ async function Detalha_PedidosGeral() {
   XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
 
   XLSX.writeFile(wb, "Conf_Pedidos_Saldo.xlsx");
+   $('#loadingModal').modal('hide');
 }
 
 
