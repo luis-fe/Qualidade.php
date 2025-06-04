@@ -927,7 +927,7 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
 };
 
 
-async function Detalha_PedidosGeral(consideraPedidosBloqueado, codPlan) {
+async function Detalha_PedidosGeral() {
             $('#loadingModal').modal('show');
 
     try {
