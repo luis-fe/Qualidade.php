@@ -661,6 +661,12 @@ function TabelaTendencia(listaTendencia) {
                 return type === 'display' ? data.toLocaleString('pt-BR') : data;
             }
         },
+                {
+            data: 'disponivel Pronta Entrega',
+            render: function (data, type) {
+                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            }
+        },
         {
             data: 'Prev Sobra',
             render: function (data, type) {
@@ -705,7 +711,7 @@ function TabelaTendencia(listaTendencia) {
             };
 
             // Colunas que precisam de total
-            const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'Prev Sobra'];
+            const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'disponivel Pronta Entrega', 'Prev Sobra'];
 
             columnsToSum.forEach((columnName, idx) => {
                 const colIndex = idx + 10; // Índice da coluna no DataTables
