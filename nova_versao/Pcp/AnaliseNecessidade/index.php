@@ -225,7 +225,7 @@ include_once('../../templates/headerPcp.php');
                           <tfoot>
                 <tr>
                     <th>Total:</th>
-                    <th colspan="15"></th>
+                    <th colspan="11"></th>
                     <th id="Necessidade"></th>
                     <th></th>
                 </tr>
