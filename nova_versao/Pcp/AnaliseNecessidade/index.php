@@ -75,8 +75,8 @@ include_once('../../templates/headerPcp.php');
                     <th>Necessidade<br>Calculada</br></th>
                     <th>Necessidade<br>Ajustada</br></th>
                     <th>Estoque<br>Atual</br></th>
-                    <th>Compra<br></th>
-                    <th>Requisições<br></th>
+                    <th>Compra<br></br></th>
+                    <th>Requisições<br></br></th>
                     <th>Fornecedor Principal<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Medida<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Lote<br>Mínimo</br></th>
@@ -85,7 +85,7 @@ include_once('../../templates/headerPcp.php');
                     <th>Fator<br>Conversão</br></th>
                     <th>Item Substituto<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Saldo<br></th>
+                    <th>Saldo<br></br></th>
                 </tr>
             </thead>
             <tbody>
