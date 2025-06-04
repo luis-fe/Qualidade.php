@@ -206,12 +206,12 @@ include_once('../../templates/headerPcp.php');
                                 <th>Cor<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Descrição<br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Reduzido<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Qtd. de<br>Pedidos</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Qtd.<br>Pedidos</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Previsão<br>Vendas</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Qtd.<br>Pedida</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Falta<br>Programar</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Class.<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Class.<br>Categoria</br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Class.<br>Categ.</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Status<br>Afv</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Cód.<br>Compon.</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Unid.<br><input type="search" class="search-input search-input-detalhamento"></th>
