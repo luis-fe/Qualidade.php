@@ -871,6 +871,8 @@ function TabelaDetalhamentoSku(listaDetalhes) {
 
 
 async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) {
+            $('#loadingModal').modal('show');
+
     try {
         const response = await $.ajax({
             type: 'GET',
@@ -888,11 +890,15 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
         $('#modal-detalhamento-pedidos').modal('show')
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
-    }
+    }finally {
+            $('#loadingModal').modal('hide');
+        }
 };
 
 
 async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan) {
+            $('#loadingModal').modal('show');
+
     try {
         const response = await $.ajax({
             type: 'GET',
@@ -910,7 +916,9 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
         $('#modal-detalhamento-pedidosSaldo').modal('show')
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
-    }
+    } finally {
+            $('#loadingModal').modal('hide');
+        }
 };
 
 
