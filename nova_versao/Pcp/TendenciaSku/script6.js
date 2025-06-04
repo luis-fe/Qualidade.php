@@ -180,6 +180,7 @@ async function Consulta_Tendencias() {
         Mensagem_Canto('Erro', 'error')
     } finally {
         $('#loadingModal').modal('hide');
+        document.getElementById("ConfPedidosSaldo").classList.remove("d-none");
     }
 };
 

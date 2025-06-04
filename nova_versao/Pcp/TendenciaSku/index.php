@@ -349,10 +349,10 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-  <button type="button" class="btn btn-success" id="ConfPedidosSaldo">
+    <button type="button" class="btn btn-success d-none" id="ConfPedidosSaldo">
     <i class="bi bi-file-earmark-excel-fill me-2"></i>
     Conf. Pedidos Saldo
-  </button>
+    </button>
 
 
 <?php
