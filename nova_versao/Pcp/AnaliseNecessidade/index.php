@@ -223,10 +223,10 @@ include_once('../../templates/headerPcp.php');
                         </tbody>
                           <tfoot>
                 <tr>
-                    <th>Total:</th>
-                    <th colspan="11"></th>
-                    <th id="Necessidade"></th>
-                    <th></th>
+                    <th>Total:</th>         <!-- coluna 0 -->
+                    <th colspan="12"></th>  <!-- colunas 1 a 12 -->
+                    <th id="Necessidade"></th> <!-- coluna 13 -->
+                    <th></th>               <!-- coluna 14 -->
                 </tr>
             </tfoot>
                     </table>
