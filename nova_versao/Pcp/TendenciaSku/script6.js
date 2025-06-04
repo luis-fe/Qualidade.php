@@ -905,7 +905,7 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
         });
         console.log(response)
         TabelaDetalhamentoPedidosSaldo(response);
-        $('#modal-detalhamento-pedidos').modal('show')
+        $('#modal-detalhamento-pedidosSaldo').modal('show')
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
     }
