@@ -215,13 +215,21 @@ include_once('../../templates/headerPcp.php');
                                 <th>Status<br>Afv</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Cód.<br>Compon.</br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Unid.<br><input type="search" class="search-input search-input-detalhamento"></th>
-                                <th>Cons.<br><input type="search" class="search-input search-input-detalhamento"></th>
+                                <th>Consumo.br><input type="search" class="search-input search-input-detalhamento"></th>
                                 <th>Necessidade<br><input type="search" class="search-input search-input-detalhamento"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Dados da tabela -->
                         </tbody>
+                          <tfoot>
+                <tr>
+                    <th>Total:</th>
+                    <th colspan="1"></th>
+                    <th id="Necessidade"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
                     </table>
                 </div>
                 <div class="custom-pagination-container pagination-detalhamento d-md-flex col-12 text-center text-md-start">
