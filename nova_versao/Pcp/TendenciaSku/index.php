@@ -349,6 +349,11 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+  <button type="button" class="btn btn-success" id="ConfPedidosSaldo">
+    <i class="bi bi-file-earmark-excel-fill me-2"></i>
+    Conf. Pedidos Saldo
+  </button>
+
 
 <?php
 include_once('../../templates/footerPcp.php');
