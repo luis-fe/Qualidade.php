@@ -952,7 +952,7 @@ function TabelaDetalhamento(listaDetalhes) {
             const columnsToSum = ['14-Necessidade faltaProg (Tendencia)'];
 
             columnsToSum.forEach((columnName, idx) => {
-                const colIndex = idx + 1; // Índice da coluna no DataTables
+                const colIndex = idx + 13; // Índice da coluna no DataTables
 
                 // Total considerando todos os dados após filtro
                 const total = api.column(colIndex, {
@@ -978,6 +978,11 @@ function TabelaDetalhamento(listaDetalhes) {
     $('.search-input-detalhamento').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
+
+
+    document.getElementById("titulo-detalhamento").textContent = `Detalhamento - ${data[0]["11-CodComponente"]}`;
+
+
 }
 
 function filtrarTabelas(filtro) {

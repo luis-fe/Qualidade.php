@@ -193,7 +193,7 @@ include_once('../../templates/headerPcp.php');
     <div class="modal-dialog modal-dialog-top modal-xl modal-grande">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Detalhamento</h5>
+                <h5 class="modal-title" style="color: black;" id="titulo-detalhamento";>Detalhamento</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="align-items: start; text-align: left">
