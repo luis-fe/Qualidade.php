@@ -407,7 +407,7 @@ async function Analise_Materiais(congelar) {
     }
 }
 
-async function Detalha_Necessidade(codReduzido) {
+async function Detalha_Necessidade(codReduzido, nomeSimulacao) {
     $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -415,7 +415,8 @@ async function Detalha_Necessidade(codReduzido) {
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "codComponente": codReduzido
+                "codComponente": codReduzido,
+                "nomeSimulacao": nomeSimulacao
             }
         };
 
@@ -641,7 +642,7 @@ async function TabelaAnalise(listaAnalise) {
     $('#table-analise').on('click', '.codReduzido', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codigoReduzido');
-        Detalha_Necessidade(codReduzido);
+        Detalha_Necessidade(codReduzido, nomeSimulacao);
     });
 }
 
