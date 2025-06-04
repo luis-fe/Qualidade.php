@@ -26,6 +26,11 @@ include_once('../../templates/headerPcp.php');
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         background-color: #fff;
     }
+
+    .modal-grande {
+    max-width: 95% !important; /* ou qualquer valor, como 1200px */
+    width: 95%;
+}
 </style>
 
 <div class="titulo-tela" id="titulo">
@@ -185,7 +190,7 @@ include_once('../../templates/headerPcp.php');
 
 <div class="modal fade modal-custom" id="modal-detalhamento" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
+    <div class="modal-dialog modal-dialog-top modal-xl modal-grande">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Detalhamento</h5>

@@ -386,7 +386,7 @@ function AnaliseMateriais($empresa, $dados)
 
 function DeleteSimulacao($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? '192.168.0.183:9000' : 'http://10.162.0.190:8000';
+    $baseUrl = ($empresa == "1") ? '192.168.0.183:9000' : 'http://10.162.0.190:9000';
     $apiUrl = "{$baseUrl}/pcp/api/deletarSimulacao";
 
     $ch = curl_init($apiUrl);
