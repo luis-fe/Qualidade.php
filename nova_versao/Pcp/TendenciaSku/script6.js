@@ -933,13 +933,13 @@ async function Detalha_PedidosGeral() {
     url: 'requests.php',
     dataType: 'json',
     data: {
-      acao: "Detalha_PedidosGeral",
+      acao: "Detalha_PedidosSaldoGeral",
       codPlano: $('#select-plano').val(),
       consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val()
     }
   });
 
-  console.log("Response:", response); // para inspecionar a estrutura
+  //console.log("Response:", response); // para inspecionar a estrutura
 
   // Use a propriedade correta com os dados
   const dados = response.dados || response; // ajuste se necessário
