@@ -75,17 +75,17 @@ include_once('../../templates/headerPcp.php');
                     <th>Necessidade<br>Calculada</br></th>
                     <th>Necessidade<br>Ajustada</br></th>
                     <th>Estoque<br>Atual</br></th>
-                    <th>Compra<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Requisições<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Compra<br></th>
+                    <th>Requisições<br></th>
                     <th>Fornecedor Principal<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Medida<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Lote Mínimo<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Lote Múltiplo<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Lead Time<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Fator de Conversão<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Lote<br>Mínimo</br></th>
+                    <th>Lote<br>Múltiplo</br></th>
+                    <th>Lead<br>Time</br></th>
+                    <th>Fator<br>Conversão</br></th>
                     <th>Item Substituto<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Saldo<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Saldo<br></th>
                 </tr>
             </thead>
             <tbody>
