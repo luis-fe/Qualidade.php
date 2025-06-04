@@ -5,6 +5,8 @@ include_once('../../templates/headerPcp.php');
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
 <style>
     .form-label {
         font-weight: bold;
