@@ -322,6 +322,7 @@ include_once('../../templates/headerPcp.php');
                             <tr>
                                 <th>codReduzido<br><input type="search" class="search-input search-input-detalhamento-pedidosSaldo"></th>
                                 <th>codPedido<br><input type="search" class="search-input search-input-detalhamento-pedidosSaldo"></th>
+                                <th>codTipoNota<br><input type="search" class="search-input search-input-detalhamento-pedidosSaldo"></th>
                                 <th>dataEmissao<br><input type="search" class="search-input search-input-detalhamento-pedidosSaldo"></th>
                                 <th>dataPrevFat<br><input type="search" class="search-input search-input-detalhamento-pedidosSaldo"></th>
                                 <th>SaldoColAnt<br><input type="search" class="search-input search-input-detalhamento-pedidosSaldo"></th>

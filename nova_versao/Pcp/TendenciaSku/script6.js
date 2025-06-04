@@ -740,11 +740,13 @@ function TabelaTendencia(listaTendencia) {
 
 
         $('#table-tendencia').on('click', '.detalha-pedidos2', function (event) {
+        $('#loadingModal').modal('show');
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
         const codPlan = $('#select-plano').val();
         const consideraPedidosBloqueado = $('#select-pedidos-bloqueados').val();
         Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan);
+        $('#loadingModal').modal('hide');
     });
 
 }
@@ -1026,6 +1028,7 @@ function TabelaDetalhamentoPedidosSaldo(listaDetalhes) {
         columns: [
             { data: 'codReduzido' },
             { data: 'codPedido' },
+            { data: 'codTipoNota' },
             { data: 'dataEmissao' },
             { data: 'dataPrevFat' },
             { data: 'SaldoColAnt' },
