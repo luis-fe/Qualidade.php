@@ -914,9 +914,6 @@ function TabelaDetalhamento(listaDetalhes) {
             data: '08-statusAFV'
         },
         {
-            data: '11-CodComponente'
-        },
-        {
             data: '12-unid'
         },
         {
@@ -965,7 +962,7 @@ function TabelaDetalhamento(listaDetalhes) {
             const columnsToSum = ['14-Necessidade faltaProg (Tendencia)'];
 
             columnsToSum.forEach((columnName, idx) => {
-                const colIndex = idx + 13; // Índice da coluna no DataTables
+                const colIndex = idx + 14; // Índice da coluna no DataTables
 
                 // Total considerando todos os dados após filtro
                 const total = api.column(colIndex, {
