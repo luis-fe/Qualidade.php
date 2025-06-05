@@ -528,6 +528,7 @@ async function Analise_Materiais() {
                 codPlano: $('#select-plano').val(),
                 consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
                 arrayCategoriaMP: arrayCategoriaMP || [],
+                nomeSimulacao
             }
         };
 
