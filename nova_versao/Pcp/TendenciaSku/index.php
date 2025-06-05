@@ -71,9 +71,9 @@ include_once('../../templates/headerPcp.php');
                     <th>Cor<br><input type="search" class="search-input search-input-tendencia" style="min-width: 70px;"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Reduzido<br><input type="search" class="search-input search-input-tendencia" style="min-width: 90px;"></th>
-                    <th>Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 130px;"></th>
-                    <th>Abc<br><input type="search" class="search-input search-input-tendencia" style="min-width: 80px;"></th>
-                    <th>Abc Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 80px;"></th>
+                    <th>Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 110px;"></th>
+                    <th>Abc<br><input type="search" class="search-input search-input-tendencia" style="min-width: 60px;"></th>
+                    <th>Abc Categ.<br><input type="search" class="search-input search-input-tendencia" style="min-width: 70px;"></th>
                     <th>Qtd.de<br>Pedidos</br></th>
                     <th>Valor<br>Vendido</br></th>
                     <th>Previsão<br>de Vendas</br></th>
