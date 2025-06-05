@@ -29,12 +29,8 @@ include_once('../../templates/headerPcp.php');
     }
 </style>
 
-<div class="titulo-tela d-flex align-items-center justify-content-between" id="titulo">
-    <div class="d-flex align-items-center">
-        <span class="span-icone me-2"><i class="bi bi-clipboard-data-fill"></i></span>
-        <span>Tendência de Vendas</span>
-    </div>
-    
+<div class="titulo-tela" id="titulo">
+    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas
 </div>
 
 
