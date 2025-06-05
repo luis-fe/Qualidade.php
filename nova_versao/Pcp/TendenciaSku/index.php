@@ -80,13 +80,13 @@ include_once('../../templates/headerPcp.php');
                     <th>Qtd. Pedida<br></th>
                     <th>Qtd. Faturada<br></th>
                     <th>Saldo<br>Col Anterior</br></th>
-                    <th>Qtd. em Estoque<br></th>
-                    <th>Qtd. em Processo<br></th>
+                    <th>Qtd. em<br>Estoque</br></th>
+                    <th>Qtd. em<br>Processo</br></th>
                     <th>Falta Programar<br></th>
                     <th>Disponível<br></th>
                     <th>Disponível<br>Pronta Entrega</br></th>
-                    <th>Prev. Sobra<br></th>
-                    <th>Status Afv<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
+                    <th>Prev.<br>Sobra</br></th>
+                    <th>Status Afv<br><input type="search" class="search-input search-input-tendencia" style="min-width: 120px;"></th>
                 </tr>
             </thead>
             <tbody>
