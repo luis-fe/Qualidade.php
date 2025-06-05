@@ -28,15 +28,17 @@ include_once('../../templates/headerPcp.php');
         background-color: #fff;
     }
 </style>
-<div class="titulo-tela" id="titulo">
-    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas
-        <div class="d-flex justify-content-end">
-            <div class="d-flex align-items-center" style="font-size: 12px;">
-                <i class="bi bi-calendar me-1"></i>
-                <span>Período de Vendas:</span>
-            </div>
-        </div>
 
+<div class="titulo-tela d-flex align-items-center justify-content-between" id="titulo">
+    <div class="d-flex align-items-center">
+        <span class="span-icone me-2"><i class="bi bi-clipboard-data-fill"></i></span>
+        <span>Tendência de Vendas</span>
+    </div>
+    
+    <div class="d-flex align-items-center" style="font-size: 12px;">
+        <i class="bi bi-calendar me-1"></i>
+        <span>Período de Vendas:</span>
+    </div>
 </div>
 
 
