@@ -30,6 +30,13 @@ include_once('../../templates/headerPcp.php');
 </style>
 <div class="titulo-tela" id="titulo">
     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas
+        <div class="d-flex justify-content-end">
+            <div class="d-flex align-items-center" style="font-size: 10px;">
+                <i class="bi bi-calendar me-1"></i>
+                <span>Período de Vendas:</span>
+            </div>
+    </div>
+
 </div>
 
 
