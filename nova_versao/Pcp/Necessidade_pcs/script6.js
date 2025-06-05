@@ -732,7 +732,39 @@ async function TabelaAnalise(listaAnalise) {
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
             });
             $('.dataTables_paginate').hide();
-        }
+        },footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            // Helper para converter strings para número
+            const intVal = (i) => {
+                if (typeof i === 'string') {
+                    // Remover "R$", pontos e substituir vírgula por ponto
+                    return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
+                } else if (typeof i === 'number') {
+                    return i;
+                }
+                return 0;
+            };
+
+            // Colunas que precisam de total
+            const columnsToSum = ['faltaProg (Tendencia)','Sugestao_PCs'];
+
+            columnsToSum.forEach((columnName, idx) => {
+                const colIndex = idx + 14; // Índice da coluna no DataTables
+
+                // Total considerando todos os dados após filtro
+                const total = api.column(colIndex, {
+                    filter: 'applied'
+                }).data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                // Atualizar o rodapé da coluna
+                $(api.column(colIndex).footer()).html(
+                    columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
+                );
+            });
+        },
+
     });
 
     $('.search-input-analise').on('input', function () {

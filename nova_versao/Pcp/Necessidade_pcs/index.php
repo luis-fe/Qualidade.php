@@ -106,6 +106,19 @@ include_once('../../templates/headerPcp.php');
             <tbody>
                 <!-- Dados da tabela -->
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total:</th>         <!-- coluna 0 -->
+                    <th colspan="6"></th>  <!-- colunas 1 a 12 -->
+                    <th id="Falta Prog"></th> <!-- coluna 13 -->
+                    <th id="Sugestão pela MP"></th> <!-- coluna 13 -->
+                    <th></th>               <!-- coluna 14 -->
+                </tr>
+            </tfoot>
+
+
+
+
         </table>
     </div>
     <div class="custom-pagination-container pagination-analise d-md-flex col-12 text-center text-md-start">
