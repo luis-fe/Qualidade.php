@@ -77,12 +77,12 @@ include_once('../../templates/headerPcp.php');
                     <th>Qtd.de<br>Pedidos</br></th>
                     <th>Valor<br>Vendido</br></th>
                     <th>Previsão<br>de Vendas</br></th>
-                    <th>Qtd. Pedida<br></th>
-                    <th>Qtd. Faturada<br></th>
+                    <th>Qtd.<br>Pedida</br></th>
+                    <th>Qtd.<br>Faturada</br></th>
                     <th>Saldo<br>Col Anterior</br></th>
                     <th>Qtd. em<br>Estoque</br></th>
                     <th>Qtd. em<br>Processo</br></th>
-                    <th>Falta Programar<br></th>
+                    <th>Falta <br>Programar <br></th>
                     <th>Disponível<br></th>
                     <th>Disponível<br>Pronta Entrega</br></th>
                     <th>Prev.<br>Sobra</br></th>
