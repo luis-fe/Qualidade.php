@@ -65,21 +65,21 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered" id="table-tendencia" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Marca<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
-                    <th>Referência<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
+                    <th>Marca<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
+                    <th>Referência<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
                     <th>Tamanho<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Cor<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
+                    <th>Cor<br><input type="search" class="search-input search-input-tendencia" style="min-width: 80px;"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-tendencia"></th>
-                    <th>Reduzido<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
-                    <th>Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 150px;"></th>
-                    <th>Abc<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
-                    <th>Abc Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
-                    <th>Qtd. de Pedidos<br></th>
-                    <th>Valor Vendido<br></th>
-                    <th>Previsão de Vendas<br></th>
+                    <th>Reduzido<br><input type="search" class="search-input search-input-tendencia" style="min-width: 100px;"></th>
+                    <th>Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 130px;"></th>
+                    <th>Abc<br><input type="search" class="search-input search-input-tendencia" style="min-width: 80px;"></th>
+                    <th>Abc<br>Categoria</br><input type="search" class="search-input search-input-tendencia" style="min-width: 80px;"></th>
+                    <th>Qtd.de<br>Pedidos</br></th>
+                    <th>Valor<br>Vendido</br></th>
+                    <th>Previsão de<br>Vendas</br></th>
                     <th>Qtd. Pedida<br></th>
                     <th>Qtd. Faturada<br></th>
-                    <th>Saldo Col Anterior<br></th>
+                    <th>Saldo<br>Col Anterior</br></th>
                     <th>Qtd. em Estoque<br></th>
                     <th>Qtd. em Processo<br></th>
                     <th>Falta Programar<br></th>
