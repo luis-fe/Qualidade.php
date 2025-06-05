@@ -108,11 +108,10 @@ include_once('../../templates/headerPcp.php');
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Total:</th>         <!-- coluna 0 -->
-                    <th colspan="6"></th>  <!-- colunas 1 a 12 -->
-                    <th id="Falta Prog"></th> <!-- coluna 13 -->
-                    <th id="Sugestão pela MP"></th> <!-- coluna 13 -->
-                    <th></th>               <!-- coluna 14 -->
+                    <th colspan="7" style="text-align: right;">Totais:</th>
+                    <th></th> <!-- FaltaProg -->
+                    <th></th> <!-- Sugestão PCs -->
+                    <th></th> <!-- Disponível (sem total) -->
                 </tr>
             </tfoot>
 

@@ -735,36 +735,28 @@ async function TabelaAnalise(listaAnalise) {
         },footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
-            // Helper para converter strings para número
+            // Conversor de texto para número
             const intVal = (i) => {
                 if (typeof i === 'string') {
-                    // Remover "R$", pontos e substituir vírgula por ponto
-                    return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
-                } else if (typeof i === 'number') {
-                    return i;
+                    return parseFloat(i.replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
                 }
-                return 0;
+                return typeof i === 'number' ? i : 0;
             };
 
-            // Colunas que precisam de total
-            const columnsToSum = ['faltaProg (Tendencia)','Sugestao_PCs'];
+            // Índices das colunas a somar (baseado no array `columns`)
+            const columnsToSum = [7, 8]; // faltaProg e sugestao_PCs
 
-            columnsToSum.forEach((columnName, idx) => {
-                const colIndex = idx + 14; // Índice da coluna no DataTables
-
-                // Total considerando todos os dados após filtro
-                const total = api.column(colIndex, {
-                    filter: 'applied'
-                }).data()
+            columnsToSum.forEach(colIndex => {
+                const total = api
+                    .column(colIndex, { filter: 'applied' })
+                    .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
 
-                // Atualizar o rodapé da coluna
                 $(api.column(colIndex).footer()).html(
-                    columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
+                    total.toLocaleString('pt-BR')
                 );
             });
         },
-
     });
 
     $('.search-input-analise').on('input', function () {
