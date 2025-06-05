@@ -241,7 +241,7 @@ include_once('../../templates/headerPcp.php');
 
 <div class="modal fade modal-custom" id="modal-detalhamentoSku" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
+    <div class="modal-dialog modal-dialog-top modal-xl modal-grande">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="titulo-detalhamentoSku" style="color: black;">Detalhamento Matéria Prima: </h5>
