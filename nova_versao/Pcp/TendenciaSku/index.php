@@ -35,10 +35,6 @@ include_once('../../templates/headerPcp.php');
         <span>Tendência de Vendas</span>
     </div>
     
-    <div class="d-flex align-items-center" style="font-size: 12px;">
-        <i class="bi bi-calendar me-1"></i>
-        <span>Período de Vendas:</span>
-    </div>
 </div>
 
 
