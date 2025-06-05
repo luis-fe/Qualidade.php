@@ -83,7 +83,7 @@ include_once('../../templates/headerPcp.php');
                     <th>Qtd. em<br>Estoque</br></th>
                     <th>Qtd. em<br>Processo</br></th>
                     <th>Falta <br>Programar <br></th>
-                    <th>Disponível<br></th>
+                    <th>Disponível<br></br></th>
                     <th>Disponível<br>Pronta Entrega</br></th>
                     <th>Prev.<br>Sobra</br></th>
                     <th>Status Afv<br><input type="search" class="search-input search-input-tendencia" style="min-width: 120px;"></th>
