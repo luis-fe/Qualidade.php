@@ -159,7 +159,7 @@ async function Consulta_Tendencias() {
     const respostaCalculo = await Consulta_Ultimo_CalculoTendencia();
 
         if (respostaCalculo.status === null) {
-        gerarTendenciaNova();
+        gerarTendenciaNova(false);
         return;
     }
 
@@ -175,9 +175,9 @@ async function Consulta_Tendencias() {
         // Aguarda o modal fechar visualmente
         setTimeout(() => {
             if (result.isConfirmed) {
-                gerarTendenciaNova();
+                gerarTendenciaNova(false);
             } else {
-                gerarTendenciaNova();
+                gerarTendenciaNova(true);
             }
         }, 300); // Tempo suficiente para animação de fechamento
     } catch (error) {
@@ -191,7 +191,7 @@ async function Consulta_Tendencias() {
 
 };
 
-async function gerarTendenciaNova () {
+async function gerarTendenciaNova (congelamento) {
       $('#loadingModal').modal('show');
     try {
         const requestData = {
@@ -199,7 +199,8 @@ async function gerarTendenciaNova () {
 
             dados: {
                 "codPlano": $('#select-plano').val(),
-                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val()
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "congelar":congelamento
             }
 
         };
