@@ -93,7 +93,7 @@ async function Detalhar_Sku(codReduzido) {
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "codReduzido": codReduzido,
                 "arrayCategoriaMP": arrayCategoriaMP,
-                nomeSimulacao
+                "nomeSimulacao": nomeSimulacao
             }
 
         };
