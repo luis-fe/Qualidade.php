@@ -494,24 +494,8 @@ function CadastroSimulacao($empresa, $dados)
 
 function obterImagemMP($codigoImagem)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
-    $apiUrl = "{$baseUrl}/imagem/{$codigoImagem}";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
-
-    $apiResponse = curl_exec($ch);
-
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
+    $baseUrl = 'http://192.168.0.183:9000'; // ou ajuste se necessário
+    return [
+        'imagem_url' => "{$baseUrl}/imagem/{$codigoImagem}"
+    ];
 }
-
-
