@@ -649,7 +649,7 @@ async function TabelaAnalise(listaAnalise) {
     });
 
     // Evento para abrir o modal ao clicar no código
-    $('#tabelaMP').on('click', '.codMP', function () {
+    $('#table-analise').on('click', '.codMP', function () {
     const codigoMPCompleto = $(this).data('codmp');
     const codigoMP = codigoMPCompleto.substring(9);
     console.log(codigoMP)
