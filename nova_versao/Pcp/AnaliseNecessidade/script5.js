@@ -1231,15 +1231,18 @@ const Consulta_Simulacao_Especifica = async () => {
 
 const Consulta_Imagem = async (codigoMP) => {
   try {
-    const data = await $.ajax({
-      type: 'GET',
-      url: 'requests.php',
-      dataType: 'json',
-      data: {
+const data = await $.ajax({
+    type: 'GET',
+    url: 'requests.php',
+    dataType: 'json',
+    data: {
         acao: 'Consulta_Imagem',
         codigoMP
-      }
-    });
+    },
+    xhrFields: {
+        withCredentials: true // <-- isto permite enviar cookies da sessão
+    }
+        });
 
     console.log('Resposta da API:', data);  // <-- Adicione isso!
 
