@@ -1,7 +1,54 @@
-  let imagemAtual = 0;
-  let totalImagens = 0;
-  let cpfAtual = "";
+// Variáveis globais
+let imagemAtual = 0;
+let totalImagens = 0;
+let cpfAtual = "";
 
+// Atualiza a imagem no modal
+const atualizarImagem = () => {
+  const url = `/imagem/${cpfAtual}/${imagemAtual}`;
+  $('#imagem-container').html(`<img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">`);
+  $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
+  $('#btn-anterior').prop('disabled', imagemAtual === 0);
+  $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
+};
+
+// Consulta a imagem e exibe no modal
+const Consulta_Imagem = async (codigoMP) => {
+  $('#loadingModal').modal('show');
+
+  try {
+    const data = await $.ajax({
+      type: 'GET',
+      url: 'requests.php',
+      dataType: 'json',
+      data: {
+        acao: 'Consulta_Imagem',
+        codigoMP
+      },
+      xhrFields: {
+        withCredentials: true
+      }
+    });
+
+    if (data.imagem_url && data.total_imagens) {
+      cpfAtual = codigoMP;
+      imagemAtual = 0;
+      totalImagens = data.total_imagens;
+      atualizarImagem();
+
+      const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
+      modal.show();
+    } else {
+      $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
+    }
+
+  } catch (error) {
+    console.error('Erro na solicitação AJAX:', error);
+    Mensagem_Canto('Erro', 'error'); // Ajuste se for sua função de alerta
+  } finally {
+    $('#loadingModal').modal('hide');
+  }
+}
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -1258,52 +1305,3 @@ const Consulta_Simulacao_Especifica = async () => {
         console.error('Erro ao consultar planos:', error);
     }
 };
-
-
-
-
-  const Consulta_Imagem = async (codigoMP) => {
-    $('#loadingModal').modal('show');
-
-    try {
-      const data = await $.ajax({
-        type: 'GET',
-        url: 'requests.php',
-        dataType: 'json',
-        data: {
-          acao: 'Consulta_Imagem',
-          codigoMP
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      });
-
-      if (data.imagem_url && data.total_imagens) {
-        cpfAtual = codigoMP;
-        imagemAtual = 0;
-        totalImagens = data.total_imagens;
-        atualizarImagem();
-
-        const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
-        modal.show();
-      } else {
-        $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
-      }
-
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
-    
-  };
-
-    const atualizarImagem = () => {
-    const url = `/imagem/${cpfAtual}/${imagemAtual}`;
-    $('#imagem-container').html(`<img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">`);
-    $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
-    $('#btn-anterior').prop('disabled', imagemAtual === 0);
-    $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
-  };
