@@ -34,13 +34,7 @@ $(document).ready(async () => {
 
     $('#btn-vendas').addClass('btn-menu-clicado')
 
-    const atualizarImagem = () => {
-    const url = `/imagem/${cpfAtual}/${imagemAtual}`;
-    $('#imagem-container').html(`<img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">`);
-    $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
-    $('#btn-anterior').prop('disabled', imagemAtual === 0);
-    $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
-  };
+
 
 
 
@@ -1266,6 +1260,8 @@ const Consulta_Simulacao_Especifica = async () => {
 };
 
 
+
+
   const Consulta_Imagem = async (codigoMP) => {
     $('#loadingModal').modal('show');
 
@@ -1304,4 +1300,10 @@ const Consulta_Simulacao_Especifica = async () => {
     
   };
 
-
+    const atualizarImagem = () => {
+    const url = `/imagem/${cpfAtual}/${imagemAtual}`;
+    $('#imagem-container').html(`<img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">`);
+    $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
+    $('#btn-anterior').prop('disabled', imagemAtual === 0);
+    $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
+  };
