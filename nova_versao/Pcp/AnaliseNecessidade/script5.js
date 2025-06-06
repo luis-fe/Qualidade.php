@@ -492,7 +492,7 @@ async function TabelaAnalise(listaAnalise) {
         columns: [{
             data: '02-codCompleto',
             render: function (data, type, row) {
-                return `<span class="codMP" data-codMP="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                return `<span class="codMP" data-codmp="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
         },
         {
