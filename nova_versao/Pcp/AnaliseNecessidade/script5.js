@@ -652,6 +652,7 @@ async function TabelaAnalise(listaAnalise) {
     $('#tabelaMP').on('click', '.codMP', function () {
     const codigoMPCompleto = $(this).data('codmp');
     const codigoMP = codigoMPCompleto.substring(9);
+    console.log(codigoMP)
     Consulta_Imagem(codigoMP);
     });
 
