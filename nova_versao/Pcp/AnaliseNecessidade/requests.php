@@ -494,8 +494,28 @@ function CadastroSimulacao($empresa, $dados)
 
 function obterImagemMP($codigoImagem)
 {
-    $baseUrl = 'http://192.168.0.183:9000'; // ou ajuste se necessário
+    $baseUrl = 'http://192.168.0.183:9000';
+
+    // Consulta ao backend para obter o total de imagens
+    $quantidadeUrl = "{$baseUrl}/imagem/{$codigoImagem}/quantidade";
+
+    $quantidade = 1;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $quantidadeUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+
+    if ($response !== false) {
+        $json = json_decode($response, true);
+        if (isset($json['total_imagens'])) {
+            $quantidade = intval($json['total_imagens']);
+        }
+    }
+
+    curl_close($ch);
+
     return [
-        'imagem_url' => "{$baseUrl}/imagem/{$codigoImagem}"
+        'imagem_url' => "{$baseUrl}/imagem/{$codigoImagem}/0", // começa com a primeira imagem
+        'total_imagens' => $quantidade
     ];
 }
