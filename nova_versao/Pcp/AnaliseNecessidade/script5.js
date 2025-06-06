@@ -490,7 +490,10 @@ async function TabelaAnalise(listaAnalise) {
         },
         ],
         columns: [{
-            data: '02-codCompleto'
+            data: '02-codCompleto',
+            render: function (data, type, row) {
+                return `<span class="codMP" data-codMP="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+            }
         },
         {
             data: '03-descricaoComponente'
@@ -644,6 +647,14 @@ async function TabelaAnalise(listaAnalise) {
         const codReduzido = $(this).attr('data-codigoReduzido');
         Detalha_Necessidade(codReduzido, nomeSimulacao);
     });
+
+    // Evento para abrir o modal ao clicar no código
+    $('#tabelaMP').on('click', '.codMP', function () {
+    const codigoMPCompleto = $(this).data('codmp');
+    const codigoMP = codigoMPCompleto.substring(9);
+    Consulta_Imagem(codigoMP);
+    });
+
 }
 
 
@@ -1211,6 +1222,37 @@ const Consulta_Simulacao_Especifica = async () => {
         });
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
+    }
+};
+
+
+
+const Consulta_Imagem = async (codigoMP) => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Imagem',
+                codigoMP
+            }
+        });
+
+        if (data.imagem_url) {
+            // Define o conteúdo do modal
+            $('#modal-body-imagem').html(`<img src="${data.imagem_url}" alt="Imagem" class="img-fluid">`);
+            
+            // Exibe o modal
+            const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
+            modal.show();
+        } else {
+            $('#modal-body-imagem').html(`<p>Imagem não encontrada.</p>`);
+        }
+
+    } catch (error) {
+        console.error('Erro ao consultar imagem:', error);
+        $('#modal-body-imagem').html(`<p>Erro ao carregar a imagem.</p>`);
     }
 };
 

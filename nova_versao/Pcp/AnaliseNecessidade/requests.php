@@ -26,6 +26,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Naturezas':
                     jsonResponse(ConsultarNaturezas('1'));
                     break;
+                case 'Consulta_Imagem':
+                    $codigoImagem = urldecode($_GET['codigoMP']);
+                    jsonResponse(obterImagemMP($codigoImagem));
+                    break;
                 case 'Consulta_Comprometidos':
                     jsonResponse(ConsultarComprometidos('1'));
                     break;
@@ -481,6 +485,28 @@ function CadastroSimulacao($empresa, $dados)
         $error = curl_error($ch);
         error_log("Erro na solicitação cURL: {$error}");
         return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function obterImagemMP($codigoImagem)
+{
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://192.168.0.183:9000';
+    $apiUrl = "{$baseUrl}/imagem/{$codigoImagem}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
     }
 
     curl_close($ch);

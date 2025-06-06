@@ -245,6 +245,21 @@ include_once('../../templates/headerPcp.php');
 </div>
 </div>
 
+
+<div class="modal fade modal-custom" id="modal-imagemMP" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl modal-grande">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;" id="customModalLabel">Imagem:</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" id="modal-body-imagem" style="align-items: start; text-align: left;">
+                <!-- A imagem será injetada aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
