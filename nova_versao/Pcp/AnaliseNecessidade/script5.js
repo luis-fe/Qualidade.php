@@ -1298,35 +1298,5 @@ const Consulta_Simulacao_Especifica = async () => {
 
 
 
-const Consulta_Imagem = async (codigoMP) => {
-  try {
-const data = await $.ajax({
-    type: 'GET',
-    url: 'requests.php',
-    dataType: 'json',
-    data: {
-        acao: 'Consulta_Imagem',
-        codigoMP
-    },
-    xhrFields: {
-        withCredentials: true // <-- isto permite enviar cookies da sessão
-    }
-        });
-
-    console.log('Resposta da API:', data);  // <-- Adicione isso!
-
-    if (data.imagem_url) {
-      $('#modal-body-imagem').html(`<img src="${data.imagem_url}" alt="Imagem" class="img-fluid">`);
-      const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
-      modal.show();
-    } else {
-      $('#modal-body-imagem').html(`<p>Imagem não encontrada.</p>`);
-    }
-
-  } catch (error) {
-    console.error('Erro ao consultar imagem:', error);
-    $('#modal-body-imagem').html(`<p>Erro ao carregar a imagem.</p>`);
-  }
-};
 
 
