@@ -42,43 +42,7 @@ $(document).ready(async () => {
     $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
   };
 
-  const Consulta_Imagem = async (codigoMP) => {
-    $('#loadingModal').modal('show');
 
-    try {
-      const data = await $.ajax({
-        type: 'GET',
-        url: 'requests.php',
-        dataType: 'json',
-        data: {
-          acao: 'Consulta_Imagem',
-          codigoMP
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      });
-
-      if (data.imagem_url && data.total_imagens) {
-        cpfAtual = codigoMP;
-        imagemAtual = 0;
-        totalImagens = data.total_imagens;
-        atualizarImagem();
-
-        const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
-        modal.show();
-      } else {
-        $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
-      }
-
-    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
-    } finally {
-        $('#loadingModal').modal('hide');
-    }
-    
-  };
 
   $('#btn-anterior').on('click', function () {
     if (imagemAtual > 0) {
@@ -1302,6 +1266,42 @@ const Consulta_Simulacao_Especifica = async () => {
 };
 
 
+  const Consulta_Imagem = async (codigoMP) => {
+    $('#loadingModal').modal('show');
 
+    try {
+      const data = await $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+          acao: 'Consulta_Imagem',
+          codigoMP
+        },
+        xhrFields: {
+          withCredentials: true
+        }
+      });
+
+      if (data.imagem_url && data.total_imagens) {
+        cpfAtual = codigoMP;
+        imagemAtual = 0;
+        totalImagens = data.total_imagens;
+        atualizarImagem();
+
+        const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
+        modal.show();
+      } else {
+        $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
+      }
+
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+    
+  };
 
 
