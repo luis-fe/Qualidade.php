@@ -43,6 +43,8 @@ $(document).ready(async () => {
   };
 
   const Consulta_Imagem = async (codigoMP) => {
+    $('#loadingModal').modal('show');
+
     try {
       const data = await $.ajax({
         type: 'GET',
@@ -70,9 +72,12 @@ $(document).ready(async () => {
       }
 
     } catch (error) {
-      console.error('Erro ao consultar imagem:', error);
-      $('#imagem-container').html(`<p>Erro ao carregar a imagem.</p>`);
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
     }
+    
   };
 
   $('#btn-anterior').on('click', function () {
