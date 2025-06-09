@@ -109,7 +109,7 @@ $(document).ready(async () => {
 
   $('#table-analise').on('click', '.codMP', function () {
     const codigoMPCompleto = $(this).data('codmp');
-    const codigoMP = codigoMPCompleto.substring(0, 9);
+    codigoMP = codigoMPCompleto.substring(0, 9);
     console.log(`A imagem desejada é do codigo ${codigoMP}`)
     Consulta_Imagem(codigoMP);
   });
