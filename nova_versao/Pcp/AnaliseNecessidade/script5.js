@@ -15,7 +15,7 @@ const atualizarImagem = () => {
 // Consulta a imagem e exibe no modal
 const Consulta_Imagem = async (codigoMP) => {
   $('#loadingModal').modal('show');
-
+    codigoMP = codigoMP     
   try {
     const data = await $.ajax({
       type: 'GET',
