@@ -1,11 +1,11 @@
 // Variáveis globais
 let imagemAtual = 0;
 let totalImagens = 0;
-let cpfAtual = "";
+let codigoMP = "";
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  const url = `/imagem/${cpfAtual}/${imagemAtual}`;
+  const url = `/imagem/${codigoMP}/${imagemAtual}`;
   $('#imagem-container').html(`<img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">`);
   $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
   $('#btn-anterior').prop('disabled', imagemAtual === 0);
@@ -31,7 +31,7 @@ const Consulta_Imagem = async (codigoMP) => {
     });
 
     if (data.imagem_url && data.total_imagens) {
-      cpfAtual = codigoMP;
+      codigoMP = codigoMP;
       imagemAtual = 0;
       totalImagens = data.total_imagens;
       atualizarImagem();
@@ -49,6 +49,14 @@ const Consulta_Imagem = async (codigoMP) => {
     $('#loadingModal').modal('hide');
   }
 }
+
+
+
+
+
+
+
+
 
 $(document).ready(async () => {
     Consulta_Planos();
