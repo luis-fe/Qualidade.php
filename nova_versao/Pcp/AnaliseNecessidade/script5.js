@@ -5,12 +5,25 @@ let codigoMP = "";
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  const url = `/imagem/${codigoMP}/${imagemAtual}`;
-  $('#imagem-container').html(`<img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">`);
+  if (!codigoMP || codigoMP.trim() === "") {
+    console.error("codigoMP está vazio!");
+    return;
+  }
+
+  const baseURL = "http://192.168.0.183:9000";
+  const url = `${baseURL}/imagem/${codigoMP}/${imagemAtual}`;
+
+  console.log("Imagem carregada de:", url);
+
+  $('#imagem-container').html(`
+    <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
+  `);
+
   $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
   $('#btn-anterior').prop('disabled', imagemAtual === 0);
   $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
+
 
 // Consulta a imagem e exibe no modal
 const Consulta_Imagem = async (codigoMP) => {
