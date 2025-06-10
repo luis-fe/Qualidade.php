@@ -558,7 +558,7 @@ function obterImagemMP($codigoImagem)
     curl_close($ch);
 
     return [
-        'imagem_url' => "{$baseUrl}/imagem/{$codigoImagem}/0", // começa com a primeira imagem
+        'imagem_url' => "{$baseUrl}/imagemEng/{$codigoImagem}/0", // começa com a primeira imagem
         'total_imagens' => $quantidade
     ];
 }
