@@ -106,19 +106,19 @@ $(document).ready(async () => {
 
 
 
-  $('#btn-anterior').on('click', function () {
-    if (imagemAtual > 0) {
-      imagemAtual--;
-      atualizarImagem();
-    }
-  });
+$('#btn-anterior').off('click').on('click', function () {
+  if (imagemAtual > 0) {
+    imagemAtual--;
+    atualizarImagem();
+  }
+});
 
-  $('#btn-proximo').on('click', function () {
-    if (imagemAtual < totalImagens - 1) {
-      imagemAtual++;
-      atualizarImagem();
-    }
-  });
+$('#btn-proximo').off('click').on('click', function () {
+  if (imagemAtual < totalImagens - 1) {
+    imagemAtual++;
+    atualizarImagem();
+  }
+});
 
   $('#table-analise').on('click', '.codMP', function () {
     const codigoMPCompleto = $(this).data('codmp');
