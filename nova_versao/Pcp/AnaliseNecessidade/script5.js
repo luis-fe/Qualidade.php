@@ -120,6 +120,16 @@ $('#btn-proximo').off('click').on('click', function () {
   }
 });
 
+// Limpa tudo ao fechar modal
+$('#modal-imagemMP').on('hidden.bs.modal', function () {
+  imagemAtual = 0;
+  totalImagens = 0;
+  codigoMP = "";
+  $('#imagem-container').html('');
+  $('#contador-imagens').text('');
+});
+
+
   $('#table-analise').on('click', '.codMP', function () {
     const codigoMPCompleto = $(this).data('codmp');
     codigoMP = codigoMPCompleto.substring(0, 9);
