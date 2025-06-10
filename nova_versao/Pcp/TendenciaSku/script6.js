@@ -715,7 +715,7 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'codItemPai',
                         render: function (data, type, row) {
-                return `<span class="codMP" data-codItemPai="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                return `<span class="codMP" data-codItem="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
         },
         {
@@ -909,7 +909,7 @@ function TabelaTendencia(listaTendencia) {
 
             // Evento para abrir o modal ao clicar no código
         $('#table-tendencia').on('click', '.codMP', function () {
-        const codItemPai = $(this).data('codItemPai');
+        const codItemPai = $(this).data('codItem');
         console.log(codItemPai)
         Consulta_Imagem(codItemPai);
         });
