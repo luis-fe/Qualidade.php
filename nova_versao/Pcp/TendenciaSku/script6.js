@@ -1,17 +1,17 @@
 // Variáveis globais
 let imagemAtual = 0;
 let totalImagens = 0;
-let codigoMP = "";
+let codigoPai = "";
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  if (!codigoMP || codigoMP.trim() === "") {
-    console.error("codigoMP está vazio!");
+  if (!codigoPai || codigoPai.trim() === "") {
+    console.error("codigoPai está vazio!");
     return;
   }
 
   const baseURL = "http://192.168.0.183:9000";
-  const url = `${baseURL}/imagem/${codigoMP}/${imagemAtual}`;
+  const url = `${baseURL}/imagemEng/${codigoPai}/${imagemAtual}`;
 
   console.log("Imagem carregada de:", url);
 
@@ -25,7 +25,7 @@ const atualizarImagem = () => {
 };
 
 
-const Consulta_Imagem = async (codigoMP) => {
+const Consulta_Imagem = async (codigoPai) => {
   // Mostra o modal de loading
   $('#loadingModal').modal('show');
   
@@ -36,7 +36,7 @@ const Consulta_Imagem = async (codigoMP) => {
       dataType: 'json',
       data: {
         acao: 'Consulta_Imagem',
-        codigoMP: codigoMP // Corrigido para passar explicitamente o parâmetro
+        codigoMP: codigoPai // Corrigido para passar explicitamente o parâmetro
       },
       xhrFields: {
         withCredentials: true
