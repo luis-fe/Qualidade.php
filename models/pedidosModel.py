@@ -325,9 +325,25 @@ WHERE
 	dataEmissao >= DATEADD(DAY, -180, GETDATE()) and d.codEmpresa = """ +str(empresa) +""" and (m.descricao like '%DEF%' OR m.descricao like '%QUAL%') 
     """
 
+    sql2 = """
+    	select
+	C.codCliente as codcliente,
+	'DEVOLUCAO' as prioridade
+FROM
+	fat.CliComplemento2 C
+WHERE
+	c.codEmpresa = 1
+	and (
+	c.observacao1  LIKE  '%REVISAR%'
+	OR c.observacao2  LIKE  '%REVISAR%'
+	OR c.observacao3  LIKE  '%REVISAR%'
+	OR c.observacao4  LIKE  '%REVISAR%'
+	)
+    """
+
     with ConexaoCSW.Conexao() as conn:
         with conn.cursor() as cursor:
-            cursor.execute(sql)
+            cursor.execute(sql2)
             colunas = [desc[0] for desc in cursor.description]
             rows = cursor.fetchall()
             devolucao = pd.DataFrame(rows, columns=colunas)
