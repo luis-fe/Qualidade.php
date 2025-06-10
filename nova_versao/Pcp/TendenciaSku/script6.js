@@ -715,7 +715,7 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'codItemPai',
                         render: function (data, type, row) {
-                return `<span class="codMP" data-codmp="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                return `<span class="codMP" data-codItemPai="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
         },
         {
@@ -908,12 +908,10 @@ function TabelaTendencia(listaTendencia) {
     });
 
             // Evento para abrir o modal ao clicar no código
-        $('#table-analise').on('click', '.codMP', function () {
-        const codigoMPCompleto = $(this).data('codmp');
-        const codigoMP = codigoMPCompleto.substring(0,9);
-        console.log(codigoMPCompleto)
-        console.log(codigoMP)
-        Consulta_Imagem(codigoMP);
+        $('#table-tendencia').on('click', '.codMP', function () {
+        const codItemPai = $(this).data('codItemPai');
+        console.log(codItemPai)
+        Consulta_Imagem(codItemPai);
         });
 
 }

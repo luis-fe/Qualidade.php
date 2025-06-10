@@ -540,7 +540,7 @@ function obterImagemMP($codigoImagem)
     $baseUrl = 'http://192.168.0.183:9000';
 
     // Consulta ao backend para obter o total de imagens
-    $quantidadeUrl = "{$baseUrl}/imagem/{$codigoImagem}/quantidade";
+    $quantidadeUrl = "{$baseUrl}/imagemEng/{$codigoImagem}/quantidade";
 
     $quantidade = 1;
     $ch = curl_init();
