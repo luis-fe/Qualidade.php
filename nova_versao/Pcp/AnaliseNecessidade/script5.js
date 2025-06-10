@@ -25,10 +25,10 @@ const atualizarImagem = () => {
 };
 
 
-// Consulta a imagem e exibe no modal
 const Consulta_Imagem = async (codigoMP) => {
+  // Mostra o modal de loading
   $('#loadingModal').modal('show');
-    codigoMP = codigoMP     
+  
   try {
     const data = await $.ajax({
       type: 'GET',
@@ -36,7 +36,7 @@ const Consulta_Imagem = async (codigoMP) => {
       dataType: 'json',
       data: {
         acao: 'Consulta_Imagem',
-        codigoMP
+        codigoMP: codigoMP // Corrigido para passar explicitamente o parâmetro
       },
       xhrFields: {
         withCredentials: true
@@ -44,21 +44,22 @@ const Consulta_Imagem = async (codigoMP) => {
     });
 
     if (data.imagem_url && data.total_imagens) {
-      codigoMP = codigoMP;
+      // Atualiza variáveis globais (se necessário)
       imagemAtual = 0;
       totalImagens = data.total_imagens;
       atualizarImagem();
 
-      const modal = new bootstrap.Modal(document.getElementById('modal-imagemMP'));
-      modal.show();
+      // Fecha o loading e abre o modal principal
+      $('#loadingModal').modal('hide');
+      $('#modal-imagemMP').modal('show');
     } else {
       $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
+      $('#loadingModal').modal('hide');
     }
 
   } catch (error) {
     console.error('Erro na solicitação AJAX:', error);
-    Mensagem_Canto('Erro', 'error'); // Ajuste se for sua função de alerta
-  } finally {
+    Mensagem_Canto('Erro', 'error');
     $('#loadingModal').modal('hide');
   }
 }
