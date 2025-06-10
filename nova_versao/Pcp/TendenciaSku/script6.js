@@ -1,3 +1,72 @@
+// Variáveis globais
+let imagemAtual = 0;
+let totalImagens = 0;
+let codigoMP = "";
+
+// Atualiza a imagem no modal
+const atualizarImagem = () => {
+  if (!codigoMP || codigoMP.trim() === "") {
+    console.error("codigoMP está vazio!");
+    return;
+  }
+
+  const baseURL = "http://192.168.0.183:9000";
+  const url = `${baseURL}/imagem/${codigoMP}/${imagemAtual}`;
+
+  console.log("Imagem carregada de:", url);
+
+  $('#imagem-container').html(`
+    <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
+  `);
+
+  $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
+  $('#btn-anterior').prop('disabled', imagemAtual === 0);
+  $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
+};
+
+
+const Consulta_Imagem = async (codigoMP) => {
+  // Mostra o modal de loading
+  $('#loadingModal').modal('show');
+  
+  try {
+    const data = await $.ajax({
+      type: 'GET',
+      url: 'requests.php',
+      dataType: 'json',
+      data: {
+        acao: 'Consulta_Imagem',
+        codigoMP: codigoMP // Corrigido para passar explicitamente o parâmetro
+      },
+      xhrFields: {
+        withCredentials: true
+      }
+    });
+
+    if (data.imagem_url && data.total_imagens) {
+      // Atualiza variáveis globais (se necessário)
+      imagemAtual = 0;
+      totalImagens = data.total_imagens;
+      atualizarImagem();
+
+      // Fecha o loading e abre o modal principal
+      $('#loadingModal').modal('hide');
+      $('#modal-imagemMP').modal('show');
+    } else {
+      $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
+      $('#loadingModal').modal('hide');
+    }
+
+  } catch (error) {
+    console.error('Erro na solicitação AJAX:', error);
+    Mensagem_Canto('Erro', 'error');
+    $('#loadingModal').modal('hide');
+  }
+}
+
+
+
+
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
@@ -36,6 +105,40 @@ $(document).ready(async () => {
     });
 
     $('#btn-vendas').addClass('btn-menu-clicado');
+
+
+
+    
+$('#btn-anterior').off('click').on('click', function () {
+  if (imagemAtual > 0) {
+    imagemAtual--;
+    atualizarImagem();
+  }
+});
+
+$('#btn-proximo').off('click').on('click', function () {
+  if (imagemAtual < totalImagens - 1) {
+    imagemAtual++;
+    atualizarImagem();
+  }
+});
+
+// Limpa tudo ao fechar modal
+$('#modal-imagemMP').on('hidden.bs.modal', function () {
+  imagemAtual = 0;
+  totalImagens = 0;
+  codigoMP = "";
+  $('#imagem-container').html('');
+  $('#contador-imagens').text('');
+});
+
+
+  $('#table-analise').on('click', '.codMP', function () {
+    const codigoMPCompleto = $(this).data('codmp');
+    codigoMP = codigoMPCompleto.substring(0, 9);
+    console.log(`A imagem desejada é do codigo ${codigoMP}`)
+    Consulta_Imagem(codigoMP);
+  });
 
 });
 
@@ -610,7 +713,10 @@ function TabelaTendencia(listaTendencia) {
             data: 'marca'
         },
         {
-            data: 'codItemPai'
+            data: 'codItemPai',
+                        render: function (data, type, row) {
+                return `<span class="codMP" data-codmp="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+            }
         },
         {
             data: 'tam'
@@ -767,6 +873,9 @@ function TabelaTendencia(listaTendencia) {
             });
         },
 
+
+        
+
     });
 
     $('.search-input-tendencia').on('input', function () {
@@ -797,6 +906,15 @@ function TabelaTendencia(listaTendencia) {
         const consideraPedidosBloqueado = $('#select-pedidos-bloqueados').val();
         Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan);
     });
+
+            // Evento para abrir o modal ao clicar no código
+        $('#table-analise').on('click', '.codMP', function () {
+        const codigoMPCompleto = $(this).data('codmp');
+        const codigoMP = codigoMPCompleto.substring(0,9);
+        console.log(codigoMPCompleto)
+        console.log(codigoMP)
+        Consulta_Imagem(codigoMP);
+        });
 
 }
 
