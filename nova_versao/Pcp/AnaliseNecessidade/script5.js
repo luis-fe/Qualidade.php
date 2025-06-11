@@ -28,7 +28,7 @@ const atualizarImagem = () => {
 // Consulta imagem por código
 const Consulta_Imagem = async (codigo) => {
   // Atualiza a variável global corretamente
-  codigoMP = codigo;
+codigoMP = String(codigo);
 
   // Mostra o modal de loading
   $('#loadingModal').modal('show');
