@@ -66,6 +66,38 @@ const Consulta_Imagem = async (codigoPai) => {
   }
 }
 
+async function contarImagensPorProduto(url, codigoProduto) {
+  try {
+    const resposta = await fetch(url);
+    const html = await resposta.text();
+
+    // Cria um DOM virtual com o HTML recebido
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    // Pega todos os links que terminam com .jpg
+    const links = Array.from(doc.querySelectorAll('a'))
+      .map(a => a.getAttribute('href'))
+      .filter(href => href && href.endsWith('.jpg'));
+
+    // Filtra pelas imagens que contêm o código do produto
+    const imagensDoProduto = links.filter(href => href.includes(codigoProduto));
+
+    console.log(`Total de imagens do produto ${codigoProduto}:`, imagensDoProduto.length);
+    console.log(imagensDoProduto); // Para ver quais são
+    
+    return imagensDoProduto.length;
+  } catch (erro) {
+    console.error("Erro ao buscar imagens:", erro);
+    return 0;
+  }
+}
+
+// Exemplo de uso:
+const url = "http://app.grupompl.com.br/main/fotos/91/referencias/";
+const codigoProduto = "10450065"; // ou "P_10450065", depende do padrão que você quer
+
+contarImagensPorProduto(url, codigoProduto);
 
 
 
