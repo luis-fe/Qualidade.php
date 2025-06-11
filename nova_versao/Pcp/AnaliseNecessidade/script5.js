@@ -5,7 +5,7 @@ let codigoMP = "";
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  if (!codigoMP || codigoMP.trim() === "") {
+  if (!codigoMP || String(codigoMP).trim() === "") {
     console.error("codigoMP está vazio!");
     return;
   }
@@ -23,6 +23,7 @@ const atualizarImagem = () => {
   $('#btn-anterior').prop('disabled', imagemAtual === 0);
   $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
+
 
 // Consulta imagem por código
 const Consulta_Imagem = async (codigo) => {
