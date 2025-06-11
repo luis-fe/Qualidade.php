@@ -11,7 +11,7 @@ const atualizarImagem = () => {
   }
 
   const baseURL = "http://192.168.0.183:9000";
-  const url = `${baseURL}/imagemEng/${codigoMP}/${imagemAtual}`;
+  const url = `${baseURL}/imagem/${codigoMP}/${imagemAtual}`;
 
   console.log("Imagem carregada de:", url);
 
