@@ -28,7 +28,7 @@ def post_InserirProdutividadeCarregarEndereco():
             return jsonify({'status': False, 'mensagem': f'Campos ausentes: {", ".join(missing)}'}), 400
 
         # Instanciando o objeto com os dados recebidos
-        produtividade = ProdutividadeWms.ProdutividadeWms(
+        produtividade = Novo_ProdutividadeWms.ProdutividadeWms(
             codEmpresa=data['codEmpresa'],
             codUsuarioCargaEndereco=data['codUsuarioCargaEndereco'],
             endereco=data['endereco'],
@@ -48,7 +48,7 @@ def get_ProdCarregarEndereco():
     dataInicio = request.args.get('dataInicio')
     dataFinal = request.args.get('dataFinal')
 
-    produtividade = ProdutividadeWms.ProdutividadeWms(str(empresa), '','','','',dataInicio, dataFinal).consultaProd_CarregarCaixas()
+    produtividade = Novo_ProdutividadeWms.ProdutividadeWms(str(empresa), '','','','',dataInicio, dataFinal).consultaProd_CarregarCaixas()
     # Obtém os nomes das colunas
     column_names = produtividade.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
