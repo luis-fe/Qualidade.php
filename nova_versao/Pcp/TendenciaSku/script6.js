@@ -133,13 +133,6 @@ $('#modal-imagemMP').on('hidden.bs.modal', function () {
 });
 
 
-  $('#table-analise').on('click', '.codMP', function () {
-    const codigoMPCompleto = $(this).data('codmp');
-    codigoMP = codigoMPCompleto.substring(0, 9);
-    console.log(`A imagem desejada é do codigo ${codigoMP}`)
-    Consulta_Imagem(codigoMP);
-  });
-
 });
 
 
@@ -907,7 +900,7 @@ function TabelaTendencia(listaTendencia) {
         $('#table-tendencia').on('click', '.detalhaImg', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         codItemPai = $(this).data('codItem');
-        console.log(codItemPai)
+        console.log(`imagem: ${codigoPai}`)
         Consulta_Imagem(codItemPai);
         });
 
