@@ -94,10 +94,11 @@ async function contarImagensPorProduto(url, codigoProduto) {
 }
 
 // Exemplo de uso:
+const proxy = "https://corsproxy.io/?";
 const url = "http://app.grupompl.com.br/main/fotos/91/referencias/";
 const codigoProduto = "10450065"; // ou "P_10450065", depende do padrão que você quer
 
-contarImagensPorProduto(url, codigoProduto);
+contarImagensPorProduto(proxy + encodeURIComponent(url), codigoProduto);
 
 
 
