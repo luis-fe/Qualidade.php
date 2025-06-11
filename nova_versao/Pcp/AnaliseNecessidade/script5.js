@@ -5,7 +5,7 @@ let codigoMP = "";
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  if (!codigoMP || String(codigoMP).trim() === "") {
+  if (!codigoMP || codigoMP.trim() === "") {
     console.error("codigoMP está vazio!");
     return;
   }
@@ -25,14 +25,10 @@ const atualizarImagem = () => {
 };
 
 
-// Consulta imagem por código
-const Consulta_Imagem = async (codigo) => {
-  // Atualiza a variável global corretamente
-codigoMP = String(codigo);
-
+const Consulta_Imagem = async (codigoMP) => {
   // Mostra o modal de loading
   $('#loadingModal').modal('show');
-
+  
   try {
     const data = await $.ajax({
       type: 'GET',
@@ -40,7 +36,7 @@ codigoMP = String(codigo);
       dataType: 'json',
       data: {
         acao: 'Consulta_Imagem',
-        codigoMP: codigoMP
+        codigoMP: codigoMP // Corrigido para passar explicitamente o parâmetro
       },
       xhrFields: {
         withCredentials: true
@@ -48,11 +44,12 @@ codigoMP = String(codigo);
     });
 
     if (data.imagem_url && data.total_imagens) {
+      // Atualiza variáveis globais (se necessário)
       imagemAtual = 0;
       totalImagens = data.total_imagens;
-
       atualizarImagem();
 
+      // Fecha o loading e abre o modal principal
       $('#loadingModal').modal('hide');
       $('#modal-imagemMP').modal('show');
     } else {
@@ -65,7 +62,7 @@ codigoMP = String(codigo);
     Mensagem_Canto('Erro', 'error');
     $('#loadingModal').modal('hide');
   }
-};
+}
 
 
 

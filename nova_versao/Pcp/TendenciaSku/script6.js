@@ -5,7 +5,7 @@ let codigoPai = "";
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  if (!codigoPai || codigoPai.trim() === "") {
+  if (!codigoPai || String(codigoPai).trim() === "") {
     console.error("codigoPai está vazio!");
     return;
   }
@@ -27,6 +27,8 @@ const atualizarImagem = () => {
 
 const Consulta_Imagem = async (codigoPai) => {
   // Mostra o modal de loading
+    codigoMP = String(codigoPai);
+
   $('#loadingModal').modal('show');
   
   try {
