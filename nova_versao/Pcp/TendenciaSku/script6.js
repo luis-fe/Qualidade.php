@@ -715,7 +715,7 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'codItemPai',
                         render: function (data, type, row) {
-                return `<span class="codMP" data-codItem="${data}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+                return `<span class="detalhaImg" data-codItem="${data}" style="text-decoration: underline; color: #747474; cursor: pointer;">${data}</span>`;
             }
         },
         {
@@ -872,10 +872,6 @@ function TabelaTendencia(listaTendencia) {
                 );
             });
         },
-
-
-        
-
     });
 
     $('.search-input-tendencia').on('input', function () {
@@ -908,8 +904,9 @@ function TabelaTendencia(listaTendencia) {
     });
 
             // Evento para abrir o modal ao clicar no código
-        $('#table-tendencia').on('click', '.codMP', function () {
-        const codItemPai = $(this).data('codItem');
+        $('#table-tendencia').on('click', '.detalhaImg', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        codItemPai = $(this).data('codItem');
         console.log(codItemPai)
         Consulta_Imagem(codItemPai);
         });
