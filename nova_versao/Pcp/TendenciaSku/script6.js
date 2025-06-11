@@ -899,9 +899,9 @@ function TabelaTendencia(listaTendencia) {
             // Evento para abrir o modal ao clicar no código
         $('#table-tendencia').on('click', '.detalhaImg', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
-        codItemPai = $(this).data('codItem');
+        codigoPai = $(this).data('codItem');
         console.log(`imagem: ${codigoPai}`)
-        Consulta_Imagem(codItemPai);
+        Consulta_Imagem(codigoPai);
         });
 
 }
