@@ -5,10 +5,15 @@ import ConexaoPostgreMPL
 ########## Nesse arquivo é construido o relatorio de pesquisa dos skus x prateleiras repostas, a ser utlizado no portal para pesquisa e controle.
 
 def ConsultaEnderecoReposto(natureza, codreduzido = '-', codengenharia = '-', numeroOP = '-', rua = '-', modulo='-', posicao ='-', limit = 100):
-    conn = ConexaoPostgreMPL.conexao() # Inicia a Conexao com o Postgre
+    conn = ConexaoPostgreMPL.conexaoEngine()
 
-    totalFila = pd.read_sql('select count(codbarrastag) as SaldoPecas from "Reposicao".filareposicaoportag '
-                'where codnaturezaatual = %s ', conn, params=(natureza,))
+    totalFila = pd.read_sql("""
+                            select 
+                                count(codbarrastag) as SaldoPecas 
+                            from 
+                                "Reposicao".filareposicaoportag
+                            where 
+                                codnaturezaatual = %s """, conn, params=(natureza,))
 
     emEstoque = pd.read_sql('select count(codbarrastag) as SaldoPecas from "Reposicao".tagsreposicao where natureza = %s ',conn,params=(natureza,))
 
@@ -34,11 +39,19 @@ def ConsultaEnderecoReposto(natureza, codreduzido = '-', codengenharia = '-', nu
 
 
     elif codreduzido == '-' and codengenharia != '-' :
-        consulta = 'Select  "Endereco", codreduzido, t.engenharia , count(codbarrastag) as saldo from "Reposicao".tagsreposicao t ' \
-                   ' where natureza = %s '\
-                'and engenharia = %s ' \
-                   'group by "Endereco", codreduzido,  engenharia ' \
-                   'order by "Endereco" asc  limit  %s '
+        consulta = """
+                    Select  
+                        "Endereco", codreduzido, t.engenharia , 
+                        count(codbarrastag) as saldo 
+                    from 
+                        "Reposicao".tagsreposicao t
+                   where 
+                        natureza = %s 
+                        and engenharia = %s 
+                   group by 
+                        "Endereco", codreduzido,  engenharia 
+                   order by 
+                        "Endereco" asc  limit  %s """
 
         InformacoesAdicionais = 'select distinct codreduzido, descricao, tamanho, cor  from "Reposicao".tagsreposicao  ' \
                                 ' where engenharia = %s '
@@ -58,16 +71,25 @@ def ConsultaEnderecoReposto(natureza, codreduzido = '-', codengenharia = '-', nu
 
 
     else:
-        consulta = 'Select  "Endereco", codreduzido, t.engenharia , count(codbarrastag) as saldo, descricao as nome, cor as desc_cor, tamanho as desc_tam from "Reposicao".tagsreposicao t ' \
-                   ' where natureza = %s '\
-                'and natureza = %s ' \
-                   'group by "Endereco", codreduzido, engenharia, descricao, cor, tamanho ' \
-                   'order by "Endereco" asc  limit  %s '
+        consulta = """
+                    Select  
+                        "Endereco", 
+                        codreduzido, 
+                        t.engenharia , 
+                        count(codbarrastag) as saldo, 
+                        descricao as nome, 
+                        cor as desc_cor, 
+                        tamanho as desc_tam 
+                    from 
+                        "Reposicao".tagsreposicao t
+                    where 
+                        natureza = %s
+                    group by 
+                        "Endereco", codreduzido, engenharia, descricao, cor, tamanho
+                    order by "Endereco" asc  limit  %s """
 
-        consulta = pd.read_sql(consulta, conn,params=(natureza,natureza,limit,))
+        consulta = pd.read_sql(consulta, conn,params=(natureza,limit,))
 
-
-    conn.close() # Encerra a conexao com o postgre.
     consulta = FiltroEndereco(consulta,rua, modulo , posicao)
     data = {
 
