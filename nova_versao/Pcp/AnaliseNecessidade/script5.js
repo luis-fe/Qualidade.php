@@ -24,11 +24,14 @@ const atualizarImagem = () => {
   $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
 
+// Consulta imagem por código
+const Consulta_Imagem = async (codigo) => {
+  // Atualiza a variável global corretamente
+  codigoMP = codigo;
 
-const Consulta_Imagem = async (codigoMP) => {
   // Mostra o modal de loading
   $('#loadingModal').modal('show');
-  
+
   try {
     const data = await $.ajax({
       type: 'GET',
@@ -36,7 +39,7 @@ const Consulta_Imagem = async (codigoMP) => {
       dataType: 'json',
       data: {
         acao: 'Consulta_Imagem',
-        codigoMP: codigoMP // Corrigido para passar explicitamente o parâmetro
+        codigoMP: codigoMP
       },
       xhrFields: {
         withCredentials: true
@@ -44,12 +47,11 @@ const Consulta_Imagem = async (codigoMP) => {
     });
 
     if (data.imagem_url && data.total_imagens) {
-      // Atualiza variáveis globais (se necessário)
       imagemAtual = 0;
       totalImagens = data.total_imagens;
+
       atualizarImagem();
 
-      // Fecha o loading e abre o modal principal
       $('#loadingModal').modal('hide');
       $('#modal-imagemMP').modal('show');
     } else {
@@ -62,7 +64,7 @@ const Consulta_Imagem = async (codigoMP) => {
     Mensagem_Canto('Erro', 'error');
     $('#loadingModal').modal('hide');
   }
-}
+};
 
 
 
