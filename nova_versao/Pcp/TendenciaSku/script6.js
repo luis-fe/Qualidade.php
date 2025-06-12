@@ -896,33 +896,35 @@ footerCallback: function (row, data, start, end, display) {
                                 'Prev Sobra': 19
                             };
     columnsToSum.forEach((columnName) => {
-        const colIndex = columnIndexMap[columnName];
-        const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
+    const colIndex = columnIndexMap[columnName];
+    const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
 
-        if (columnName === 'disponivel') {
-            let positivo = 0;
-            let negativo = 0;
+    if (columnName === 'disponivel') {
+        let positivo = 0;
+        let negativo = 0;
 
-            dataColumn.each((value) => {
-                const num = intVal(value);
-                if (num >= 0) {
-                    positivo += num;
-                } else {
-                    negativo += num;
-                }
-            });
+        dataColumn.each((value) => {
+            const num = intVal(value);
+            if (num >= 0) {
+                positivo += num;
+            } else {
+                negativo += num;
+            }
+        });
 
-            $(api.column(colIndex).footer()).html(
-                `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
-            );
-        } else {
-            const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
+        $(api.column(colIndex).footer()).html(
+            `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
+        );
+    } else {
+        const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
 
-            $(api.column(colIndex).footer()).html(
-                columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
-            );
-        }
+        $(api.column(colIndex).footer()).html(
+            columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
+        );
+    }
 });
+},
+    });
 
     $('.search-input-tendencia').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
