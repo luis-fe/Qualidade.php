@@ -868,74 +868,63 @@ function TabelaTendencia(listaTendencia) {
             });
             $('.dataTables_paginate').hide();
         },
-        initComplete: function () {
+    footerCallback: function (row, data, start, end, display) {
         const api = this.api();
-        api.columns().every(function () {
-            const index = this.index();
-            const headerText = $(this.header()).text().trim();
-            console.log(`🔍 Coluna ${index}: ${headerText}`);
-        });
-    },
-footerCallback: function (row, data, start, end, display) {
-    const api = this.api();
 
-    // Converte string para número
-    const intVal = (i) => {
-        if (typeof i === 'string') {
-            return parseFloat(i.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-        } else if (typeof i === 'number') {
-            return i;
-        }
-        return 0;
-    };
-
-    // Mapear os índices REAIS de cada coluna na tabela
-    const columnIndexMap = {
-        valorVendido: 10,
-        previcaoVendas: 11,
-        qtdePedida: 12,
-        qtdeFaturada: 13,
-        estoqueAtual: 14,
-        emProcesso: 15,
-        'faltaProg (Tendencia)': 16,
-        disponivel: 17,
-        'disponivel Pronta Entrega': 18,
-        'Prev Sobra': 19
-    };
-
-    // Iterar sobre cada coluna para somar
-    Object.entries(columnIndexMap).forEach(([columnName, colIndex]) => {
-        const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
-
-        if (columnName === 'disponivel') {
-            // Tratamento separado para 'disponivel'
-            let positivo = 0, negativo = 0;
-            dataColumn.each((value) => {
-                const num = intVal(value);
-                num >= 0 ? positivo += num : negativo += num;
-            });
-
-            // Atualiza o <th id="totalDisponivel">
-            $('#totalDisponivel').html(
-                `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
-            );
-
-        } else {
-            // Total geral das demais colunas
-            const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
-
-            // Atualiza footer normalmente
-            const cell = api.column(colIndex).footer();
-            if (cell) {
-                $(cell).html(
-                    columnName === 'valorVendido'
-                        ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-                        : total.toLocaleString('pt-BR')
-                );
+        const intVal = (i) => {
+            if (typeof i === 'string') {
+                return parseFloat(i.replace(/[R$ ]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+            } else if (typeof i === 'number') {
+                return i;
             }
-        }
-    });
+            return 0;
+        };
+
+        const columnIndexMap = {
+            valorVendido: 10,
+            previcaoVendas: 11,
+            qtdePedida: 12,
+            qtdeFaturada: 13,
+            estoqueAtual: 15,
+            emProcesso: 16,
+            'faltaProg (Tendencia)': 17,
+            disponivel: 18,
+            'disponivel Pronta Entrega': 19,
+            'Prev Sobra': 20
+        };
+
+        Object.entries(columnIndexMap).forEach(([columnName, colIndex]) => {
+            const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
+
+            if (columnName === 'disponivel') {
+                let positivo = 0, negativo = 0;
+
+                dataColumn.each((value) => {
+                    const num = intVal(value);
+                    num >= 0 ? positivo += num : negativo += num;
+                });
+
+                // ✅ ATUALIZA o elemento específico com ID totalDisponivel
+                $('#totalDisponivel').html(
+                    `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
+                );
+
+            } else {
+                const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                // ✅ Atualiza normalmente o rodapé do DataTable
+                const footerCell = api.column(colIndex).footer();
+                if (footerCell) {
+                    $(footerCell).html(
+                        columnName === 'valorVendido'
+                            ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+                            : total.toLocaleString('pt-BR')
+                    );
+                }
+            }
+        });
 }
+
 
 
 
