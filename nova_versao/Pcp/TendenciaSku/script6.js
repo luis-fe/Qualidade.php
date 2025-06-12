@@ -868,38 +868,52 @@ function TabelaTendencia(listaTendencia) {
             });
             $('.dataTables_paginate').hide();
         },
-        footerCallback: function (row, data, start, end, display) {
-            const api = this.api();
+footerCallback: function (row, data, start, end, display) {
+    const api = this.api();
 
-            // Helper para converter strings para número
-            const intVal = (i) => {
-                if (typeof i === 'string') {
-                    // Remover "R$", pontos e substituir vírgula por ponto
-                    return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
-                } else if (typeof i === 'number') {
-                    return i;
+    // Helper para converter strings para número
+    const intVal = (i) => {
+        if (typeof i === 'string') {
+            return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
+        } else if (typeof i === 'number') {
+            return i;
+        }
+        return 0;
+    };
+
+    // Colunas que precisam de total
+    const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'disponivel Pronta Entrega', 'Prev Sobra'];
+
+    columnsToSum.forEach((columnName, idx) => {
+        const colIndex = idx + 10;
+
+        const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
+
+        if (columnName === 'disponivel') {
+            let positivo = 0;
+            let negativo = 0;
+
+            dataColumn.each((value) => {
+                const num = intVal(value);
+                if (num >= 0) {
+                    positivo += num;
+                } else {
+                    negativo += num;
                 }
-                return 0;
-            };
-
-            // Colunas que precisam de total
-            const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'disponivel Pronta Entrega', 'Prev Sobra'];
-
-            columnsToSum.forEach((columnName, idx) => {
-                const colIndex = idx + 10; // Índice da coluna no DataTables
-
-                // Total considerando todos os dados após filtro
-                const total = api.column(colIndex, {
-                    filter: 'applied'
-                }).data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-
-                // Atualizar o rodapé da coluna
-                $(api.column(colIndex).footer()).html(
-                    columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
-                );
             });
-        },
+
+            $(api.column(colIndex).footer()).html(
+                `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
+            );
+        } else {
+            const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
+
+            $(api.column(colIndex).footer()).html(
+                columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
+            );
+        }
+    });
+},
     });
 
     $('.search-input-tendencia').on('input', function () {
