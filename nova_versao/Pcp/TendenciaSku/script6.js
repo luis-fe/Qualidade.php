@@ -881,49 +881,59 @@ footerCallback: function (row, data, start, end, display) {
         return 0;
     };
 
-    // Colunas que precisam de total
-    const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'disponivel Pronta Entrega', 'Prev Sobra'];
+    // Mapeamento dos nomes das colunas aos seus índices reais
     const columnIndexMap = {
-                                valorVendido: 10,
-                                previcaoVendas: 11,
-                                qtdePedida: 12,
-                                qtdeFaturada: 13,
-                                estoqueAtual: 14,
-                                emProcesso: 15,
-                                'faltaProg (Tendencia)': 16,
-                                disponivel: 17,
-                                'disponivel Pronta Entrega': 18,
-                                'Prev Sobra': 19
-                            };
+        valorVendido: 10,
+        previcaoVendas: 11,
+        qtdePedida: 12,
+        qtdeFaturada: 13,
+        estoqueAtual: 14,
+        emProcesso: 15,
+        'faltaProg (Tendencia)': 16,
+        disponivel: 17,
+        'disponivel Pronta Entrega': 18,
+        'Prev Sobra': 19
+    };
+
+    // Colunas que precisam de totalização
+    const columnsToSum = Object.keys(columnIndexMap);
+
     columnsToSum.forEach((columnName) => {
-    const colIndex = columnIndexMap[columnName];
-    const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
+        const colIndex = columnIndexMap[columnName];
 
-    if (columnName === 'disponivel') {
-        let positivo = 0;
-        let negativo = 0;
+        // Verifica se o índice existe antes de tentar manipular
+        if (typeof colIndex !== 'undefined') {
+            const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
 
-        dataColumn.each((value) => {
-            const num = intVal(value);
-            if (num >= 0) {
-                positivo += num;
+            if (columnName === 'disponivel') {
+                let positivo = 0;
+                let negativo = 0;
+
+                dataColumn.each((value) => {
+                    const num = intVal(value);
+                    if (num >= 0) {
+                        positivo += num;
+                    } else {
+                        negativo += num;
+                    }
+                });
+
+                $(api.column(colIndex).footer()).html(
+                    `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
+                );
             } else {
-                negativo += num;
+                const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                $(api.column(colIndex).footer()).html(
+                    columnName === 'valorVendido'
+                        ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+                        : total.toLocaleString('pt-BR')
+                );
             }
-        });
+        }
+    });
+}
 
-        $(api.column(colIndex).footer()).html(
-            `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
-        );
-    } else {
-        const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
-
-        $(api.column(colIndex).footer()).html(
-            columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
-        );
-    }
-});
-},
     });
 
     $('.search-input-tendencia').on('input', function () {
