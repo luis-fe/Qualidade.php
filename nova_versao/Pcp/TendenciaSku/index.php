@@ -94,15 +94,15 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered" id="table-tendencia" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Marca<br><input type="search" class="search-input search-input-tendencia" style="min-width: 90px;"></th>
+                    <th>Marca<br><input type="search" class="search-input search-input-tendencia" style="min-width: 80px;"></th>
                     <th>Referência<br><input type="search" class="search-input search-input-tendencia" style="min-width: 90px;"></th>
-                    <th>Tamanho<br><input type="search" class="search-input search-input-tendencia"></th>
+                    <th>Tam.<br><input type="search" class="search-input search-input-tendencia"style="min-width: 50px;"></th>
                     <th>Cor<br><input type="search" class="search-input search-input-tendencia" style="min-width: 70px;"></th>
                     <th>Descrição<br><input type="search" class="search-input search-input-tendencia"></th>
                     <th>Reduzido<br><input type="search" class="search-input search-input-tendencia" style="min-width: 90px;"></th>
                     <th>Categoria<br><input type="search" class="search-input search-input-tendencia" style="min-width: 110px;"></th>
                     <th>Abc<br><input type="search" class="search-input search-input-tendencia" style="min-width: 60px;"></th>
-                    <th>Abc Categ.<br><input type="search" class="search-input search-input-tendencia" style="min-width: 70px;"></th>
+                    <th>Abc/Categ.<br><input type="search" class="search-input search-input-tendencia" style="min-width: 60px;"></th>
                     <th>Qtd.de<br>Pedidos</br></th>
                     <th>Valor<br>Vendido</br></th>
                     <th>Previsão<br>de Vendas</br></th>
