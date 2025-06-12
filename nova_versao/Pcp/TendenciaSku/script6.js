@@ -868,6 +868,14 @@ function TabelaTendencia(listaTendencia) {
             });
             $('.dataTables_paginate').hide();
         },
+        initComplete: function () {
+        const api = this.api();
+        api.columns().every(function () {
+            const index = this.index();
+            const headerText = $(this.header()).text().trim();
+            console.log(`🔍 Coluna ${index}: ${headerText}`);
+        });
+    },
 footerCallback: function (row, data, start, end, display) {
     const api = this.api();
 
