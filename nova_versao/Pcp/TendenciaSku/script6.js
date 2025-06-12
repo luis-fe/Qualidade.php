@@ -871,7 +871,6 @@ function TabelaTendencia(listaTendencia) {
 footerCallback: function (row, data, start, end, display) {
     const api = this.api();
 
-    // Helper para converter strings para número
     const intVal = (i) => {
         if (typeof i === 'string') {
             return parseFloat(i.replace(/[R$ ]/g, '').replace(/[\.]/g, '').replace(',', '.')) || 0;
@@ -881,7 +880,6 @@ footerCallback: function (row, data, start, end, display) {
         return 0;
     };
 
-    // Mapeamento dos nomes das colunas aos seus índices reais
     const columnIndexMap = {
         valorVendido: 10,
         previcaoVendas: 11,
@@ -895,44 +893,34 @@ footerCallback: function (row, data, start, end, display) {
         'Prev Sobra': 19
     };
 
-    // Colunas que precisam de totalização
-    const columnsToSum = Object.keys(columnIndexMap);
-
-    columnsToSum.forEach((columnName) => {
+    Object.keys(columnIndexMap).forEach((columnName) => {
         const colIndex = columnIndexMap[columnName];
+        const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
 
-        // Verifica se o índice existe antes de tentar manipular
-        if (typeof colIndex !== 'undefined') {
-            const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
+        if (columnName === 'disponivel') {
+            let positivo = 0, negativo = 0;
 
-            if (columnName === 'disponivel') {
-                let positivo = 0;
-                let negativo = 0;
+            dataColumn.each((value) => {
+                const num = intVal(value);
+                num >= 0 ? positivo += num : negativo += num;
+            });
 
-                dataColumn.each((value) => {
-                    const num = intVal(value);
-                    if (num >= 0) {
-                        positivo += num;
-                    } else {
-                        negativo += num;
-                    }
-                });
+            // Atualiza direto o elemento com ID "totalDisponivel"
+            $('#totalDisponivel').html(
+                `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
+            );
+        } else {
+            const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
 
-                $(api.column(colIndex).footer()).html(
-                    `+${positivo.toLocaleString('pt-BR')} / ${negativo.toLocaleString('pt-BR')}`
-                );
-            } else {
-                const total = dataColumn.reduce((a, b) => intVal(a) + intVal(b), 0);
-
-                $(api.column(colIndex).footer()).html(
-                    columnName === 'valorVendido'
-                        ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-                        : total.toLocaleString('pt-BR')
-                );
-            }
+            $(api.column(colIndex).footer()).html(
+                columnName === 'valorVendido'
+                    ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+                    : total.toLocaleString('pt-BR')
+            );
         }
     });
 }
+
 
     });
 
