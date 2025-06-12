@@ -883,10 +883,20 @@ footerCallback: function (row, data, start, end, display) {
 
     // Colunas que precisam de total
     const columnsToSum = ['valorVendido', 'previcaoVendas', 'qtdePedida', 'qtdeFaturada', 'estoqueAtual', 'emProcesso', 'faltaProg (Tendencia)', 'disponivel', 'disponivel Pronta Entrega', 'Prev Sobra'];
-
-    columnsToSum.forEach((columnName, idx) => {
-        const colIndex = idx + 10;
-
+    const columnIndexMap = {
+                                valorVendido: 10,
+                                previcaoVendas: 11,
+                                qtdePedida: 12,
+                                qtdeFaturada: 13,
+                                estoqueAtual: 14,
+                                emProcesso: 15,
+                                'faltaProg (Tendencia)': 16,
+                                disponivel: 17,
+                                'disponivel Pronta Entrega': 18,
+                                'Prev Sobra': 19
+                            };
+    columnsToSum.forEach((columnName) => {
+        const colIndex = columnIndexMap[columnName];
         const dataColumn = api.column(colIndex, { filter: 'applied' }).data();
 
         if (columnName === 'disponivel') {
@@ -912,9 +922,7 @@ footerCallback: function (row, data, start, end, display) {
                 columnName === 'valorVendido' ? `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : total.toLocaleString('pt-BR')
             );
         }
-    });
-},
-    });
+});
 
     $('.search-input-tendencia').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
