@@ -1,17 +1,28 @@
-// Variáveis globais
 let imagemAtual = 0;
 let totalImagens = 0;
-let codigoPai = "";
+let totalImagensEng = 0;
+let totalImagensColorBook = 0;
+let codigoMP = "";
+let imagensColorBook = [];
 
 // Atualiza a imagem no modal
 const atualizarImagem = () => {
-  if (!codigoPai || String(codigoPai).trim() === "") {
-    console.error("codigoPai está vazio!");
+  if (!codigoMP || String(codigoMP).trim() === "") {
+    console.error("codigoMP está vazio!");
     return;
   }
 
   const baseURL = "http://192.168.0.183:9000";
-  const url = `${baseURL}/imagemEng/${codigoPai}/${imagemAtual}`;
+
+  let url = "";
+  if (imagemAtual < totalImagensEng) {
+    // Imagens da primeira API
+    url = `${baseURL}/imagemEng/${codigoMP}/${imagemAtual}`;
+  } else {
+    // Imagens da segunda API (ColorBook)
+    const indiceColorBook = imagemAtual - totalImagensEng;
+    url = imagensColorBook[indiceColorBook]; // URL já foi buscada antes
+  }
 
   console.log("Imagem carregada de:", url);
 
@@ -24,81 +35,66 @@ const atualizarImagem = () => {
   $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
 
-
 const Consulta_Imagem = async (codigoPai) => {
-  // Mostra o modal de loading
-    codigoMP = String(codigoPai);
-
+  codigoMP = String(codigoPai);
   $('#loadingModal').modal('show');
-  
+
   try {
-    const data = await $.ajax({
+    // 1. Chamada para imagemEng
+    const dataEng = await $.ajax({
       type: 'GET',
       url: 'requests.php',
       dataType: 'json',
       data: {
         acao: 'Consulta_Imagem',
-        codigoMP: codigoPai // Corrigido para passar explicitamente o parâmetro
+        codigoMP: codigoPai
       },
-      xhrFields: {
-        withCredentials: true
-      }
+      xhrFields: { withCredentials: true }
     });
 
-    if (data.imagem_url && data.total_imagens) {
-      // Atualiza variáveis globais (se necessário)
-      imagemAtual = 0;
-      totalImagens = data.total_imagens;
-      atualizarImagem();
+    totalImagensEng = dataEng.total_imagens || 0;
 
-      // Fecha o loading e abre o modal principal
-      $('#loadingModal').modal('hide');
-      $('#modal-imagemMP').modal('show');
-    } else {
-      $('#imagem-container').html(`<p>Imagem não encontrada.</p>`);
-      $('#loadingModal').modal('hide');
+    // 2. Chamada para ColorBook
+    const promisesColorBook = [];
+    let colorBookData = null;
+
+    const primeiraColorBook = await $.ajax({
+      type: 'GET',
+      url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
+      dataType: 'json'
+    });
+
+    totalImagensColorBook = primeiraColorBook.total_imagens || 0;
+
+    // Busca todas as URLs da segunda API
+    for (let i = 0; i < totalImagensColorBook; i++) {
+      promisesColorBook.push(
+        $.ajax({
+          type: 'GET',
+          url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
+          dataType: 'json'
+        })
+      );
     }
 
+    const imagensColorData = await Promise.all(promisesColorBook);
+    imagensColorBook = imagensColorData.map(img => img.imagem_url);
+
+    // Soma total geral
+    totalImagens = totalImagensEng + totalImagensColorBook;
+    imagemAtual = 0;
+    atualizarImagem();
+
+    $('#loadingModal').modal('hide');
+    $('#modal-imagemMP').modal('show');
+
   } catch (error) {
-    console.error('Erro na solicitação AJAX:', error);
+    console.error('Erro ao consultar imagens:', error);
     Mensagem_Canto('Erro', 'error');
     $('#loadingModal').modal('hide');
   }
-}
+};
 
-async function contarImagensPorProduto(url, codigoProduto) {
-  try {
-    const resposta = await fetch(url);
-    const html = await resposta.text();
-
-    // Cria um DOM virtual com o HTML recebido
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-
-    // Pega todos os links que terminam com .jpg
-    const links = Array.from(doc.querySelectorAll('a'))
-      .map(a => a.getAttribute('href'))
-      .filter(href => href && href.endsWith('.jpg'));
-
-    // Filtra pelas imagens que contêm o código do produto
-    const imagensDoProduto = links.filter(href => href.includes(codigoProduto));
-
-    console.log(`Total de imagens do produto ${codigoProduto}:`, imagensDoProduto.length);
-    console.log(imagensDoProduto); // Para ver quais são
-    
-    return imagensDoProduto.length;
-  } catch (erro) {
-    console.error("Erro ao buscar imagens:", erro);
-    return 0;
-  }
-}
-
-// Exemplo de uso:
-const proxy = "https://corsproxy.io/?";
-const url = "http://app.grupompl.com.br/main/fotos/91/referencias/";
-const codigoProduto = "10450065"; // ou "P_10450065", depende do padrão que você quer
-
-contarImagensPorProduto(proxy + encodeURIComponent(url), codigoProduto);
 
 
 
