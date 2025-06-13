@@ -15,13 +15,13 @@ const atualizarImagem = () => {
   const baseURL = "http://192.168.0.183:9000";
 
   let url = "";
-  if (imagemAtual < totalImagensEng) {
-    // Imagens da primeira API
-    url = `${baseURL}/imagemEng/${codigoMP}/${imagemAtual}`;
+  if (imagemAtual < totalImagensColorBook) {
+    // Agora primeiro mostra imagens do ColorBook
+    url = imagensColorBook[imagemAtual];
   } else {
-    // Imagens da segunda API (ColorBook)
-    const indiceColorBook = imagemAtual - totalImagensEng;
-    url = imagensColorBook[indiceColorBook]; // URL já foi buscada antes
+    // Depois mostra imagens da imagemEng
+    const indiceEng = imagemAtual - totalImagensColorBook;
+    url = `${baseURL}/imagemEng/${codigoMP}/${indiceEng}`;
   }
 
   console.log("Imagem carregada de:", url);
@@ -34,6 +34,7 @@ const atualizarImagem = () => {
   $('#btn-anterior').prop('disabled', imagemAtual === 0);
   $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
+
 
 const Consulta_Imagem = async (codigoPai) => {
   codigoMP = String(codigoPai);
