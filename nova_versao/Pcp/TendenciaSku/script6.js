@@ -5,7 +5,6 @@ let totalImagensColorBook = 0;
 let codigoMP = "";
 let imagensColorBook = [];
 
-// Atualiza a imagem no modal
 const atualizarImagem = () => {
   if (!codigoMP || String(codigoMP).trim() === "") {
     console.error("codigoMP está vazio!");
@@ -13,18 +12,14 @@ const atualizarImagem = () => {
   }
 
   const baseURL = "http://192.168.0.183:9000";
-
   let url = "";
+
   if (imagemAtual < totalImagensColorBook) {
-    // Agora primeiro mostra imagens do ColorBook
     url = imagensColorBook[imagemAtual];
   } else {
-    // Depois mostra imagens da imagemEng
     const indiceEng = imagemAtual - totalImagensColorBook;
     url = `${baseURL}/imagemEng/${codigoMP}/${indiceEng}`;
   }
-
-  console.log("Imagem carregada de:", url);
 
   $('#imagem-container').html(`
     <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
@@ -35,67 +30,63 @@ const atualizarImagem = () => {
   $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
 
-
 const Consulta_Imagem = async (codigoPai) => {
   codigoMP = String(codigoPai);
   $('#loadingModal').modal('show');
 
   try {
-     // 1. Chamada para ColorBook
-    const promisesColorBook = [];
-    let colorBookData = null;
+    // 1. Inicia em paralelo: consulta total da ColorBook e da imagemEng
+    const [primeiraColorBook, dataEng] = await Promise.all([
+      $.ajax({
+        type: 'GET',
+        url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
+        dataType: 'json'
+      }),
+      $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+          acao: 'Consulta_Imagem',
+          codigoMP: codigoPai
+        },
+        xhrFields: { withCredentials: true }
+      })
+    ]);
 
-    const primeiraColorBook = await $.ajax({
-      type: 'GET',
-      url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
-      dataType: 'json'
-    });
-
+    // Pega totais
     totalImagensColorBook = primeiraColorBook.total_imagens || 0;
+    totalImagensEng = dataEng.total_imagens || 0;
 
-    // Busca todas as URLs da segunda API
+    // 2. Faz chamadas paralelas para os restantes do ColorBook (índice 1+)
+    const colorBookRequests = [];
     for (let i = 0; i < totalImagensColorBook; i++) {
-      promisesColorBook.push(
+      colorBookRequests.push(
         $.ajax({
           type: 'GET',
           url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
           dataType: 'json'
         })
       );
-    // 2. Chamada para imagemEng
-    const dataEng = await $.ajax({
-      type: 'GET',
-      url: 'requests.php',
-      dataType: 'json',
-      data: {
-        acao: 'Consulta_Imagem',
-        codigoMP: codigoPai
-      },
-      xhrFields: { withCredentials: true }
-    });
-
-    totalImagensEng = dataEng.total_imagens || 0;
-
-   
     }
 
-    const imagensColorData = await Promise.all(promisesColorBook);
+    const imagensColorData = await Promise.all(colorBookRequests);
     imagensColorBook = imagensColorData.map(img => img.imagem_url);
 
-    // Soma total geral
-    totalImagens = totalImagensEng + totalImagensColorBook;
+    // 3. Atualiza totais e imagem inicial
+    totalImagens = totalImagensColorBook + totalImagensEng;
     imagemAtual = 0;
     atualizarImagem();
 
     $('#loadingModal').modal('hide');
     $('#modal-imagemMP').modal('show');
-
   } catch (error) {
     console.error('Erro ao consultar imagens:', error);
     Mensagem_Canto('Erro', 'error');
     $('#loadingModal').modal('hide');
   }
 };
+
 
 
 
