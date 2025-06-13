@@ -40,21 +40,7 @@ const Consulta_Imagem = async (codigoPai) => {
   $('#loadingModal').modal('show');
 
   try {
-    // 1. Chamada para imagemEng
-    const dataEng = await $.ajax({
-      type: 'GET',
-      url: 'requests.php',
-      dataType: 'json',
-      data: {
-        acao: 'Consulta_Imagem',
-        codigoMP: codigoPai
-      },
-      xhrFields: { withCredentials: true }
-    });
-
-    totalImagensEng = dataEng.total_imagens || 0;
-
-    // 2. Chamada para ColorBook
+     // 1. Chamada para ColorBook
     const promisesColorBook = [];
     let colorBookData = null;
 
@@ -75,6 +61,21 @@ const Consulta_Imagem = async (codigoPai) => {
           dataType: 'json'
         })
       );
+    // 2. Chamada para imagemEng
+    const dataEng = await $.ajax({
+      type: 'GET',
+      url: 'requests.php',
+      dataType: 'json',
+      data: {
+        acao: 'Consulta_Imagem',
+        codigoMP: codigoPai
+      },
+      xhrFields: { withCredentials: true }
+    });
+
+    totalImagensEng = dataEng.total_imagens || 0;
+
+   
     }
 
     const imagensColorData = await Promise.all(promisesColorBook);
