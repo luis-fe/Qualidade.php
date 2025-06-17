@@ -261,7 +261,7 @@ include_once('../../templates/headerPcp.php');
     <div class="modal-dialog modal-dialog-top modal-grande">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titulo-detalhamentoSku" style="color: black;">Detalhamento Matéria Prima: </h5>
+                <h5 class="modal-title" style="color: black;" id="titulo-detalhamento";>Detalhamento Matéria Prima: </h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="d-flex  mt-2">

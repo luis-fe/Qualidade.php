@@ -932,6 +932,18 @@ async function Deletar_Simulacao() {
 }
 
 function TabeldetalhamentoSku(listaDetalhes) {
+
+    
+     // Atualiza o título com base no primeiro item da lista
+    if (listaDetalhes.length > 0) {
+        const cod = listaDetalhes[0]["11-codReduzido"] || "Sem código";
+        document.getElementById("titulo-detalhamento").textContent = `Detalhamento Matéria Prima - ${cod}`;
+    } else {
+        document.getElementById("titulo-detalhamento").textContent = "Detalhamento Matéria Prima - (Sem dados)";
+    }
+o 
+
+
     if ($.fn.DataTable.isDataTable('#table-detalhamentoSku')) {
         $('#table-detalhamentoSku').DataTable().destroy();
     }
@@ -983,7 +995,6 @@ function TabeldetalhamentoSku(listaDetalhes) {
         ],
         data: listaDetalhes,
         columns: [
-            { data: 'codReduzido' },
             { data: 'CodComponente' },
             { data: 'descricaoComponente' },
             {
