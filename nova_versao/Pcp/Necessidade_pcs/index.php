@@ -69,7 +69,7 @@ include_once('../../templates/headerPcp.php');
 }
 
 #modal-imagemMP {
-  z-index: 1060 !important;
+  z-index: 1100 !important;
 }
 
 /* Garante que múltiplos backdrops não bugam a interface */
@@ -79,8 +79,8 @@ include_once('../../templates/headerPcp.php');
 
 /* Estilização da imagem dentro do modal */
 #imagem-container img {
-  max-width: 80%;
-  max-height: 500px;
+  max-width: 90%;
+  max-height: 600px;
   display: block;
   margin: auto;
   border-radius: 6px;
