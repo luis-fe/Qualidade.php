@@ -126,6 +126,30 @@ $(document).ready(async () => {
     $('#btn-vendas').addClass('btn-menu-clicado')
 });
 
+$('#btn-anterior').off('click').on('click', function () {
+  if (imagemAtual > 0) {
+    imagemAtual--;
+    atualizarImagem();
+  }
+});
+
+$('#btn-proximo').off('click').on('click', function () {
+  if (imagemAtual < totalImagens - 1) {
+    imagemAtual++;
+    atualizarImagem();
+  }
+});
+
+// Limpa tudo ao fechar modal
+$('#modal-imagemMP').on('hidden.bs.modal', function () {
+  imagemAtual = 0;
+  totalImagens = 0;
+  codigoMP = "";
+  $('#imagem-container').html('');
+  $('#contador-imagens').text('');
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach(function (tooltipTriggerEl) {
