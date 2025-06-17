@@ -671,7 +671,7 @@ async function Analise_Materiais() {
 }
 
 const categoriasMP = [
-    "-", "CADARCO/CORDAO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
+    "-", "ACESSORIOS","ITENS CAMISARIA","TAGS/TRAVANEL","CADARCO/CORDAO", "ELASTICOS", "ENTRETELA", "ETIQUETAS",
     "GOLAS", "MALHA", "MOLETOM", "RIBANA", "TECIDO PLANO", "ZIPER"
 ];
 
