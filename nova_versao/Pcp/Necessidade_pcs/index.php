@@ -53,6 +53,11 @@ include_once('../../templates/headerPcp.php');
     max-width: 95% !important; /* ou qualquer valor, como 1200px */
     width: 95%;
 }
+
+        .modal-grande2 {
+    max-width: 50% !important; /* ou qualquer valor, como 1200px */
+    width: 50%;
+}
 </style>
 
 <div class="titulo-tela" id="titulo">
@@ -258,7 +263,7 @@ include_once('../../templates/headerPcp.php');
 
 <!-- Modal para exibir imagem -->
 <div class="modal fade modal-custom" id="modal-imagemMP" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-top modal-xl modal-grande">
+  <div class="modal-dialog modal-dialog-top modal-xl modal-grande2">
     <div class="modal-content">
       
       <div class="modal-header">

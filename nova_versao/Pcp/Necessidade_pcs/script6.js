@@ -83,6 +83,7 @@ const Consulta_Imagem = async (codigoPai) => {
     atualizarImagem();
 
     $('#loadingModal').modal('hide');
+    $('#modal-detalhamentoSku').modal('hide'); // substitua pelo ID correto do outro modal
     $('#modal-imagemMP').modal('show');
   } catch (error) {
     console.error('Erro ao consultar imagens:', error);
