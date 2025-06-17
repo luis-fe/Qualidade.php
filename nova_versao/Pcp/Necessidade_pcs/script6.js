@@ -83,13 +83,7 @@ const Consulta_Imagem = async (codigoPai) => {
     atualizarImagem();
 
     // Garante que modal de detalhamento seja ocultado e imagem exibido
-    $('#modal-detalhamentoSku').modal('hide');
     $('#modal-imagemMP').modal('show');
-
-    // Reexibe modal de detalhamento após fechar modal de imagem (uma vez)
-    $('#modal-imagemMP').one('hidden.bs.modal', function () {
-      $('#modal-detalhamentoSku').modal('show');
-    });
 
   } catch (error) {
     console.error('Erro ao consultar imagens:', error);

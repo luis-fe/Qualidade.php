@@ -58,6 +58,23 @@ include_once('../../templates/headerPcp.php');
     max-width: 50% !important; /* ou qualquer valor, como 1200px */
     width: 50%;
 }
+
+  #modal-detalhamentoSku {
+    z-index: 1050;
+  }
+
+  #modal-imagemMP {
+    z-index: 1060;
+  }
+
+  #imagem-container img {
+    max-width: 80%;
+    max-height: 500px;
+    display: block;
+    margin: auto;
+  }
+
+
 </style>
 
 <div class="titulo-tela" id="titulo">
