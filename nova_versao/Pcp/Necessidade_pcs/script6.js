@@ -62,7 +62,7 @@ const Consulta_Imagem = async (codigoPai) => {
     totalImagensColorBook = primeiraColorBook.total_imagens || 0;
     totalImagensEng = dataEng.total_imagens || 0;
 
-    // 2. Faz chamadas paralelas para os restantes do ColorBook (índice 1+)
+    // 2. Faz chamadas paralelas para o restante do ColorBook (índice 0+)
     const colorBookRequests = [];
     for (let i = 0; i < totalImagensColorBook; i++) {
       colorBookRequests.push(
@@ -82,19 +82,22 @@ const Consulta_Imagem = async (codigoPai) => {
     imagemAtual = 0;
     atualizarImagem();
 
-    $('#loadingModal').modal('hide');
-    $('#modal-detalhamentoSku').modal('hide'); // substitua pelo ID correto do outro modal
+    // Garante que modal de detalhamento seja ocultado e imagem exibido
+    $('#modal-detalhamentoSku').modal('hide');
     $('#modal-imagemMP').modal('show');
+
+    // Reexibe modal de detalhamento após fechar modal de imagem (uma vez)
+    $('#modal-imagemMP').one('hidden.bs.modal', function () {
+      $('#modal-detalhamentoSku').modal('show');
+    });
+
   } catch (error) {
     console.error('Erro ao consultar imagens:', error);
     Mensagem_Canto('Erro', 'error');
+  } finally {
     $('#loadingModal').modal('hide');
   }
 };
-
-
-
-
 
 $(document).ready(async () => {
     Consulta_Planos();
