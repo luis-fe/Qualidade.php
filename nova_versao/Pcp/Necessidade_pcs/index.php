@@ -59,20 +59,35 @@ include_once('../../templates/headerPcp.php');
     width: 50%;
 }
 
-  #modal-detalhamentoSku {
-    z-index: 1050;
-  }
+/* Corrige a sobreposição de múltiplos modais */
+.modal-backdrop {
+  z-index: 1040 !important;
+}
 
-  #modal-imagemMP {
-    z-index: 1060;
-  }
+#modal-detalhamentoSku {
+  z-index: 1050 !important;
+}
 
-  #imagem-container img {
-    max-width: 80%;
-    max-height: 500px;
-    display: block;
-    margin: auto;
-  }
+#modal-imagemMP {
+  z-index: 1060 !important;
+}
+
+/* Garante que múltiplos backdrops não bugam a interface */
+.modal-backdrop + .modal-backdrop {
+  z-index: 1055 !important;
+}
+
+/* Estilização da imagem dentro do modal */
+#imagem-container img {
+  max-width: 80%;
+  max-height: 500px;
+  display: block;
+  margin: auto;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+  
 
 
 </style>
