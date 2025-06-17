@@ -936,9 +936,13 @@ function TabeldetalhamentoSku(listaDetalhes) {
      // Atualiza o título com base no primeiro item da lista
     if (listaDetalhes.length > 0) {
         const cod = listaDetalhes[0]["codReduzido"] || "Sem código";
-        document.getElementById("titulo-detalhamento").textContent = `Detalhamento Matéria Prima - ${cod}`;
+        const cod2 = listaDetalhes[0]["codItemPai"] || "Sem código";
+        const cod3 = listaDetalhes[0]["nome"] || "Sem código";
+
+
+        document.getElementById("titulo-detalhamento").textContent = `Detalhamento-${cod2} ${cod3}(${cod})`;
     } else {
-        document.getElementById("titulo-detalhamento").textContent = "Detalhamento Matéria Prima - (Sem dados)";
+        document.getElementById("titulo-detalhamento").textContent = "Detalhamento- (Sem dados)";
     }
 
 
