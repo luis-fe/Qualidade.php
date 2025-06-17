@@ -273,7 +273,6 @@ include_once('../../templates/headerPcp.php');
                     <table class="table table-bordered" id="table-detalhamentoSku" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>Cód.<br>Red.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Cód<br>Componente</br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Descricao<br><input type="search" class="search-input search-input-detalhamentoSku"></th>
                                 <th>Estoque<br>MP.</br><input type="search" class="search-input search-input-detalhamentoSku"></th>

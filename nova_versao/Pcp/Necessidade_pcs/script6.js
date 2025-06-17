@@ -940,9 +940,9 @@ function TabeldetalhamentoSku(listaDetalhes) {
         const cod3 = listaDetalhes[0]["nome"] || "Sem código";
 
 
-        document.getElementById("titulo-detalhamento").textContent = `Detalhamento-${cod2} ${cod3}(${cod})`;
+        document.getElementById("titulo-detalhamento").textContent = `Detalhamento:${cod2} ${cod3} (${cod})`;
     } else {
-        document.getElementById("titulo-detalhamento").textContent = "Detalhamento- (Sem dados)";
+        document.getElementById("titulo-detalhamento").textContent = "Detalhamento: (Sem dados)";
     }
 
 
