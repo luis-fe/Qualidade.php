@@ -256,6 +256,33 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
+<!-- Modal para exibir imagem -->
+<div class="modal fade modal-custom" id="modal-imagemMP" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-top modal-xl modal-grande">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="customModalLabel" style="color: black;">Imagem:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      
+      <div class="modal-body" id="modal-body-imagem" style="align-items: start; text-align: left;">
+                <div class="modal-footer justify-content-between">
+                    <button id="btn-anterior" class="btn btn-secondary">⬅️ Anterior</button>
+                    <span id="contador-imagens" class="text-muted"></span>
+                    <button id="btn-proximo" class="btn btn-secondary">Próximo ➡️</button>
+        </div>
+        <!-- A imagem será injetada aqui via JavaScript -->
+        <div id="imagem-container" class="text-center">
+          <!-- <img src="..." class="img-fluid"> será inserido aqui -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade modal-custom" id="modal-detalhamentoSku" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-grande">

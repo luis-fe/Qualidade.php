@@ -1,6 +1,100 @@
 let arrayCategoriaMP = ''
 let menorSugestaoPC = null;
 let nomeSimulacao = '';
+let imagemAtual = 0;
+let totalImagens = 0;
+let totalImagensEng = 0;
+let totalImagensColorBook = 0;
+let codigoMP = "";
+let imagensColorBook = [];
+
+
+const atualizarImagem = () => {
+  if (!codigoMP || String(codigoMP).trim() === "") {
+    console.error("codigoMP está vazio!");
+    return;
+  }
+
+  const baseURL = "http://192.168.0.183:9000";
+  let url = "";
+
+  if (imagemAtual < totalImagensColorBook) {
+    url = imagensColorBook[imagemAtual];
+  } else {
+    const indiceEng = imagemAtual - totalImagensColorBook;
+    url = `${baseURL}/imagemEng/${codigoMP}/${indiceEng}`;
+  }
+
+  $('#imagem-container').html(`
+    <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
+  `);
+
+  $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
+  $('#btn-anterior').prop('disabled', imagemAtual === 0);
+  $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
+};
+
+const Consulta_Imagem = async (codigoPai) => {
+  codigoMP = String(codigoPai);
+  $('#loadingModal').modal('show');
+
+  try {
+    // 1. Inicia em paralelo: consulta total da ColorBook e da imagemEng
+    const [primeiraColorBook, dataEng] = await Promise.all([
+      $.ajax({
+        type: 'GET',
+        url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
+        dataType: 'json'
+      }),
+      $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+          acao: 'Consulta_Imagem',
+          codigoMP: codigoPai
+        },
+        xhrFields: { withCredentials: true }
+      })
+    ]);
+
+    // Pega totais
+    totalImagensColorBook = primeiraColorBook.total_imagens || 0;
+    totalImagensEng = dataEng.total_imagens || 0;
+
+    // 2. Faz chamadas paralelas para os restantes do ColorBook (índice 1+)
+    const colorBookRequests = [];
+    for (let i = 0; i < totalImagensColorBook; i++) {
+      colorBookRequests.push(
+        $.ajax({
+          type: 'GET',
+          url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
+          dataType: 'json'
+        })
+      );
+    }
+
+    const imagensColorData = await Promise.all(colorBookRequests);
+    imagensColorBook = imagensColorData.map(img => img.imagem_url);
+
+    // 3. Atualiza totais e imagem inicial
+    totalImagens = totalImagensColorBook + totalImagensEng;
+    imagemAtual = 0;
+    atualizarImagem();
+
+    $('#loadingModal').modal('hide');
+    $('#modal-imagemMP').modal('show');
+  } catch (error) {
+    console.error('Erro ao consultar imagens:', error);
+    Mensagem_Canto('Erro', 'error');
+    $('#loadingModal').modal('hide');
+  }
+};
+
+
+
+
+
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
@@ -933,17 +1027,18 @@ async function Deletar_Simulacao() {
 
 function TabeldetalhamentoSku(listaDetalhes) {
 
-     // Atualiza o título com base no primeiro item da lista
-    if (listaDetalhes.length > 0) {
-        const cod = listaDetalhes[0]["codReduzido"] || "Sem código";
-        const cod2 = listaDetalhes[0]["codItemPai"] || "Sem código";
-        const cod3 = listaDetalhes[0]["nome"] || "Sem código";
+if (listaDetalhes.length > 0) {
+    const cod = listaDetalhes[0]["codReduzido"] || "Sem código";
+    const cod2 = listaDetalhes[0]["codItemPai"] || "Sem código";
+    const cod3 = listaDetalhes[0]["nome"] || "Sem código";
 
+    // Cria o link que chama a função Consulta_Imagem
+    const link = `<a href="#" onclick="Consulta_Imagem('${cod2}'); return false;">${cod2}</a>`;
 
-        document.getElementById("titulo-detalhamento").textContent = `Detalhamento:${cod2} ${cod3} (${cod})`;
-    } else {
-        document.getElementById("titulo-detalhamento").textContent = "Detalhamento: (Sem dados)";
-    }
+    document.getElementById("titulo-detalhamento").innerHTML = `Detalhamento: ${link} ${cod3} (${cod})`;
+} else {
+    document.getElementById("titulo-detalhamento").textContent = "Detalhamento: (Sem dados)";
+}
 
 
     if ($.fn.DataTable.isDataTable('#table-detalhamentoSku')) {
