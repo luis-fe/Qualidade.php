@@ -1096,6 +1096,7 @@ if (listaDetalhes.length > 0) {
         ],
         data: listaDetalhes,
         columns: [
+            {data:'codEditado'},
             { data: 'CodComponente' },
             { data: 'descricaoComponente' },
             {
