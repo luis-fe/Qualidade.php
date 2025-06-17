@@ -940,7 +940,6 @@ function TabeldetalhamentoSku(listaDetalhes) {
     } else {
         document.getElementById("titulo-detalhamento").textContent = "Detalhamento Matéria Prima - (Sem dados)";
     }
-o 
 
 
     if ($.fn.DataTable.isDataTable('#table-detalhamentoSku')) {
