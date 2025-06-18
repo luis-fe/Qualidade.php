@@ -858,8 +858,8 @@ async function TabelaAnalise(listaAnalise) {
                     return typeof i === 'number' ? i : 0;
                 };
 
-                const columnsToSum = [7]; // mantém o outro totalizador (faltaProg, por exemplo)
-                const disponivelColIndex = 8; // índice da coluna "disponivel"
+                const columnsToSum = [7,8]; // mantém o outro totalizador (faltaProg, por exemplo)
+                const disponivelColIndex = 9; // índice da coluna "disponivel"
 
                 columnsToSum.forEach(colIndex => {
                     const total = api
