@@ -849,30 +849,49 @@ async function TabelaAnalise(listaAnalise) {
             });
             $('.dataTables_paginate').hide();
         },footerCallback: function (row, data, start, end, display) {
-            const api = this.api();
+                const api = this.api();
 
-            // Conversor de texto para número
-            const intVal = (i) => {
-                if (typeof i === 'string') {
-                    return parseFloat(i.replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-                }
-                return typeof i === 'number' ? i : 0;
-            };
+                const intVal = (i) => {
+                    if (typeof i === 'string') {
+                        return parseFloat(i.replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+                    }
+                    return typeof i === 'number' ? i : 0;
+                };
 
-            // Índices das colunas a somar (baseado no array `columns`)
-            const columnsToSum = [7, 8]; // faltaProg e sugestao_PCs
+                const columnsToSum = [7]; // mantém o outro totalizador (faltaProg, por exemplo)
+                const disponivelColIndex = 8; // índice da coluna "disponivel"
 
-            columnsToSum.forEach(colIndex => {
-                const total = api
-                    .column(colIndex, { filter: 'applied' })
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+                columnsToSum.forEach(colIndex => {
+                    const total = api
+                        .column(colIndex, { filter: 'applied' })
+                        .data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
 
-                $(api.column(colIndex).footer()).html(
-                    total.toLocaleString('pt-BR')
+                    $(api.column(colIndex).footer()).html(
+                        total.toLocaleString('pt-BR')
+                    );
+                });
+
+                // Lógica separada para coluna "disponivel"
+                let totalNegativos = 0;
+                let totalPositivos = 0;
+
+                api.column(disponivelColIndex, { filter: 'applied' }).data().each(function (value) {
+                    const val = intVal(value);
+                    if (val < 0) {
+                        totalNegativos += val;
+                    } else {
+                        totalPositivos += val;
+                    }
+                });
+
+                const formattedNeg = totalNegativos.toLocaleString('pt-BR');
+                const formattedPos = totalPositivos.toLocaleString('pt-BR');
+
+                $(api.column(disponivelColIndex).footer()).html(
+                    `<span style="color: red;">${formattedNeg}</span> / <span style="color: green;">+${formattedPos}</span>`
                 );
-            });
-        },
+            },
     });
 
     $('.search-input-analise').on('input', function () {
