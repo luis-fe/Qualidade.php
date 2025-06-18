@@ -868,7 +868,7 @@ async function TabelaAnalise(listaAnalise) {
                         .reduce((a, b) => intVal(a) + intVal(b), 0);
 
                     $(api.column(colIndex).footer()).html(
-                        total.toLocaleString('pt-BR')
+                        Math.round(total).toLocaleString('pt-BR') // Arredondando para inteiro
                     );
                 });
 
@@ -885,12 +885,13 @@ async function TabelaAnalise(listaAnalise) {
                     }
                 });
 
-                const formattedNeg = totalNegativos.toLocaleString('pt-BR');
-                const formattedPos = totalPositivos.toLocaleString('pt-BR');
+                const formattedNeg = Math.round(totalNegativos).toLocaleString('pt-BR');
+                const formattedPos = Math.round(totalPositivos).toLocaleString('pt-BR');
 
                 $(api.column(disponivelColIndex).footer()).html(
                     `<span style="color: red;">${formattedNeg}</span> / <span style="color: green;">+${formattedPos}</span>`
                 );
+
             },
     });
 
