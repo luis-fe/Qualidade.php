@@ -30,7 +30,7 @@ include_once('../../templates/headerPcp.php');
 
 
     .periodo-vendas {
-    font-size: 10px !important ;
+    font-size: 12px !important ;
     color: #555; /* opcional para ajustar contraste */
 }
 
@@ -42,10 +42,6 @@ include_once('../../templates/headerPcp.php');
             <i class="bi bi-clipboard-data-fill"></i>
         </span> 
         Tendência de Vendas
-    </div>
-    <div class="d-flex align-items-center text-end periodo-vendas">
-        <i class="bi bi-calendar3 me-1"></i>
-        <span>Período de vendas</span>
     </div>
 </div>
 

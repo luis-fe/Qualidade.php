@@ -334,8 +334,16 @@ async function gerarTendenciaNova (congelamento) {
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
         $('#titulo').html(`
-            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span>
-            Tendência de Vendas
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div>
+                    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+                    Tendência de Vendas
+                </div>
+                <div class="d-flex align-items-center text-end periodo-vendas">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    <span>Período de vendas</span>
+                </div>
+            </div>
           `);
         nomeSimulacao = "";
     } catch (error) {
