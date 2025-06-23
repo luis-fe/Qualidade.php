@@ -346,7 +346,10 @@ async function gerarTendenciaNova (congelamento) {
                 <div class="d-flex align-items-center text-end periodo-vendas">
                     <i class="bi bi-calendar3 me-1"></i>
                 <span>Período de vendas: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
+                <div>
+                <i class="bi bi-calendar3 me-1"></i>
                 <span>Período de Faturamento: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
+                </div>
                 </div>
 
             </div>
