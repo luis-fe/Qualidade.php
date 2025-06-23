@@ -30,7 +30,7 @@ include_once('../../templates/headerPcp.php');
 
 
     .periodo-vendas {
-    font-size: 12px !important ;
+    font-size: 16px !important ;
     color: #555; /* opcional para ajustar contraste */
 }
 
