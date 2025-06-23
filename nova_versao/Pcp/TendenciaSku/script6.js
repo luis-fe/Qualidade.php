@@ -336,6 +336,8 @@ async function gerarTendenciaNova (congelamento) {
         const respostaPeriodoVendas = await PeriodoVendasPlano();
         respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
+        respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
+        respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
 
         $('#titulo').html(`
     <div class="d-flex justify-content-between align-items-start w-100">
@@ -346,11 +348,11 @@ async function gerarTendenciaNova (congelamento) {
         <div class="d-flex flex-column text-end periodo-vendas">
             <div>
                 <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de vendas: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
+                <span>Período de vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
             </div>
             <div>
                 <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de faturamento: ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</span>
+                <span>Período de faturamento:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
             </div>
         </div>
     </div>
@@ -1373,7 +1375,9 @@ const PeriodoVendasPlano = async () => {
         });
         return {
             inicioVenda: data[0]['03- Inicio Venda'],
-            finalVenda: data[0]['04- Final Venda']
+            finalVenda: data[0]['04- Final Venda'],
+            inicioFaturamento: data[0]['05- Inicio Faturamento'],
+            finalFaturamento: data[0]['06- Final Faturamento']
         };
 
 
