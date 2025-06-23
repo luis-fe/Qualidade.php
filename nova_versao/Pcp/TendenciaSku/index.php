@@ -27,11 +27,28 @@ include_once('../../templates/headerPcp.php');
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         background-color: #fff;
     }
+
+
+    .periodo-vendas {
+    font-size: 10px !important ;
+    color: #555; /* opcional para ajustar contraste */
+}
+
 </style>
 
-<div class="titulo-tela" id="titulo">
-    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> Tendência de Vendas
+<div class="d-flex justify-content-between align-items-center titulo-tela" id="titulo">
+    <div>
+        <span class="span-icone">
+            <i class="bi bi-clipboard-data-fill"></i>
+        </span> 
+        Tendência de Vendas
+    </div>
+    <div class="d-flex align-items-center text-end periodo-vendas">
+        <i class="bi bi-calendar3 me-1"></i>
+        <span>Período de vendas</span>
+    </div>
 </div>
+
 
 
 <div class="mt-3 row justify-content-center" id="selecao-plano" style="max-width: 100%; overflow:auto">
