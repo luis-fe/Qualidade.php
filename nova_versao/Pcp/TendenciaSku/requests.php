@@ -28,6 +28,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $codigoImagem = urldecode($_GET['codigoMP']);
                     jsonResponse(obterImagemMP($codigoImagem));
                     break;
+                case 'consultarInformacoesPlano':
+                    $plano = $_GET['plano'];
+                    $empresa = $_GET['empresa'];
+                    jsonResponse(consultarInformacoesPlano($empresa, "a44pcp22", $plano));
+                    break;
                 case 'Consulta_Abc_Plano':
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultaAbcPlano('1', $plano));
@@ -561,5 +566,27 @@ function obterImagemMP($codigoImagem)
         'imagem_url' => "{$baseUrl}/imagemEng/{$codigoImagem}/0", // começa com a primeira imagem
         'total_imagens' => $quantidade
     ];
+}
+
+
+
+function consultarInformacoesPlano($empresa, $token, $plano){
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/PlanoPorPlano?codigoPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
 }
 

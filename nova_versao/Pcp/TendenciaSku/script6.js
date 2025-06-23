@@ -333,6 +333,7 @@ async function gerarTendenciaNova (congelamento) {
         });
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
+        const respostaPeriodoVendas = await PeriodoVendasPlano();
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div>
@@ -341,7 +342,7 @@ async function gerarTendenciaNova (congelamento) {
                 </div>
                 <div class="d-flex align-items-center text-end periodo-vendas">
                     <i class="bi bi-calendar3 me-1"></i>
-                    <span>Período de vendas</span>
+                <span>Período de vendas: <strong>${respostaPeriodoVendas.inicioVenda}</strong></span>
                 </div>
             </div>
           `);
@@ -1338,6 +1339,32 @@ const Consulta_Ultimo_CalculoTendencia = async () => {
         return {
             status: data[0]['status'],
             mensagem: data[0]['Mensagem']
+        };
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+        return null; // ou algum valor padrão indicando erro
+
+    }
+};
+
+
+const PeriodoVendasPlano = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'consultarInformacoesPlano',
+                plano: $('#select-plano').val(),
+                empresa: '1'
+            }
+        });
+        return {
+            inicioVenda: data[0]['03- Inicio Venda'],
+            finalVenda: data[0]['04- Final Venda']
         };
 
 
