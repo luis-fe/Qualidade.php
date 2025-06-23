@@ -334,6 +334,8 @@ async function gerarTendenciaNova (congelamento) {
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
         const respostaPeriodoVendas = await PeriodoVendasPlano();
+        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div>
@@ -342,7 +344,7 @@ async function gerarTendenciaNova (congelamento) {
                 </div>
                 <div class="d-flex align-items-center text-end periodo-vendas">
                     <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de vendas: <strong>${respostaPeriodoVendas.inicioVenda}</strong></span>
+                <span>Período de vendas: <strong>${respostaPeriodoVendas.inicioVenda} a ${respostaPeriodoVendas.finalVenda}</strong></span>
                 </div>
             </div>
           `);
@@ -1374,3 +1376,9 @@ const PeriodoVendasPlano = async () => {
 
     }
 };
+
+function formatarDataBrasileira(dataISO) {
+    if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}-${mes}-${ano}`;
+}
