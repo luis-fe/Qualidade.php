@@ -335,6 +335,7 @@ async function gerarTendenciaNova (congelamento) {
         $('.div-tendencia').removeClass('d-none');
         const respostaPeriodoVendas = await PeriodoVendasPlano();
         respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
 
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-center w-100">
@@ -344,7 +345,7 @@ async function gerarTendenciaNova (congelamento) {
                 </div>
                 <div class="d-flex align-items-center text-end periodo-vendas">
                     <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de vendas: <strong>${respostaPeriodoVendas.inicioVenda} a ${respostaPeriodoVendas.finalVenda}</strong></span>
+                <span>Período de vendas: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
                 </div>
             </div>
           `);
