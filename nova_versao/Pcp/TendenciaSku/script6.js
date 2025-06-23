@@ -338,21 +338,22 @@ async function gerarTendenciaNova (congelamento) {
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
 
         $('#titulo').html(`
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <div>
-                    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
-                    Tendência de Vendas
-                </div>
-                <div class="d-flex align-items-center text-end periodo-vendas">
-                    <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de vendas: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
-                <div>
+    <div class="d-flex justify-content-between align-items-start w-100">
+        <div>
+            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+            Tendência de Vendas
+        </div>
+        <div class="d-flex flex-column text-end periodo-vendas">
+            <div>
                 <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de Faturamento: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
-                </div>
-                </div>
-
+                <span>Período de vendas: ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</span>
             </div>
+            <div>
+                <i class="bi bi-calendar3 me-1"></i>
+                <span>Período de faturamento: ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</span>
+            </div>
+        </div>
+    </div>
           `);
         nomeSimulacao = "";
     } catch (error) {
