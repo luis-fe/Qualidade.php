@@ -654,8 +654,9 @@
                         <i class="bi bi-circle-fill"></i> Tendência <!-- PCP -->
                     </a>
                 </ul>
-                                <li class="nav-item logout-item mt-auto">
-                            <a href="/logout" class="nav-link menu-item text-danger">
+            </li>
+            <li class="nav-item logout-item mt-auto">
+                            <a href="/Logout/indexPcp" class="nav-link menu-item text-danger">
                                 <i class="bi bi-box-arrow-right icon-menu"></i> Sair
                             </a>
             </li>
