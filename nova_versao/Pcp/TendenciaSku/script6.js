@@ -340,19 +340,19 @@ async function gerarTendenciaNova (congelamento) {
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
 
         $('#titulo').html(`
-    <div class="d-flex justify-content-between align-items-start w-100">
+    <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
         <div>
             <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
             Tendência de Vendas
         </div>
-        <div class="d-flex flex-column text-end periodo-vendas">
+    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
             <div>
                 <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
             </div>
             <div>
                 <i class="bi bi-calendar3 me-1"></i>
-                <span>Período de faturamento:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+                <span>Período Fatur.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
             </div>
         </div>
     </div>
@@ -1391,5 +1391,5 @@ const PeriodoVendasPlano = async () => {
 function formatarDataBrasileira(dataISO) {
     if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
     const [ano, mes, dia] = dataISO.split('-');
-    return `${dia}-${mes}-${ano}`;
+    return `${dia}/${mes}/${ano}`;
 }
