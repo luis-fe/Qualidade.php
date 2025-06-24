@@ -388,6 +388,13 @@ async function Simular_Programacao(simulacao) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
+
+        const respostaPeriodoVendas = await PeriodoVendasPlano();
+        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
+        respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
+        respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
+
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
         <div>
