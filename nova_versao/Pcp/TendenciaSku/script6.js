@@ -352,7 +352,7 @@ async function gerarTendenciaNova (congelamento) {
             </div>
             <div>
                 <i class="bi bi-calendar3 me-1"></i>
-                <span>Período Fatur.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+                <span>Período Fatura. :<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
             </div>
         </div>
     </div>
@@ -389,8 +389,10 @@ async function Simular_Programacao(simulacao) {
             data: JSON.stringify(requestData),
         });
         $('#titulo').html(`
-            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span>
-            Tendência de Vendas - 
+            <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+        <div>
+            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+            Tendência de Vendas
             <span style="display: inline-block; position: relative;">
               <strong>${simulacao}</strong>
               <button onclick="Consulta_Tendencias()" 
@@ -398,6 +400,18 @@ async function Simular_Programacao(simulacao) {
                 ×
               </button>
             </span>
+        </div>
+    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
+            <div>
+                <i class="bi bi-calendar3 me-1"></i>
+                <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+            </div>
+            <div>
+                <i class="bi bi-calendar3 me-1"></i>
+                <span>Período Fatura. :<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+            </div>
+        </div>
+    </div>
           `);
         TabelaTendencia(response);
     } catch (error) {
