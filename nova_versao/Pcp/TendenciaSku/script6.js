@@ -711,7 +711,7 @@ function TabelaTendencia(listaTendencia) {
         paging: true,
         lengthChange: false,
         info: false,
-        pageLength: 10,
+        pageLength: 12,
         data: listaTendencia,
         dom: 'Bfrtip',
         buttons: [{
@@ -773,7 +773,7 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'codItemPai',
                         render: function (data, type, row) {
-                return `<span class="detalhaImg" data-codItemPai="${row.codItemPai}" style="text-decoration: underline; color: #747474; cursor: pointer;">${data}</span>`;
+                return `<span class="detalhaImg" data-codItemPai="${row.codItemPai}" style="text-decoration: underline; color:rgb(195, 218, 254); cursor: pointer;">${data}</span>`;
             }
         },
         {
