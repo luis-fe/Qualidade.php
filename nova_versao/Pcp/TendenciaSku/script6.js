@@ -915,6 +915,7 @@ function TabelaTendencia(listaTendencia) {
             previcaoVendas: 11,
             qtdePedida: 12,
             qtdeFaturada: 13,
+            SaldoColAnt: 14,
             estoqueAtual: 15,
             emProcesso: 16,
             'faltaProg (Tendencia)': 17,
