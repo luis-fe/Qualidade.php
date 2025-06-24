@@ -773,7 +773,7 @@ function TabelaTendencia(listaTendencia) {
         {
             data: 'codItemPai',
                         render: function (data, type, row) {
-                return `<span class="detalhaImg" data-codItemPai="${row.codItemPai}" style="text-decoration: underline; color:rgb(195, 218, 254); cursor: pointer;">${data}</span>`;
+                return `<span class="detalhaImg" data-codItemPai="${row.codItemPai}" style="text-decoration: underline; color:hsl(217, 100.00%, 65.10%); cursor: pointer;">${data}</span>`;
             }
         },
         {
