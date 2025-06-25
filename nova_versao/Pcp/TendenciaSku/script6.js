@@ -1170,7 +1170,7 @@ async function Detalha_OrdemProducao(codReduzido) {
         });
         console.log(response)
         TabelaDetalhamentoOrdemProd(response);
-        $('#mmodal-detalhamento-OrdemProd').modal('show')
+        $('#modal-detalhamento-OrdemProd').modal('show')
     } catch (error) {
         console.error('Erro ao consultar ordemProd:', error);
     }finally {
