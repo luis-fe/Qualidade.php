@@ -596,6 +596,7 @@ function consultarInformacoesPlano($empresa, $token, $plano){
 
 
 function DetalhaOrdemProducao($token, $codSku){
+    $empresa = "1";
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/OrdemProd_porSku?codSku={$codSku}";
     $ch = curl_init($apiUrl);
