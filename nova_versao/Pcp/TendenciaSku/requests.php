@@ -33,13 +33,13 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $empresa = $_GET['empresa'];
                     jsonResponse(consultarInformacoesPlano($empresa, "a44pcp22", $plano));
                     break;
-                case 'Detalha_OrdemProducao':
-                    $codSku = $_GET['codReduzido'];
-                    jsonResponse(Detalha_OrdemProducao("a44pcp22", $codSku));
-                    break; 
-                case '':
+                case 'Consulta_Abc_Plano':
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultaAbcPlano('1', $plano));
+                    break;
+                case 'Detalha_OrdemProducao':
+                    $codSku = $_GET['codReduzido'];
+                    jsonResponse(DetalhaOrdemProducao('a44pcp22', $codSku));
                     break;
                 case 'Consulta_Simulacoes':
                     jsonResponse(ConsultaSimulacoes('1'));
@@ -595,7 +595,7 @@ function consultarInformacoesPlano($empresa, $token, $plano){
 }
 
 
-function Detalha_OrdemProducao($token, $codSku){
+function DetalhaOrdemProducao($token, $codSku){
     $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/OrdemProd_porSku?codSku={$codSku}";
     $ch = curl_init($apiUrl);
@@ -614,4 +614,5 @@ function Detalha_OrdemProducao($token, $codSku){
 
     return json_decode($apiResponse, true);
 }
+
 
