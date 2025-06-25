@@ -370,6 +370,7 @@ include_once('../../templates/headerPcp.php');
                             <tr>
                                 <th>Ordem Producao<br><input type="search" class="search-input search-input-detalhamento-OrdemProd"></th>
                                 <th>cod. FaseAtual<br><input type="search" class="search-input search-input-detalhamento-OrdemProd"></th>
+                                <th>nome FaseAtual<br><input type="search" class="search-input search-input-detalhamento-OrdemProd"></th>
                                 <th>Quantidade<br><input type="search" class="search-input search-input-detalhamento-OrdemProd"></th>
                             </tr>
                         </thead>

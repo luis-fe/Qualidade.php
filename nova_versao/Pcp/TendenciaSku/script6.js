@@ -1349,6 +1349,7 @@ function TabelaDetalhamentoOrdemProd(listaDetalhes) {
         columns: [
             { data: 'numeroop' },
             {data: 'codFaseAtual'},
+            {data: 'nomeFase'},
             { data: 'total_pcs' },
         ],
         language: {
