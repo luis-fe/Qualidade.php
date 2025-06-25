@@ -986,6 +986,7 @@ function TabelaTendencia(listaTendencia) {
         $('#table-tendencia').on('click', '.detalha-ordemProd', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
+        console.log(`codigo reduzido escolhido ${codReduzido}`)
         Detalha_OrdemProducao(codReduzido);
     });
 
@@ -1164,7 +1165,7 @@ async function Detalha_OrdemProducao(codReduzido) {
             dataType: 'json',
             data: {
                 acao: "Detalha_OrdemProducao",
-                codReduzido: codReduzido
+                codReduzido
                     }
         });
         console.log(response)
