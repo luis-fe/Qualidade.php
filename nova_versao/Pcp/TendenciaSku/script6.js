@@ -1348,7 +1348,7 @@ function TabelaDetalhamentoOrdemProd(listaDetalhes) {
         data: listaDetalhes,
         columns: [
             { data: 'numeroop' },
-            { data: 'qtdAcumulada' },
+            { data: 'total_pcs' },
         ],
         language: {
             paginate: {
