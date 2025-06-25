@@ -847,8 +847,9 @@ function TabelaTendencia(listaTendencia) {
         },
         {
             data: 'emProcesso',
-            render: function (data, type) {
-                return type === 'display' ? data.toLocaleString('pt-BR') : data;
+            render: function (data, type, row) {
+                return `<span class="detalha-ordemProd" data-codReduzido="${row.codReduzido}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
+
             }
         },
         {
@@ -982,7 +983,7 @@ function TabelaTendencia(listaTendencia) {
     });
 
 
-        $('#table-tendencia').on('click', '.detalha-ordemProd', function (event) {
+        $('#table-tendencia').on('click', '.detalha-ordemPro', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-ordemProd');
         Detalha_OrdemProducao(codReduzido);
