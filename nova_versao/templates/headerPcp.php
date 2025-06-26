@@ -482,9 +482,9 @@
     font-family: 'Segoe UI', sans-serif;
     font-weight: 500;
     font-size: 1rem;
-    color: #333;
+    color: #e1e1e1;
   }
-  
+
     </style>
 </head>
 
