@@ -122,6 +122,7 @@
 </head>
 
 <body>
+<div class="container text-center">
   <div class="d-flex flex-column align-items-center">
     
     <img src="iconeModuloPCP5.png"
@@ -133,6 +134,7 @@
          alt="Texto Logo"
          class="img-fluid"
          style="width: 800px; height: auto;">
+</div>
          
   </div>
 
