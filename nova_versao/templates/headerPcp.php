@@ -497,7 +497,9 @@
                 <i class="fa-solid fa-bars" id="btn-menu"></i>
             </div>
             <div class="ms-auto">
-                 <span class="empresa-text me-2">Você está na Empresa:</span>
+                 <span class="empresa-text me-2">
+                    Você está na Empresa: <?php echo $_SESSION['empresa']; ?>
+                </span>
                 <i class="bi bi-person-circle" id="btn-user"></i>
             </div>
         </div>
