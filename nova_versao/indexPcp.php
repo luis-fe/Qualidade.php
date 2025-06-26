@@ -125,15 +125,12 @@
 <div class="container text-center">
   <div class="d-flex flex-column align-items-center">
     
-    <img src="iconeModuloPCP5.png"
+    <img src="iconeModuloPCP6.png"
          alt="Tela de Login"
          class="img-fluid mb-4 girar-ao-carregar"
          style="width: 600px; height: auto;">
 
-    <img src="TextoLogo5.png"
-         alt="Texto Logo"
-         class="img-fluid"
-         style="width: 800px; height: auto;">
+
 </div>
          
   </div>
