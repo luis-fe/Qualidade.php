@@ -114,14 +114,28 @@
 
     /* Aplicar animação ao carregar */
     .girar-ao-carregar {
-      animation: giro360 3s ease-in-out forwards;
+      animation: giro360 2s ease-in-out forwards;
     }
+
+        .imagem-container {
+      text-align: center;
+    }
+    
     </style>
 </head>
 
 <body>
-    <img src="iconeModuloPCP5.png" alt="Tela de Login"class="img-fluid mx-auto d-block mb-4 girar-ao-carregar" style="width: 800px; height: auto;">
-    <img src="TextoLogo5.png" alt="Tela de Login" class="img-fluid mx-auto d-block mb-4" style="width: 300px; height: auto;">
+    <div class="imagem-container">
+        <img src="iconeModuloPCP5.png"
+            alt="Tela de Login"
+            class="img-fluid mx-auto d-block mb-4 girar-ao-carregar"
+            style="width: 700px; height: auto;">
+
+        <img src="TextoLogo5.png"
+            alt="Texto Logo"
+            class="img-fluid mx-auto d-block"
+            style="width: 300px; height: auto;">
+    </div>
 
     <div class="login-box">
         <h2 class="mb-4">Login</h2>
