@@ -103,7 +103,7 @@
 </head>
 
 <body>
-      <img src="iconeModuloPCP.png" alt="Imagem Centralizada">
+      <img src="iconeModuloPCP.png" alt="Tela de Login" class="img-fluid">
 
     <div class="login-box">
         <h2 class="mb-4">Login</h2>
