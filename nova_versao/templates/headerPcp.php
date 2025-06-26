@@ -477,6 +477,14 @@
         .dataTables_filter {
             display: none;
         }
+
+          .empresa-text {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+  }
+  
     </style>
 </head>
 
@@ -489,6 +497,7 @@
                 <i class="fa-solid fa-bars" id="btn-menu"></i>
             </div>
             <div class="ms-auto">
+                 <span class="empresa-text me-2">Você está na Empresa:</span>
                 <i class="bi bi-person-circle" id="btn-user"></i>
             </div>
         </div>
