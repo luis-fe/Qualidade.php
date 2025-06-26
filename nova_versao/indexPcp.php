@@ -103,6 +103,8 @@
 </head>
 
 <body>
+      <img src="iconeModuloPCP.png" alt="Imagem Centralizada">
+
     <div class="login-box">
         <h2 class="mb-4">Login</h2>
         <form onsubmit="enviarDados(event)">
