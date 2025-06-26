@@ -104,7 +104,7 @@
 </head>
 
 <body>
-      <img src="iconeModuloPCP.png" alt="Tela de Login" class="img-fluid">
+    <img src="iconeModuloPCP.png" alt="Tela de Login" class="img-fluid mx-auto d-block mb-4" style="max-width: 150px;">
 
     <div class="login-box">
         <h2 class="mb-4">Login</h2>
