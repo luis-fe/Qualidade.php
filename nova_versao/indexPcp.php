@@ -100,11 +100,27 @@
         .login-box .forgot:hover {
             color: #ffffff;
         }
+
+
+        /* Animação de rotação */
+    @keyframes giro360 {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Aplicar animação ao carregar */
+    .girar-ao-carregar {
+      animation: giro360 3s ease-in-out forwards;
+    }
     </style>
 </head>
 
 <body>
-    <img src="iconeModuloPCP5.png" alt="Tela de Login" class="img-fluid mx-auto d-block mb-4" style="width: 1000px; height: auto;">
+    <img src="iconeModuloPCP5.png" alt="Tela de Login"class="img-fluid mx-auto d-block mb-4 girar-ao-carregar" style="width: 800px; height: auto;">
     <img src="TextoLogo5.png" alt="Tela de Login" class="img-fluid mx-auto d-block mb-4" style="width: 300px; height: auto;">
 
     <div class="login-box">
