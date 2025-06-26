@@ -122,7 +122,6 @@
 </head>
 
 <body>
-<div class="container text-center">
   <div class="d-flex flex-column align-items-center">
     
     <img src="iconeModuloPCP5.png"
