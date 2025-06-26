@@ -498,7 +498,7 @@
             </div>
             <div class="ms-auto">
                  <span class="empresa-text me-2">
-                    Você está na Empresa: <?php echo $_SESSION['empresa']; ?>
+                    Você está na Empresa: <?php echo $_SESSION['empresa']; ?><?php echo $_SESSION['nomeEmpresa']; ?>
                 </span>
                 <i class="bi bi-person-circle" id="btn-user"></i>
             </div>

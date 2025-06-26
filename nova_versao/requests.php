@@ -61,6 +61,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     if ($loginResponse && isset($loginResponse['status']) && $loginResponse['status'] === true) {
                         $_SESSION['username'] = $username;
                         $_SESSION['empresa'] = $empresa;
+                        if ($_SESSION['empresa'] == 1) {
+                                $_SESSION['nomeEmpresa'] = 'Matriz';}else{
+                                            $_SESSION['nomeEmpresa'] = 'Cianorte';
+                                }
+
+
                         $_SESSION['situacao'] = $loginResponse['situacao'];
                         $_SESSION['funcao'] = $loginResponse['funcao'];
 
