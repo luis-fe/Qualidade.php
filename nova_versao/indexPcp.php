@@ -117,25 +117,25 @@
       animation: giro360 1s ease-in-out forwards;
     }
 
-        .imagem-container {
-      text-align: center;
-    }
 
     </style>
 </head>
 
 <body>
-    <div class="imagem-container">
-        <img src="iconeModuloPCP5.png"
-            alt="Tela de Login"
-            class="img-fluid mx-auto d-block mb-4 girar-ao-carregar"
-            style="width: 600px; height: auto;">
+<div class="container text-center">
+  <div class="d-flex flex-column align-items-center">
+    
+    <img src="iconeModuloPCP5.png"
+         alt="Tela de Login"
+         class="img-fluid mb-4 girar-ao-carregar"
+         style="width: 600px; height: auto;">
 
-        <img src="TextoLogo5.png"
-            alt="Texto Logo"
-            class="img-fluid mx-auto d-block"
-            style="width: 800px; height: auto;">
-    </div>
+    <img src="TextoLogo5.png"
+         alt="Texto Logo"
+         class="img-fluid"
+         style="width: 800px; height: auto;">
+         
+  </div>
 
     <div class="login-box">
         <h2 class="mb-4">Login</h2>
