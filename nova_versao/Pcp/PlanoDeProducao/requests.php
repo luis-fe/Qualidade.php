@@ -142,8 +142,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultarPlanos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
-    $apiUrl = "{$baseUrl}/pcp/api/Plano";
+    $minhaEmpresa = $_SESSION['empresa']
+    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/Plano?codEmpresa={$minhaEmpresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
