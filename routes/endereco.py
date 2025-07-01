@@ -2,6 +2,7 @@ from models import endereoModel,imprimirEtiquetaModel
 from flask import Blueprint, jsonify, request
 from functools import wraps
 import pandas as pd
+from flask import send_file
 
 
 endereco_routes = Blueprint('endereco', __name__)
@@ -110,11 +111,19 @@ def EnderecoAtacado():
 
     endereoModel.ImportEndereco(ruaInicial, ruaFinal, modulo,moduloFinal, posicao, posicaoFinal, tipo, empresa, natureza, bool(imprimir),enderecoReservado)
 
+    if str(empresa) == "4":
+        # Exibir o PDF na tela (no navegador)
+        return send_file(
+            'teste.pdf',
+            mimetype='application/pdf',
+            as_attachment=False,
+            download_name='teste.pdf'
+        )
 
 
-
-    # inserir o novo usuário no banco de dados
-    return jsonify({'message': f'Novos enderecos criado com sucesso'}), 200
+    else:
+        # inserir o novo usuário no banco de dados
+        return jsonify({'message': f'Novos enderecos criado com sucesso'}), 200
 @endereco_routes.route('/api/EnderecoAtacado', methods=['DELETE'])
 @token_required
 def EnderecoAtacadoDelatar():
