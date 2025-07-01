@@ -190,7 +190,6 @@ def ExcuindoPedidosNaoEncontrados(empresa):
         pedido = validacao['codigopedido'][i]
         tiponota = validacao['codtiponota'][i]
 
-
         # Acessando os pedidos com enderecos reservados
         queue = 'Delete from "Reposicao".filaseparacaopedidos '\
                             " where codigopedido = %s and codtiponota = %s and codigopedido not like '%FAKE%' "
