@@ -120,10 +120,11 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
                 cursor = conn.cursor()
                 select = pd.read_sql('select codendereco from "Reposicao".cadendereco where codendereco = %s ', conn,
                                      params=(codendereco,))
-                if imprimir == True and codempresa != '1':
+                if imprimir == True:
 
                     imprimirEtiquetaModel.EtiquetaPrateleira('teste.pdf', codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza)
-                    imprimirEtiquetaModel.imprimir_pdf('teste.pdf')
+                    if codempresa != '1':
+                        imprimirEtiquetaModel.imprimir_pdf('teste.pdf')
                 else:
                     print(f'sem imprimir')
                 if select.empty:
