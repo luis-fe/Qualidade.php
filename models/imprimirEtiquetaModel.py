@@ -9,6 +9,7 @@ import qrcode
 import math
 import ConexaoPostgreMPL
 import pandas as pd
+from reportlab.lib.pagesizes import A4
 
 
 def criar_pdf(saida_pdf, titulo, cliente, pedido, transportadora, separador, agrupamento, prioridade):
@@ -126,6 +127,68 @@ def EtiquetaPrateleira(saida_pdf,endereco, rua,modulo,posicao, natureza):
 
         c.save()
 
+def EtiquetaPrateleira2(c, endereco, rua, modulo, posicao, natureza, x, y):
+    label_width = 7.5 * cm
+    label_height = 1.8 * cm
+
+    # Título centralizado
+    c.setFont("Helvetica-Bold", 23)
+    c.drawString(x + 0.3 * cm, y + 0.75 * cm, rua)
+
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(x + 0.5 * cm, y + 1.5 * cm, 'Rua.')
+
+    c.setFont("Helvetica-Bold", 23)
+    c.drawString(x + 1.8 * cm, y + 0.75 * cm, modulo)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(x + 1.7 * cm, y + 1.5 * cm, 'Quadra.')
+
+    c.setFont("Helvetica-Bold", 23)
+    c.drawString(x + 3.3 * cm, y + 0.75 * cm, posicao)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(x + 3.2 * cm, y + 1.5 * cm, 'Posicao.')
+
+    c.setFont("Helvetica-Bold", 7)
+    c.drawString(x + 5.2 * cm, y + 0.15 * cm, 'Natureza:')
+    c.drawString(x + 6.4 * cm, y + 0.15 * cm, natureza)
+
+    # QR Code temporário
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_qr_file:
+        qr = qrcode.QRCode(version=1, box_size=int(1.72 * cm), border=0)
+        qr.add_data(endereco)
+        qr.make(fit=True)
+        qr_img = qr.make_image(fill_color="black", back_color="white")
+        qr_img.save(temp_qr_file.name)
+        c.drawImage(temp_qr_file.name, x + 5.2 * cm, y + 0.43 * cm, width=1.45 * cm, height=1.30 * cm)
+        os.unlink(temp_qr_file.name)
+
+    # Código de barras
+    barcode_value = endereco
+    barcode_code128 = barcode.code128.Code128(barcode_value, barHeight=15, barWidth=0.75, humanReadable=False)
+    barcode_code128.drawOn(c, x + 0.07 * cm, y + 0.1 * cm)
+
+def gerar_etiquetas_pdf(saida_pdf, lista_etiquetas):
+    c = canvas.Canvas(saida_pdf, pagesize=A4)
+    page_width, page_height = A4
+
+    label_height = 1.8 * cm
+    margem_topo = 1 * cm
+    margem_lateral = 1 * cm
+    espaco_vertical = 0.5 * cm
+
+    y = page_height - label_height - margem_topo
+
+    for etiqueta in lista_etiquetas:
+        endereco, rua, modulo, posicao, natureza = etiqueta
+        EtiquetaPrateleira2(c, endereco, rua, modulo, posicao, natureza, x=margem_lateral, y=y)
+        y -= (label_height + espaco_vertical)
+
+        # Se passar do fim da página, cria nova página
+        if y < margem_topo:
+            c.showPage()
+            y = page_height - label_height - margem_topo
+
+    c.save()
 def ImprimirSeqCaixa(saida_pdf,codigo1, codigo2 ='0', codigo3='0'):
     # Configurações das etiquetas e colunas
     label_width = 7.5 * cm
