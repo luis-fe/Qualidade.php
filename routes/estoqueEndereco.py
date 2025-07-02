@@ -23,7 +23,7 @@ def get_DetalhaEndereco():
     empresa = request.args.get('empresa','1')
     natureza = request.args.get('natureza','-')
 
-    Endereco_det = estoqueEnderecoModel.SituacaoEndereco(Endereco, empresa, natureza)
+    Endereco_det = estoqueEnderecoModel.situacaoEndereco(Endereco, empresa, natureza)
     Endereco_det = pd.DataFrame(Endereco_det)
     # Obtém os nomes das colunas
     column_names = Endereco_det.columns

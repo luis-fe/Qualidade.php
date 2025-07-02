@@ -15,7 +15,7 @@ def Estoque_endereco(endereco,empresa, natureza):
     else:
         return resultado[0][0]
 
-def SituacaoEndereco(endereco, empresa, natureza):
+def situacaoEndereco(endereco, empresa, natureza):
     conn = ConexaoPostgreMPL.conexaoEngine()
 
     if natureza == '-':
@@ -47,18 +47,13 @@ def SituacaoEndereco(endereco, empresa, natureza):
         else:
             print(f'1 endereco {endereco} selecionado')
 
-            if natureza == '-':
-                skus = pd.read_sql('select  count(codbarrastag) as "Saldo Geral"  from "Reposicao".tagsreposicao e '
-                                   'where "Endereco"= %s ', conn, params=(endereco,))
-            else:
-
-                skus = pd.read_sql('select  count(codbarrastag) as "Saldo Geral"  from "Reposicao".tagsreposicao e '
-                                    'where "Endereco"= %s and natureza = %s ',conn,params=(endereco,natureza,))
+            skus = pd.read_sql('select  count(codbarrastag) as "Saldo Geral"  from "Reposicao".tagsreposicao e '
+                                    'where "Endereco"= %s  ',conn,params=(endereco,))
 
 
             SaldoSku_Usuario = pd.read_sql('select  "Endereco", "codreduzido" as codreduzido , "usuario", count(codbarrastag) as "Saldo Sku"  from "Reposicao".tagsreposicao e '
-                                    'where "Endereco"= %s and natureza = %s'
-                                    'group by "Endereco", "codreduzido" , "usuario", natureza ', conn, params=(endereco,natureza,))
+                                    'where "Endereco"= %s '
+                                    'group by "Endereco", "codreduzido" , "usuario" ', conn, params=(endereco,))
             usuarios = pd.read_sql(
                 'select codigo as "usuario" , nome  from "Reposicao".cadusuarios c ',
                 conn)
