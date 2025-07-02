@@ -59,7 +59,7 @@ function CadastrarEndereco($empresa, $token, $dados)
 
         // Adiciona o link do PDF se empresa for "4" e imprimir for true
         if ($empresa === "4" && isset($dados['imprimir']) && filter_var($dados['imprimir'], FILTER_VALIDATE_BOOLEAN)) {
-            $response['pdf_url'] = "http://10.162.0.190:5000/home/grupompl/Wms_InternoMPL/teste.pdf";
+            $response['pdf_url'] = "http://10.162.0.191:5000/home/grupompl/Wms_InternoMPL/teste.pdf";
         }
     }
 
