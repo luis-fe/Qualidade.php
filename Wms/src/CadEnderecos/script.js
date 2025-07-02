@@ -151,6 +151,7 @@ $('#FormCadEnderecos2').submit(async function(event) {
 
 function Cadastrar_Excluir_Endereco(Metodo, acao, mensagem) {
     $('#loadingModal').modal('show');
+
     const Dados = {
         "ruaInicial": $('#inputRuaInicial').val(),
         "ruaFinal": $('#inputRuaFinal').val(),
@@ -163,34 +164,47 @@ function Cadastrar_Excluir_Endereco(Metodo, acao, mensagem) {
         "empresa": empresa,
         "imprimir": Imprimir,
         "enderecoReservado": '',
-    }
+    };
+
     $.ajax({
         type: `${Metodo}`,
         url: 'requests.php',
         contentType: 'application/json',
+        dataType: 'json',
         data: JSON.stringify({
             acao: `${acao}`,
             dados: Dados
         }),
         success: function(response) {
             console.log(response);
-            if (response.resposta.message.includes('criado')) {
-                $('#loadingModal').modal('hide');
-                Mensagem(mensagem, 'success');
-                finalizarCadastro('selecao-enderecos2')
-            } else if (response.resposta.message.includes('exceto')) {
-                $('#loadingModal').modal('hide');
-                Mensagem('Endereço Excluído', 'success');
-                finalizarCadastro('selecao-enderecos2')
-            } else {
-                $('#loadingModal').modal('hide');
+            $('#loadingModal').modal('hide');
+
+            if (response.status === true) {
+                if (response.resposta.message?.includes('criado')) {
+                    Mensagem(mensagem, 'success');
+                } else if (response.resposta.message?.includes('exceto')) {
+                    Mensagem('Endereço Excluído', 'success');
+                } else {
+                    Mensagem('Operação concluída', 'success');
+                }
+
                 finalizarCadastro('selecao-enderecos2');
-                Mensagem('Erro!', 'error')
+
+                // 👉 Abre o PDF se a URL vier na resposta
+                if (response.pdf_url) {
+                    window.open(response.pdf_url, '_blank');
+                }
+
+            } else {
+                Mensagem('Erro: ' + (response.message || 'Erro inesperado'), 'error');
+                finalizarCadastro('selecao-enderecos2');
             }
         },
         error: function(xhr, status, error) {
             console.error('Erro na solicitação:', status, error);
             console.error('Resposta completa:', xhr.responseText);
+            $('#loadingModal').modal('hide');
+            Mensagem('Erro na comunicação com o servidor', 'error');
         }
     });
 }
