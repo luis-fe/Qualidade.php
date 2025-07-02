@@ -90,61 +90,70 @@ def EnderecosDisponiveis(natureza, empresa):
 
 
 # Codigo para incluir enderecos por atacado ou fazer um update por atacado
-def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite, tipo, codempresa, natureza, imprimir, enderecoReservado = ''):
-
+def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite, tipo, codempresa, natureza, imprimir, enderecoReservado=''):
     conn = ConexaoPostgreMPL.conexao()
-    query = 'insert into "Reposicao".cadendereco (codendereco, rua, modulo, posicao, tipo, codempresa, natureza, endereco_subst) ' \
-            'values (%s, %s, %s, %s, %s, %s, %s, %s )'
+    cursor = conn.cursor()
 
-    update = 'update "Reposicao".cadendereco ' \
-             ' set codendereco = %s , rua = %s , modulo = %s , posicao = %s , tipo = %s , codempresa = %s , natureza = %s , endereco_subst = %s ' \
-            ' where  codendereco = %s '
+    query = '''
+        insert into "Reposicao".cadendereco (codendereco, rua, modulo, posicao, tipo, codempresa, natureza, endereco_subst)
+        values (%s, %s, %s, %s, %s, %s, %s, %s)
+    '''
+    update = '''
+        update "Reposicao".cadendereco
+        set codendereco = %s, rua = %s, modulo = %s, posicao = %s, tipo = %s, codempresa = %s, natureza = %s, endereco_subst = %s
+        where codendereco = %s
+    '''
 
+    etiquetas_para_impressao = []
 
     r = int(rua)
     ruaLimite = int(ruaLimite) + 1
-
-    m = int(modulo)
-    moduloLimite = int(moduloLimite) +1
-
-    p = int(posicao)
-    posicaoLimite = int(posicaoLimite)+1
+    m0 = int(modulo)
+    moduloLimite = int(moduloLimite) + 1
+    p0 = int(posicao)
+    posicaoLimite = int(posicaoLimite) + 1
 
     while r < ruaLimite:
         ruaAtual = Acres_0(r)
+        m = m0
         while m < moduloLimite:
             moduloAtual = Acres_0(m)
+            p = p0
             while p < posicaoLimite:
                 posicaoAtual = Acres_0(p)
-                codendereco = ruaAtual + '-' + moduloAtual +"-"+posicaoAtual
-                cursor = conn.cursor()
-                select = pd.read_sql('select codendereco from "Reposicao".cadendereco where codendereco = %s ', conn,
-                                     params=(codendereco,))
-                if imprimir == True:
+                codendereco = f"{ruaAtual}-{moduloAtual}-{posicaoAtual}"
 
-                    #imprimirEtiquetaModel.EtiquetaPrateleira('teste.pdf', codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza)
-                    imprimirEtiquetaModel.gerar_etiquetas_pdf('teste.pdf',[(codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza)])
+                select = pd.read_sql(
+                    'select codendereco from "Reposicao".cadendereco where codendereco = %s',
+                    conn, params=(codendereco,)
+                )
 
-                    if codempresa == '1':
-                        imprimirEtiquetaModel.imprimir_pdf('teste.pdf')
-                else:
-                    print(f'sem imprimir')
+                if imprimir:
+                    etiquetas_para_impressao.append((codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza))
+
                 if select.empty:
-                    cursor.execute(query, (codendereco, ruaAtual, moduloAtual, posicaoAtual, tipo, codempresa, natureza,enderecoReservado))
-                    conn.commit()
-                    cursor.close()
+                    cursor.execute(query, (
+                        codendereco, ruaAtual, moduloAtual, posicaoAtual, tipo, codempresa, natureza, enderecoReservado
+                    ))
                 else:
+                    cursor.execute(update, (
+                        codendereco, ruaAtual, moduloAtual, posicaoAtual, tipo, codempresa, natureza,
+                        enderecoReservado, codendereco
+                    ))
 
-                    cursor.execute(update, (codendereco, ruaAtual, moduloAtual, posicaoAtual, tipo, codempresa, natureza,enderecoReservado, codendereco))
-                    conn.commit()
-
-                    cursor.close()
-                    print(f'{codendereco} ja exite')
+                conn.commit()
                 p += 1
-            p = int(posicao)
-            m +=1
-        m = int(modulo)
+            m += 1
         r += 1
+
+    cursor.close()
+    conn.close()
+
+    # Impressão em lote depois do loop
+    if imprimir and etiquetas_para_impressao:
+        imprimirEtiquetaModel.gerar_etiquetas_pdf('teste.pdf', etiquetas_para_impressao)
+        if codempresa == '1':
+            imprimirEtiquetaModel.imprimir_pdf('teste.pdf')
 
 
 
