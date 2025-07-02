@@ -17,7 +17,7 @@ def Estoque_endereco(endereco,empresa, natureza):
         return resultado[0][0]
 
 def SituacaoEndereco(endereco, empresa, natureza):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
 
     if natureza == '-':
         select = """select * from "Reposicao"."cadendereco" ce
@@ -93,7 +93,6 @@ def SituacaoEndereco(endereco, empresa, natureza):
 
 
             detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
-            conn.close()
             SaldoSku_Usuario['usuario'].fillna('-',inplace=True)
             detalhatag['nome'].fillna('-',inplace=True)
 
