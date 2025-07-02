@@ -21,7 +21,7 @@ def get_DetalhaSKU():
     # Obtém o código do usuário e a senha dos parâmetros da URL
     codreduzido = request.args.get('codreduzido')
     empresa = request.args.get('empresa','1')
-    natureza = request.args.get('natureza','5')
+    natureza = request.args.get('natureza','-')
 
     if natureza == '':
         return jsonify({'Mensagem':'natureza nao escolhida'})

@@ -5,16 +5,26 @@ import pandas as pd
 
 def detalhaSku(codreduzido, empresa,natureza):
     conn = ConexaoPostgreMPL.conexao()
-    query = """
-    SELECT "Endereco", "codreduzido", "descricao", COUNT("codreduzido") AS saldo, natureza
-    FROM "Reposicao"."tagsreposicao"
-    WHERE "codreduzido" = %s
-    AND natureza = %s
-    GROUP BY "Endereco", "codreduzido", "descricao", natureza
-    """
+    if natureza == '-':
+        query = """
+        SELECT "Endereco", "codreduzido", "descricao", COUNT("codreduzido") AS saldo, natureza
+        FROM "Reposicao"."tagsreposicao"
+        WHERE "codreduzido" = %s
+        GROUP BY "Endereco", "codreduzido", "descricao", natureza
+        """
+
+        df_op2 = pd.read_sql(query, conn, params=(codreduzido))
+    else:
+        query = """
+        SELECT "Endereco", "codreduzido", "descricao", COUNT("codreduzido") AS saldo, natureza
+        FROM "Reposicao"."tagsreposicao"
+        WHERE "codreduzido" = %s
+        AND natureza = %s
+        GROUP BY "Endereco", "codreduzido", "descricao", natureza
+        """
 
 
-    df_op2 = pd.read_sql(query, conn, params=(codreduzido, str(natureza)))
+        df_op2 = pd.read_sql(query, conn, params=(codreduzido, str(natureza)))
 
 
 
