@@ -18,19 +18,9 @@ def Estoque_endereco(endereco,empresa, natureza):
 def situacaoEndereco(endereco, empresa, natureza):
     conn = ConexaoPostgreMPL.conexaoEngine()
 
-    if natureza == '-':
-        select = """select * from "Reposicao"."cadendereco" ce
+    select = """select * from "Reposicao"."cadendereco" ce
                  where codendereco = %s """
-        resultado = pd.read_sql(select, conn, params=(endereco,))
-    else:
-
-
-
-
-        select = 'select * from "Reposicao"."cadendereco" ce ' \
-                 'where codendereco = %s ' \
-                 'and natureza = %s ' #ocultado ata o Sergio arrumar no front essa opcao !! na reposicao
-        resultado = pd.read_sql(select, conn, params=(endereco,natureza,))
+    resultado = pd.read_sql(select, conn, params=(endereco,))
 
 
 
