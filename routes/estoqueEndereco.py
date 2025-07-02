@@ -21,7 +21,7 @@ def get_DetalhaEndereco():
     # Obtém o código do endereco e a senha dos parâmetros da URL
     Endereco = request.args.get('Endereco')
     empresa = request.args.get('empresa','1')
-    natureza = request.args.get('natureza','5')
+    natureza = request.args.get('natureza','-')
 
     Endereco_det = estoqueEnderecoModel.SituacaoEndereco(Endereco, empresa, natureza)
     Endereco_det = pd.DataFrame(Endereco_det)
