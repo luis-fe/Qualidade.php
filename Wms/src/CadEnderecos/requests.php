@@ -57,16 +57,16 @@ function CadastrarEndereco($empresa, $token, $dados)
             'resposta' => $decodedApiResponse
         ];
 
-        // Adiciona o link do PDF se empresa for "4" e imprimir for true
+        // ✅ Adiciona o link do PDF se for empresa 4 e imprimir = true
         if ($empresa === "4" && isset($dados['imprimir']) && filter_var($dados['imprimir'], FILTER_VALIDATE_BOOLEAN)) {
-            $response['pdf_url'] = "http://10.162.0.191:5000/home/grupompl/Wms_InternoMPL/teste.pdf";
+            $response['pdf_url'] = "http://10.162.0.191:5000/static/teste.pdf";
         }
     }
 
     curl_close($ch);
-
     return json_encode($response);
 }
+
 
 
 function DeletarEndereco($empresa, $token, $dados) {
