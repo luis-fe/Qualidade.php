@@ -13,7 +13,7 @@ def detalhaSku(codreduzido, empresa,natureza):
         GROUP BY "Endereco", "codreduzido", "descricao", natureza
         """
 
-        df_op2 = pd.read_sql(query, conn, params=(codreduzido))
+        df_op2 = pd.read_sql(query, conn, params=(codreduzido,))
     else:
         query = """
         SELECT "Endereco", "codreduzido", "descricao", COUNT("codreduzido") AS saldo, natureza
