@@ -49,8 +49,16 @@ def SituacaoEndereco(endereco, empresa, natureza):
                                  'Status do Saldo': ['Vazio']})
         else:
             print(f'1 endereco {endereco} selecionado')
-            skus = pd.read_sql('select  count(codbarrastag) as "Saldo Geral"  from "Reposicao".tagsreposicao e '
+
+            if natureza == '-':
+                skus = pd.read_sql('select  count(codbarrastag) as "Saldo Geral"  from "Reposicao".tagsreposicao e '
+                                   'where "Endereco"= %s ', conn, params=(endereco,))
+            else:
+
+                skus = pd.read_sql('select  count(codbarrastag) as "Saldo Geral"  from "Reposicao".tagsreposicao e '
                                     'where "Endereco"= %s and natureza = %s ',conn,params=(endereco,natureza,))
+
+
             SaldoSku_Usuario = pd.read_sql('select  "Endereco", "codreduzido" as codreduzido , "usuario", count(codbarrastag) as "Saldo Sku"  from "Reposicao".tagsreposicao e '
                                     'where "Endereco"= %s and natureza = %s'
                                     'group by "Endereco", "codreduzido" , "usuario", natureza ', conn, params=(endereco,natureza,))
@@ -71,9 +79,19 @@ def SituacaoEndereco(endereco, empresa, natureza):
             skus['Status do Saldo']='Cheio'
             SaldoGeral = skus['Saldo Geral'][0]
 
-            detalhatag = pd.read_sql(
-                'select codbarrastag, "usuario", "codreduzido" as codreduzido, "DataReposicao"  from "Reposicao".tagsreposicao t '
-                'where "Endereco"= %s and natureza = %s' ,conn, params=(endereco, natureza,))
+            if natureza == '-':
+                detalhatag = pd.read_sql(
+                    'select codbarrastag, "usuario", "codreduzido" as codreduzido, "DataReposicao"  from "Reposicao".tagsreposicao t '
+                    'where "Endereco"= %s ', conn, params=(endereco,))
+                detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
+
+            else:
+
+                detalhatag = pd.read_sql(
+                    'select codbarrastag, "usuario", "codreduzido" as codreduzido, "DataReposicao"  from "Reposicao".tagsreposicao t '
+                    'where "Endereco"= %s and natureza = %s' ,conn, params=(endereco, natureza,))
+
+
             detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
             conn.close()
             SaldoSku_Usuario['usuario'].fillna('-',inplace=True)
