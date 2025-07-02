@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def Estoque_endereco(endereco,empresa, natureza):
-    conn = ConexaoPostgreMPL.conexaoEngine()
+    conn = ConexaoPostgreMPL.conexao()
     consultaSql = 'select count(codbarrastag) as "Saldo" from "Reposicao"."tagsreposicao" e ' \
                   'where "Endereco" = %s and natureza = %s ' \
                   'group by "Endereco"'
