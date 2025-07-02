@@ -5,10 +5,10 @@ import pandas as pd
 def Estoque_endereco(endereco,empresa, natureza):
     conn = ConexaoPostgreMPL.conexao()
     consultaSql = 'select count(codbarrastag) as "Saldo" from "Reposicao"."tagsreposicao" e ' \
-                  'where "Endereco" = %s and natureza = %s ' \
+                  'where "Endereco" = %s  ' \
                   'group by "Endereco"'
     cursor = conn.cursor()
-    cursor.execute(consultaSql, (endereco,natureza,))
+    cursor.execute(consultaSql, (endereco,))
     resultado = cursor.fetchall()
     if not resultado:
         return 0
