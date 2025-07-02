@@ -3,14 +3,13 @@ import pandas as pd
 
 
 def Estoque_endereco(endereco,empresa, natureza):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
     consultaSql = 'select count(codbarrastag) as "Saldo" from "Reposicao"."tagsreposicao" e ' \
                   'where "Endereco" = %s and natureza = %s ' \
                   'group by "Endereco"'
     cursor = conn.cursor()
     cursor.execute(consultaSql, (endereco,natureza,))
     resultado = cursor.fetchall()
-    cursor.close()
     if not resultado:
         return 0
     else:
@@ -37,13 +36,11 @@ def SituacaoEndereco(endereco, empresa, natureza):
 
 
     if  resultado.empty:
-        conn.close()
         print(f'3 endereco {endereco} selecionado')
         return pd.DataFrame({'Status Endereco': [False], 'Mensagem': [f'endereco {endereco} nao existe na natureza {natureza}!']})
     else:
         saldo = Estoque_endereco(endereco, empresa, natureza)
         if saldo == 0:
-            conn.close()
             print(f'2 endereco {endereco} selecionado')
             return pd.DataFrame({'Status Endereco': [True], 'Mensagem': [f'endereco {endereco} existe!'],
                                  'Status do Saldo': ['Vazio']})
@@ -110,7 +107,7 @@ def SituacaoEndereco(endereco, empresa, natureza):
             return [data]
 
 def EndereçoTag(codbarra, empresa, natureza):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
     pesquisa = pd.read_sql(
         ' select t."Endereco"  from "Reposicao".tagsreposicao t  '
         'where codbarrastag = ' + "'" + codbarra + "' and natureza = '"+natureza+"'", conn)
@@ -126,7 +123,6 @@ def EndereçoTag(codbarra, empresa, natureza):
         'where codbarrastag = ' + "'" + codbarra + "'", conn)
 
     pesquisa3['Situacao'] = f'em inventario'
-    conn.close()
 
     if not pesquisa2.empty:
         return 'Na fila ', pesquisa2
