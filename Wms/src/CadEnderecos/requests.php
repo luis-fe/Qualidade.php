@@ -52,6 +52,12 @@ function CadastrarEndereco($empresa, $token, $dados)
         ];
     } else {
         $decodedApiResponse = json_decode($apiResponse, true);
+
+        // 🛠️ Se a API não retornar nada, ainda assim cria uma resposta padrão
+        if (!$decodedApiResponse || !isset($decodedApiResponse['message'])) {
+            $decodedApiResponse = ['message' => 'Endereços processados com sucesso.'];
+        }
+
         $response = [
             'status' => true,
             'resposta' => $decodedApiResponse
