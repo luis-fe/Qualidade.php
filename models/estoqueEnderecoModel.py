@@ -71,17 +71,12 @@ def situacaoEndereco(endereco, empresa, natureza):
             skus['Status do Saldo']='Cheio'
             SaldoGeral = skus['Saldo Geral'][0]
 
-            if natureza == '-':
-                detalhatag = pd.read_sql(
+
+            detalhatag = pd.read_sql(
                     'select codbarrastag, "usuario", "codreduzido" as codreduzido, "DataReposicao"  from "Reposicao".tagsreposicao t '
                     'where "Endereco"= %s ', conn, params=(endereco,))
-                detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
 
-            else:
-
-                detalhatag = pd.read_sql(
-                    'select codbarrastag, "usuario", "codreduzido" as codreduzido, "DataReposicao"  from "Reposicao".tagsreposicao t '
-                    'where "Endereco"= %s ' ,conn, params=(endereco,))
+            detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
 
 
             detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
