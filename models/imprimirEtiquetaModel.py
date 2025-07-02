@@ -10,6 +10,7 @@ import math
 import ConexaoPostgreMPL
 import pandas as pd
 from reportlab.lib.pagesizes import A4
+from datetime import datetime
 
 
 def criar_pdf(saida_pdf, titulo, cliente, pedido, transportadora, separador, agrupamento, prioridade):
@@ -183,12 +184,26 @@ def gerar_etiquetas_pdf(saida_pdf, lista_etiquetas):
         EtiquetaPrateleira2(c, endereco, rua, modulo, posicao, natureza, x=margem_lateral, y=y)
         y -= (label_height + espaco_vertical)
 
-        # Se passar do fim da página, cria nova página
         if y < margem_topo:
             c.showPage()
             y = page_height - label_height - margem_topo
 
     c.save()
+
+
+def gerar_pdf_e_retornar_url(lista_etiquetas):
+    nome_arquivo = f"etiquetas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+    caminho_static = "/home/grupompl/Wms_InternoMPL/static"
+    caminho_pdf = os.path.join(caminho_static, nome_arquivo)
+
+    # Gera o PDF no caminho certo
+    gerar_etiquetas_pdf(caminho_pdf, lista_etiquetas)
+
+    # Retorna a URL para o front-end abrir
+    url_pdf = f"http://10.162.0.191:5000/static/{nome_arquivo}"
+    return url_pdf
+
+
 def ImprimirSeqCaixa(saida_pdf,codigo1, codigo2 ='0', codigo3='0'):
     # Configurações das etiquetas e colunas
     label_width = 7.5 * cm

@@ -1,6 +1,7 @@
 import ConexaoPostgreMPL
 import pandas as pd
-
+from datetime import datetime
+import os
 from models import imprimirEtiquetaModel
 
 
@@ -90,7 +91,9 @@ def EnderecosDisponiveis(natureza, empresa):
 
 
 # Codigo para incluir enderecos por atacado ou fazer um update por atacado
-def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite, tipo, codempresa, natureza, imprimir, enderecoReservado=''):
+def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
+                   tipo, codempresa, natureza, imprimir, enderecoReservado=''):
+
     conn = ConexaoPostgreMPL.conexao()
     cursor = conn.cursor()
 
@@ -151,10 +154,21 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
 
     # Impressão em lote depois do loop
     if imprimir and etiquetas_para_impressao:
-        imprimirEtiquetaModel.gerar_etiquetas_pdf('teste.pdf', etiquetas_para_impressao)
-        if codempresa == '1':
-            imprimirEtiquetaModel.imprimir_pdf('teste.pdf')
+        # Gera nome dinâmico do PDF
+        nome_pdf = f"etiquetas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        caminho_pdf = os.path.join('/home/grupompl/Wms_InternoMPL/static', nome_pdf)
 
+        # Gera o PDF
+        imprimirEtiquetaModel.gerar_etiquetas_pdf(caminho_pdf, etiquetas_para_impressao)
+
+        # Imprime direto se for empresa 1
+        if codempresa == '1':
+            imprimirEtiquetaModel.imprimir_pdf(caminho_pdf)
+
+        # Retorna a URL pública do PDF
+        return f"http://10.162.0.191:5000/static/{nome_pdf}"
+
+    return None
 
 
 def Acres_0(valor):
