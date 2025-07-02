@@ -81,7 +81,7 @@ def situacaoEndereco(endereco, empresa, natureza):
 
                 detalhatag = pd.read_sql(
                     'select codbarrastag, "usuario", "codreduzido" as codreduzido, "DataReposicao"  from "Reposicao".tagsreposicao t '
-                    'where "Endereco"= %s and natureza = %s' ,conn, params=(endereco, natureza,))
+                    'where "Endereco"= %s ' ,conn, params=(endereco,))
 
 
             detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
