@@ -71,7 +71,7 @@ def situacaoEndereco(endereco, empresa, natureza):
 
             detalhatag = pd.merge(detalhatag, usuarios, on='usuario', how='left')
             SaldoSku_Usuario['usuario'].fillna('-',inplace=True)
-            detalhatag['nome'].fillna('-',inplace=True)
+            #detalhatag['nome'].fillna('-',inplace=True)
 
             data = {
                 '1- Endereço': f'{endereco} ',
