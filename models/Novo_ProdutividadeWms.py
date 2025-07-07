@@ -347,7 +347,7 @@ class ProdutividadeWms:
         total = consulta['qtdPcs'].sum()
 
 
-        consulta = consulta.groupby(['nome','usuario','data']).agg({
+        consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
             'qtdPcs':"sum"
         }).reset_index()
 
