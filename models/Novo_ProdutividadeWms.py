@@ -216,7 +216,7 @@ class ProdutividadeWms:
         data_hora_atual = self.__obterHoraAtual()
 
         if not consultaSql1.empty:
-            utimaAtualizacao = consultaSql1['Datahora'][0]
+            utimaAtualizacao = consultaSql1['DataHora'][0]
 
             # Converte as strings para objetos datetime
             data1_obj = datetime.strptime(data_hora_atual, "%Y-%m-%d  %H:%M:%S")
