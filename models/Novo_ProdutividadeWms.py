@@ -190,7 +190,7 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql,conn)
 
-        consulta['id'] =  consulta.groupby('data').cumcount() + 1 + '|'+consulta['data']
+        consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|'+consulta['data']
 
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
 
