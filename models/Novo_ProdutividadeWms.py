@@ -189,7 +189,7 @@ class ProdutividadeWms:
         conn = ConexaoPostgreMPL.conexaoEngine()
 
         consulta = pd.read_sql(sql,conn)
-
+        consulta['data'] =consulta['data'].astype(str)
         consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|'+consulta['data']
 
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
