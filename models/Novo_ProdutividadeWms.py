@@ -89,6 +89,7 @@ class ProdutividadeWms:
         total = consulta['qtdCaixas'].sum()
         totalPcs = consulta['qtdPcs'].sum()
 
+        self.tempoAtualizacao = 5 * 60
         self.temporizadorConsultaProdutividadeRepositorTagCaixa()
 
         data = {
