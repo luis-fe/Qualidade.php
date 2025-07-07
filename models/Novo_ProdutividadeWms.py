@@ -163,41 +163,40 @@ class ProdutividadeWms:
 
     def temporizadorConsultaProdutividadeRepositorTagCaixa(self):
         '''Metodo que carrega e insere na tabela a Produtividade RepositorTagCaixa a cada nSegundo '''
-
-
-        sql = """
-                    SELECT
-                        rq.usuario,
-                        rq."Ncarrinho",
-                        rq.caixa,
-                        rq."DataReposicao"::date AS data,
-                        date_trunc('hour', rq."DataReposicao"::timestamp) + 
-                            INTERVAL '1 minute' * floor(date_part('minute', rq."DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
-                        count(rq.codbarrastag) AS "qtdPcs"
-                    FROM
-                        "Reposicao"."off".reposicao_qualidade rq
-                    where 
-                    	rq."DataReposicao"::date = CURRENT_DATE
-                    GROUP BY
-                        rq.usuario,
-                        rq."Ncarrinho",
-                        rq.caixa,
-                        rq."DataReposicao"::date,
-                        hora_intervalo
-                    ORDER BY
-                        data, hora_intervalo
-        """
-
-        conn = ConexaoPostgreMPL.conexaoEngine()
-
-        consulta = pd.read_sql(sql,conn)
-        consulta['data'] =consulta['data'].astype(str)
-        consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|'+consulta['data']
-
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
-
         if verificaAtualizacao == True:
             self.__exclusaoDadosProdutividadeBiparTagCaixa()
+
+            sql = """
+                        SELECT
+                            rq.usuario,
+                            rq."Ncarrinho",
+                            rq.caixa,
+                            rq."DataReposicao"::date AS data,
+                            date_trunc('hour', rq."DataReposicao"::timestamp) + 
+                                INTERVAL '1 minute' * floor(date_part('minute', rq."DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+                            count(rq.codbarrastag) AS "qtdPcs"
+                        FROM
+                            "Reposicao"."off".reposicao_qualidade rq
+                        where 
+                            rq."DataReposicao"::date = CURRENT_DATE
+                        GROUP BY
+                            rq.usuario,
+                            rq."Ncarrinho",
+                            rq.caixa,
+                            rq."DataReposicao"::date,
+                            hora_intervalo
+                        ORDER BY
+                            data, hora_intervalo
+            """
+
+            conn = ConexaoPostgreMPL.conexaoEngine()
+
+            consulta = pd.read_sql(sql,conn)
+            consulta['data'] =consulta['data'].astype(str)
+            consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|'+consulta['data']
+
+
 
             ConexaoPostgreMPL.Funcao_Inserir(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','append')
 
@@ -292,6 +291,41 @@ class ProdutividadeWms:
         agora = datetime.now(fuso_horario)
         agora = agora.strftime('%Y-%m-%d %H:%M:%S')
         return agora
+
+
+    def consultaConsultaProdutividadeRepositorTagCaixa(self):
+        '''Método que consulta a Produtivdade de RepositorTag'''
+
+        sqlMax = """
+        select
+	        max(hora_intervalo) as "Atualizado"
+        from
+	        "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+        where
+	        "data"::Date = CURRENT_DATE        
+	        """
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        max = pd.read_sql(sqlMax,conn)
+
+        if max.empty:
+            Atualizado = self.__obterHoraAtual()
+        else:
+            Atualizado = max['Atualizado'][0]
+
+
+
+
+
+        data = {
+            '0- Atualizado:':f'{Atualizado}',
+            '1- Record Repositor': f'{record["nome"][0]}',
+            '1.1- Record qtd': f'{record1}',
+            '1.2- Record data': f'{record["datareposicao"][0]}',
+            '2 Total Periodo':f'{total}',
+            '3- Ranking Repositores': TagReposicao.to_dict(orient='records')
+        }
+        return pd.DataFrame([data])
 
 
 
