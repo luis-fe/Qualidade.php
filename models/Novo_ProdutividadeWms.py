@@ -192,7 +192,7 @@ class ProdutividadeWms:
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao()
 
         if verificaAtualizacao == True:
-            ConexaoPostgreMPL.Funcao_InserirPCP(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','replace')
+            ConexaoPostgreMPL.Funcao_Inserir(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','replace')
 
 
     def __atualizaInformacaoAtualizacao(self, nomeRotina = ''):
