@@ -346,6 +346,11 @@ class ProdutividadeWms:
         consulta = pd.read_sql(sql,conn, params=(self.dataInicio, self.dataFim,))
         total = consulta['qtdPcs'].sum()
 
+
+        consulta = consulta.groupby(['nome','usuario','data']).agg({
+            'qtdPcs':"sum"
+        }).reset_index()
+
         consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']))
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
