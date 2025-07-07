@@ -176,6 +176,8 @@ class ProdutividadeWms:
                         count(rq.codbarrastag) AS "qtdPcs"
                     FROM
                         "Reposicao"."off".reposicao_qualidade rq
+                    where 
+                    	rq."DataReposicao"::date = CURRENT_DATE
                     GROUP BY
                         rq.usuario,
                         rq."Ncarrinho",
@@ -195,7 +197,27 @@ class ProdutividadeWms:
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
 
         if verificaAtualizacao == True:
-            ConexaoPostgreMPL.Funcao_Inserir(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','replace')
+            self.__exclusaoDadosProdutividadeBiparTagCaixa()
+
+            ConexaoPostgreMPL.Funcao_Inserir(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','append')
+
+
+    def __exclusaoDadosProdutividadeBiparTagCaixa(self):
+        '''Metodo que exclui os dados do dia na tabela ProdutividadeBiparTagCaixa '''
+
+
+        delete = """
+        delete 
+            FROM "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+            WHERE pbtc."data"::date = CURRENT_DATE;
+        """
+
+        with ConexaoPostgreMPL.conexao() as conn2:
+            with conn2.cursor() as curr:
+                curr.execute(delete,)
+                conn2.commit()
+
+
 
 
     def __atualizaInformacaoAtualizacao(self, nomeRotina = ''):
