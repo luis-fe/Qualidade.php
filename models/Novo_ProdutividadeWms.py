@@ -335,6 +335,9 @@ class ProdutividadeWms:
 				*
 			from
 				"Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+			join 	
+                "Reposicao"."Reposicao".cadusuarios c 
+                on c.codigo::varchar = pbtc.usuario 
 			where
 				pbtc."data" >= %s
 				and pbtc."data" <= %s
