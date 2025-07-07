@@ -351,7 +351,7 @@ class ProdutividadeWms:
             'qtdPcs':"sum"
         }).reset_index()
 
-        consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']))
+        consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']),2)
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
         consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
