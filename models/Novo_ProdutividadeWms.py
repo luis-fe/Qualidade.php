@@ -366,7 +366,7 @@ class ProdutividadeWms:
         consulta = consulta.sort_values(by=['qtdPcs'],
                                         ascending=False)  # escolher como deseja classificar
 
-        consulta.rename(columns={'qtdPcs': 'qtde'},
+        consulta.rename(columns={'qtdPcs': 'qtde',"Ritmo":"ritmo"},
                                  inplace=True)
 
         data = {
