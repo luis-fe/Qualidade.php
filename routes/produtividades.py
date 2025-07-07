@@ -1,5 +1,5 @@
 import models.Dashboards.Produtividades
-from models import produtividadeModel
+from models import produtividadeModel, Novo_ProdutividadeWms
 from flask import Blueprint, jsonify, request
 from functools import wraps
 import pandas as pd
@@ -24,16 +24,17 @@ def get_TagsReposicao():
     data_final = request.args.get('DataFinal','0')
     horarioInicial = request.args.get('horarioInicial', '01:00:00')
     horarioFinal = request.args.get('horarioFinal', '23:59:00')
+    codEmpresa = request.args.get('codEmpresa', '1')
     #Relatorios.RelatorioSeparadoresLimite(10)
-    TagReposicao = produtividadeModel.ProdutividadeRepositores(data_inicial,data_final, horarioInicial , horarioFinal)
-    TagReposicao = pd.DataFrame(TagReposicao)
 
+
+    consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final).consultaConsultaProdutividadeRepositorTagCaixa()
 
     # Obtém os nomes das colunas
-    column_names = TagReposicao.columns
+    column_names = consulta.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
     pedidos_data = []
-    for index, row in TagReposicao.iterrows():
+    for index, row in consulta.iterrows():
         pedidos_dict = {}
         for column_name in column_names:
             pedidos_dict[column_name] = row[column_name]

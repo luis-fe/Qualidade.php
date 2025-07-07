@@ -313,19 +313,73 @@ class ProdutividadeWms:
         else:
             Atualizado = max['Atualizado'][0]
 
+        sqlConsultaRecord= """
+        select
+	        pbtc."data", "usuario", sum("qtdPcs")as producao, c.nome
+        from
+	        "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+	    join 	
+	    	"Reposicao"."Reposicao".cadusuarios c 
+	    	on c.codigo::varchar = pbtc.usuario 
+	    group by 
+	    	pbtc."data", "usuario", c.nome
+	    order by 
+	    	producao desc limit 1
+        """
+
+        consultaRecord = pd.read_sql(sqlConsultaRecord,conn)
 
 
+        sql = """
+                   select
+				*
+			from
+				"Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+			where
+				pbtc."data" >= %s
+				and pbtc."data" <= %s
+        """
 
+        consulta = pd.read_sql(sql,conn, params=(self.dataInicio, self.dataFim,))
+        total = consulta['qtdPcs'].sum()
+
+        consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']))
+        consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
+
+        consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
+
+        # ritmoApurado: média parcial acumulada do ritmo
+        consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
+
+        # apuradoGeral: média final do ritmo por usuário
+        media_geral = consulta.groupby('usuario')['ritmo'].transform('mean')
+        consulta['Ritmo'] = media_geral
+
+
+        consulta = consulta.groupby(['nome','usuario']).agg({
+            'qtdPcs':"sum",
+            'Ritmo':"first"
+        }).reset_index()
+        consulta = consulta.sort_values(by=['qtdPcs'],
+                                        ascending=False)  # escolher como deseja classificar
+
+        consulta.rename(columns={'qtdPcs': 'qtde'},
+                                 inplace=True)
 
         data = {
             '0- Atualizado:':f'{Atualizado}',
-            '1- Record Repositor': f'{record["nome"][0]}',
-            '1.1- Record qtd': f'{record1}',
-            '1.2- Record data': f'{record["datareposicao"][0]}',
+            '1- Record Repositor': f'{consultaRecord["nome"][0]}',
+            '1.1- Record qtd': f'{consultaRecord["producao"][0]}',
+            '1.2- Record data': f'{consultaRecord["data"][0]}',
             '2 Total Periodo':f'{total}',
-            '3- Ranking Repositores': TagReposicao.to_dict(orient='records')
+            '3- Ranking Repositores': consulta.to_dict(orient='records')
         }
+
         return pd.DataFrame([data])
+
+
+
+
 
 
 
