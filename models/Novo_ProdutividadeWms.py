@@ -190,7 +190,7 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql,conn)
 
-        verificaAtualizacao = self.__atualizaInformacaoAtualizacao()
+        verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
 
         if verificaAtualizacao == True:
             ConexaoPostgreMPL.Funcao_Inserir(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','replace')
