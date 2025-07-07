@@ -1,15 +1,17 @@
 import pandas as pd
 import pytz
 from datetime import datetime
+
+import ConexaoPostgreMPL
 from connection import WmsConnectionClass
 
 
 class ProdutividadeWms:
-    '''Classe responsável pela interação com a produtividade do WMS'''
+    '''Classe responsável pela interação com a produtividade do WMS, com as regras e consultas '''
 
     def __init__(self, codEmpresa=None, codUsuarioCargaEndereco=None,
                  endereco=None, qtdPcs=0, codNatureza=None,
-                 dataInicio='', dataFim = ''):
+                 dataInicio='', dataFim = '', tempoAtualizacao = None):
         self.codEmpresa = codEmpresa
         self.codUsuarioCargaEndereco = codUsuarioCargaEndereco
         self.endereco = endereco
@@ -18,6 +20,7 @@ class ProdutividadeWms:
         self.dataHora = self.__obterDataHoraSystem()
         self.dataInicio = dataInicio
         self.dataFim = dataFim
+        self.tempoAtualizacao = tempoAtualizacao
 
     def inserirProducaoCarregarEndereco(self):
         '''Método que insere a produtividade na ação de recarregar endereço do WMS'''
@@ -86,6 +89,8 @@ class ProdutividadeWms:
         total = consulta['qtdCaixas'].sum()
         totalPcs = consulta['qtdPcs'].sum()
 
+        self.temporizadorConsultaProdutividadeRepositorTagCaixa()
+
         data = {
             '0- Atualizado:':f'{Atualizado}',
             '1- Record': f'{record["nome"][0]}',
@@ -130,6 +135,146 @@ class ProdutividadeWms:
         consulta = pd.read_sql(sql, conn, params=(self.codEmpresa, ))
 
         return consulta
+
+
+    def __inserir_produtividadeRepositorTagCaixa(self):
+        '''Metodo que armazena a produtividade do repositor de tags inserida na caixa '''
+
+
+        sql = """
+            INSERT INTO 
+                "Reposicao"."ProducaoeRepositorTagCaixa"
+                ("codEmpresa", "usuario_repositorTAG", "dataHora", "NCaixa", "qtdPcs", "codNatureza")
+            VALUES 
+                (%s, %s, %s, %s, %s, %s)
+        """
+
+        with WmsConnectionClass.WmsConnectionClass(self.codEmpresa).conexao() as conn:
+            with conn.cursor() as curr:
+                curr.execute(
+                    sql,
+                    (self.codEmpresa, self.codUsuarioCargaEndereco, self.dataHora, self.endereco, self.qtdPcs,
+                     self.codNatureza)
+                )
+                conn.commit()
+
+        return {'Status': True, 'Mensagem': 'Produtividade inserida com sucesso!'}
+
+    def temporizadorConsultaProdutividadeRepositorTagCaixa(self):
+        '''Metodo que carrega e insere na tabela a Produtividade RepositorTagCaixa a cada nSegundo '''
+
+
+        sql = """
+                    SELECT
+                        rq.usuario,
+                        rq."Ncarrinho",
+                        rq.caixa,
+                        rq."DataReposicao"::date AS data,
+                        date_trunc('hour', rq."DataReposicao"::timestamp) + 
+                            INTERVAL '1 minute' * floor(date_part('minute', rq."DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+                        count(rq.codbarrastag) AS "qtdPcs"
+                    FROM
+                        "Reposicao"."off".reposicao_qualidade rq
+                    GROUP BY
+                        rq.usuario,
+                        rq."Ncarrinho",
+                        rq.caixa,
+                        rq."DataReposicao"::date,
+                        hora_intervalo
+                    ORDER BY
+                        data, hora_intervalo
+        """
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+
+        consulta = pd.read_sql(sql,conn)
+
+        verificaAtualizacao = self.__atualizaInformacaoAtualizacao()
+
+        if verificaAtualizacao == True:
+            ConexaoPostgreMPL.Funcao_InserirPCP(consulta,consulta['Ncarrinho'].size,'ProdutividadeBiparTagCaixa','replace')
+
+
+    def __atualizaInformacaoAtualizacao(self, nomeRotina = ''):
+        '''Metodo que atualiza no banco de Dados Postgres a data da atualizacao '''
+
+        sqlConsulta = """
+        select 
+            * 
+        from 
+            "Produtividade"."ControleAutomacaoProdutividade"
+        where
+            "Rotina" = %s
+        """
+
+        sqlInsert = """
+        insert into "Produtividade"."ControleAutomacaoProdutividade" ("Rotina", "DataHora") values (%s , %s)
+        """
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        consultaSql1 = pd.read_sql(sqlConsulta, conn ,params=(nomeRotina,))
+        data_hora_atual = self.__obterHoraAtual()
+
+        if not consultaSql1.empty:
+            utimaAtualizacao = consultaSql1['Datahora'][0]
+
+            # Converte as strings para objetos datetime
+            data1_obj = datetime.strptime(data_hora_atual, "%Y-%m-%d  %H:%M:%S")
+            data2_obj = datetime.strptime(utimaAtualizacao, "%Y-%m-%d  %H:%M:%S")
+
+            # Calcula a diferença entre as datas
+            diferenca = data1_obj - data2_obj
+
+            # Obtém a diferença em dias como um número inteiro
+            diferenca_em_dias = diferenca.days
+
+            # Obtém a diferença total em segundos
+            diferenca_total_segundos = diferenca.total_seconds()
+
+            if diferenca_total_segundos >= self.tempoAtualizacao:
+
+                with ConexaoPostgreMPL.conexao() as conn2:
+                    with conn2.cursor() as curr:
+
+                        curr.execute(sqlInsert,(nomeRotina, data_hora_atual))
+                        conn2.commit()
+
+                return True
+
+            else:
+                return False
+
+
+        else :
+
+            with ConexaoPostgreMPL.conexao() as conn2:
+                with conn2.cursor() as curr:
+                    curr.execute(sqlInsert, (nomeRotina, data_hora_atual))
+                    conn2.commit()
+
+            return True
+
+
+
+    def __obterHoraAtual(self):
+        '''Metodo Privado que retorna a Data Hora do Sistema Operacional'''
+        fuso_horario = pytz.timezone('America/Sao_Paulo')  # Define o fuso horário do Brasil
+        agora = datetime.now(fuso_horario)
+        agora = agora.strftime('%Y-%m-%d %H:%M:%S')
+        return agora
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
