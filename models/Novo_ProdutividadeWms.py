@@ -209,7 +209,12 @@ class ProdutividadeWms:
         """
 
         sqlInsert = """
-        insert into "Produtividade"."ControleAutomacaoProdutividade" ("Rotina", "DataHora") values (%s , %s)
+        update 
+            "Produtividade"."ControleAutomacaoProdutividade" 
+        set
+             "DataHora" = %s
+        where
+            "Rotina" = %s
         """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
@@ -237,7 +242,7 @@ class ProdutividadeWms:
                 with ConexaoPostgreMPL.conexao() as conn2:
                     with conn2.cursor() as curr:
 
-                        curr.execute(sqlInsert,(nomeRotina, data_hora_atual))
+                        curr.execute(sqlInsert,(data_hora_atual, nomeRotina))
                         conn2.commit()
 
                 return True
@@ -250,7 +255,7 @@ class ProdutividadeWms:
 
             with ConexaoPostgreMPL.conexao() as conn2:
                 with conn2.cursor() as curr:
-                    curr.execute(sqlInsert, (nomeRotina, data_hora_atual))
+                    curr.execute(sqlInsert, (data_hora_atual, nomeRotina))
                     conn2.commit()
 
             return True
