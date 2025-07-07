@@ -355,7 +355,7 @@ class ProdutividadeWms:
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
 
         # apuradoGeral: média final do ritmo por usuário
-        media_geral = consulta.groupby('usuario')['ritmo'].transform('mean')
+        media_geral = round(consulta.groupby('usuario')['ritmo'].transform('mean'))
         consulta['Ritmo'] = media_geral
 
 
