@@ -190,6 +190,8 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql,conn)
 
+        consulta['id'] =   consulta.index + 1
+
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
 
         if verificaAtualizacao == True:
