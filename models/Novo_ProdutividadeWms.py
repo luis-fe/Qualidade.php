@@ -362,6 +362,7 @@ class ProdutividadeWms:
         # apuradoGeral: média final do ritmo por usuário
         media_geral = round(consulta.groupby('usuario')['ritmo'].transform('mean'),2)
         consulta['Ritmo'] = media_geral
+        consulta['Ritmo2'] = consulta.groupby('usuario')['ritimoAcum'].max()/consulta.groupby('usuario')['parcial'].max()
 
 
         consulta = consulta.groupby(['nome','usuario']).agg({
