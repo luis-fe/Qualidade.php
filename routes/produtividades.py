@@ -4,6 +4,8 @@ from flask import Blueprint, jsonify, request
 from functools import wraps
 import pandas as pd
 
+from models.configuracoes import empresaConfigurada
+
 produtividade_routes = Blueprint('produtividade', __name__)
 
 def token_required(f): # TOKEN FIXO PARA ACESSO AO CONTEUDO
@@ -24,11 +26,15 @@ def get_TagsReposicao():
     data_final = request.args.get('DataFinal','0')
     horarioInicial = request.args.get('horarioInicial', '01:00:00')
     horarioFinal = request.args.get('horarioFinal', '23:59:00')
-    codEmpresa = request.args.get('codEmpresa', '1')
     #Relatorios.RelatorioSeparadoresLimite(10)
+    codEmpresa = empresaConfigurada.EmpresaEscolhida()
 
-
-    consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final).consultaConsultaProdutividadeRepositorTagCaixa()
+    if codEmpresa == '1':
+        consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final).consultaConsultaProdutividadeRepositorTagCaixa()
+    else:
+        consulta = produtividadeModel.ProdutividadeRepositores(data_inicial, data_final, horarioInicial,
+                                                                   horarioFinal)
+        consulta = pd.DataFrame(consulta)
 
     # Obtém os nomes das colunas
     column_names = consulta.columns
