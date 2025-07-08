@@ -192,7 +192,7 @@ def ExcuindoPedidosNaoEncontrados(empresa):
 
         # Acessando os pedidos com enderecos reservados
         queue = """Delete from "Reposicao".filaseparacaopedidos
-                            where codigopedido = %s and codtiponota = %s and codigopedido not like '%FAKE%' """
+                            where codigopedido = %s and codtiponota = %s """
 
 
         cursor = conn2.cursor()
