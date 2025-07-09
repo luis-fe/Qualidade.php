@@ -218,8 +218,8 @@ include("../../../templates/Loading.php");
                         <th scope="col">Tipo<br>Nota</br></th>
                         <th scope="col">Data<br>Sugestão</br></th>
                         <th scope="col">Quant.<br>Peças</br></th>
-                        <th scope="col">% Reposto</th>
-                        <th scope="col">% Separado</th>
+                        <th scope="col">%<br>Reposto</br></th>
+                        <th scope="col">%<br>Separado</br></th>
                         <th scope="col">Valor R$</th>
                         <th scope="col">Pedidos Agrupados</th>
                         <th scope="col">UF</th>
