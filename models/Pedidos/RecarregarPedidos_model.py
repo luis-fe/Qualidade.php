@@ -31,10 +31,6 @@ def obter_notaCsw():
 
 def RecarregarPedidos(empresa):
         '''Metodo utilizado para recarregar os pedidos no WMS '''
-
-
-
-
         pedidos_Csw = Pedidos_Csw.Pedidos_Csw(empresa)
 
         conn = ConexaoCSW.Conexao()
@@ -61,8 +57,11 @@ def RecarregarPedidos(empresa):
 
         SugestoesAbertos = pd.merge(SugestoesAbertos, PedidosSituacao, on='codPedido', how='left')
 
-        # Nessa Etapa é realizado uma consuta Sql para obter os pedidos que estão em prontos para faturar , conhecido popularmente como "RETORNA".
+        # Nessa Etapa é realizado uma consuta Sql para obter os pedidos que estão  prontos para faturar , conhecido popularmente como "RETORNA".
         CapaPedido = pedidos_Csw.obter_fila_pedidos_nivel_capa()
+        obsCapaPedido = pedidos_Csw.get_clientes_Pedidos_revisar()
+        CapaPedido = pd.merge(CapaPedido,obsCapaPedido,on= 'codCliente', how = 'left')
+        CapaPedido['obs'].fillna('-',inplace=True)
 
         SugestoesAbertos = pd.merge(SugestoesAbertos,CapaPedido,on= 'codPedido2', how = 'left')
         SugestoesAbertos.rename(columns={'codPedido': 'codigopedido', 'vlrSugestao': 'vlrsugestao'
