@@ -21,7 +21,7 @@ def FilaPedidos(empresa):
     conn = ConexaoPostgreMPL.conexaoEngine()
     pedido = pd.read_sql(
         ' select f.codigopedido , f.vlrsugestao, f.codcliente , f.desc_cliente, f.cod_usuario, f.cidade, f.estado, '
-        'datageracao, f.codrepresentante , f.desc_representante, f.desc_tiponota, condicaopgto, agrupamentopedido, situacaopedido, prioridade  '
+        'datageracao, f.codrepresentante , f.desc_representante, f.desc_tiponota, condicaopgto, agrupamentopedido, situacaopedido, prioridade, obs  '
         '  from "Reposicao".filaseparacaopedidos f '
          , conn)
     naturezaPedido = pd.read_sql("select desc_tiponota, natureza from configuracoes.tiponota_nat ", conn)
