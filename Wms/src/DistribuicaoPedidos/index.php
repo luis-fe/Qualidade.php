@@ -215,9 +215,9 @@ include("../../../templates/Loading.php");
                         <th><input type="checkbox" id="selectAllCheckbox"></th>
                         <th scope="col">Pedido</th>
                         <th scope="col">Usuário Atribuído</th>
-                        <th scope="col">Tipo de Nota</th>
-                        <th scope="col">Data de Sugestão</th>
-                        <th scope="col">Quantidade de Peças</th>
+                        <th scope="col">Tipo Nota</th>
+                        <th scope="col">Data Sugestão</th>
+                        <th scope="col">Quantidade Peças</th>
                         <th scope="col">% Reposto</th>
                         <th scope="col">% Separado</th>
                         <th scope="col">Valor R$</th>
@@ -226,6 +226,7 @@ include("../../../templates/Loading.php");
                         <th scope="col">Situação Pedido</th>
                         <th scope="col">Marca</th>
                         <th scope="col">Prioridade</th>
+                        <th scope="col">obs</th>
                         <th scope="col">Transportadora</th>
                     </tr>
                 </thead>
@@ -431,6 +432,9 @@ include("../../../templates/Loading.php");
                 },
                 {
                     data: 'prioridade'
+                },
+                {
+                    data: 'obs'
                 },
                 {
                     data: '23-transportadora'
