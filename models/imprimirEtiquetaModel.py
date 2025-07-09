@@ -13,7 +13,7 @@ from reportlab.lib.pagesizes import A4
 from datetime import datetime
 
 
-def criar_pdf(saida_pdf, titulo, cliente, pedido, transportadora, separador, agrupamento, prioridade):
+def criar_pdf(saida_pdf, titulo, cliente, pedido, transportadora, separador, agrupamento, prioridade, obs = ''):
     # Configurações das etiquetas e colunas
     label_width = 7.5 * cm
     label_height = 1.8 * cm
@@ -51,7 +51,7 @@ def criar_pdf(saida_pdf, titulo, cliente, pedido, transportadora, separador, agr
         c.drawString(0.3 * cm, 0.50 * cm, transportadora)
 
         c.setFont("Helvetica-Bold", 8)
-        c.drawString(0.3 * cm, 0.1 * cm, separador+'     '+prioridade)
+        c.drawString(0.3 * cm, 0.1 * cm, separador+'    '+prioridade+obs)
 
 
 

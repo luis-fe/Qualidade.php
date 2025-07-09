@@ -217,7 +217,7 @@ def InformacaoImpresao(pedido):
     conn = ConexaoPostgreMPL.conexao()
 
     pedido = pd.read_sql('select codigopedido, desc_cliente as cliente, codcliente, cod_usuario, cidade, estado, agrupamentopedido,'
-                         ' prioridade from "Reposicao".filaseparacaopedidos f '
+                         ' prioridade, obs from "Reposicao".filaseparacaopedidos f '
                          'where codigopedido = %s',conn,params=(pedido,))
 
     pedido['agrupamentopedido'] = pedido.apply(lambda row: '-' if row['codigopedido'] == row['agrupamentopedido'] else row['agrupamentopedido'], axis=1)
