@@ -214,16 +214,16 @@ include("../../../templates/Loading.php");
                     <tr>
                         <th><input type="checkbox" id="selectAllCheckbox"></th>
                         <th scope="col">Pedido</th>
-                        <th scope="col">Usuário Atribuído</th>
-                        <th scope="col">Tipo Nota</th>
+                        <th scope="col">Usuário<br>Atribuído</br></th>
+                        <th scope="col">Tipo<br>Nota</br></th>
                         <th scope="col">Data Sugestão</th>
-                        <th scope="col">Quantidade Peças</th>
+                        <th scope="col">Quant.<br>Peças</br></th>
                         <th scope="col">% Reposto</th>
                         <th scope="col">% Separado</th>
                         <th scope="col">Valor R$</th>
                         <th scope="col">Pedidos Agrupados</th>
                         <th scope="col">Estado</th>
-                        <th scope="col">Situação Pedido</th>
+                        <th scope="col">Situação<br>Pedido</br></th>
                         <th scope="col">Marca</th>
                         <th scope="col">Prioridade</th>
                         <th scope="col">obs</th>
