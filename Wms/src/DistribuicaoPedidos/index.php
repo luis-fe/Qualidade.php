@@ -669,7 +669,7 @@ include("../../../templates/Loading.php");
 
    function marcarLinhasDuplicadas() {
         const valoresContados = {};
-        const colunaDesejada = 9;
+        const colunaDesejada = 10;
 
         // Primeira passagem para contar os valores
         $('#TablePedidos tr').each(function(index) {
