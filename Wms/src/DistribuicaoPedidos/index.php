@@ -220,12 +220,12 @@ include("../../../templates/Loading.php");
                         <th scope="col">Quant.<br>Peças</br></th>
                         <th scope="col">%<br>Reposto</br></th>
                         <th scope="col">%<br>Separado</br></th>
+                        <th scope="col">Priorid.</th>
                         <th scope="col">Valor<br>R$</br></th>
                         <th scope="col">Pedidos Agrupados</th>
                         <th scope="col">UF</th>
                         <th scope="col">Situação<br>Pedido</br></th>
                         <th scope="col">Marca</th>
-                        <th scope="col">Priorid.</th>
                         <th scope="col">obs</th>
                         <th scope="col">Transportadora</th>
                     </tr>
@@ -415,6 +415,9 @@ include("../../../templates/Loading.php");
                 {
                     data: '20-Separado%'
                 },
+                                {
+                    data: 'prioridade'
+                },
                 {
                     data: '12-vlrsugestao'
                 },
@@ -430,9 +433,7 @@ include("../../../templates/Loading.php");
                 {
                     data: '21-MARCA'
                 },
-                {
-                    data: 'prioridade'
-                },
+
                 {
                     data: 'obs'
                 },
