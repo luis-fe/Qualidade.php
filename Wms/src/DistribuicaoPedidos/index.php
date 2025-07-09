@@ -655,7 +655,7 @@ include("../../../templates/Loading.php");
     }
 
     function PintarPedidosUrgentes() {
-        const colunaDesejada = 13;
+        const colunaDesejada = 8;
 
         $('#TablePedidos tr').each(function(index) {
             if (index > 0) {
