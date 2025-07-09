@@ -249,7 +249,7 @@ def InformacaoImpresao(pedido):
     pedido.fillna(' - ', inplace=True)
 
 
-    return codigoCliente, pedido['cliente'][0],pedido['separador'][0],pedido['transportadora'][0],pedido['agrupamentopedido'][0], pedido['prioridade'][0]
+    return codigoCliente, pedido['cliente'][0],pedido['separador'][0],pedido['transportadora'][0],pedido['agrupamentopedido'][0], pedido['prioridade'][0], pedido['obs'][0]
 #
 def PrioridadePedido(pedidos):
 
