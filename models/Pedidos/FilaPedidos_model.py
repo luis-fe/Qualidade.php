@@ -20,9 +20,30 @@ def obterHoraAtual():
 def FilaPedidos(empresa):
     conn = ConexaoPostgreMPL.conexaoEngine()
     pedido = pd.read_sql(
-        ' select f.codigopedido , f.vlrsugestao, f.codcliente , f.desc_cliente, f.cod_usuario, f.cidade, f.estado, '
-        'datageracao, f.codrepresentante , f.desc_representante, f.desc_tiponota, condicaopgto, agrupamentopedido, situacaopedido, prioridade, obs  '
-        '  from "Reposicao".filaseparacaopedidos f '
+        """
+        SELECT 
+            f.codigopedido, 
+            f.vlrsugestao, 
+            f.codcliente, 
+            f.desc_cliente, 
+            f.cod_usuario, 
+            f.cidade, 
+            f.estado, 
+            f.datageracao, 
+            f.codrepresentante, 
+            f.desc_representante, 
+            f.desc_tiponota, 
+            f.condicaopgto, 
+            f.agrupamentopedido, 
+            f.situacaopedido, 
+            CASE 
+                WHEN f.obs = 'REVISAR' THEN COALESCE(f.prioridade, '') || '-' || f.obs
+                ELSE f.prioridade 
+            END AS prioridade, 
+            f.obs 
+        FROM 
+            "Reposicao".filaseparacaopedidos f;
+        """
          , conn)
     naturezaPedido = pd.read_sql("select desc_tiponota, natureza from configuracoes.tiponota_nat ", conn)
     pedido = pd.merge(pedido, naturezaPedido, on="desc_tiponota", how='left')
