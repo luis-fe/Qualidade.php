@@ -48,14 +48,10 @@ def criar_pdf(saida_pdf, titulo, cliente, pedido, transportadora, separador, agr
         c.setFont("Helvetica", 9)
         c.drawString(0.3 * cm, 1.1 * cm, "Nº Cliente:")
         c.drawString(0.3 * cm, 0.8 * cm, "Nº Pedido:")
-        c.drawString(0.3 * cm, 0.50 * cm, transportadora)
+        c.drawString(0.3 * cm, 0.50 * cm, obs)
 
         c.setFont("Helvetica-Bold", 8)
-        c.drawString(0.3 * cm, 0.1 * cm, separador+' '+prioridade+' '+obs)
-
-
-
-
+        c.drawString(0.3 * cm, 0.1 * cm, separador+' '+prioridade)
 
         c.drawString(2.0 * cm, 1.1 * cm, cliente)
         c.drawString(2.0 * cm, 0.8 * cm, pedido)
