@@ -7,13 +7,15 @@ class Pedidos_Csw():
     '''Classe utilizado para obter informacoes referente a Pedidos junto ao CSW,
         obtendo a informacao para o WMS '''
     def __init__(self, codEmpresa = '1', codCliente = '',
-                 desc_cliente = '', codRepresent = '',desc_representante=''):
+                 desc_cliente = '', codRepresent = '',desc_representante='', cidade = '', estado = ''):
 
         self.codEmpresa = str(codEmpresa)
         self.codCliente = str(codCliente)
         self.desc_cliente = desc_cliente
         self.codRepresent = str(codRepresent)
         self.desc_representante = desc_representante
+        self.cidade = cidade
+        self.estado = estado
 
 
     def obter_fila_pedidos_nivel_capa(self):
