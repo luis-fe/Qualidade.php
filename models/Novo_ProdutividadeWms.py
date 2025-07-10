@@ -313,9 +313,12 @@ class ProdutividadeWms:
         else:
             Atualizado = max['Atualizado'][0]
 
-        sqlConsultaRecord= """
+        sqlConsultaRecord= f"""
         select
-	        pbtc."data", "usuario", sum("qtdPcs")as producao, c.nome
+	        pbtc."data", 
+	        "usuario", 
+	        sum("qtdPcs")as producao, 
+	        c.nome
         from
 	        "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
 	    join 	
@@ -350,6 +353,8 @@ class ProdutividadeWms:
         consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
             'qtdPcs':"sum"
         }).reset_index()
+
+        print(consulta)
 
         consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']),2)
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()

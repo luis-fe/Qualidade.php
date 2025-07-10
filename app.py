@@ -13,8 +13,10 @@ from models.configuracoes import empresaConfigurada
 from routes import routes_blueprint
 
 app = Flask(__name__) ## Aqui é criado essa funcao para iniciar o Projeto
-port = int(os.environ.get('PORT', 5000)) # A porta escolhida para rodar a Aplicacao é a 5000.
-load_dotenv('/home/grupompl/Wms_InternoMPL/db.env')
+load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+
+PORTA_APLICATION = os.getenv('PORTA_APLICATION')
+port = int(os.environ.get('PORT', PORTA_APLICATION)) # A porta escolhida para rodar a Aplicacao é a 5000.
 
 
 #Aqui registo todas as rotas , url's DO PROJETO, para acessar bastar ir na pasta "routes",
