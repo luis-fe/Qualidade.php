@@ -360,11 +360,11 @@ class ProdutividadeWms:
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
         consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
-        print(consulta)
 
 
         # ritmoApurado: média parcial acumulada do ritmo
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
+        print(consulta)
 
         # apuradoGeral: média final do ritmo por usuário
         media_geral = round(consulta.groupby('usuario')['ritmo'].transform('mean'),2)
