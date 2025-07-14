@@ -396,6 +396,8 @@ class ProdutividadeWms:
         consulta.rename(columns={'qtdPcs': 'qtde',"Ritmo":"ritmo"},
                                  inplace=True)
 
+        consulta.fillna('-',inplace=True)
+
         data = {
             '0- Atualizado:':f'{Atualizado}',
             '1- Record Repositor': f'{consultaRecord["nome"][0]}',
