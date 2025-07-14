@@ -188,7 +188,29 @@ class ProdutividadeWms:
                             hora_intervalo
                         ORDER BY
                             data, hora_intervalo
-            """
+                        UNION
+                        select
+                            usuario,
+                            'inventario/transf' as "Ncarrinho",
+                            "numeroop" as "caixa",
+                            "DataReposicao"::date AS data,
+                            date_trunc('hour', "DataReposicao"::timestamp) + 
+                                                        INTERVAL '1 minute' * floor(date_part('minute', "DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+                            count(codbarrastag) AS "qtdPcs"
+                        from
+                            "Reposicao"."Reposicao".tagsreposicao t 
+                        where
+                            (proveniencia  not like 'Veio%' or proveniencia  is null)
+                            and "DataReposicao"::date = CURRENT_DATE
+                            GROUP BY
+                                                    t.usuario,
+                                                    "Ncarrinho",
+                                                    caixa,
+                                                    t."DataReposicao"::date,
+                                                    hora_intervalo
+                                                ORDER BY
+                                                    data, hora_intervalo
+                                    """
 
             conn = ConexaoPostgreMPL.conexaoEngine()
 
