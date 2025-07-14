@@ -170,46 +170,46 @@ class ProdutividadeWms:
             self.__exclusaoDadosProdutividadeBiparTagCaixa()
 
             sql = """
-                        SELECT
-                            rq.usuario,
-                            rq."Ncarrinho",
-                            rq.caixa,
-                            rq."DataReposicao"::date AS data,
-                            date_trunc('hour', rq."DataReposicao"::timestamp) + 
-                                INTERVAL '1 minute' * floor(date_part('minute', rq."DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
-                            count(rq.codbarrastag) AS "qtdPcs"
-                        FROM
-                            "Reposicao"."off".reposicao_qualidade rq
-                        where 
-                            rq."DataReposicao"::date = CURRENT_DATE
-                        GROUP BY
-                            rq.usuario,
-                            rq."Ncarrinho",
-                            rq.caixa,
-                            rq."DataReposicao"::date,
-                            hora_intervalo
-                        UNION
-                        select
-                            usuario,
-                            'inventario/transf' as "Ncarrinho",
-                            "numeroop" as "caixa",
-                            "DataReposicao"::date AS data,
-                            date_trunc('hour', "DataReposicao"::timestamp) + 
-                                                        INTERVAL '1 minute' * floor(date_part('minute', "DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
-                            count(codbarrastag) AS "qtdPcs"
-                        from
-                            "Reposicao"."Reposicao".tagsreposicao t 
-                        where
-                            (proveniencia  not like 'Veio%' or proveniencia  is null)
-                            and "DataReposicao"::date = CURRENT_DATE
-                            GROUP BY
-                                                    t.usuario,
-                                                    "Ncarrinho",
-                                                    caixa,
-                                                    t."DataReposicao"::date,
-                                                    hora_intervalo
-                                                ORDER BY
-                                                    data, hora_intervalo
+                       SELECT
+        rq.usuario,
+        rq."Ncarrinho",
+        rq.caixa,
+        rq."DataReposicao"::date AS data,
+        date_trunc('hour', rq."DataReposicao"::timestamp) + 
+            INTERVAL '1 minute' * floor(date_part('minute', rq."DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+        count(rq.codbarrastag) AS "qtdPcs"
+    FROM
+        "Reposicao"."off".reposicao_qualidade rq
+    WHERE 
+        rq."DataReposicao"::date = CURRENT_DATE
+    GROUP BY
+        rq.usuario,
+        rq."Ncarrinho",
+        rq.caixa,
+        rq."DataReposicao"::date,
+        hora_intervalo
+    UNION
+    SELECT
+        usuario,
+        'inventario/transf' AS "Ncarrinho",
+        "numeroop" AS "caixa",
+        "DataReposicao"::date AS data,
+        date_trunc('hour', "DataReposicao"::timestamp) + 
+            INTERVAL '1 minute' * floor(date_part('minute', "DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+        count(codbarrastag) AS "qtdPcs"
+    FROM
+        "Reposicao"."Reposicao".tagsreposicao t 
+    WHERE
+        (proveniencia NOT LIKE '%%Veio%%' OR proveniencia IS NULL)
+        AND "DataReposicao"::date = CURRENT_DATE
+    GROUP BY
+        t.usuario,
+        "Ncarrinho",
+        caixa,
+        t."DataReposicao"::date,
+        hora_intervalo
+    ORDER BY
+        data, hora_intervalo
                                     """
 
             conn = ConexaoPostgreMPL.conexaoEngine()
