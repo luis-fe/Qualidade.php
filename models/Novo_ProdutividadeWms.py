@@ -365,6 +365,8 @@ class ProdutividadeWms:
         # ritmoApurado: média parcial acumulada do ritmo
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
         #print(consulta)
+        # Criar coluna com "bloco de 10 minutos"
+        consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
         print(consulta[consulta['usuario']=='2323'])
 
         # apuradoGeral: média final do ritmo por usuário
