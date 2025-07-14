@@ -355,6 +355,7 @@ class ProdutividadeWms:
         }).reset_index()
 
         print(consulta)
+        print(consulta.dtypes)
 
         consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']),2)
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
