@@ -348,15 +348,15 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql,conn, params=(self.dataInicio, self.dataFim,))
         total = consulta['qtdPcs'].sum()
+        consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
 
 
-        consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
+        consulta = consulta.groupby(['nome','usuario','intervalo_10min']).agg({
             'qtdPcs':"sum"
         }).reset_index()
-        consulta['hora_intervalo_fim'] = consulta['hora_intervalo'] + pd.Timedelta(minutes=5)
 
 
-        consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']),2)
+        consulta['ritmo'] =  round(((60*10)/ consulta['qtdPcs']),2)
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
         consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
@@ -366,7 +366,6 @@ class ProdutividadeWms:
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
         #print(consulta)
         # Criar coluna com "bloco de 10 minutos"
-        consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
         print(consulta[consulta['usuario']=='2323'])
 
         # apuradoGeral: média final do ritmo por usuário
