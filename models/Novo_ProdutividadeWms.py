@@ -368,7 +368,9 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql,conn, params=(self.dataInicio, self.dataFim,))
         total = consulta['qtdPcs'].sum()
-        consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
+        if not consulta.empty:
+
+            consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
 
 
         consulta = consulta.groupby(['nome','usuario','intervalo_10min']).agg({
