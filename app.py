@@ -19,7 +19,6 @@ PORTA_APLICATION = os.getenv('PORTA_APLICATION')
 print(PORTA_APLICATION)
 port = int(os.environ.get('PORT', PORTA_APLICATION)) # A porta escolhida para rodar a Aplicacao é a 5000.
 
-
 #Aqui registo todas as rotas , url's DO PROJETO, para acessar bastar ir na pasta "routes",
 #duvidas o contato (62)99351-42-49 ou acessar a documentacao do projeto em:
 app.register_blueprint(routes_blueprint)
