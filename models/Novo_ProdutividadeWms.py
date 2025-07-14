@@ -367,7 +367,17 @@ class ProdutividadeWms:
         #print(consulta)
         # Criar coluna com "bloco de 10 minutos"
         print(consulta[consulta['usuario']=='2323'])
-        consulta = consulta[consulta['ritmo']<200].reset_index()
+
+        # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
+        consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
+
+        # Agora calcule a média apenas com os valores válidos
+        media_geral = round(
+            consulta.groupby('usuario')['ritmo_valido'].transform('mean'),
+            2
+        )
+
+
         # apuradoGeral: média final do ritmo por usuário
         media_geral = round(consulta.groupby('usuario')['ritmo'].transform('mean'),2)
         consulta['Ritmo'] = media_geral
