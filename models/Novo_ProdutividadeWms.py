@@ -186,8 +186,6 @@ class ProdutividadeWms:
                             rq.caixa,
                             rq."DataReposicao"::date,
                             hora_intervalo
-                        ORDER BY
-                            data, hora_intervalo
                         UNION
                         select
                             usuario,
