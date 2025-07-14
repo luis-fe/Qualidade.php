@@ -165,6 +165,7 @@ class ProdutividadeWms:
         '''Metodo que carrega e insere na tabela a Produtividade RepositorTagCaixa a cada nSegundo '''
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
         print(f'status {verificaAtualizacao}')
+
         if verificaAtualizacao == True:
             self.__exclusaoDadosProdutividadeBiparTagCaixa()
 
