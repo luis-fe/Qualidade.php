@@ -262,6 +262,7 @@ class ProdutividadeWms:
 
         conn = ConexaoPostgreMPL.conexaoEngine()
         consultaSql1 = pd.read_sql(sqlConsulta, conn ,params=(nomeRotina,))
+        print(consultaSql1)
         data_hora_atual = self.__obterHoraAtual()
 
         if not consultaSql1.empty:
