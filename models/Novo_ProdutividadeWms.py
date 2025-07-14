@@ -355,12 +355,13 @@ class ProdutividadeWms:
         }).reset_index()
         consulta['hora_intervalo_fim'] = consulta['hora_intervalo'] + pd.Timedelta(minutes=5)
 
-        print(consulta)
 
         consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']),2)
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
         consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
+        print(consulta)
+
 
         # ritmoApurado: média parcial acumulada do ritmo
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
