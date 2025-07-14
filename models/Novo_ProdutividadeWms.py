@@ -373,9 +373,13 @@ class ProdutividadeWms:
             consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
 
 
-        consulta = consulta.groupby(['nome','usuario','intervalo_10min']).agg({
-            'qtdPcs':"sum"
-        }).reset_index()
+            consulta = consulta.groupby(['nome','usuario','intervalo_10min']).agg({
+                'qtdPcs':"sum"
+            }).reset_index()
+        else:
+            consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
+                'qtdPcs':"sum"
+            }).reset_index()
 
 
         consulta['ritmo'] =  round(((60*10)/ consulta['qtdPcs']),2)
