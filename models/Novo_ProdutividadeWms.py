@@ -317,6 +317,10 @@ class ProdutividadeWms:
     def consultaConsultaProdutividadeRepositorTagCaixa(self):
         '''Método que consulta a Produtivdade de RepositorTag'''
 
+
+        self.tempoAtualizacao = 5 * 60
+        self.temporizadorConsultaProdutividadeRepositorTagCaixa()
+
         sqlMax = """
         select
 	        max(hora_intervalo) as "Atualizado"
