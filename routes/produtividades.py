@@ -31,6 +31,8 @@ def get_TagsReposicao():
 
     if codEmpresa == '1':
         consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final).consultaConsultaProdutividadeRepositorTagCaixa()
+        consulta.consultaProd_CarregarCaixas()
+
     else:
         consulta = produtividadeModel.ProdutividadeRepositores(data_inicial, data_final, horarioInicial,
                                                                    horarioFinal)
