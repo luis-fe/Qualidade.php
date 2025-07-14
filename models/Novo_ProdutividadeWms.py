@@ -367,7 +367,7 @@ class ProdutividadeWms:
         #print(consulta)
         # Criar coluna com "bloco de 10 minutos"
         print(consulta[consulta['usuario']=='2323'])
-
+        consulta = consulta[consulta['ritmo']<200].reset_index()
         # apuradoGeral: média final do ritmo por usuário
         media_geral = round(consulta.groupby('usuario')['ritmo'].transform('mean'),2)
         consulta['Ritmo'] = media_geral
