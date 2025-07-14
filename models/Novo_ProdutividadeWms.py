@@ -375,53 +375,53 @@ class ProdutividadeWms:
             consulta = consulta.groupby(['nome','usuario','intervalo_10min']).agg({
                 'qtdPcs':"sum"
             }).reset_index()
+
+            consulta['ritmo'] = round(((60 * 10) / consulta['qtdPcs']), 2)
+            consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
+
+            consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
+
+            # ritmoApurado: média parcial acumulada do ritmo
+            consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
+            # print(consulta)
+            # Criar coluna com "bloco de 10 minutos"
+            print(consulta[consulta['usuario'] == '2323'])
+
+            # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
+            consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
+
+            # Agora calcule a média apenas com os valores válidos
+            media_geral = round(
+                consulta.groupby('usuario')['ritmo_valido'].transform('mean'),
+                2
+            )
+
+            # apuradoGeral: média final do ritmo por usuário
+            consulta['Ritmo'] = media_geral
+            consulta['ritmo2'] = (
+                    consulta.groupby('usuario')['ritimoAcum'].transform('max') /
+                    consulta.groupby('usuario')['parcial'].transform('max')
+            )
+
+            consulta = consulta.groupby(['nome', 'usuario']).agg({
+                'qtdPcs': "sum",
+                'Ritmo': "first",
+                'ritmo2': "first"
+            }).reset_index()
+            consulta = consulta.sort_values(by=['qtdPcs'],
+                                            ascending=False)  # escolher como deseja classificar
+
+            consulta.rename(columns={'qtdPcs': 'qtde', "Ritmo": "ritmo"},
+                            inplace=True)
+
+            consulta.fillna('-', inplace=True)
         else:
             consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
                 'qtdPcs':"sum"
             }).reset_index()
 
 
-        consulta['ritmo'] =  round(((60*10)/ consulta['qtdPcs']),2)
-        consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
-        consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
-
-
-        # ritmoApurado: média parcial acumulada do ritmo
-        consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
-        #print(consulta)
-        # Criar coluna com "bloco de 10 minutos"
-        print(consulta[consulta['usuario']=='2323'])
-
-        # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
-        consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
-
-        # Agora calcule a média apenas com os valores válidos
-        media_geral = round(
-            consulta.groupby('usuario')['ritmo_valido'].transform('mean'),
-            2
-        )
-
-
-        # apuradoGeral: média final do ritmo por usuário
-        consulta['Ritmo'] = media_geral
-        consulta['ritmo2'] = (
-                consulta.groupby('usuario')['ritimoAcum'].transform('max') /
-                consulta.groupby('usuario')['parcial'].transform('max')
-        )
-
-        consulta = consulta.groupby(['nome','usuario']).agg({
-            'qtdPcs':"sum",
-            'Ritmo':"first",
-            'ritmo2': "first"
-        }).reset_index()
-        consulta = consulta.sort_values(by=['qtdPcs'],
-                                        ascending=False)  # escolher como deseja classificar
-
-        consulta.rename(columns={'qtdPcs': 'qtde',"Ritmo":"ritmo"},
-                                 inplace=True)
-
-        consulta.fillna('-',inplace=True)
 
         data = {
             '0- Atualizado:':f'{Atualizado}',
