@@ -321,8 +321,6 @@ class ProdutividadeWms:
 	        max(hora_intervalo) as "Atualizado"
         from
 	        "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
-        where
-	        "data"::Date = CURRENT_DATE        
 	        """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
