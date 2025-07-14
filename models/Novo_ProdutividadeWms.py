@@ -365,7 +365,7 @@ class ProdutividadeWms:
         # ritmoApurado: média parcial acumulada do ritmo
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
         #print(consulta)
-        print(consulta[consulta['usuario']=='2712'])
+        print(consulta[consulta['usuario']=='2323'])
 
         # apuradoGeral: média final do ritmo por usuário
         media_geral = round(consulta.groupby('usuario')['ritmo'].transform('mean'),2)
