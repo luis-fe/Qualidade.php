@@ -353,9 +353,9 @@ class ProdutividadeWms:
         consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
             'qtdPcs':"sum"
         }).reset_index()
+        consulta['hora_intervalo_fim'] = consulta['hora_intervalo'] + pd.Timedelta(minutes=5)
 
         print(consulta)
-        print(consulta.dtypes)
 
         consulta['ritmo'] =  round(((60*5)/ consulta['qtdPcs']),2)
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
