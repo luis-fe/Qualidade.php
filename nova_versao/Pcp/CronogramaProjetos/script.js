@@ -72,7 +72,14 @@ function TabelaCronograma(lista) {
                 data: 'status',
 
         }, 
-                {
+                        {
+            data: 'projeto'
+        }, 
+                                {
+            data: 'descricaoAtividade'
+        }, 
+
+        {
                     data: null,
     orderable: false,
     searchable: false,
@@ -84,12 +91,6 @@ function TabelaCronograma(lista) {
         `;
     }
 
-        }, 
-                        {
-            data: 'projeto'
-        }, 
-                                {
-            data: 'descricaoAtividade'
         }, 
     
     ],
