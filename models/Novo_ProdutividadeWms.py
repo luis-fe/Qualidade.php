@@ -524,6 +524,52 @@ class ProdutividadeWms:
                 conn2.commit()
 
 
+    def consultaSeparacaoDiariaPorUsuario(self):
+        '''Metodo que consulta a separacao diaria por usuario'''
+
+
+        verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeSeparacao')
+
+
+        if verificaAtualizacao == True:
+
+
+            sql = """
+            SELECT
+                usuario,
+                "codpedido" AS "codPedido",
+                "dataseparacao"::date AS data,
+                date_trunc('hour', "dataseparacao"::timestamp) + 
+                    INTERVAL '1 minute' * floor(date_part('minute', "dataseparacao"::timestamp) / 5) * 5 AS hora_intervalo,
+                count(codbarrastag) AS "qtdPcs"
+            FROM
+                "Reposicao"."Reposicao".tags_separacao  t 
+            WHERE
+                 "dataseparacao"::date = CURRENT_DATE
+                  AND "dataseparacao"::timestamp > CURRENT_DATE - INTERVAL '1 day'
+            GROUP BY
+                t.usuario,
+                codPedido,
+                t."dataseparacao"::date,
+                hora_intervalo
+            ORDER BY
+                data, hora_intervalo
+            """
+
+            conn = ConexaoPostgreMPL.conexaoEngine()
+            consulta = pd.read_sql(sql, conn)
+
+            if not consulta.empty:
+
+                consulta['data'] = consulta['data'].astype(str)
+                consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|' + consulta['data']
+                ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['codPedido'].size, 'ProdutividadeBiparTagSeparacao',
+                                                 'replace')
+
+
+
+
+
 
 
 

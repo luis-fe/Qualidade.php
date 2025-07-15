@@ -57,6 +57,13 @@ def get_TagsSeparacao():
     data_final = request.args.get('DataFinal','0'),
     horarioInicial = request.args.get('horarioInicial', '01:00:00')
     horarioFinal = request.args.get('horarioFinal', '23:59:00')
+    codEmpresa = empresaConfigurada.EmpresaEscolhida()
+
+
+
+    if codEmpresa == '1':
+        consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final).consultaSeparacaoDiariaPorUsuario()
+
 
     #Relatorios.RelatorioSeparadoresLimite(10)
     TagReposicao = produtividadeModel.ProdutividadeSeparadores(data_inicial,data_final, horarioInicial, horarioFinal)
