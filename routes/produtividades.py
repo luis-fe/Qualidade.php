@@ -62,7 +62,7 @@ def get_TagsSeparacao():
 
 
     if codEmpresa == '1':
-        consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final).consultaSeparacaoDiariaPorUsuario()
+        consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final)#.consultaSeparacaoDiariaPorUsuario()
 
 
     #Relatorios.RelatorioSeparadoresLimite(10)
