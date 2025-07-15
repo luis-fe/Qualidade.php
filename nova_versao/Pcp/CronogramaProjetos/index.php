@@ -1,7 +1,7 @@
 <?php
-include_once("requests.php");
-include_once("../../../templates/heads.php");
-include("../../../templates/Loading.php");
+include_once('requests.php');
+include_once("../../templates/Loading.php");
+include_once('../../templates/headerPcp.php');
 ?>
 
 
@@ -38,5 +38,7 @@ include("../../../templates/Loading.php");
 </div>
 
 
-<?php include_once("../../../templates/footer.php"); ?>
+<?php
+include_once('../../templates/footerPcp.php');
+?>
 <script src="script.js"></script>
