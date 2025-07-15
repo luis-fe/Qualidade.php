@@ -36,7 +36,7 @@ include_once('../../templates/headerPcp.php');
     <div class="custom-pagination-container pagination-analise d-md-flex col-12 text-center text-md-start">
         <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
             <label for="text">Itens por página</label>
-            <input id="itens-analise" class="input-itens" type="text" value="20" min="1">
+            <input id="itens-analise" class="input-itens" type="text" value="15" min="1">
         </div>
         <div id="pagination-analise" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
         </div>

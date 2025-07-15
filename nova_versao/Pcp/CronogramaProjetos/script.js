@@ -129,7 +129,7 @@ function TabelaCronograma(lista) {
             });
 
             $('#itens-analise').on('input', function() {
-                const pageLength = parseInt($(this).val(), 10);
+                const pageLength = parseInt($(this).val(), 15);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();
                 }
