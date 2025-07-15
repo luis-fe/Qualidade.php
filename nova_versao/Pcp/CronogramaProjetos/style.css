@@ -15,5 +15,5 @@
 
 .status-cinza {
     background-color: #767676 !important;
-    color: aliceblue;
+    font: aliceblue !important;
 }
