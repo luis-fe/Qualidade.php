@@ -34,7 +34,7 @@ function TabelaCronograma(lista) {
         paging: true,
         lengthChange: false,
         info: false,
-        pageLength: 10,
+        pageLength: 20,
         data: lista,
                 buttons: [
             {
