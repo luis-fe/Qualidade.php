@@ -529,6 +529,7 @@ class ProdutividadeWms:
     def consultaSeparacaoDiariaPorUsuario(self):
         '''Metodo que consulta a separacao diaria por usuario'''
 
+        self.tempoAtualizacao = 60 * 5
 
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeSeparacao')
 
