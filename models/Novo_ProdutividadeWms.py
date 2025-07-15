@@ -163,6 +163,8 @@ class ProdutividadeWms:
 
     def temporizadorConsultaProdutividadeRepositorTagCaixa(self):
         '''Metodo que carrega e insere na tabela a Produtividade RepositorTagCaixa a cada nSegundo '''
+
+        self.tempoAtualizacao = 60 * 5
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
         print(f'status {verificaAtualizacao}')
 
