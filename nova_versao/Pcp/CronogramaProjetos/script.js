@@ -80,10 +80,16 @@ function TabelaCronograma(lista) {
     
     ],
         createdRow: function(row, data, dataIndex) {
+     const statusCell = $('td', row).eq(4); // coluna "status"
+
         if (data.status === 'Em Andamento') {
-            $('td', row).eq(4).addClass('status-amarelo'); // 4 = coluna "status"
+            statusCell.addClass('status-amarelo');
+        } else if (data.status === 'Nao Iniciado') {
+            statusCell.addClass('status-verde');
+        } else if (data.status === 'Cancelado') {
+            statusCell.addClass('status-vermelho');
         }
-    },
+    },  
         language: {
             paginate: {
                 previous: '<i class="fa-solid fa-backward-step"></i>',
