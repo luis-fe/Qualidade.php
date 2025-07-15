@@ -91,6 +91,7 @@ class ProdutividadeWms:
 
         self.tempoAtualizacao = 5 * 60
         self.temporizadorConsultaProdutividadeRepositorTagCaixa()
+        self.__atualizandoTagRepostasNaTabelaSeparacao()
 
         data = {
             '0- Atualizado:':f'{Atualizado}',
@@ -230,7 +231,9 @@ class ProdutividadeWms:
         delete = """
         delete 
             FROM "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
-            WHERE pbtc."data"::date = CURRENT_DATE;
+            WHERE pbtc."data"::date = CURRENT_DATE
+            and "Ncarrinho" <> 'separadoDia'
+            ;
         """
 
         with ConexaoPostgreMPL.conexao() as conn2:
@@ -439,6 +442,72 @@ class ProdutividadeWms:
         }
 
         return pd.DataFrame([data])
+
+
+
+
+    def __atualizandoTagRepostasNaTabelaSeparacao(self):
+
+
+        self.tempoAtualizacao = 10 * 60
+        verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
+
+        sql = """
+          SELECT
+        usuario,
+        'separadoDia' AS "Ncarrinho",
+        "numeroop" AS "caixa",
+        "DataReposicao"::date AS data,
+        date_trunc('hour', "DataReposicao"::timestamp) + 
+            INTERVAL '1 minute' * floor(date_part('minute', "DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+        count(codbarrastag) AS "qtdPcs"
+    FROM
+        "Reposicao"."Reposicao".tags_separacao  t 
+    WHERE
+         "DataReposicao"::date = CURRENT_DATE
+          AND "DataReposicao"::timestamp > CURRENT_DATE - INTERVAL '1 day'
+    GROUP BY
+        t.usuario,
+        "Ncarrinho",
+        caixa,
+        t."DataReposicao"::date,
+        hora_intervalo
+    ORDER BY
+        data, hora_intervalo
+        """
+
+
+        if verificaAtualizacao ==True:
+            conn = ConexaoPostgreMPL.conexaoEngine()
+            consulta = pd.read_sql(sql, conn)
+
+            if not consulta.empty :
+                self.__exclussao_TagRepostasNaTabelaSeparacao()
+                consulta['data'] = consulta['data'].astype(str)
+                consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|' + consulta['data']
+                ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['Ncarrinho'].size, 'ProdutividadeBiparTagCaixa', 'append')
+
+
+
+    def __exclussao_TagRepostasNaTabelaSeparacao(self):
+        '''Metodo que realiza a exclusao TEMPORARIA  do bipado do dia registrado na tabela Separacao'''
+
+
+        delete = """
+        delete 
+            FROM "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+            WHERE 
+                pbtc."data"::date = CURRENT_DATE
+                 and "Ncarrinho" = 'separadoDia'  ;
+        """
+
+        with ConexaoPostgreMPL.conexao() as conn2:
+            with conn2.cursor() as curr:
+                curr.execute(delete,)
+                conn2.commit()
+
+
+
 
 
 
