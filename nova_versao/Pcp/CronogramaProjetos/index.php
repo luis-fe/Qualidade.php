@@ -6,12 +6,12 @@ include_once('../../templates/headerPcp.php');
 
 
 <link rel="stylesheet" href="style.css">
+        <h3 class="text-center mt-3 mb-3">Cronograma de Atividades</h3>
 
 
 <div class="col-12 mt-4 mb-4 div-analise" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <h3 class="text-center mt-3 mb-3">Cronograma de Atividades</h3>
-        <div class="d-flex justify-content-end mb-2 dt-buttons-container"></div>
+        <div class="d-flex justify-content-start mb-2 dt-buttons-container"></div>
         <table class="table table-bordered" id="table-abc" style="width: 100%;">
             <thead>
                 <tr>
