@@ -36,6 +36,25 @@ function TabelaCronograma(lista) {
         info: false,
         pageLength: 10,
         data: lista,
+                buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                title: 'Cronograma de Atividades',
+                className: 'btn-tabelas',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (typeof data === 'string') {
+                                return data.replace(/\./g, '').replace(',', '.');
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+        ],
         columns: [
             {
             data: 'atividade'
