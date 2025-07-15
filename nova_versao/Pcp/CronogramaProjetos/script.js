@@ -115,7 +115,8 @@ function TabelaCronograma(lista) {
             $('.dataTables_paginate').hide();
         },
     });
-
+    tabela.buttons().container()
+        .appendTo('.dt-buttons-container');
     $('.search-input').off('keyup change').on('keyup change', function() {
         const columnIndex = $(this).closest('th').index();
         const searchTerm = $(this).val();
