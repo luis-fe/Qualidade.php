@@ -78,12 +78,9 @@ function TabelaCronograma(lista) {
             data: 'descricaoAtividade'
         }, 
     
-    
-    
-    
     ],
         createdRow: function(row, data, dataIndex) {
-        if (data.status === 'Em andamento') {
+        if (data.status === 'Em Andamento') {
             $('td', row).eq(4).addClass('status-amarelo'); // 4 = coluna "status"
         }
     },
