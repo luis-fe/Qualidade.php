@@ -10,6 +10,7 @@ include_once('../../templates/headerPcp.php');
 
 <div class="col-12 mt-4 mb-4 div-analise" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+        <h3 class="text-center mt-3 mb-3">Cronograma de Atividades</h3>
         <table class="table table-bordered" id="table-abc" style="width: 100%;">
             <thead>
                 <tr>
