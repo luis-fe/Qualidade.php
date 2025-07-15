@@ -69,7 +69,15 @@ function TabelaCronograma(lista) {
             data: 'Responsavel'
         }, 
                 {
-            data: 'status'
+        data: 'status',
+                    render: function(data, type, row) {
+                    return `
+                    <span class="status-label">${data}</span>
+                    <button class="btn btn-sm btn-outline-secondary btn-movimentar" data-id="${row.id}" title="Movimentar">
+                        <i class="bi bi-arrow-left-right"></i>
+                    </button>
+                    `;
+                    }
         }, 
                         {
             data: 'projeto'
@@ -121,6 +129,13 @@ function TabelaCronograma(lista) {
             });
 
             $('.dataTables_paginate').hide();
+
+                $('.btn-movimentar').off('click').on('click', function() {
+    const id = $(this).data('id');
+    console.log('Movimentar item ID:', id);
+    // Aqui você pode abrir um modal, redirecionar, chamar função AJAX etc.
+});
+
         },
     });
     tabela.buttons().container()
