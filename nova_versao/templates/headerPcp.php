@@ -664,6 +664,10 @@
                     <a href="../../Pcp/TendenciaSku" class="nav-link submenu-item">
                         <i class="bi bi-circle-fill"></i> Tendência <!-- PCP -->
                     </a>
+                    <a href="../../Pcp/CronogramaProjetos" class="nav-link submenu-item">
+                        <i class="bi bi-circle-fill"></i> Cronograma Projetos <!-- PCP -->
+                    </a>
+                    
                 </ul>
             </li>
             <li class="nav-item logout-item mt-auto">
