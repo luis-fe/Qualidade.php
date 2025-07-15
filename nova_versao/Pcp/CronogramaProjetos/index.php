@@ -7,9 +7,9 @@ include_once('../../templates/headerPcp.php');
 
 <link rel="stylesheet" href="style.css">
 
-<div>
-<i class="bi bi-calendar"></i>
-<h3 class="text-start mt-3 mb-3">Cronograma de Atividades</h3>
+<div class="d-flex align-items-center gap-2 mt-3 mb-3">
+    <i class="bi bi-calendar fs-4 text-primary"></i>
+    <h3 class="mb-0">Cronograma de Atividades</h3>
 </div>
 
 <div class="col-12 mt-4 mb-4 div-analise" style="background-color: lightgray; border-radius: 8px;">
