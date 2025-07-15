@@ -82,6 +82,11 @@ function TabelaCronograma(lista) {
     
     
     ],
+        createdRow: function(row, data, dataIndex) {
+        if (data.status === 'Em andamento') {
+            $('td', row).eq(4).addClass('status-amarelo'); // 4 = coluna "status"
+        }
+    },
         language: {
             paginate: {
                 previous: '<i class="fa-solid fa-backward-step"></i>',

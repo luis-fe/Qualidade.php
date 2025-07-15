@@ -4,3 +4,9 @@
     color: black;
     font-weight: 100;
 }
+
+.status-amarelo {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+    font-weight: bold;
+}
