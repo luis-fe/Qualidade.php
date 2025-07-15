@@ -68,16 +68,22 @@ function TabelaCronograma(lista) {
         {
             data: 'Responsavel'
         }, 
+        {
+                data: 'status',
+
+        }, 
                 {
-data: 'status',
+                    data: null,
+    orderable: false,
+    searchable: false,
     render: function(data, type, row) {
         return `
-            <button class="btn btn-sm btn-primary btn-movimentar me-2" data-id="${row.id}" title="Movimentar">
+            <button class="btn btn-sm btn-primary btn-movimentar" data-id="${row.id}" title="Movimentar">
                 <i class="bi bi-arrow-left-right"></i>
             </button>
-            <span class="status-label">${data}</span>
         `;
     }
+
         }, 
                         {
             data: 'projeto'

@@ -22,7 +22,8 @@ include_once('../../templates/headerPcp.php');
                     <th>Data Inicio<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Data Prev.<br>Final</br><input type="search" class="search-input search-input-analise"></th>
                     <th>Responsavel<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>status<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Status<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Alt.</th>
                     <th>Projeto<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Descricao<br>Atividade</br></th>
                 </tr>

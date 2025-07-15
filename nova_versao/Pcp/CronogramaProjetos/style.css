@@ -26,3 +26,8 @@
 .status-label {
     font-weight: bold;
 }
+
+#table-abc td:last-child {
+    text-align: center;
+    vertical-align: middle;
+}
