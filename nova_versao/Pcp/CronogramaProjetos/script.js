@@ -74,9 +74,9 @@ function TabelaCronograma(lista) {
         },
         drawCallback: function() {
             const paginateHtml = $('.dataTables_paginate').html();
-            $('#pagination-abc').html(paginateHtml);
-            $('#pagination-abc span').remove();
-            $('#pagination-abc a').off('click').on('click', function(e) {
+            $('#pagination-analise').html(paginateHtml);
+            $('#pagination-analise span').remove();
+            $('#pagination-analise a').off('click').on('click', function(e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('previous') && tabela.page() > 0) {
@@ -86,7 +86,7 @@ function TabelaCronograma(lista) {
                 }
             });
 
-            $('#itens-abc').on('input', function() {
+            $('#itens-analise').on('input', function() {
                 const pageLength = parseInt($(this).val(), 10);
                 if (!isNaN(pageLength) && pageLength > 0) {
                     tabela.page.len(pageLength).draw();

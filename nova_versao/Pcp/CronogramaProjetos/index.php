@@ -15,11 +15,11 @@ include_once('../../templates/headerPcp.php');
                 <tr>
                     <th>Atividade<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Data Inicio<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Data prevista<br>final</br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Data Prev.<br>Final</br><input type="search" class="search-input search-input-analise"></th>
                     <th>Responsavel<br><input type="search" class="search-input search-input-analise"></th>
                     <th>status<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>projeto<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>descricao<br>Atividade</br></th>
+                    <th>Projeto<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Descricao<br>Atividade</br></th>
                 </tr>
             </thead>
             <tbody>
