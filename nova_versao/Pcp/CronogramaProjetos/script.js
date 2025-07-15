@@ -85,9 +85,9 @@ function TabelaCronograma(lista) {
         if (data.status === 'Em Andamento') {
             statusCell.addClass('status-amarelo');
         } else if (data.status === 'Nao Iniciado') {
+            statusCell.addClass('status-cinza');
+        } else if (data.status === 'Concluido') {
             statusCell.addClass('status-verde');
-        } else if (data.status === 'Cancelado') {
-            statusCell.addClass('status-vermelho');
         }
     },  
         language: {
