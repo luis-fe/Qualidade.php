@@ -91,7 +91,6 @@ class ProdutividadeWms:
 
         self.tempoAtualizacao = 5 * 60
         self.temporizadorConsultaProdutividadeRepositorTagCaixa()
-        self.__atualizandoTagRepostasNaTabelaSeparacao()
 
         data = {
             '0- Atualizado:':f'{Atualizado}',
@@ -169,6 +168,7 @@ class ProdutividadeWms:
 
         if verificaAtualizacao == True:
             self.__exclusaoDadosProdutividadeBiparTagCaixa()
+            self.__atualizandoTagRepostasNaTabelaSeparacao()
 
             sql = """
                        SELECT
@@ -449,8 +449,6 @@ class ProdutividadeWms:
     def __atualizandoTagRepostasNaTabelaSeparacao(self):
 
 
-        self.tempoAtualizacao = 10 * 60
-        verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeRepositorTagCaixa')
 
         sql = """
           SELECT
@@ -477,16 +475,16 @@ class ProdutividadeWms:
         """
 
 
-        if verificaAtualizacao ==True:
-            conn = ConexaoPostgreMPL.conexaoEngine()
-            consulta = pd.read_sql(sql, conn)
 
-            if not consulta.empty :
-                self.__exclussao_TagRepostasNaTabelaSeparacao()
-                consulta['data'] = consulta['data'].astype(str)
-                consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|' + consulta['data']
-                self.__sinalizando_N_linhasInserido_TagRepostasNaTabelaSeparacao(consulta['Ncarrinho'].size)
-                ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['Ncarrinho'].size, 'ProdutividadeBiparTagCaixa', 'append')
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        consulta = pd.read_sql(sql, conn)
+
+        if not consulta.empty :
+            self.__exclussao_TagRepostasNaTabelaSeparacao()
+            consulta['data'] = consulta['data'].astype(str)
+            consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|' + consulta['data']
+            self.__sinalizando_N_linhasInserido_TagRepostasNaTabelaSeparacao(consulta['Ncarrinho'].size)
+            ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['Ncarrinho'].size, 'ProdutividadeBiparTagCaixa', 'append')
 
 
 
