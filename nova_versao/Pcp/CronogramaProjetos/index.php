@@ -10,7 +10,7 @@ include_once('../../templates/headerPcp.php');
 
 <div class="col-12 mt-4 mb-4 div-analise" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered" id="table-abc'" style="width: 100%;">
+        <table class="table table-bordered" id="table-abc" style="width: 100%;">
             <thead>
                 <tr>
                     <th>Atividade<br><input type="search" class="search-input search-input-analise"></th>
