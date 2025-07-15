@@ -485,6 +485,7 @@ class ProdutividadeWms:
                 self.__exclussao_TagRepostasNaTabelaSeparacao()
                 consulta['data'] = consulta['data'].astype(str)
                 consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|' + consulta['data']
+                self.__sinalizando_N_linhasInserido_TagRepostasNaTabelaSeparacao(consulta['Ncarrinho'].size)
                 ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['Ncarrinho'].size, 'ProdutividadeBiparTagCaixa', 'append')
 
 
@@ -506,6 +507,23 @@ class ProdutividadeWms:
                 curr.execute(delete,)
                 conn2.commit()
 
+
+    def __sinalizando_N_linhasInserido_TagRepostasNaTabelaSeparacao(self, Nlinhas):
+
+        update = """
+                update 
+                    "Reposicao"."Produtividade"."ControleAutomacaoProdutividade" 
+                set 
+                    "NLinhas_BipagemSep" = %s
+                where
+                    "Rotina" = 'temporizadorConsultaProdutividadeRepositorTagCaixa'
+        """
+
+
+        with ConexaoPostgreMPL.conexao() as conn2:
+            with conn2.cursor() as curr:
+                curr.execute(update, (Nlinhas,))
+                conn2.commit()
 
 
 
