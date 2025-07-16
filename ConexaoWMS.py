@@ -7,7 +7,7 @@ from dotenv import load_dotenv, dotenv_values
 
 
 def conexaoEngine():
-    load_dotenv('/home/grupompl/Wms_Teste/Wms_InternoMPL/ambiente.env')
+    load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
 
     db_name = os.getenv('POSTGRE_NAME')
     db_user = os.getenv('POSTGRE_USER')
@@ -20,7 +20,7 @@ def conexaoEngine():
 
 
 def conexaoInsercao():
-    load_dotenv('/home/grupompl/Wms_Teste/Wms_InternoMPL/ambiente.env')
+    load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
 
     db_name = os.getenv('POSTGRE_NAME')
     db_user = os.getenv('POSTGRE_USER')
