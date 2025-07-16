@@ -579,7 +579,7 @@ class ProdutividadeWms:
         select
 	        max(hora_intervalo) as "Atualizado"
         from
-	        "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+	        "Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
 	        """
 
         conn = ConexaoPostgreMPL.conexaoEngine()
