@@ -32,19 +32,25 @@ def ValidaEndereco(endereco):
 
 ### Regra 3 - Validar se o Endereço esta desoculpado
 
-def EnderecoOculpado(endereco_Repor):
-    conn = ConexaoPostgreMPL.conexao()
-    consulta = 'select distinct codreduzido from "Reposicao"."Reposicao".tagsreposicao '\
-                ' where "Endereco" = %s '
+def EnderecoOculpado(endereco_Repor, permiteVariosSku = True):
+    conn = ConexaoPostgreMPL.conexaoEngine()
+    consulta = """
+                    select 
+                        distinct codreduzido 
+                    from 
+                        "Reposicao"."Reposicao".tagsreposicao
+                    where 
+                        "Endereco" = %s 
+            """
     consulta = pd.read_sql(consulta,conn,params=(endereco_Repor,))
-    conn.close()
+
 
     ## avaliando se está vazio:
     if not consulta.empty:
         return pd.DataFrame([{'Mensagem':f'Endereco está cheio, com o sequinte sku {consulta["codreduzido"][0]}', 'status':False ,
-                              'codreduzido':f'{consulta["codreduzido"][0]}'}])
+                              'codreduzido':f'{consulta["codreduzido"][0]}','permite_varios_sku':permiteVariosSku }])
     else:
-        return pd.DataFrame([{'status':'OK! Pronto para usar','codreduzido':'-'}])
+        return pd.DataFrame([{'status':'OK! Pronto para usar','codreduzido':'-', 'permite_varios_sku':permiteVariosSku}])
 
 ## Regra 3 - Validar se a OP foi encerrada no CSW
 

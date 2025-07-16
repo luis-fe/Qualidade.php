@@ -45,7 +45,7 @@ def RecarrearEnderecoTeste():
         datainicio = controle.obterHoraAtual()
         codEmpresa = dados.get('empresa','1')
         codNatureza = dados.get('codNatureza','-')
-
+        permite_varios_sku = dados.get('permite_varios_sku',True)
 
 
         # Funcao de contingencia para casos  que derem errado:
@@ -82,11 +82,16 @@ def RecarrearEnderecoTeste():
             reduzido = InfoCaixa['codreduzido'][0] # Cria uma variavel chamada reduzido com a informacao do codigo Reduzido (tambem chamado SKU):
 
         # Etapa 3 :Avalia se no endereco que o usario esta tentando repor esta vazio:
-            StatusEnderecoOculpacao = RecarregarEndereco.EnderecoOculpado(endereco)
+            StatusEnderecoOculpacao = RecarregarEndereco.EnderecoOculpado(endereco, permite_varios_sku)
                             #Retorno : status: False - significa que está cheio , else : está Vazio
 
                 #3.1 - Caso o endereco estiver cheio e o "codigo reduzido" for diferente ao do "codigo reduzido da Caixa"  - Nao permite a operacao
-            if StatusEnderecoOculpacao['status'][0] == False and reduzido != StatusEnderecoOculpacao['codreduzido'][0]:
+            if StatusEnderecoOculpacao['status'][0] == False \
+                    and reduzido != StatusEnderecoOculpacao['codreduzido'][0] \
+                    and StatusEnderecoOculpacao['permite_varios_sku'][0] == False:
+
+
+
                 Retorno = StatusEnderecoOculpacao
                 Retorno.drop('codreduzido', axis=1, inplace=True)
 
