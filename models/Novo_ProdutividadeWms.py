@@ -530,11 +530,11 @@ class ProdutividadeWms:
         '''Metodo que consulta a separacao diaria por usuario'''
 
         self.tempoAtualizacao = 60 * 5
-
         verificaAtualizacao = self.__atualizaInformacaoAtualizacao('temporizadorConsultaProdutividadeSeparacao')
 
 
         if verificaAtualizacao == True:
+            self.__exclusaoDadosProdutividadeSepararTag()
 
 
             sql = """
@@ -569,7 +569,144 @@ class ProdutividadeWms:
                 ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['codPedido'].size, 'ProdutividadeBiparTagSeparacao',
                                                  'replace')
 
+    def consultaConsultaProdutividadeSeparadorTag(self):
+        '''Método que consulta a Produtivdade de RepositorTag'''
 
+
+        self.consultaSeparacaoDiariaPorUsuario()
+
+        sqlMax = """
+        select
+	        max(hora_intervalo) as "Atualizado"
+        from
+	        "Reposicao"."Reposicao"."ProdutividadeBiparTagCaixa" pbtc
+	        """
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+        max = pd.read_sql(sqlMax,conn)
+
+        if max.empty:
+            Atualizado = self.__obterHoraAtual()
+        else:
+            Atualizado = max['Atualizado'][0]
+
+        sqlConsultaRecord= f"""
+        select
+	        pbtc."data", 
+	        "usuario", 
+	        sum("qtdPcs")as producao, 
+	        c.nome
+        from
+	        "Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
+	    join 	
+	    	"Reposicao"."Reposicao".cadusuarios c 
+	    	on c.codigo::varchar = pbtc.usuario 
+	    group by 
+	    	pbtc."data", "usuario", c.nome
+	    order by 
+	    	producao desc limit 1
+        """
+
+        consultaRecord = pd.read_sql(sqlConsultaRecord,conn)
+
+
+        sql = """
+                   select
+				*
+			from
+				"Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
+			join 	
+                "Reposicao"."Reposicao".cadusuarios c 
+                on c.codigo::varchar = pbtc.usuario 
+			where
+				pbtc."data" >= %s
+				and pbtc."data" <= %s
+        """
+
+        consulta = pd.read_sql(sql,conn, params=(self.dataInicio, self.dataFim,))
+        total = consulta['qtdPcs'].sum()
+        if not consulta.empty:
+
+            consulta['intervalo_10min'] = consulta['hora_intervalo'].dt.floor('10min')
+
+
+            consulta = consulta.groupby(['nome','usuario','intervalo_10min']).agg({
+                'qtdPcs':"sum"
+            }).reset_index()
+
+            consulta['ritmo'] = round(((60 * 10) / consulta['qtdPcs']), 2)
+            consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
+
+            consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
+
+            # ritmoApurado: média parcial acumulada do ritmo
+            consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
+            # print(consulta)
+            # Criar coluna com "bloco de 10 minutos"
+            print(consulta[consulta['usuario'] == '2323'])
+
+            # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
+            consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
+
+            # Agora calcule a média apenas com os valores válidos
+            media_geral = round(
+                consulta.groupby('usuario')['ritmo_valido'].transform('mean'),
+                2
+            )
+
+            # apuradoGeral: média final do ritmo por usuário
+            consulta['Ritmo'] = media_geral
+            consulta['ritmo2'] = (
+                    consulta.groupby('usuario')['ritimoAcum'].transform('max') /
+                    consulta.groupby('usuario')['parcial'].transform('max')
+            )
+
+            consulta = consulta.groupby(['nome', 'usuario']).agg({
+                'qtdPcs': "sum",
+                'Ritmo': "first",
+                'ritmo2': "first"
+            }).reset_index()
+            consulta = consulta.sort_values(by=['qtdPcs'],
+                                            ascending=False)  # escolher como deseja classificar
+
+            consulta.rename(columns={'qtdPcs': 'qtde', "Ritmo": "ritmo"},
+                            inplace=True)
+
+            consulta.fillna('-', inplace=True)
+        else:
+            consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
+                'qtdPcs':"sum"
+            }).reset_index()
+
+
+
+
+        data = {
+            '0- Atualizado:':f'{Atualizado}',
+            '1- Record Repositor': f'{consultaRecord["nome"][0]}',
+            '1.1- Record qtd': f'{consultaRecord["producao"][0]}',
+            '1.2- Record data': f'{consultaRecord["data"][0]}',
+            '2 Total Periodo':f'{total}',
+            '3- Ranking Repositores': consulta.to_dict(orient='records')
+        }
+
+        return pd.DataFrame([data])
+
+    def __exclusaoDadosProdutividadeSepararTag(self):
+        '''Metodo que exclui os dados do dia na tabela ProdutividadeBiparTagCaixa '''
+
+
+        delete = """
+        delete 
+            FROM "Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
+            WHERE pbtc."data"::date = CURRENT_DATE
+            ;
+        """
+
+        with ConexaoPostgreMPL.conexao() as conn2:
+            with conn2.cursor() as curr:
+                curr.execute(delete,)
+                conn2.commit()
 
 
 

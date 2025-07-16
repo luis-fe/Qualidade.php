@@ -62,12 +62,12 @@ def get_TagsSeparacao():
 
 
     if codEmpresa == '1':
-        consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final)#.consultaSeparacaoDiariaPorUsuario()
-
-
-    #Relatorios.RelatorioSeparadoresLimite(10)
-    TagReposicao = produtividadeModel.ProdutividadeSeparadores(data_inicial,data_final, horarioInicial, horarioFinal)
-    TagReposicao = pd.DataFrame(TagReposicao)
+        consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final)
+        TagReposicao = consulta.consultaConsultaProdutividadeSeparadorTag()
+    else:
+        #Relatorios.RelatorioSeparadoresLimite(10)
+        TagReposicao = produtividadeModel.ProdutividadeSeparadores(data_inicial,data_final, horarioInicial, horarioFinal)
+        TagReposicao = pd.DataFrame(TagReposicao)
 
     # Obtém os nomes das colunas
     column_names = TagReposicao.columns
