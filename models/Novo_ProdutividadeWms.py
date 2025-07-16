@@ -203,8 +203,7 @@ class ProdutividadeWms:
     FROM
         "Reposicao"."Reposicao".tagsreposicao t 
     WHERE
-        (proveniencia NOT LIKE '%%Veio%%' OR proveniencia IS NULL)
-        AND "DataReposicao"::date = CURRENT_DATE
+         "DataReposicao"::date = CURRENT_DATE
     GROUP BY
         t.usuario,
         "Ncarrinho",
