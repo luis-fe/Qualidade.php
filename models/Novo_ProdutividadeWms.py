@@ -567,7 +567,7 @@ class ProdutividadeWms:
                 consulta['data'] = consulta['data'].astype(str)
                 consulta['id'] = (consulta.groupby('data').cumcount() + 1).astype(str) + '|' + consulta['data']
                 ConexaoPostgreMPL.Funcao_Inserir(consulta, consulta['codPedido'].size, 'ProdutividadeBiparTagSeparacao',
-                                                 'replace')
+                                                 'append')
 
     def consultaConsultaProdutividadeSeparadorTag(self):
         '''Método que consulta a Produtivdade de RepositorTag'''

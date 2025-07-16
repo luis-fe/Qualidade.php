@@ -26,7 +26,7 @@ def EmpresaEscolhida():
         return None
             print(f"Empresa escolhida: {EMPRESA_CODIGO}")"""
 
-    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+    load_dotenv('/home/grupompl/Wms_Teste/Wms_InternoMPL/ambiente.env')
     empresa = os.getenv('EMPRESA')
 
     return empresa
