@@ -696,15 +696,16 @@ class ProdutividadeWms:
 
             sqlQTDPedidos = """
             select
-				usuario, count("codPedido") as "Qtd Pedido"
+				usuario, 
+                COUNT(DISTINCT "codPedido") AS "Qtd Pedido"
 			from
 				"Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
 			join 	
                 "Reposicao"."Reposicao".cadusuarios c 
                 on c.codigo::varchar = pbtc.usuario 
 			where
-				pbtc."data" >= '2025-07-16'
-				and pbtc."data" <= '2025-07-16'
+				pbtc."data" >= %s
+				and pbtc."data" <= %s
 			group by 
 			usuario
             """
