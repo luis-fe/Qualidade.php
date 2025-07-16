@@ -337,7 +337,7 @@
                         <td>${ranking}</td>
                         <td>${item.nome}</td>
                         <td>${item.qtde.toLocaleString('pt-BR')}</td>
-                        <td>${item.ritmo}seg.</td>
+                        <td>${item.ritmo} seg.</td>
                     </tr>
                 `;
                     });
@@ -390,7 +390,7 @@
                         <td>${item.qtde.toLocaleString('pt-BR')}</td>
                         <td>${item["Qtd Pedido"].toLocaleString('pt-BR')}</td>
                         <td>${item["Méd pçs/ped."].toLocaleString('pt-BR')}</td>
-                        <td>${item.ritmo}seg.</td>
+                        <td>${item.ritmo} seg.</td>
                     </tr>
                 `;
                     });
