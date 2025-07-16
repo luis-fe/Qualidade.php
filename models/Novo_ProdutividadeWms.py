@@ -194,6 +194,26 @@ class ProdutividadeWms:
     UNION
     SELECT
         usuario,
+        'veioCaixa' AS "Ncarrinho",
+        "numeroop" AS "caixa",
+        "DataReposicao"::date AS data,
+        date_trunc('hour', "DataReposicao"::timestamp) + 
+            INTERVAL '1 minute' * floor(date_part('minute', "DataReposicao"::timestamp) / 5) * 5 AS hora_intervalo,
+        count(codbarrastag) AS "qtdPcs"
+    FROM
+        "Reposicao"."Reposicao".tagsreposicao t 
+    WHERE
+        (proveniencia  LIKE '%%Veio%%' OR proveniencia IS NULL)
+        AND "DataReposicao"::date = CURRENT_DATE
+    GROUP BY
+        t.usuario,
+        "Ncarrinho",
+        caixa,
+        t."DataReposicao"::date,
+        hora_intervalo
+    UNION
+    SELECT
+        usuario,
         'inventario/transf' AS "Ncarrinho",
         "numeroop" AS "caixa",
         "DataReposicao"::date AS data,
@@ -203,7 +223,8 @@ class ProdutividadeWms:
     FROM
         "Reposicao"."Reposicao".tagsreposicao t 
     WHERE
-         "DataReposicao"::date = CURRENT_DATE
+        (proveniencia NOT LIKE '%%Veio%%' OR proveniencia IS NULL)
+        AND "DataReposicao"::date = CURRENT_DATE
     GROUP BY
         t.usuario,
         "Ncarrinho",
