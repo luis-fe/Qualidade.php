@@ -672,7 +672,35 @@ class ProdutividadeWms:
             consulta.rename(columns={'qtdPcs': 'qtde', "Ritmo": "ritmo"},
                             inplace=True)
 
+
+
+            sqlQTDPedidos = """
+            select
+				usuario, count("codPedido") as "Qtd Pedido"
+			from
+				"Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
+			join 	
+                "Reposicao"."Reposicao".cadusuarios c 
+                on c.codigo::varchar = pbtc.usuario 
+			where
+				pbtc."data" >= '2025-07-16'
+				and pbtc."data" <= '2025-07-16'
+			group by 
+			usuario
+            """
+
+            sqlQTDPedidos = pd.read_sql(sqlQTDPedidos,conn, params=(self.dataInicio, self.dataFim,))
+
+            consulta = pd.merge(consulta,sqlQTDPedidos,on='usuario',how='left')
+
+            consulta['Méd pçs/ped.'] = round(consulta['qtde'] /consulta['Qtd Pedido'])
+
             consulta.fillna('-', inplace=True)
+
+
+
+
+
         else:
             consulta = consulta.groupby(['nome','usuario','hora_intervalo']).agg({
                 'qtdPcs':"sum"
