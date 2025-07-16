@@ -20,7 +20,7 @@ def Conexao():
 
 
 def ConexaoCianorte():
-        load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
+        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
         host = os.getenv('CSW_HOST')
         senha = os.getenv('CSW_PASSWORD')
         user = os.getenv('CSW_USER')
@@ -38,7 +38,7 @@ def ConexaoCianorte():
 
 # Função de conectar com o CSW, com 2 opções de conexao:
 def ConexaoInternoMPL():
-        load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
+        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
         host = os.getenv('CSW_HOST')
         senha = os.getenv('CSW_PASSWORD')
         user = os.getenv('CSW_USER')
@@ -53,7 +53,7 @@ def ConexaoInternoMPL():
         return conn
 
 def Conexao2():
-    load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
     host = os.getenv('CSW_HOST')
     senha = os.getenv('CSW_PASSWORD')
     user = os.getenv('CSW_USER')
@@ -66,7 +66,7 @@ def Conexao2():
     )
     return conn
 def ConexaoExterna2():
-    load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
     host = os.getenv('CSW_HOST')
     senha = os.getenv('CSW_PASSWORD')
     user = os.getenv('CSW_USER')
@@ -87,7 +87,7 @@ def obter_notaCsw():
     return data
 
 def VerificarConexao():
-    load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
+    load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
     host = os.getenv('CSW_HOST')
     senha = os.getenv('CSW_PASSWORD')
     user = os.getenv('CSW_USER')
@@ -138,7 +138,7 @@ def pesquisaTagCSW(codbarras):
 
 
 ####### TESTE NO INICIO DA APLICACAO,
-load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
+load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
 host = os.getenv('CSW_HOST')
 senha = os.getenv('CSW_PASSWORD')
 user = os.getenv('CSW_USER')

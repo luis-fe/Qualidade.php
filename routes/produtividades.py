@@ -61,7 +61,7 @@ def get_TagsSeparacao():
 
 
 
-    if codEmpresa == '1':
+    if codEmpresa == '11':
         consulta = Novo_ProdutividadeWms.ProdutividadeWms(codEmpresa,'','','','',data_inicial, data_final)
         TagReposicao = consulta.consultaConsultaProdutividadeSeparadorTag()
     else:
