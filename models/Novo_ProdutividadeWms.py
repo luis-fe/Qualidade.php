@@ -758,7 +758,7 @@ class ProdutividadeWms:
                 curr.execute(delete,)
                 conn2.commit()
 
-    def produtividade_peloHorario_colaborador(self):
+    def produtividade_peloHorario_colaborador(self, faixaTemporal):
         '''Metodo que desdobra a produtividade do colaborador ao longo do tempo'''
 
         conn = ConexaoPostgreMPL.conexaoEngine()
@@ -782,7 +782,7 @@ class ProdutividadeWms:
         print(self.nome)
 
         consulta['hora_intervalo'] = pd.to_datetime(consulta['hora_intervalo'], errors='coerce')
-        consulta['intervalo'] = consulta['hora_intervalo'].dt.floor('30min')
+        consulta['intervalo'] = consulta['hora_intervalo'].dt.floor(f'{faixaTemporal}min')
         consulta = consulta.groupby(['nome', 'usuario', 'intervalo']).agg({
             'qtdPcs': "sum"
         }).reset_index()

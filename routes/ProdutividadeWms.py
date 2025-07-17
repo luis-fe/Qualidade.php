@@ -68,8 +68,9 @@ def get_produtividade_peloHorario_colaborador():
     dataInicio = request.args.get('dataInicio')
     dataFinal = request.args.get('dataFinal')
     nome = request.args.get('nome')
+    faixaTemporal = request.args.get('faixaTemporal',30)
 
-    produtividade = Novo_ProdutividadeWms.ProdutividadeWms(str(empresa), '','','','',dataInicio, dataFinal,'',nome).produtividade_peloHorario_colaborador()
+    produtividade = Novo_ProdutividadeWms.ProdutividadeWms(str(empresa), '','','','',dataInicio, dataFinal,'',nome).produtividade_peloHorario_colaborador(str(faixaTemporal))
     # Obtém os nomes das colunas
     column_names = produtividade.columns
     # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
