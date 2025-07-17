@@ -12,7 +12,7 @@ class WmsConnectionClass():
 
 
     def conexao(self):
-        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+        load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
 
         db_name = os.getenv('POSTGRE_NAME')
         db_user = os.getenv('POSTGRE_USER')
@@ -28,7 +28,7 @@ class WmsConnectionClass():
         return psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=host, port=portbanco)
 
     def conexaoEngine(self):
-        load_dotenv('/home/grupompl/Wms_InternoMPL/ambiente.env')
+        load_dotenv('/home/grupompl/WMS_Teste/Wms_InternoMPL/ambiente.env')
 
         db_name = os.getenv('POSTGRE_NAME')
         db_user = os.getenv('POSTGRE_USER')
