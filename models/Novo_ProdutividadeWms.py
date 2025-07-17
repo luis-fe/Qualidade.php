@@ -785,6 +785,8 @@ class ProdutividadeWms:
         }).reset_index()
 
         consulta['ritmo'] = round(((60 * 10) / consulta['qtdPcs']), 2)
+        consulta['ritmo'] = pd.to_numeric(consulta['ritmo'], errors='coerce')
+
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
 
         consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
