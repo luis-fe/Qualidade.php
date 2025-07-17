@@ -778,12 +778,13 @@ class ProdutividadeWms:
                 """
 
         consulta = pd.read_sql(sql, conn, params=(self.dataInicio, self.dataFim,self.nome))
+        print(consulta)
+
         consulta['hora_intervalo'] = pd.to_datetime(consulta['hora_intervalo'], errors='coerce')
         consulta['intervalo'] = consulta['hora_intervalo'].dt.floor('30min')
         consulta = consulta.groupby(['nome', 'usuario', 'intervalo']).agg({
             'qtdPcs': "sum"
         }).reset_index()
-        print(consulta)
         consulta['ritmo'] = round(((60 * 10) / consulta['qtdPcs']), 2)
         consulta['ritmo'] = pd.to_numeric(consulta['ritmo'], errors='coerce')
 
