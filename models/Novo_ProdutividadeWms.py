@@ -786,7 +786,7 @@ class ProdutividadeWms:
         consulta = consulta.groupby(['nome', 'usuario', 'intervalo']).agg({
             'qtdPcs': "sum"
         }).reset_index()
-        consulta['ritmo'] = round(((60 * 10) / consulta['qtdPcs']), 2)
+        consulta['ritmo'] = round(((60 * int(faixaTemporal)) / consulta['qtdPcs']), 2)
         consulta['ritmo'] = pd.to_numeric(consulta['ritmo'], errors='coerce')
 
         consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
