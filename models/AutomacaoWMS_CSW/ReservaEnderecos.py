@@ -234,7 +234,7 @@ def ReservaPedidosNaoRepostos(empresa, natureza, consideraSobra, ordem,repeticao
             select  codreduzido as produto, codendereco as codendereco2, "SaldoLiquid"  from "Reposicao"."calculoEndereco"
             where  natureza = %s and "SaldoLiquid" >0  order by "SaldoLiquid" desc
         """
-            enderecosSku = pd.read_sql(calculoEnderecos, conn, params=(natureza))
+            enderecosSku = pd.read_sql(calculoEnderecos, conn, params=(str(natureza),))
     #--------------------------------------------------------------------------------------------------------------------------------------------------
 
 
