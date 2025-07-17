@@ -789,31 +789,6 @@ class ProdutividadeWms:
         consulta['ritmo'] = round(((60 * int(faixaTemporal)) / consulta['qtdPcs']), 2)
         consulta['ritmo'] = pd.to_numeric(consulta['ritmo'], errors='coerce')
 
-        consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
-
-        consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
-
-        # ritmoApurado: média parcial acumulada do ritmo
-        consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
-        # print(consulta)
-        # Criar coluna com "bloco de 10 minutos"
-
-        # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
-        consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
-
-        # Agora calcule a média apenas com os valores válidos
-        media_geral = round(
-            consulta.groupby('usuario')['ritmo_valido'].transform('mean'),
-            2
-        )
-
-        # apuradoGeral: média final do ritmo por usuário
-        consulta['Ritmo'] = media_geral
-        consulta['ritmo2'] = (
-                consulta.groupby('usuario')['ritimoAcum'].transform('max') /
-                consulta.groupby('usuario')['parcial'].transform('max')
-        )
-
         consulta.fillna('-', inplace=True)
 
         return consulta
