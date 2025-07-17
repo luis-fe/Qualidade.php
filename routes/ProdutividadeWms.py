@@ -61,4 +61,26 @@ def get_ProdCarregarEndereco():
     return jsonify(enderecos_data)
 
 
+@Produtividade_routes.route('/api/produtividade_peloHorario_colaborador', methods=['GET'])
+@token_required
+def get_produtividade_peloHorario_colaborador():
+    empresa = request.args.get('empresa','1')
+    dataInicio = request.args.get('dataInicio')
+    dataFinal = request.args.get('dataFinal')
+    nome = request.args.get('nome')
+
+    produtividade = Novo_ProdutividadeWms.ProdutividadeWms(str(empresa), '','','','',dataInicio, dataFinal,nome).produtividade_peloHorario_colaborador()
+    # Obtém os nomes das colunas
+    column_names = produtividade.columns
+    # Monta o dicionário com os cabeçalhos das colunas e os valores correspondentes
+    enderecos_data = []
+    for index, row in produtividade.iterrows():
+        enderecos_dict = {}
+        for column_name in column_names:
+            enderecos_dict[column_name] = row[column_name]
+        enderecos_data.append(enderecos_dict)
+    return jsonify(enderecos_data)
+
+
+
 

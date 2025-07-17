@@ -11,7 +11,7 @@ class ProdutividadeWms:
 
     def __init__(self, codEmpresa=None, codUsuarioCargaEndereco=None,
                  endereco=None, qtdPcs=0, codNatureza=None,
-                 dataInicio='', dataFim = '', tempoAtualizacao = None):
+                 dataInicio='', dataFim = '', tempoAtualizacao = None , nome = ''):
         self.codEmpresa = codEmpresa
         self.codUsuarioCargaEndereco = codUsuarioCargaEndereco
         self.endereco = endereco
@@ -21,6 +21,7 @@ class ProdutividadeWms:
         self.dataInicio = dataInicio
         self.dataFim = dataFim
         self.tempoAtualizacao = tempoAtualizacao
+        self.nome = nome
 
     def inserirProducaoCarregarEndereco(self):
         '''Método que insere a produtividade na ação de recarregar endereço do WMS'''
@@ -757,6 +758,62 @@ class ProdutividadeWms:
                 curr.execute(delete,)
                 conn2.commit()
 
+    def produtividade_peloHorario_colaborador(self):
+        '''Metodo que desdobra a produtividade do colaborador ao longo do tempo'''
+
+        conn = ConexaoPostgreMPL.conexaoEngine()
+
+        sql = """
+                           select
+        				*
+        			from
+        				"Reposicao"."Reposicao"."ProdutividadeBiparTagSeparacao" pbtc
+        			join 	
+                        "Reposicao"."Reposicao".cadusuarios c 
+                        on c.codigo::varchar = pbtc.usuario 
+        			where
+        				pbtc."data" >= %s
+        				and pbtc."data" <= %s
+        				and nome = %s
+                """
+
+        consulta = pd.read_sql(sql, conn, params=(self.dataInicio, self.dataFim,self.nome))
+
+        consulta['intervalo'] = consulta['hora_intervalo'].dt.floor('30min')
+        consulta = consulta.groupby(['nome', 'usuario', 'intervalo']).agg({
+            'qtdPcs': "sum"
+        }).reset_index()
+
+        consulta['ritmo'] = round(((60 * 10) / consulta['qtdPcs']), 2)
+        consulta['ritimoAcum'] = consulta.groupby('usuario')['ritmo'].cumsum()
+
+        consulta['parcial'] = consulta.groupby(['usuario']).cumcount() + 1
+
+        # ritmoApurado: média parcial acumulada do ritmo
+        consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
+        # print(consulta)
+        # Criar coluna com "bloco de 10 minutos"
+        print(consulta[consulta['usuario'] == '2323'])
+
+        # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
+        consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
+
+        # Agora calcule a média apenas com os valores válidos
+        media_geral = round(
+            consulta.groupby('usuario')['ritmo_valido'].transform('mean'),
+            2
+        )
+
+        # apuradoGeral: média final do ritmo por usuário
+        consulta['Ritmo'] = media_geral
+        consulta['ritmo2'] = (
+                consulta.groupby('usuario')['ritimoAcum'].transform('max') /
+                consulta.groupby('usuario')['parcial'].transform('max')
+        )
+
+        consulta.fillna('-', inplace=True)
+
+        return consulta
 
 
 
