@@ -779,6 +779,7 @@ class ProdutividadeWms:
 
         consulta = pd.read_sql(sql, conn, params=(self.dataInicio, self.dataFim,self.nome))
         print(consulta)
+        print(self.nome)
 
         consulta['hora_intervalo'] = pd.to_datetime(consulta['hora_intervalo'], errors='coerce')
         consulta['intervalo'] = consulta['hora_intervalo'].dt.floor('30min')
