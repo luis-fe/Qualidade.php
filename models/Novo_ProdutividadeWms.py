@@ -778,7 +778,7 @@ class ProdutividadeWms:
                 """
 
         consulta = pd.read_sql(sql, conn, params=(self.dataInicio, self.dataFim,self.nome))
-
+        consulta['hora_intervalo'] = pd.to_datetime(consulta['hora_intervalo'], errors='coerce')
         consulta['intervalo'] = consulta['hora_intervalo'].dt.floor('30min')
         consulta = consulta.groupby(['nome', 'usuario', 'intervalo']).agg({
             'qtdPcs': "sum"
@@ -793,7 +793,6 @@ class ProdutividadeWms:
         consulta['ritmoApurado'] = consulta['ritimoAcum'] / consulta['parcial']
         # print(consulta)
         # Criar coluna com "bloco de 10 minutos"
-        print(consulta[consulta['usuario'] == '2323'])
 
         # Primeiro, crie uma cópia da coluna com NaN onde ritmo >= 150
         consulta['ritmo_valido'] = consulta['ritmo'].where(consulta['ritmo'] < 150)
