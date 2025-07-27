@@ -497,6 +497,9 @@
           <a href="../Metas" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
           </a>
+          <a href="../Orcamentos" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Orçamentos <!-- PCP -->
+          </a>
     </ul>
   </div>
 
