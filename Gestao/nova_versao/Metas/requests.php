@@ -122,7 +122,7 @@ function ConsultarLotes($empresa, $plano)
 
 function ConsultaPrevisaoCategoria($dados)
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase";
     $ch = curl_init($apiUrl);
 
@@ -155,7 +155,7 @@ function ConsultaPrevisaoCategoria($dados)
 
 function ConsultarTipoOp($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://10.162.0.53:7070';
     $apiUrl = "{$baseUrl}/pcp/api/filtroProdutivo";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -200,7 +200,7 @@ function ConsultarPlanos($empresa)
 function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 {
     $fase_encoded = urlencode($Fase);
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://10.162.0.53:7070';
     $apiUrl = "{$baseUrl}/pcp/api/RetornoPorFaseDiaria?nomeFase={$fase_encoded}&dataInicio={$dataInicio}&dataFinal={$dataFinal}&codEmpresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -224,7 +224,7 @@ function ConsultarRealizados($empresa, $Fase, $dataInicio, $dataFinal)
 function ConsultarRealizadosDia($empresa, $Fase, $dataInicio)
 {
     $fase_encoded = urlencode($Fase);
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://10.162.0.53:7070';
     $apiUrl = "{$baseUrl}/pcp/api/realizadoFasePeriodoFase_detalhaDia?nomeFase={$fase_encoded}&dataInicio={$dataInicio}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -269,7 +269,7 @@ function ConsultarCronograma($empresa, $codPlano, $codFase)
 
 function ConsultarMetas($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:7070' : 'http://192.168.0.183:7070';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://10.162.0.53:7070';
     $apiUrl = "{$baseUrl}/pcp/api/MetasFases";
 
     $ch = curl_init($apiUrl);
@@ -301,7 +301,7 @@ function ConsultarMetas($empresa, $dados)
 
 function ConsultaFaltaProduzirCategoria_Fase($dados)
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/FaltaProduzircategoria_fase";
     $ch = curl_init($apiUrl);
 
@@ -332,7 +332,7 @@ function ConsultaFaltaProduzirCategoria_Fase($dados)
 
 function ConsultacargaOP_fase($dados)
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/cargaOP_fase";
     $ch = curl_init($apiUrl);
 
@@ -363,7 +363,7 @@ function ConsultacargaOP_fase($dados)
 
 function ConsultaFilaResumo($dados)
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/filaResumo_fase";
     $ch = curl_init($apiUrl);
 

@@ -98,7 +98,7 @@ function Cosulta_Resumos($empresa, $dataInicial, $dataFinal, $area, $fase, $grup
 {
     $fase_encode = urlencode($fase);
     $grupo_encode = urlencode($grupo);
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/ResumooGastosCentroCusto?codEmpresa={$empresa}&dataCompentenciaInicial={$dataInicial}&dataCompentenciaFinal={$dataFinal}&nomeArea={$area}&GRUPO={$grupo_encode}&nomeCentroCusto={$fase_encode}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -124,7 +124,7 @@ function Consulta_Detalhamento($empresa, $dataInicial, $dataFinal, $area, $fase,
 {
     $fase_encode = urlencode($fase);
     $grupo_encode = urlencode($grupo);
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/GastosCentroCusto?codEmpresa={$empresa}&dataCompentenciaInicial={$dataInicial}&dataCompentenciaFinal={$dataFinal}&nomeArea={$area}&nomeCentroCusto={$fase_encode}&GRUPO={$grupo_encode}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -148,7 +148,7 @@ function Consulta_Orcado($empresa, $dataInicial, $dataFinal, $area, $fase, $grup
 {
     $fase_encode = urlencode($fase);
     $grupo_encode = urlencode($grupo);
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/ResumooGastosCentroCustoConta?codEmpresa={$empresa}&dataCompentenciaInicial={$dataInicial}&dataCompentenciaFinal={$dataFinal}&nomeArea={$area}&GRUPO={$grupo_encode}&nomeCentroCusto={$fase_encode}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -170,7 +170,7 @@ function Consulta_Orcado($empresa, $dataInicial, $dataFinal, $area, $fase, $grup
 
 function Consulta_Empresas()
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/EmpresasGrupoMPL";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -192,7 +192,7 @@ function Consulta_Empresas()
 
 function Consulta_Area()
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/AreaCusto";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -214,7 +214,7 @@ function Consulta_Area()
 
 function Consulta_Centro_Custos()
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/CentroCustos";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -236,7 +236,7 @@ function Consulta_Centro_Custos()
 
 function Consulta_Grupo_Gastos()
 {
-    $baseUrl = 'http://192.168.0.183:7070/pcp';
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
     $apiUrl = "{$baseUrl}/api/GrupoGastos";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
