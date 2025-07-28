@@ -149,7 +149,7 @@ include_once('../../../templates/headerGestao.php');
                 </div>
             </div>
         </div>
-        <div class="d-flex" style="height: 400px; gap: 12px;">
+        <div class="d-flex" style="height: 500px; gap: 12px;">
             <div class="flex-fill col-md-6 mb-5" style="background: #f0f0f0; border-radius: 8px; overflow: hidden;">
                 <div class="shadow-box" style="height: 100%; overflow: auto;">
                     <table class="table table-bordered table-striped mb-0" id="table-contas" style="width: 100%;">
