@@ -217,6 +217,6 @@ include_once('../../../templates/headerGestao.php');
 
 
 <?php
-include_once('../../templates/footerGestao.php');
+include_once('../../../templates/footerGestao.php');
 ?>
 <script src="script.js"></script>
