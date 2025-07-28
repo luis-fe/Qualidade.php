@@ -120,6 +120,7 @@ function Cosulta_Resumos($empresa, $dataInicial, $dataFinal, $area, $fase, $grup
 
 
 
+
 function Consulta_Detalhamento($empresa, $dataInicial, $dataFinal, $area, $fase, $grupo)
 {
     $fase_encode = urlencode($fase);
