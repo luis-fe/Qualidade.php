@@ -66,7 +66,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultaColecoes()
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
     $apiUrl = "{$baseUrl}/api/DistinctColecao";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -88,7 +88,7 @@ function ConsultaColecoes()
 
 function ConsultaPrevisaoCategoria($Fase)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
     $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase?nomeFase={$Fase}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -110,7 +110,7 @@ function ConsultaPrevisaoCategoria($Fase)
 
 function ConsultaJustificativas($op, $fase)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
     $apiUrl = "{$baseUrl}/api/ConsultarJustificativa?ordemProd={$op}&fase={$fase}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -132,7 +132,7 @@ function ConsultaJustificativas($op, $fase)
 
 function ConsultaOps($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
     $apiUrl = "{$baseUrl}/api/CargaOPs";
 
     $ch = curl_init($apiUrl);
@@ -164,7 +164,7 @@ function ConsultaOps($dados)
 
 function CadastrarJustificativa($dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
     $apiUrl = "{$baseUrl}/api/CadastrarJustificativa";
 
     $ch = curl_init($apiUrl);

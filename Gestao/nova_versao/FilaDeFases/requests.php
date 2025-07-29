@@ -62,7 +62,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultaColecoes($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
     $apiUrl = "{$baseUrl}/pcp/api/DistinctColecao";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -85,7 +85,7 @@ function ConsultaColecoes($empresa)
 
 function ConsultarFila($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
     $apiUrl = "{$baseUrl}/pcp/api/FilaFases";
 
     $ch = curl_init($apiUrl);
@@ -117,7 +117,7 @@ function ConsultarFila($empresa, $dados)
 
 function ConsultarDetalhaFila($empresa, $dados)
 {
-    $baseUrl = 'http://192.168.0.183:8000/pcp';
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
     $apiUrl = "{$baseUrl}/api/DetalhaOpFilas";
 
     $ch = curl_init($apiUrl);
