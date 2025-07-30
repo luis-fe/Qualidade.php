@@ -574,7 +574,6 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
             // --- FIM DA ADIÇÃO ---
         }
     ],
-    colum
         columns: [
             { data: 'dataLcto', title: 'data' },
             { data: 'descricaoItem', title: 'descricao' },
