@@ -165,7 +165,7 @@ function ConsultarPlanos($empresa)
 
 function ConsultarColecoes($empresa, $codPlano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaColecaoVinculados?codPlano={$codPlano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -187,7 +187,7 @@ function ConsultarColecoes($empresa, $codPlano)
 
 function ConsultaLotes($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaLotesVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -209,7 +209,7 @@ function ConsultaLotes($empresa, $plano)
 
 function ConsultaTipoNotas($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaTipoNotasVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -231,7 +231,7 @@ function ConsultaTipoNotas($empresa, $plano)
 
 function ConsultarAbc($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaParametrizacaoABC";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -253,7 +253,7 @@ function ConsultarAbc($empresa)
 
 function ConsultaAbcPlano($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaPlanejamentoABC_plano?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -275,7 +275,7 @@ function ConsultaAbcPlano($empresa, $plano)
 
 function ConsultaColecoesCsw($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/colecao_csw";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -297,7 +297,7 @@ function ConsultaColecoesCsw($empresa)
 
 function ConsultaLotesCsw($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/lotes_csw?empresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -319,7 +319,7 @@ function ConsultaLotesCsw($empresa)
 
 function ConsultaNotasCsw($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/TipoNotasCsw";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -381,7 +381,7 @@ function CadastrarPlano($empresa, $dados)
 
 function CadastrarAbc($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/InserirOuAlterPlanoABC";
 
     $ch = curl_init($apiUrl);
@@ -421,7 +421,7 @@ function CadastrarAbc($empresa, $dados)
 
 function AlterarPlano($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/AlterPlano";
 
     $ch = curl_init($apiUrl);
@@ -459,7 +459,7 @@ function AlterarPlano($empresa, $dados)
 
 function VincularColecoes($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/VincularColecoesPlano";
 
     $ch = curl_init($apiUrl);
@@ -498,7 +498,7 @@ function VincularColecoes($empresa, $dados)
 
 function VincularLote($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/VincularLotesPlano";
 
     $ch = curl_init($apiUrl);
@@ -536,7 +536,7 @@ function VincularLote($empresa, $dados)
 
 function VincularNotas($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/VincularNotasPlano";
 
     $ch = curl_init($apiUrl);
@@ -574,7 +574,7 @@ function VincularNotas($empresa, $dados)
 
 function DeleteNotas($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/DesvincularNotasPlano";
 
     $ch = curl_init($apiUrl);
@@ -652,7 +652,7 @@ function DeleteLotes($empresa, $dados)
 
 function DeleteColecoes($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/DesvincularColecoesPlano";
 
     $ch = curl_init($apiUrl);
