@@ -6,6 +6,8 @@ include_once('../../../templates/headerGestao.php');
 <!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style5.css">
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
 <style>
     .card-setor,
     .card-header {
