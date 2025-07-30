@@ -522,21 +522,21 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
         dom: 'Bfrtip', // 'B' para botões, 'f' para filtro, 'r' para processamento, 't' para tabela, 'i' para informação, 'p' para paginação
         buttons: [
         {
-            extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-            className: 'btn-tabelas',
-            exportOptions: {
-                columns: ':visible',
+                    extend: 'excelHtml5',
+        text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+        className: 'btn-tabelas',
+        filename: 'Relatorio_Contas_Detalhadas', // <- Nome do arquivo
+        exportOptions: {
+            columns: ':visible',
             format: {
                 body: function (data, row, column, node) {
-                    // Aplique somente na coluna do "valor" (assumindo que seja a coluna 2)
                     if (column === 2 && typeof data === 'string') {
                         return data.replace(/\./g, '').replace(',', '.');
                     }
                     return data;
                 }
             }
-            },
+        },
             
         }
     ],
