@@ -527,14 +527,15 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
             className: 'btn-tabelas',
             exportOptions: {
                 columns: ':visible',
-                format: {
-                    body: function (data, row, column, node) {
-                        if (typeof data === 'string') {
-                            return data.replace(/\./g, '').replace(',', '.');
-                        }
-                        return data;
+            format: {
+                body: function (data, row, column, node) {
+                    // Aplique somente na coluna do "valor" (assumindo que seja a coluna 2)
+                    if (column === 2 && typeof data === 'string') {
+                        return data.replace(/\./g, '').replace(',', '.');
                     }
+                    return data;
                 }
+            }
             },
             // --- INÍCIO DA ADIÇÃO ---
             // Evento disparado ANTES da exportação para Excel
