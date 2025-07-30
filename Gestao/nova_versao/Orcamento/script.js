@@ -9,7 +9,7 @@ $(document).ready(async () => {
 
     document.getElementById('data-inicial').value = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
     document.getElementById('data-final').value = new Date().toISOString().split('T')[0];
-    document.getElementById('select-area').value = "PRODUCAO";
+    $('#select-area').val('PRODUCAO').trigger('change');
     await Consulta_Empresas();
     await Consulta_Area();
     await Consulta_Centro_Custos();
