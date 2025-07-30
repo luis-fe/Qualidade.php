@@ -519,6 +519,7 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
 
     tabelaDetalhamentoContas = $('#table-contas-detalhadas').DataTable({
         data: dadosFiltrados,
+        dom: 'Bfrtip', // 'B' para botões, 'f' para filtro, 'r' para processamento, 't' para tabela, 'i' para informação, 'p' para paginação
         buttons: [
             {
                 extend: 'excelHtml5',
