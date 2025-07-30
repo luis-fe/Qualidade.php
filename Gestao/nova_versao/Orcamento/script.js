@@ -14,6 +14,8 @@ $(document).ready(async () => {
     await Consulta_Centro_Custos();
     await Consulta_Grupo_Gastos();
     $('#select-area').val('PRODUCAO').trigger('change');
+    $('#select-grupo-gastos').val('GASTOS GERAIS FABRICACAO').trigger('change');
+
     Cosulta_Resumos();
 });
 
