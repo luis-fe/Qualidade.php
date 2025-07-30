@@ -523,6 +523,7 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
         buttons: [
             {
                 extend: 'excelHtml5',
+                title: 'Detalhamento de Gastos',
                 text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
                 className: 'btn-tabelas',
                 exportOptions: {
