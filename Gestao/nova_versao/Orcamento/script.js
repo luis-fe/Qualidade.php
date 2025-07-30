@@ -9,11 +9,11 @@ $(document).ready(async () => {
 
     document.getElementById('data-inicial').value = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
     document.getElementById('data-final').value = new Date().toISOString().split('T')[0];
-    $('#select-area').val('PRODUCAO').trigger('change');
     await Consulta_Empresas();
     await Consulta_Area();
     await Consulta_Centro_Custos();
     await Consulta_Grupo_Gastos();
+    $('#select-area').val('PRODUCAO').trigger('change');
     Cosulta_Resumos();
 });
 
