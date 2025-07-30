@@ -521,24 +521,60 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
         data: dadosFiltrados,
         dom: 'Bfrtip', // 'B' para botões, 'f' para filtro, 'r' para processamento, 't' para tabela, 'i' para informação, 'p' para paginação
         buttons: [
-            {
-                extend: 'excelHtml5',
-                title: 'Detalhamento de Gastos',
-                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-                className: 'btn-tabelas',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: function (data, row, column, node) {
-                            if (typeof data === 'string') {
-                                return data.replace(/\./g, '').replace(',', '.');
-                            }
-                            return data;
+        {
+            extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+            className: 'btn-tabelas',
+            exportOptions: {
+                columns: ':visible',
+                format: {
+                    body: function (data, row, column, node) {
+                        if (typeof data === 'string') {
+                            return data.replace(/\./g, '').replace(',', '.');
                         }
+                        return data;
                     }
                 }
+            },
+            // --- INÍCIO DA ADIÇÃO ---
+            // Evento disparado ANTES da exportação para Excel
+            action: function (e, dt, button, config) {
+                $('#loadingModal').modal('show'); // Mostra o modal de carregamento
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button, config);
+            },
+            // Evento disparado DEPOIS da exportação para Excel
+            exportData: {
+                // Esta parte é para a lógica de exportação, se você precisar ajustar
+            },
+            customizeData: function (data) {
+                // Esta função é executada antes de os dados serem passados para o JSZip
+                // para construir o arquivo Excel.
+                // Aqui você pode ocultar o modal caso a lógica seja síncrona
+                // ou se houver um delay entre 'action' e 'customize'.
+                // Para garantir que o modal suma após o download, 'exportOptions' ou 'action' é melhor.
+            },
+            // Melhor lugar para esconder o modal é no callback do export
+            exportInfo: function (dt, settings) {
+                // Este callback é acionado quando as informações da exportação são geradas.
+                // É um bom lugar para esconder o modal.
+                // Mas, como o download pode levar um tempo, o ideal é um timeout ou um callback assíncrono.
+            },
+            // Uma abordagem mais robusta para quando a exportação termina
+            // é usar um evento global do DataTables ou um callback específico.
+            // Para 'excelHtml5', o evento 'buttons.exporting' e 'buttons.exported' são ideais.
+            init: function (dt, node, config) {
+                // Ao inicializar o botão, adicione listeners para os eventos de exportação
+                dt.on('buttons.exporting', function () {
+                    $('#loadingModal').modal('show'); // Mostra o modal
+                });
+                dt.on('buttons.exported', function () {
+                    $('#loadingModal').modal('hide'); // Esconde o modal
+                });
             }
-        ],
+            // --- FIM DA ADIÇÃO ---
+        }
+    ],
+    colum
         columns: [
             { data: 'dataLcto', title: 'data' },
             { data: 'descricaoItem', title: 'descricao' },
