@@ -519,6 +519,24 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
 
     tabelaDetalhamentoContas = $('#table-contas-detalhadas').DataTable({
         data: dadosFiltrados,
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                className: 'btn-tabelas',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (typeof data === 'string') {
+                                return data.replace(/\./g, '').replace(',', '.');
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+        ],
         columns: [
             { data: 'dataLcto', title: 'data' },
             { data: 'descricaoItem', title: 'descricao' },
