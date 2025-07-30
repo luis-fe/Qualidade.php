@@ -528,9 +528,6 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
         filename: 'Relatorio_Contas_Detalhadas', // <- Nome do arquivo
         exportOptions: {
             columns: ':visible',
-                modifier: {
-        search: 'applied' // Exporta somente os dados filtrados
-    },
             format: {
                 body: function (data, row, column, node) {
                     if (column === 2 && typeof data === 'string') {
