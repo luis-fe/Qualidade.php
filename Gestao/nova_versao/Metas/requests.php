@@ -177,7 +177,7 @@ function ConsultarTipoOp($empresa)
 
 function ConsultarPlanos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:9000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano?codEmpresa=1";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
