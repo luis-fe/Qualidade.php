@@ -85,7 +85,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultarMetas($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/MetaGeralPlano?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -107,7 +107,7 @@ function ConsultarMetas($empresa, $plano)
 
 function ConsultarMetasCategoria($empresa, $plano, $marca)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/consultarMetaCategoriaPlano?codPlano={$plano}&marca={$marca}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -130,7 +130,7 @@ function ConsultarMetasCategoria($empresa, $plano, $marca)
 function ConsultarPlanos($empresa)
 {
     $minhaEmpresa = "1";
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/Plano?codEmpresa={$minhaEmpresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -152,7 +152,7 @@ function ConsultarPlanos($empresa)
 
 function ConsultarMarcas($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/MarcasDisponiveis";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -174,7 +174,7 @@ function ConsultarMarcas($empresa)
 
 function SalvarMetas($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/inserirOuAtualizarMetaPlano";
 
     $ch = curl_init($apiUrl);
@@ -206,7 +206,7 @@ function SalvarMetas($empresa, $dados)
 
 function SalvarMetasCategoria($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/atualizaOuInserirMetaCategoria";
 
     $ch = curl_init($apiUrl);
