@@ -91,7 +91,7 @@ function consultarItem($empresa, $item)
 
 function consultarSubstitutos($empresa)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.183:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaSubstitutosMP";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -114,7 +114,7 @@ function consultarSubstitutos($empresa)
 
 function salvarSubstitutos($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.183:9000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/inserirAlterarSubstitutosMP";
 
     $ch = curl_init($apiUrl);
