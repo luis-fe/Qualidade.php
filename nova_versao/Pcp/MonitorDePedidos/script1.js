@@ -187,9 +187,9 @@ const ConsultaPedidos = async () => {
             data: JSON.stringify(requestData),
         });
 
-        // Verificação segura
-        if (response && response.length > 0 && response[0]["6 -Detalhamento"]) {
-            const DadosFormatados = formatarDados(response[0]["6 -Detalhamento"]);
+        // ✅ Aqui está a correção:
+        if (response && response.resposta && response.resposta.length > 0 && response.resposta[0]["6 -Detalhamento"]) {
+            const DadosFormatados = formatarDados(response.resposta[0]["6 -Detalhamento"]);
             console.log(DadosFormatados);
 
             DadosPedidos = DadosFormatados;
@@ -203,11 +203,12 @@ const ConsultaPedidos = async () => {
 
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
-        alert("Erro ao consultar os pedidos. Verifique os filtros ou tente novamente.");
+        alert("Erro ao consultar os pedidos.");
     } finally {
         $('#loadingModal').modal('hide');
     }
 };
+
 
 
 const Consultar_Ops = async (datainicio, datafim) => {
