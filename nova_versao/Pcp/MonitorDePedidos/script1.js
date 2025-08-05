@@ -153,12 +153,7 @@ function formatarDados(data) {
 }
 
 const ConsultaPedidos = async () => {
-    try {
         $('#loadingModal').modal('show');
-        const iniVenda = $('#inicio-venda').val();
-        const finalVenda = $('#final-venda').val();
-        const emissaoinicial = $('#inicio-emissao').val();
-        const emissaofinal = $('#final-emissao').val();
         const tipoNota = $('#menu-notas input[type="checkbox"]:checked')
             .map(function () {
                 return $(this).val();
@@ -166,38 +161,45 @@ const ConsultaPedidos = async () => {
             .get()
             .join(',');
         console.log(tipoNota)
-        const tipoData = $('#select-tipo-data').val();
         const parametroClassificacao = $('#select-priorizacao').val();
 
 
+        const dados = {
+        "empresa":"1",
+        "iniVenda": $('#inicio-venda').val(),
+        "finalVenda": $('#final-venda').val(),
+        "FiltrodataEmissaoInicial": $('#inicio-emissao').val(),
+        "FiltrodataEmissaoFinal":$('#final-emissao').val(),
+        "parametroClassificacao": parametroClassificacao,
+        "tipoData": $('#select-tipo-data').val()
+
+        }
+
+
+
+        var requestData = {
+        acao: "Consultar_Pedidos",
+        dados: dados
+    };
+
+
+    
+    try {
         const response = await $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: 'requests.php',
-            dataType: 'json',
-            data: {
-                acao: 'Consultar_Pedidos',
-                iniVenda: iniVenda,
-                finalVenda: finalVenda,
-                tipoNota: tipoNota,
-                parametroClassificacao: parametroClassificacao,
-                tipoData: tipoData,
-                emissaoinicial: emissaoinicial,
-                emissaofinal: emissaofinal
-            }
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
         });
-        if (response === null) {
-            Mensagem_Canto('Não há dados no período', 'warning');
-        } else {
             const DadosFormatados = formatarDados(response[0]['6 -Detalhamento']);
             console.log(DadosFormatados)
             DadosPedidos = DadosFormatados;
             TabelaPedidos(DadosPedidos);
             $('.div-pedidos').removeClass('d-none');
-            $('.btn-menu').removeClass('disabled')
-        }
-    } catch (error) {
-        console.log('Erro:', error);
-    } finally { }
+            $('.btn-menu').removeClass('disabled')    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error); // Exibir erro se ocorrer
+    } finally {
+    }
 }
 
 const Consultar_Ops = async (datainicio, datafim) => {

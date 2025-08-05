@@ -22,16 +22,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Notas':
                     jsonResponse(ConsultarNotas('1'));
                     break;
-                case 'Consultar_Pedidos':
-                    $iniVenda = $_GET['iniVenda'];
-                    $finalVenda = $_GET['finalVenda'];
-                    $tipoNota = $_GET['tipoNota'];
-                    $parametroClassificacao = $_GET['parametroClassificacao'];
-                    $tipoData = $_GET['tipoData'];
-                    $emissaoinicial = $_GET['emissaoinicial'];
-                    $emissaofinal = $_GET['emissaofinal'];
-                    jsonResponse(ConsultarPedidos('1', $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData, $emissaoinicial, $emissaofinal));
-                    break;
                 case 'Consultar_Ops':
                     $dataInicio = $_GET['dataInicio'];
                     $dataFim = $_GET['dataFim'];
@@ -56,6 +46,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $dados = $requestData['dados'] ?? null;
         if ($acao) {
             switch ($acao) {
+                case 'Consultar_Pedidos':
+                    header('Content-Type: application/json');
+                    echo (ConsultarPedidos('1', $dados));
+                    break;
                 case 'Consultar_Sem_Ops':
                     header('Content-Type: application/json');
                     echo (ConsultaProdutoSemOp('1', $dados));
@@ -122,26 +116,42 @@ function ConsultarNotas($empresa)
     return json_decode($apiResponse, true);
 }
 
-function ConsultarPedidos($empresa, $iniVenda, $finalVenda, $tipoNota, $parametroClassificacao, $tipoData, $emissaoinicial, $emissaofinal)
+function ConsultarPedidos($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://10.162.0.191:8000';
-    $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento?empresa={$empresa}&iniVenda={$iniVenda}&finalVenda={$finalVenda}&tiponota={$tipoNota}&parametroClassificacao={$parametroClassificacao}&tipoData={$tipoData}&FiltrodataEmissaoInicial={$emissaoinicial}&FiltrodataEmissaoFinal={$emissaofinal}";
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento";
     $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
 
     $apiResponse = curl_exec($ch);
 
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
     }
 
     curl_close($ch);
 
-    return json_decode($apiResponse, true);
+    return json_encode($response);
 }
 
 function ConsultarListaPedidos($empresa, $dataInicio, $dataFim)
@@ -168,7 +178,7 @@ function ConsultarListaPedidos($empresa, $dataInicio, $dataFim)
 
 function ConsultarOps($empresa, $dataInicio, $dataFim)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/monitorOPs?dataInico={$dataInicio}&dataFim={$dataFim}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -191,7 +201,7 @@ function ConsultarOps($empresa, $dataInicio, $dataFim)
 
 function ConsultaProdutoSemOp($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:8000' : 'http://10.162.0.191:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ProdutosSemOP";
 
     $ch = curl_init($apiUrl);
