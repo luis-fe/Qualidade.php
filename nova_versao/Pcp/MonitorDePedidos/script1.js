@@ -153,37 +153,32 @@ function formatarDados(data) {
 }
 
 const ConsultaPedidos = async () => {
-        $('#loadingModal').modal('show');
-        const tipoNota = $('#menu-notas input[type="checkbox"]:checked')
-            .map(function () {
-                return $(this).val();
-            })
-            .get()
-            .join(',');
-        console.log(tipoNota)
-        const parametroClassificacao = $('#select-priorizacao').val();
+    $('#loadingModal').modal('show');
 
+    const tipoNota = $('#menu-notas input[type="checkbox"]:checked')
+        .map(function () {
+            return $(this).val();
+        })
+        .get()
+        .join(',');
 
-        const dados = {
-        "empresa":"1",
+    const parametroClassificacao = $('#select-priorizacao').val();
+
+    const dados = {
+        "empresa": "1",
         "iniVenda": $('#inicio-venda').val(),
         "finalVenda": $('#final-venda').val(),
         "FiltrodataEmissaoInicial": $('#inicio-emissao').val(),
-        "FiltrodataEmissaoFinal":$('#final-emissao').val(),
+        "FiltrodataEmissaoFinal": $('#final-emissao').val(),
         "parametroClassificacao": parametroClassificacao,
         "tipoData": $('#select-tipo-data').val()
+    };
 
-        }
-
-
-
-        var requestData = {
+    const requestData = {
         acao: "Consultar_Pedidos",
         dados: dados
     };
 
-
-    
     try {
         const response = await $.ajax({
             type: 'POST',
@@ -191,16 +186,29 @@ const ConsultaPedidos = async () => {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-            const DadosFormatados = formatarDados(response[0]['6 -Detalhamento']);
-            console.log(DadosFormatados)
+
+        // Verificação segura
+        if (response && response.length > 0 && response[0]["6 -Detalhamento"]) {
+            const DadosFormatados = formatarDados(response[0]["6 -Detalhamento"]);
+            console.log(DadosFormatados);
+
             DadosPedidos = DadosFormatados;
             TabelaPedidos(DadosPedidos);
             $('.div-pedidos').removeClass('d-none');
-            $('.btn-menu').removeClass('disabled')    } catch (error) {
-        console.error('Erro na solicitação AJAX:', error); // Exibir erro se ocorrer
+            $('.btn-menu').removeClass('disabled');
+        } else {
+            console.warn("⚠️ Resposta inválida ou sem '6 -Detalhamento':", response);
+            alert("Nenhum detalhamento encontrado na resposta!");
+        }
+
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        alert("Erro ao consultar os pedidos. Verifique os filtros ou tente novamente.");
     } finally {
+        $('#loadingModal').modal('hide');
     }
-}
+};
+
 
 const Consultar_Ops = async (datainicio, datafim) => {
     try {
