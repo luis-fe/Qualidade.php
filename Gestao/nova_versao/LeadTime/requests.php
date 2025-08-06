@@ -87,7 +87,7 @@ function ConsultarTiposOp($empresa)
 
 function ConsultarLeadTimeCategoria($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://192.168.0.183:7070';
     $apiUrl = "{$baseUrl}/pcp/api/LeadTimesRealizados";
 
     $ch = curl_init($apiUrl);
@@ -126,7 +126,7 @@ function ConsultarLeadTimeCategoria($empresa, $dados)
 
 function ConsultarLeadTimeFase($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://192.168.0.183:7070';
     $apiUrl = "{$baseUrl}/pcp/api/LeadTimesFases";
 
     $ch = curl_init($apiUrl);
@@ -165,7 +165,7 @@ function ConsultarLeadTimeFase($empresa, $dados)
 
 function ConsultarLeadTimeFaccionista($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://192.168.0.183:7070';
     $apiUrl = "{$baseUrl}/pcp/api/LeadTimesFaccionistas";
 
     $ch = curl_init($apiUrl);
