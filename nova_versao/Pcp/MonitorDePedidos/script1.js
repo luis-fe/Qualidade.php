@@ -165,7 +165,6 @@ const ConsultaPedidos = async () => {
     const parametroClassificacao = $('#select-priorizacao').val();
 
     const dados = {
-        "empresa": "1",
         "iniVenda": $('#inicio-venda').val(),
         "finalVenda": $('#final-venda').val(),
         "FiltrodataEmissaoInicial": $('#inicio-emissao').val(),

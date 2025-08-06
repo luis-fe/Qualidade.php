@@ -48,7 +48,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             switch ($acao) {
                 case 'Consultar_Pedidos':
                     header('Content-Type: application/json');
-                    echo (ConsultarPedidos('1', $dados));
+                    echo (ConsultarPedidos($dados));
                     break;
                 case 'Consultar_Sem_Ops':
                     header('Content-Type: application/json');
@@ -116,9 +116,13 @@ function ConsultarNotas($empresa)
     return json_decode($apiResponse, true);
 }
 
-function ConsultarPedidos($empresa, $dados)
+function ConsultarPedidos($dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.53:9000';
+    $minhaEmpresa = $_SESSION['empresa'];
+        // Adiciona a chave "empresa" no array $dados
+    $dados['empresa'] = $minhaEmpresa;
+
+    $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/monitorPreFaturamento";
     $ch = curl_init($apiUrl);
 
