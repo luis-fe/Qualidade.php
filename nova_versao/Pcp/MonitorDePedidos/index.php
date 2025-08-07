@@ -9,6 +9,7 @@ include_once('../../templates/headerPcp.php');
     <span class="span-icone"><i class="bi bi-box-seam"></i></span> Monitor de Pedidos
 </div>
 
+
 <div class="col-12 mt-2 d-flex" style="border-bottom: 1px solid lightgray; max-width: 100%; overflow-x: auto">
     <button class="btn btn-menu" id="btn-pedidos"
         onclick="
@@ -18,7 +19,7 @@ include_once('../../templates/headerPcp.php');
             $('.div-sem-ops').addClass('d-none');
             ">
         <i class="bi bi-box-seam-fill"></i>
-        
+
         <span>Pedidos</span>
     </button>
     <button class="btn btn-menu disabled" id="btn-ops"
