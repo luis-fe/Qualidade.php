@@ -126,23 +126,23 @@ include_once('../../templates/headerPcp.php');
         <table class="table table-bordered table-striped" id="table-pedidos" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Pedido<br><input type="search" class="search-input search-input-pedidos" style="min-width: 150px;"></th>
-                    <th>Marca<br><input type="search" class="search-input search-input-pedidos" style="min-width: 150px;"></th>
+                    <th>Pedido<br><input type="search" class="search-input search-input-pedidos" style="min-width: 70px;"></th>
+                    <th>Marca<br><input type="search" class="search-input search-input-pedidos" style="min-width: 80px;"></th>
                     <th>Tipo de Nota<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Cód. Cliente<br><input type="search" class="search-input search-input-pedidos" style="min-width: 150px;"></th>
-                    <th>Data Emissão<br><input type="search" class="search-input search-input-pedidos" style="min-width: 150px;"></th>
-                    <th>Previsão Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 150px;"></th>
+                    <th>Cód. Cliente<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
+                    <th>Data Emissão<br><input type="search" class="search-input search-input-pedidos" style="min-width: 100px;"></th>
+                    <th>Previsão Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 100px;"></th>
                     <th>Último Faturamento<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Previsão Próximo Embarque<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Entregas Solicitadas<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Entregas Faturadas<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Entregas Restantes<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Qtd. Peças Faturadas<br></th>
+                    <th>Qtd. Peças<br>Faturadas</br></th>
                     <th>Saldo R$<br></th>
                     <th>R$ Atendido/COR<br></th>
                     <th>R$ Atendido Distríbuido<br></th>
                     <th>Qtd. Peças Saldo<br></th>
-                    <th>Qtd. Peças Atendidas/COR<br></th>
+                    <th>Qtd. Peças</br>Atendidas/COR</br></th>
                     <th>Qtd. Peças Distribuídas/COR<br></th>
                     <th>Sugestão Pedido<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>% Distribuído<br><input type="search" class="search-input search-input-pedidos"></th>
