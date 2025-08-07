@@ -18,6 +18,7 @@ include_once('../../templates/headerPcp.php');
             $('.div-sem-ops').addClass('d-none');
             ">
         <i class="bi bi-box-seam-fill"></i>
+        
         <span>Pedidos</span>
     </button>
     <button class="btn btn-menu disabled" id="btn-ops"
