@@ -128,7 +128,7 @@ include_once('../../templates/headerPcp.php');
                 <tr>
                     <th>Pedido<br><input type="search" class="search-input search-input-pedidos" style="min-width: 70px;"></th>
                     <th>Marca<br><input type="search" class="search-input search-input-pedidos" style="min-width: 80px;"></th>
-                    <th>Tipo de Nota<br><input type="search" class="search-input search-input-pedidos"></th>
+                    <th>Tipo de Nota<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Cód. Cliente<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
                     <th>Data Emissão<br><input type="search" class="search-input search-input-pedidos" style="min-width: 100px;"></th>
                     <th>Previsão Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 100px;"></th>
@@ -172,7 +172,7 @@ include_once('../../templates/headerPcp.php');
     <div class="custom-pagination-container pagination-pedidos d-md-flex col-12 text-center text-md-start">
         <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
             <label for="text">Itens por página</label>
-            <input id="itens-pedidos" class="input-itens" type="text" value="10" min="1">
+            <input id="itens-pedidos" class="input-itens" type="text" value="12" min="1">
         </div>
         <div id="pagination-pedidos" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
 
