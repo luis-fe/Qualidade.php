@@ -391,7 +391,7 @@ function TabelaPedidos(listaPedidos) {
         paging: true,
         lengthChange: true,
         info: false,
-        pageLength: 10,
+        pageLength: 12,
         data: listaPedidos,
         dom: 'Bfrtip',
         buttons: [{

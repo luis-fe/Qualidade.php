@@ -127,23 +127,23 @@ include_once('../../templates/headerPcp.php');
             <thead>
                 <tr>
                     <th>Pedido<br><input type="search" class="search-input search-input-pedidos" style="min-width: 70px;"></th>
-                    <th>Marca<br><input type="search" class="search-input search-input-pedidos" style="min-width: 80px;"></th>
-                    <th>Tipo de Nota<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
+                    <th>Marca<br><input type="search" class="search-input search-input-pedidos" style="min-width: 50px;"></th>
+                    <th>Tipo Nota<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Cód. Cliente<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
-                    <th>Data Emissão<br><input type="search" class="search-input search-input-pedidos" style="min-width: 100px;"></th>
-                    <th>Previsão Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 100px;"></th>
+                    <th>Data Emissão<br><input type="search" class="search-input search-input-pedidos" style="min-width: 90px;"></th>
+                    <th>Previsão Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
                     <th>Último Faturamento<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Previsão Próximo Embarque<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Entregas Solicitadas<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Entregas Faturadas<br><input type="search" class="search-input search-input-pedidos"></th>
-                    <th>Entregas Restantes<br><input type="search" class="search-input search-input-pedidos"></th>
+                    <th>Previsão Próximo Embarque<br><input type="search" class="search-input search-input-pedidos"style="min-width: 30px;"></th>
+                    <th>Entregas Solicitadas<br><input type="search" class="search-input search-input-pedidos"style="min-width: 30px;"></th>
+                    <th>Entregas Faturadas<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
+                    <th>Entregas Restantes<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Qtd. Peças<br>Faturadas</br></th>
                     <th>Saldo R$<br></th>
                     <th>R$ Atendido/COR<br></th>
-                    <th>R$ Atendido Distríbuido<br></th>
-                    <th>Qtd. Peças Saldo<br></th>
+                    <th>R$ Atendido</br>Distríbuido</br></th>
+                    <th>Qtd. Peças</br>Saldo</br></th>
                     <th>Qtd. Peças</br>Atendidas/COR</br></th>
-                    <th>Qtd. Peças Distribuídas/COR<br></th>
+                    <th>Qtd. Peças</br>Distribuídas/COR</br></th>
                     <th>Sugestão Pedido<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>% Distribuído<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Pedidos Agrupados<br><input type="search" class="search-input search-input-pedidos"></th>
