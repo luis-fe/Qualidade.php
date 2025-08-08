@@ -121,7 +121,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="col-12 mt-5 div-pedidos d-none" style="background-color: lightgray; border-radius: 8px;">
+<div class="col-12 mt-2 div-pedidos d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered table-striped" id="table-pedidos" style="width: 100%;">
             <thead>
@@ -180,7 +180,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="col-12 mt-5 div-ops d-none" style="background-color: lightgray; border-radius: 8px;">
+<div class="col-12 mt-3 div-ops d-none" style="background-color: lightgray; border-radius: 8px;">
     <div class="div-tabela-1">
         <div class="div-tabela" style="max-width: 100%; overflow: auto;">
             <table class="table table-bordered table-striped" id="table-ops" style="width: 100%;">
