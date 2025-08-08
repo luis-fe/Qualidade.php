@@ -138,12 +138,12 @@ include_once('../../templates/headerPcp.php');
                     <th>Entregas</br>Faturadas<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Entregas</br>Restantes<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Qtd.</br>Peças</br>Faturadas</br></th>
-                    <th>Saldo</br>R$<br></th>
-                    <th>R$ Atendido</br>/COR<br></th>
-                    <th>R$ Atendido</br>Distríbuido</br></th>
-                    <th>Qtd. Peças</br>Saldo</br></th>
-                    <th>Qtd. Peças</br>Atendidas/COR</br></th>
-                    <th>Qtd. Peças</br>Distribuídas/COR</br></th>
+                    <th></br>Saldo</br>R$<br></th>
+                    <th>R$</br>Atendido</br>/COR<br></th>
+                    <th>R$</br>Atendido</br>Distríbuido</br></th>
+                    <th>Qtd.</br>Peças</br>Saldo</br></th>
+                    <th>Qtd.</br>Peças</br>Atendidas/COR</br></th>
+                    <th>Qtd.</br>Peças</br>Distribuídas/COR</br></th>
                     <th>Sugestão</br>Pedido<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>%</br>Distribuído<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Pedidos</br>Agrupados<br><input type="search" class="search-input search-input-pedidos"></th>
