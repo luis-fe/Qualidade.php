@@ -210,7 +210,10 @@ function ConsultarOps($empresa, $dataInicio, $dataFim)
 
 function ConsultaProdutoSemOp($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.53:9000';
+    $minhaEmpresa = $_SESSION['empresa'];
+        // Adiciona a chave "empresa" no array $dados
+    $dados['empresa'] = $minhaEmpresa;
+    $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/ProdutosSemOP";
 
     $ch = curl_init($apiUrl);
@@ -328,7 +331,10 @@ function ConsultaSkusPedido($empresa, $dados)
 
 function ConsultaSkus($empresa, $dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:8000';
+        $minhaEmpresa = $_SESSION['empresa'];
+        // Adiciona a chave "empresa" no array $dados
+    $dados['empresa'] = $minhaEmpresa;
+    $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/Op_tam_cor";
 
     $ch = curl_init($apiUrl);
