@@ -131,14 +131,14 @@ include_once('../../templates/headerPcp.php');
                     <th>Tipo</br>Nota<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Cód.</br>Cliente<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
                     <th>Data</br>Emissão<br><input type="search" class="search-input search-input-pedidos" style="min-width: 90px;"></th>
-                    <th>Previsão Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
+                    <th>Previsão</br>Inicial<br><input type="search" class="search-input search-input-pedidos" style="min-width: 60px;"></th>
                     <th>Último</br>Faturamento<br><input type="search" class="search-input search-input-pedidos"></th>
                     <th>Previsão</br>Próximo Embarque<br><input type="search" class="search-input search-input-pedidos"style="min-width: 30px;"></th>
                     <th>Entregas</br>Solicitadas<br><input type="search" class="search-input search-input-pedidos"style="min-width: 30px;"></th>
                     <th>Entregas</br>Faturadas<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
                     <th>Entregas</br>Restantes<br><input type="search" class="search-input search-input-pedidos" style="min-width: 30px;"></th>
-                    <th>Qtd. Peças<br>Faturadas</br></th>
-                    <th>Saldo R$<br></th>
+                    <th>Qtd.</br>Peças</br>Faturadas</br></th>
+                    <th>Saldo</br>R$<br></th>
                     <th>R$ Atendido/COR<br></th>
                     <th>R$ Atendido</br>Distríbuido</br></th>
                     <th>Qtd. Peças</br>Saldo</br></th>
