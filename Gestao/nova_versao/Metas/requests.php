@@ -100,7 +100,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function ConsultarLotes($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? 'http://192.168.0.183:8000' : 'http://192.168.0.183:8000';
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://192.168.0.183:8000';
     $apiUrl = "{$baseUrl}/pcp/api/ConsultaLotesVinculados?plano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
