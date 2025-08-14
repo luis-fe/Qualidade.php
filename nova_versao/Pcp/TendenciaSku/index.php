@@ -11,7 +11,7 @@ include_once('../../templates/headerPcp.php');
 
        /* Força o modal a ocupar mais altura da tela */
     .modal-dialog.modal-xl {
-        height: 90vh; /* 90% da altura da viewport */
+        height: 150vh; /* 90% da altura da viewport */
         display: flex;
         flex-direction: column;
     }
