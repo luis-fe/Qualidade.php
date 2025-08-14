@@ -177,8 +177,8 @@ include_once('../../templates/headerPcp.php');
 
 
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-top modal-xl modal-fullscreen">
+    <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
