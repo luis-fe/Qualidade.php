@@ -9,12 +9,12 @@ include_once('../../templates/headerPcp.php');
 
 <style>
 
-       /* Força o modal a ocupar mais altura da tela */
-    .modal-dialog.modal-xl {
-        height: 180vh !important; /* 90% da altura da viewport */
-        display: flex;
-        flex-direction: column;
+
+    #meuModal .modal-dialog {
+        height: calc(100dvh - var(--bs-modal-margin)*2); /* ou 90dvh */
     }
+    #meuModal .modal-content { height: 100%; }
+    #meuModal .modal-body { overflow: auto; } /* cabeçalho/rodapé fixos, conteúdo rola */
 
 
 
@@ -177,8 +177,8 @@ include_once('../../templates/headerPcp.php');
 
 
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl modal-fullscreen">
-    <div class="modal-content">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
