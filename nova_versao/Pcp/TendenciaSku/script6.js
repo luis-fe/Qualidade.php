@@ -750,8 +750,8 @@ function TabelaTendencia(listaTendencia) {
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
                 } else {
-                    await Consulta_Abc_Plano();
-                    await Consulta_Categorias();
+                    //await Consulta_Abc_Plano();
+                    //await Consulta_Categorias();
                     $('#inputs-container-marcas').removeClass('d-none')
                     $('#inputs-container-categorias').removeClass('d-none')
 
