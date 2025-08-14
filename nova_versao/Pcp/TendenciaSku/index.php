@@ -10,20 +10,27 @@ include_once('../../templates/headerPcp.php');
 <style>
 
 
-#modal-simulacao .modal-content {
-    display: flex;
-    flex-direction: column; /* organiza em coluna */
-    height: 100%; /* garante que vai ocupar toda a altura */
-}
 
-#modal-simulacao .modal-body {
-    flex: 1; /* ocupa todo o espaço disponível */
-    overflow-y: auto; /* rola se passar do tamanho */
-}
 
-#modal-simulacao .modal-footer {
-    flex-shrink: 0; /* impede que o footer seja comprimido */
-}
+
+    #modal-simulacao.modal-dialog {
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
+    }
+
+    #modal-simulacao .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column; /* organiza header, body e footer em coluna */
+    }
+
+    #modal-simulacao .modal-body {
+        flex: 1; /* ocupa todo o espaço livre */
+        overflow: auto; /* rola se o conteúdo for maior */
+    }
+
+    #modal-simulacao .modal-footer {
+        flex-shrink: 0; /* mantém altura mínima dos botões */
+    }
 
     .form-label {
         font-weight: bold;
