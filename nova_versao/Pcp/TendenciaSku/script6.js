@@ -743,6 +743,7 @@ function TabelaTendencia(listaTendencia) {
                 //$('#campo-simulacao').removeClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
+                console.log(`Simulacao do teste ao clicar no modal de simulacao: ${simulacaoValue}`)
 
                 if (simulacaoValue === "") {
                     $('#inputs-container-categorias').empty();
