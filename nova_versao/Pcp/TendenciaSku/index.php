@@ -13,8 +13,8 @@ include_once('../../templates/headerPcp.php');
     #modal-simulacao .modal-dialog {
         height: calc(100dvh - var(--bs-modal-margin)*2); /* ou 90dvh */
     }
-    #modal-simulacao .modal-content { height: 100%; }
-    #modal-simulacao .modal-body { overflow: auto; } /* cabeçalho/rodapé fixos, conteúdo rola */
+   /* #modal-simulacao .modal-content { height: 100%; }
+   /* #modal-simulacao .modal-body { overflow: auto; } /* cabeçalho/rodapé fixos, conteúdo rola */
 
 
 
