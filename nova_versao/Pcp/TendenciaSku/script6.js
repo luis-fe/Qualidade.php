@@ -160,7 +160,7 @@ $('#modal-imagemMP').on('hidden.bs.modal', function () {
 });
 
 
-let nomeSimulacao = ''
+//let nomeSimulacao = ''
 async function simulacao(texto, tipo) {
     $('#modal-simulacao').modal('hide');
     $('#modal-nova-simulacao').modal('hide');
