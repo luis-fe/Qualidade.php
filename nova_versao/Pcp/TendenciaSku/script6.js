@@ -740,7 +740,7 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-simulacao').modal('show');
-                //$('#campo-simulacao').removeClass('d-none');
+                $('#campo-simulacao').removeClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
                 console.log(`Simulacao do teste ao clicar no modal de simulacao: ${simulacaoValue}`)
@@ -753,6 +753,9 @@ function TabelaTendencia(listaTendencia) {
                     await Consulta_Abc_Plano();
                     await Consulta_Categorias();
                     $('#inputs-container-marcas').removeClass('d-none')
+                    $('#inputs-container-categorias').removeClass('d-none')
+
+
                 }
             }
         },
