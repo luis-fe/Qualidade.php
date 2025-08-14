@@ -191,19 +191,22 @@ include_once('../../templates/headerPcp.php');
 
 
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
+    <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
+            
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <form id="form-simulacao" onsubmit="simulacao($('#select-simulacao').val(), ''); return false;">
-                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+
+                <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
                     <div class="select mb-4 text-start d-none" id="campo-simulacao">
                         <label for="select-simulacao" class="form-label">Simulação</label>
-                        <select id="select-simulacao" class="form-select">
-                        </select>
+                        <select id="select-simulacao" class="form-select"></select>
                     </div>
+
                     <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
                         <h6 class="fw-bold">MARCA</h6>
                         <div class="row">
@@ -217,31 +220,32 @@ include_once('../../templates/headerPcp.php');
                             </div>
                         </div>
                     </div>
+
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-container" class="row">
-                        </div>
+                        <div id="inputs-container" class="row"></div>
                     </div>
+
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias" class="row">
-                        </div>
+                        <div id="inputs-container-categorias" class="row"></div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
-                        <span><i class="bi bi-trash3-fill"></i></span>
-                        Excluir Simulação
+                        <span><i class="bi bi-trash3-fill"></i></span> Excluir Simulação
                     </button>
                     <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-floppy"></i></span>
-                        Salvar e Simular
+                        <span><i class="bi bi-floppy"></i></span> Salvar e Simular
                     </button>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
+
 
 <div class="modal fade modal-custom" id="modal-nova-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
