@@ -191,7 +191,7 @@ include_once('../../templates/headerPcp.php');
 
 
 <div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
+    <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Simulações</h5>
