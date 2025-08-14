@@ -740,7 +740,7 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-simulacao').modal('show');
-                $('#campo-simulacao').removeClass('d-none');
+                //$('#campo-simulacao').removeClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
 
