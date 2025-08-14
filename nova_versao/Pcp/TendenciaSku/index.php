@@ -10,11 +10,11 @@ include_once('../../templates/headerPcp.php');
 <style>
 
 
-    #meuModal .modal-dialog {
+    #modal-simulacao .modal-dialog {
         height: calc(100dvh - var(--bs-modal-margin)*2); /* ou 90dvh */
     }
-    #meuModal .modal-content { height: 100%; }
-    #meuModal .modal-body { overflow: auto; } /* cabeçalho/rodapé fixos, conteúdo rola */
+    #modal-simulacao .modal-content { height: 100%; }
+    #modal-simulacao .modal-body { overflow: auto; } /* cabeçalho/rodapé fixos, conteúdo rola */
 
 
 
