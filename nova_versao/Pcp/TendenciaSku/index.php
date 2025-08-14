@@ -8,6 +8,16 @@ include_once('../../templates/headerPcp.php');
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <style>
+
+       /* Força o modal a ocupar mais altura da tela */
+    .modal-dialog.modal-xl {
+        height: 90vh; /* 90% da altura da viewport */
+        display: flex;
+        flex-direction: column;
+    }
+
+
+
     .form-label {
         font-weight: bold;
         color: #555;
