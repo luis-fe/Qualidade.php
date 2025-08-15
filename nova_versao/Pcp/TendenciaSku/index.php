@@ -35,24 +35,21 @@ include_once('../../templates/headerPcp.php');
 
 
 
-    #modal-nova-simulacao .modal-dialog {
+
+    #modal-nova-simulacao.modal-dialog {
         height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
     }
 
-    #modal-nova-simulacao .modal-content {
-        height: 100%;
-        display: flex;
-        flex-direction: column; /* organiza header, body e footer em coluna */
-    }
-
-    #modal-nova-simulacao .modal-body {
-        flex: 1; /* ocupa todo o espaço livre */
-        overflow: auto; /* rola se o conteúdo for maior */
-    }
 
     #modal-nova-simulacao .modal-footer {
-        flex-shrink: 0; /* mantém altura mínima dos botões */
+        padding: 0.25rem 0.5rem; /* margens internas mínimas */
+        gap: 0.25rem; /* espaço mínimo entre os botões */
     }
+
+    #modal-nova-simulacao .modal-footer .btn {
+        margin: 0; /* remove margens extras dos botões */
+    }
+
 
 
 
@@ -302,7 +299,7 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-nova" class="row">
                         </div>
                     </div>
-                    <div class="mt-5 col-12">
+                    <div class="mt-5 col-12">   
                         <h6 class="fw-bold">CATEGORIAS</h6>
                         <div id="inputs-container-categorias-nova" class="row">
                         </div>
