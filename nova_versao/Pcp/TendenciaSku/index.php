@@ -11,17 +11,38 @@ include_once('../../templates/headerPcp.php');
 
 
 
-
+/* modais de simulacao */
 
     #modal-simulacao.modal-dialog {
         height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
     }
+    
+    
+    #modal-nova-simulacao.modal-dialog {
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
+    }
+
+
+
+/* modais do conteudo */
 
     #modal-simulacao .modal-content {
         height: 100%;
         display: flex;
         flex-direction: column; /* organiza header, body e footer em coluna */
     }
+
+    
+    #modal-nova-simulacao .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column; /* organiza header, body e footer em coluna */
+    }
+
+
+
+
+
 
     #modal-simulacao .modal-body {
         flex: 1; /* ocupa todo o espaço livre */
@@ -36,9 +57,6 @@ include_once('../../templates/headerPcp.php');
 
 
 
-    #modal-nova-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
-    }
 
 
     #modal-nova-simulacao .modal-footer {
