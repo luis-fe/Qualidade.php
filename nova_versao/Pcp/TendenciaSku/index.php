@@ -50,7 +50,7 @@ include_once('../../templates/headerPcp.php');
         overflow: auto; /* rola se o conteúdo for maior */
     }
 
-    #modal-simulacao .modal-footer {
+    #modal-nova-simulacao .modal-footer {
         flex-shrink: 0; /* mantém altura mínima dos botões */
     }
 
