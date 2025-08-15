@@ -32,6 +32,30 @@ include_once('../../templates/headerPcp.php');
         flex-shrink: 0; /* mantém altura mínima dos botões */
     }
 
+
+
+
+    #modal-nova-simulacao .modal-dialog {
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
+    }
+
+    #modal-nova-simulacao .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column; /* organiza header, body e footer em coluna */
+    }
+
+    #modal-nova-simulacao .modal-body {
+        flex: 1; /* ocupa todo o espaço livre */
+        overflow: auto; /* rola se o conteúdo for maior */
+    }
+
+    #modal-simulacao .modal-footer {
+        flex-shrink: 0; /* mantém altura mínima dos botões */
+    }
+
+
+
     .form-label {
         font-weight: bold;
         color: #555;
@@ -299,6 +323,11 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
+
+
+
+
+
 <div class="modal fade modal-custom" id="modal-detalhamento-skus" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
@@ -360,7 +389,6 @@ include_once('../../templates/headerPcp.php');
                                 <th>qtdeFaturada<br><input type="search" class="search-input search-input-detalhamento-pedidos"></th>
                                 <th>qtdePedida<br><input type="search" class="search-input search-input-detalhamento-pedidos"></th>
                                 <th>valorVendido<br><input type="search" class="search-input search-input-detalhamento-pedidos"></th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -419,6 +447,7 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
+
 
 
 
