@@ -118,89 +118,137 @@
     }
 
 
-
-         body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea, #1d0ac4);
-            color: #333;
-        }
-
-        .container {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 50px 30px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 450px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        .container img {
-            width: 100px;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
-
-        h1 {
-            margin: 15px 0;
-            font-size: 28px;
-            color: #333;
-        }
-
-        p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #555;
-        }
-
-        a {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: #0f36e2;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        a:hover {
-            background-color: #101fa3;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-
-
     </style>
 </head>
 
 <body>
- <div class="container">
-        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" alt="Aviso">
-        <h1>O link mudou!</h1>
-        <p>Você pode acessar o novo endereço clicando no botão abaixo:</p>
-        <a href="http://10.162.0.53:8081/nova_versao/indexPcp.php">Ir para o novo link</a>
-    </div>
+<div class="container text-center">
+  <div class="d-flex flex-column align-items-center">
+    
+    <img src="iconeModuloPCP6.png"
+         alt="Tela de Login"
+         class="img-fluid mb-4 girar-ao-carregar"
+         style="width: 600px; height: auto;">
 
+
+</div>
+         
+  </div>
+
+    <div class="login-box">
+        <h2 class="mb-4">Login</h2>
+        <form onsubmit="enviarDados(event)">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usuario" placeholder="Usuário" required>
+                <label for="usuario">Usuário</label>
+            </div>
+            <div class="mb-3 input-group">
+                <div class="form-floating flex-grow-1">
+                    <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                    <label for="senha">Senha</label>
+                </div>
+                <span class="input-group-text" onclick="IconePassword()">
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                </span>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" id="empresa" name="empresa" required>
+                    <option value="" disabled selected>Selecione a Empresa</option>
+                    <option value="1">Matriz</option>
+                    <option value="4">Cianorte</option>
+                </select>
+                <label for="empresa">Empresa</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('#usuario').focus()
+        })
+
+        function IconePassword() {
+            const inputPassword = document.getElementById('senha');
+            const iconePassword = document.getElementById('toggleIcon');
+            if (inputPassword.type === 'password') {
+                inputPassword.type = 'text';
+                iconePassword.classList.remove('fa-eye');
+                iconePassword.classList.add('fa-eye-slash');
+            } else {
+                inputPassword.type = 'password';
+                iconePassword.classList.remove('fa-eye-slash');
+                iconePassword.classList.add('fa-eye');
+            }
+        }
+
+        async function enviarDados(event) {
+            event.preventDefault();
+            try {
+                const response = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Fazer_Login',
+                        username: document.getElementById('usuario').value,
+                        password: document.getElementById('senha').value,
+                        empresa: document.getElementById('empresa').value
+                    }
+                });
+                console.log(response);
+                if (response['status'] === true) {
+                    await Swal.fire({
+                        title: 'Login Realizado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        backdrop: false, // Desativa o backdrop para evitar scroll
+                    });
+                    Rotinas_Usuarios()
+                    window.location.href = "Pcp/PlanoDeProducao/";
+                    
+                } else {
+                    await Swal.fire({
+                        title: 'Login Inválido',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        backdrop: false, // Desativa o backdrop para evitar scroll
+                    });
+                    $('#usuario').val('');
+                    $('#senha').val('');
+                    $('#empresa').val('');
+
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+        const Rotinas_Usuarios = async () => {
+            // $('#loadingModal').modal('show');
+            try {
+                const data = await $.ajax({
+                    type: 'GET',
+                    url: 'requests.php',
+                    dataType: 'json',
+                    data: {
+                        acao: 'Rotinas_Usuarios',
+                        codigo: document.getElementById('usuario').value,
+                    }
+                });
+            } catch (error) {
+                console.error('Erro ao consultar chamados:', error);
+            } finally {
+                // $('#loadingModal').modal('hide');
+            }
+        }
+
+
+        
+    </script>
 </body>
 
 </html>
