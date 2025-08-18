@@ -40,9 +40,7 @@ include_once('../../templates/headerPcp.php');
     }
 
 
-
-
-
+/* modais do body */
 
     #modal-simulacao .modal-body {
         flex: 1; /* ocupa todo o espaço livre */
@@ -55,9 +53,7 @@ include_once('../../templates/headerPcp.php');
 
 
 
-
-
-
+/* modais do footer */
 
     #modal-nova-simulacao .modal-footer {
         padding: 0.25rem 0.5rem; /* margens internas mínimas */
