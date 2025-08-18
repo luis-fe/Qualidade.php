@@ -116,9 +116,11 @@ $(document).ready(async () => {
 
 
     $('#select-simulacao').on('change', async function () {
-        $('#inputs-container-marcas').removeClass('d-none')
+        $('#inputs-container-marcas').removeClass('d-none');
+        $('#inputs-container-categorias').removeClass('d-none');
+
         await Consulta_Abc_Plano(false);
-        await Consulta_Categorias()
+        await Consulta_Categorias();
         await Consulta_Simulacao_Especifica();
     });
 
@@ -545,7 +547,7 @@ const Consulta_Abc_Plano = async (padrão) => {
             dataType: 'json',
             data: {
                 acao: 'Consulta_Abc_Plano',
-                plano: $('#select-plano').val()
+                plano: $('#select-plano').val() 
             }
         });
 
@@ -558,9 +560,9 @@ const Consulta_Abc_Plano = async (padrão) => {
             const inputHtml1 = `
                 <div class="col-md-3 mb-3">
                     <label class="form-label">${item.nomeABC}</label>
+                    <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
                 </div>
             `;
-            // <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
 
             const inputHtml2 = `
                 <div class="col-md-3 mb-3">
