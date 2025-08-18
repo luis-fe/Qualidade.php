@@ -257,7 +257,7 @@ include_once('../../templates/headerPcp.php');
                     </div>
 
                     <div class="mt-5 col-12">
-                        <h6 class="fw-bold border-bottom border-primary pb-2 ">CLASSIFICAÇÕES</h6>
+                        <h6 class="fw-bold text-white ">CLASSIFICAÇÕES</h6>
                         <div id="inputs-container" class="row"></div>
                     </div>
 
