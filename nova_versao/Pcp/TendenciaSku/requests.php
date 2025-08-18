@@ -287,7 +287,7 @@ function Detalha_PedidosGeralSaldo($plano, $consideraBloq, $empresa = '1')
 
 function ConsultaAbc($empresa)
 {
-    $baseUrl = ($empresa == "1") ? '10.162.0.53:9000' : '192.168.0.183:9000';
+    $baseUrl = '10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaParametrizacaoABC";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -331,7 +331,7 @@ function ConsultaSimulacoes($empresa)
 
 function ConsultaAbcPlano($empresa, $plano)
 {
-    $baseUrl = ($empresa == "1") ? '10.162.0.53:9000' : '192.168.0.183:9000';
+    $baseUrl = '10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaPlanejamentoABC_plano?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
