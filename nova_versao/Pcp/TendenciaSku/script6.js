@@ -118,6 +118,7 @@ $(document).ready(async () => {
     $('#select-simulacao').on('change', async function () {
         $('#inputs-container-marcas').removeClass('d-none');
         $('#inputs-container-categorias').removeClass('d-none');
+        $('#inputs-container').removeClass('d-none');
 
         await Consulta_Abc_Plano(false);
         await Consulta_Categorias();
