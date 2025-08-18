@@ -287,7 +287,7 @@ include_once('../../templates/headerPcp.php');
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Nova Simulação</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button> 
             </div>
             <form id="form-nova-simulacao" onsubmit="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
@@ -296,15 +296,15 @@ include_once('../../templates/headerPcp.php');
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
                     <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
-                        <h6 class="fw-bold">MARCA</h6>
+                        <h6 class="fw-bold">MARCA</h6>  
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%" />
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%" />
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
                             </div>
                         </div>
                     </div>
@@ -315,7 +315,7 @@ include_once('../../templates/headerPcp.php');
                     </div>
                     <div class="mt-5 col-12">   
                         <h6 class="fw-bold">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias-nova" class="row">
+                        <div id="inputs-container-categorias-nova" class="row" placeholder="%100">
                         </div>
                     </div>
                 </div>
