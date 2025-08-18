@@ -117,7 +117,7 @@ $(document).ready(async () => {
 
     $('#select-simulacao').on('change', async function () {
         $('#inputs-container-marcas').removeClass('d-none')
-        await Consulta_Abc_Plano();
+        await Consulta_Abc_Plano(false);
         await Consulta_Categorias()
         await Consulta_Simulacao_Especifica();
     });
@@ -537,7 +537,7 @@ async function Cadastro_Simulacao(simulacao, tipo) {
     }
 };
 
-const Consulta_Abc_Plano = async () => {
+const Consulta_Abc_Plano = async (padrão) => {
     try {
         const data = await $.ajax({
             type: 'GET',
@@ -571,13 +571,17 @@ const Consulta_Abc_Plano = async () => {
             inputsContainerNova.append(inputHtml2);
         });
 
+        if (padrão == true) { 
+
         $('.input-abc').mask("##0,00%", {
             reverse: true
         });
 
         $('.input-abc-2').mask("##0,00%", {
             reverse: true
-        });
+        })};
+
+    
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
     }
@@ -766,7 +770,7 @@ function TabelaTendencia(listaTendencia) {
             action: async function (e, dt, node, config) {
                 $('#modal-nova-simulacao').modal('show');
                 $('#inputs-container-novas-marcas').removeClass('d-none');
-                await Consulta_Abc_Plano();
+                await Consulta_Abc_Plano(true);
                 await Consulta_Categorias();
             },
         },
