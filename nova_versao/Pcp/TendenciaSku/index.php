@@ -243,7 +243,7 @@ include_once('../../templates/headerPcp.php');
                     </div>
 
                     <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
-                        <h6 class="fw-bold text-white bg-primary">MARCA</h6>
+                        <h6 class="fw-bold text-white bg-dark">MARCA</h6>
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
@@ -255,20 +255,20 @@ include_once('../../templates/headerPcp.php');
                             </div>
                         </div>
                     </div>
-
+ 
                     <div class="mt-5 col-12">
-                        <h6 class="fw-bold text-white bg-primary">CLASSIFICAÇÕES</h6>
+                        <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
                         <div id="inputs-container" class="row"></div>
                     </div>
 
                     <div class="mt-5 col-12">
-                        <h6 class="fw-bold text-white bg-primary">CATEGORIAS</h6>
+                        <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
                         <div id="inputs-container-categorias" class="row"></div>
                     </div>
                 </div>
 
                       <div class="mt-5 col-12">
-                        <h6 class="fw-bold text-white bg-primary">PRODUTOS</h6>
+                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="row"></div>
                     </div>
                 </div>

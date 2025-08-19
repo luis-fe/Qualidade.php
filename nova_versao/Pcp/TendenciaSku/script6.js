@@ -568,7 +568,7 @@ const Consulta_Abc_Plano = async (padrão) => {
             const inputHtml2 = `
                 <div class="col-md-3 mb-3">
                     <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="nova-${item.nomeABC}" placeholder="%">
+                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="${item.nomeABC}" placeholder="%">
                 </div>
             `;
 
