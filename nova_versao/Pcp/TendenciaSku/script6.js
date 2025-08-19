@@ -540,6 +540,34 @@ async function Cadastro_Simulacao(simulacao, tipo) {
     }
 };
 
+
+const Consulta_Lotes_Csw = async () => {
+    $('#loadingModal').modal('show');
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'obter_produtos_tendencia',
+                dados: {
+                "codPlano": $('#select-plano').val(),
+            }
+            }
+        });
+        await $('#selecaoEngenharias').modal('show');
+//        TabelaLotesCsw(data);
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+
+
+
 const Consulta_Abc_Plano = async (padrão) => {
     try {
         const data = await $.ajax({
