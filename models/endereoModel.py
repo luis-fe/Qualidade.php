@@ -135,7 +135,7 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
                     etiquetas_para_impressao.append((codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza))
                     nome_pdf2 = 'teste1.pdf'
                     caminho_pdf2 = os.path.join('/home/grupompl/Wms_InternoMPL/static', nome_pdf2)
-                    imprimirEtiquetaModel.EtiquetaPrateleira(caminho_pdf2, codendereco, rua,modulo,posicao, natureza)
+                    imprimirEtiquetaModel.EtiquetaPrateleira(caminho_pdf2, codendereco, ruaAtual,moduloAtual,posicaoAtual, natureza)
 
                     imprimirEtiquetaModel.imprimir_pdf(caminho_pdf2)
 
