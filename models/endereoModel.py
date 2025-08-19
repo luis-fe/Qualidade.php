@@ -131,7 +131,7 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
                     conn, params=(codendereco,)
                 )
 
-                if imprimir == True and codempresa == 1:
+                if imprimir == True and codempresa == '1':
                     etiquetas_para_impressao.append((codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza))
                     nome_pdf2 = 'teste1.pdf'
                     caminho_pdf2 = os.path.join('/home/grupompl/Wms_InternoMPL/static', nome_pdf2)
