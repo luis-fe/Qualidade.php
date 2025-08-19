@@ -270,7 +270,7 @@ include_once('../../templates/headerPcp.php');
                       <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="row">
-                                <button class="btn btn-salvar d-none" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Lotes_Csw()">
+                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Lotes_Csw()">
                                 <span><i class="bi bi-plus"></i></span>
                                 Escolher
                                  </button>
