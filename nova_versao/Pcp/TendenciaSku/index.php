@@ -269,7 +269,7 @@ include_once('../../templates/headerPcp.php');
                       <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="row">
-                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Lotes_Csw()">
+                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
                                 Escolher
                                  </button>
@@ -350,7 +350,7 @@ include_once('../../templates/headerPcp.php');
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
                     <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
-                        <h6 class="fw-bold">MARCA</h6>  
+                        <h6 class="fw-bold text-white bg-dark">MARCA</h6>  
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
@@ -363,15 +363,28 @@ include_once('../../templates/headerPcp.php');
                         </div>
                     </div>
                     <div class="mt-5 col-12">
-                        <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
+                        <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
                         <div id="inputs-container-nova" class="row">
                         </div>
                     </div>
                     <div class="mt-5 col-12">   
-                        <h6 class="fw-bold">CATEGORIAS</h6>
+                        <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
                         <div id="inputs-container-categorias-nova" class="row" placeholder="%100">
                         </div>
                     </div>
+
+                    <div class="mt-5 col-12">
+                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                        <div id="inputs-container-PRODUTOS" class="row">
+                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
+                                <span><i class="bi bi-plus"></i></span>
+                                Escolher
+                                 </button>
+
+                        </div>
+
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
