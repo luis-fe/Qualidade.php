@@ -532,7 +532,7 @@ function Tabela_Contas_Detalhadas(listaDetalhamentoContas) {
                 body: function (data, row, column, node) {
                     if (column === 2 && typeof data === 'string') {
                         return data
-                            .replace('R$ ', '')      // remove o "R$ "
+                            .replace('R$ ', '')      // remove o "R$ "
                             .replace(/\./g, '')      // remove pontos
                             .replace(',', '.');      // troca vírgula por ponto
                     }
