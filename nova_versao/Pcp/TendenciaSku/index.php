@@ -288,6 +288,48 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
+<div class="modal fade modal-custom" id="modal-selecaoEngenharias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Seleção de Engenharias</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style=" min-width: 100%; max-height: 600px; overflow: auto">
+                <div class="div-tabela-lotes-csw" style="max-width: 100%; overflow: auto;">
+                    <table class="table table-bordered table-striped" id="table-lotes-csw" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Ações</th>
+                                <th>Código Produto<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 150px;"></th>
+                                <th>Descrição<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 150px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aqui vão os dados da tabela -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="custom-pagination-container pagination-lotes-csw d-md-flex col-12 text-center text-md-start">
+                    <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
+                        <label for="text">Itens por página</label>
+                        <input id="itens-lotes-csw" class="input-itens" type="text" value="10" min="1">
+                    </div>
+                    <div id="pagination-lotes-csw" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-salvar" style="width: 100px" id="btn-selecionar-lotes">
+                    <span><i class="bi bi-floppy"></i></span>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade modal-custom" id="modal-nova-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
