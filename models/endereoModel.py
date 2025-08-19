@@ -131,8 +131,13 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
                     conn, params=(codendereco,)
                 )
 
-                if imprimir:
+                if imprimir == True and codempresa == 1:
                     etiquetas_para_impressao.append((codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza))
+                    nome_pdf2 = 'teste1.pdf'
+                    caminho_pdf2 = os.path.join('/home/grupompl/Wms_InternoMPL/static', nome_pdf2)
+                    imprimirEtiquetaModel.EtiquetaPrateleira(caminho_pdf2, codendereco, rua,modulo,posicao, natureza)
+
+                    imprimirEtiquetaModel.imprimir_pdf(caminho_pdf2)
 
                 if select.empty:
                     cursor.execute(query, (
@@ -153,7 +158,7 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
     conn.close()
 
     # Impressão em lote depois do loop
-    if imprimir and etiquetas_para_impressao:
+    if imprimir == True and etiquetas_para_impressao:
         # Gera nome dinâmico do PDF
         nome_pdf = f"etiquetas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
         nome_pdf = 'teste.pdf'
@@ -163,8 +168,7 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
         imprimirEtiquetaModel.gerar_etiquetas_pdf(caminho_pdf, etiquetas_para_impressao)
 
         # Imprime direto se for empresa 1
-        if codempresa == '1':
-            imprimirEtiquetaModel.imprimir_pdf(caminho_pdf)
+
 
         # Retorna a URL pública do PDF
         return f"http://10.162.0.191:5000/static/{nome_pdf}"
