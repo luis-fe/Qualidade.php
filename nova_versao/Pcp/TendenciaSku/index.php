@@ -265,7 +265,6 @@ include_once('../../templates/headerPcp.php');
                         <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
                         <div id="inputs-container-categorias" class="row"></div>
                     </div>
-                </div>
 
                       <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
