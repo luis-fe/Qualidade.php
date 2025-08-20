@@ -385,17 +385,6 @@ include_once('../../templates/headerPcp.php');
                         </div>
                     </div>
 
-                    <div class="mt-5 col-12">
-                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                        <div id="inputs-container-PRODUTOS" class="row">
-                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
-                                <span><i class="bi bi-plus"></i></span>
-                                Escolher
-                                 </button>
-
-                        </div>
-
-
 
                 </div>
                 <div class="modal-footer">
@@ -409,6 +398,21 @@ include_once('../../templates/headerPcp.php');
                     </button>
                 </div>
             </form>
+                 <!-- botão fora do form -->
+            <div class="px-3 pb-4">
+                <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                <div id="inputs-container-PRODUTOS" class="row">
+                    <button type="button" 
+                            class="btn btn-salvar" 
+                            style="width: 150px" 
+                            id="btn-adicionar-lotes" 
+                            onclick="Consulta_Engenharias()">
+                        <span><i class="bi bi-plus"></i></span>
+                        Escolher
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
