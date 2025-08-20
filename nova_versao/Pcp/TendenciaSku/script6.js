@@ -1580,13 +1580,7 @@ function TabelaEngenharia(lista) {
         info: false,
         pageLength: 10,
         data: lista,
-        columns: [{
-            data: null,
-            render: () => `
-                    <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
-                        <input type="checkbox" class="row-checkbox">
-                    </div>`
-        },
+        columns: [
         {
             data: 'marca'
         },

@@ -11,10 +11,10 @@ include_once('../../templates/headerPcp.php');
 
 
 #modal-selecaoEngenharias {
-  z-index: 1065 !important; /* acima do modal padrão (1050) */
+  z-index: 1095 !important; /* acima do modal padrão (1050) */
 }
 #modal-selecaoEngenharias + .modal-backdrop {
-  z-index: 1060 !important;
+  z-index: 1080 !important;
 }
 
 /* modais de simulacao */
