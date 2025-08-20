@@ -482,7 +482,7 @@ function CadastroSimulacao($empresa, $dados)
     return json_decode($apiResponse, true);
 }
 
-function CadastroSimulacao($empresa, $dados)
+function atualizaInserirSimulacaoProdutos($dados)
 {
     $baseUrl = '10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/atualizaInserirSimulacaoProdutos";
