@@ -78,7 +78,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     break;
                 case 'obter_produtos_tendencia':
                     $codPlano = isset($_GET['codPlano']) ? $_GET['codPlano'] : null;
-                    jsonResponse(obter_produtos_tendencia($codPlano));
+                    $nomeSimulacao = isset($_GET['nomeSimulacao']) ? $_GET['nomeSimulacao'] : null;
+                    jsonResponse(obter_produtos_tendencia($codPlano,$nomeSimulacao));
                     break;
 
 
@@ -294,10 +295,10 @@ function Detalha_PedidosGeralSaldo($plano, $consideraBloq, $empresa = '1')
 }
 
 
-function obter_produtos_tendencia($plano)
+function obter_produtos_tendencia($plano, $nomeSimulacao)
 {
     $baseUrl = 'http://10.162.0.53:9000' ;
-    $apiUrl = "{$baseUrl}/pcp/api/obter_produtos_tendencia?codPlano={$plano}";
+    $apiUrl = "{$baseUrl}/pcp/api/obter_produtos_tendencia?codPlano={$plano}&nomeSimulacao={$nomeSimulacao}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
