@@ -75,11 +75,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Ultimo_CalculoTendencia':
                     $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
                     jsonResponse(Consulta_Ultimo_CalculoTendencia('1', $plano));
-                    break;,
+                    break;
                 case 'obter_produtos_tendencia':
                     $codPlano = $_GET['codPlano'];
                     jsonResponse(obter_produtos_tendencia($codPlano));
-                    break;,
+                    break;
 
 
                 default:
