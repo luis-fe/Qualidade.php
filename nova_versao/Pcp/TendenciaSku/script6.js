@@ -549,10 +549,8 @@ const Consulta_Engenharias = async () => {
             url: 'requests.php',
             dataType: 'json',
             data: {
-                acao: 'obter_produtos_tendencia',
-                dados: {
-                "codPlano": $('#select-plano').val(),
-            }
+                acao: "obter_produtos_tendencia",
+                codPlano: $('#select-plano').val() ,
             }
         });
         await $('#selecaoEngenharias').modal('show');
