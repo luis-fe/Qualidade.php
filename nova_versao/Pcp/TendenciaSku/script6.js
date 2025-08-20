@@ -396,6 +396,7 @@ async function registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, 
         if (response[0]['Status'] == true) {
             $('#loadingModal').modal('hide');
             Mensagem_Canto('produtos adicionados', 'success');
+             $('#modal-selecaoEngenharias').modal('hide');
         } else {
             Mensagem_Canto('Erro', 'error'); 
         }
@@ -600,6 +601,7 @@ const Consulta_Engenharias = async () => {
         console.error('Erro ao consultar planos:', error);
     } finally {
         $('#loadingModal').modal('hide');
+        
     }
 };
 
@@ -1698,6 +1700,8 @@ function TabelaEngenharia(lista) {
     console.log("Percentuais:", arrayPercentualProduto);
     const simulacao = $('#select-simulacao').val()
     registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
+   
+
 });
 
 }
