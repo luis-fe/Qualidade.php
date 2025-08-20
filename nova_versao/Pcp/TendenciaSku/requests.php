@@ -297,7 +297,9 @@ function Detalha_PedidosGeralSaldo($plano, $consideraBloq, $empresa = '1')
 
 function obter_produtos_tendencia($plano, $nomeSimulacao)
 {
-    $baseUrl = 'http://10.162.0.53:9000' ;
+    $baseUrl = 'http://10.162.0.53:9000';
+    $nomeSimulacao = rawurlencode($nomeSimulacao); // trata espaços e acentos
+    
     $apiUrl = "{$baseUrl}/pcp/api/obter_produtos_tendencia?codPlano={$plano}&nomeSimulacao={$nomeSimulacao}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -316,6 +318,7 @@ function obter_produtos_tendencia($plano, $nomeSimulacao)
 
     return json_decode($apiResponse, true);
 }
+
 
 
 
