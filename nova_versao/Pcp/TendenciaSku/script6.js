@@ -553,7 +553,7 @@ const Consulta_Engenharias = async () => {
                 codPlano: $('#select-plano').val()
             }
         });
-        await $('#selecaoEngenharias').modal('show');
+        await $('#modal-selecaoEngenharias').modal('show');
 //        TabelaLotesCsw(data);
 
     } catch (error) {
