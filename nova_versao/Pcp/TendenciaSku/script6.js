@@ -1631,7 +1631,7 @@ function TabelaEngenharia(lista) {
             data: 'descricao'
         },
                 {
-                       data: percentual,
+                       data: "percentual",
             render: () => `
                 <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
                     <input type="text" class="form-control percentual-input" style="width:80px; text-align:right;" placeholder="%">
