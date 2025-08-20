@@ -271,42 +271,38 @@ include_once('../../templates/headerPcp.php');
                         <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
                         <div id="inputs-container-categorias" class="row"></div>
                     </div>
-
-                      <div class="mt-5 col-12">
-                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                        <div id="inputs-container-PRODUTOS" class="row">
-                               <button type="button" 
-                                    class="btn btn-salvar" 
-                                    style="width: 150px" 
-                                    id="btn-adicionar-lotes" 
-                                    onclick="Consulta_Engenharias()">
-                                <span><i class="bi bi-plus"></i></span>
-                                Escolher
-                            </button>
-
-                        </div>
-
-                    </div>
                 </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
+                        <span><i class="bi bi-trash3-fill"></i></span> Excluir Simulação
+                    </button>
+                    <button type="submit" class="btn btn-salvar" id="SimularSalvar">
+                        <span><i class="bi bi-floppy"></i></span> Salvar e Simular
+                    </button>
+                </div>
+
             </form>
 
-
-                <div class="mt-5 col-12">
-                    <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                    <div id="inputs-container-PRODUTOS" class="row">
-                        <button type="button" 
-                                class="btn btn-salvar" 
-                                style="width: 150px" 
-                                id="btn-adicionar-lotes">
-                            <span><i class="bi bi-plus"></i></span>
-                            Escolher
-                        </button>
-                    </div>
+            <!-- botão fora do form -->
+            <div class="px-3 pb-4">
+                <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                <div id="inputs-container-PRODUTOS" class="row">
+                    <button type="button" 
+                            class="btn btn-salvar" 
+                            style="width: 150px" 
+                            id="btn-adicionar-lotes" 
+                            onclick="Consulta_Engenharias()">
+                        <span><i class="bi bi-plus"></i></span>
+                        Escolher
+                    </button>
                 </div>
+            </div>
 
         </div>
     </div>
 </div>
+
 
 
 <div class="modal fade modal-custom" id="modal-selecaoEngenharias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
@@ -392,14 +388,10 @@ include_once('../../templates/headerPcp.php');
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="row">
-                                <button type="button" 
-                                        class="btn btn-salvar" 
-                                        style="width: 150px" 
-                                        id="btn-adicionar-lotes" 
-                                        onclick="Consulta_Engenharias()">
-                                    <span><i class="bi bi-plus"></i></span>
-                                    Escolher
-                                </button>
+                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
+                                <span><i class="bi bi-plus"></i></span>
+                                Escolher
+                                 </button>
 
                         </div>
 
