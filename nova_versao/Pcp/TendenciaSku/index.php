@@ -403,9 +403,8 @@ include_once('../../templates/headerPcp.php');
                                 Escolher
                             </button>
                         </div>
-            </div>
-
                 </div>
+
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-salvar" 
