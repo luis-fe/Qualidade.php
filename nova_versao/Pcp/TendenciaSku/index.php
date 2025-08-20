@@ -313,8 +313,10 @@ include_once('../../templates/headerPcp.php');
                         <thead>
                             <tr>
                                 <th>Ações</th>
+                                <th>Marca<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 70px;"></th>
                                 <th>Código Produto<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 150px;"></th>
                                 <th>Descrição<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 150px;"></th>
+                                <th>Percentual<br></th>
                             </tr>
                         </thead>
                         <tbody>

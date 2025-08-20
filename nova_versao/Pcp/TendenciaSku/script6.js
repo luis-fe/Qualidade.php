@@ -1565,3 +1565,79 @@ function formatarDataBrasileira(dataISO) {
     const [ano, mes, dia] = dataISO.split('-');
     return `${dia}/${mes}/${ano}`;
 }
+
+
+
+function TabelaEngenharia(lista) {
+    if ($.fn.DataTable.isDataTable('#table-lotes-csw')) {
+        $('#table-lotes-csw').DataTable().destroy();
+    }
+
+    const tabela = $('#table-lotes-csw').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: lista,
+        columns: [{
+            data: null,
+            render: () => `
+                    <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <input type="checkbox" class="row-checkbox">
+                    </div>`
+        },
+        {
+            data: 'marca'
+        },
+        {
+            data: 'codItemPai'
+        },
+                {
+            data: 'descricao'
+        },
+                {
+                       data: null,
+            render: () => `
+                <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
+                    <input type="text" class="form-control percentual-input" style="width:80px; text-align:right;" placeholder="%">
+                </div>`
+        }
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-lotes-csw').html($('.dataTables_paginate').html());
+            $('#pagination-lotes-csw span').remove();
+            $('#pagination-lotes-csw a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    $('.search-input-lotes-csw').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+
+    $('#btn-selecionar-lotes').off('click').on('click', () => {
+        LotesSelecionados = tabela.rows().nodes().toArray()
+            .filter(row => $(row).find('.row-checkbox').is(':checked'))
+            .map(row => tabela.row(row).data().codLote);
+        if (LotesSelecionados.length === 0) {
+            Mensagem('Nenhum lote selecionado!', 'warning');
+        } else {
+            Vincular_Lotes();
+
+        }
+    });
+}
