@@ -554,7 +554,7 @@ const Consulta_Engenharias = async () => {
             }
         });
     $('#modal-selecaoEngenharias').modal('show');
-//        TabelaLotesCsw(data);
+        TabelaEngenharia(data);
 
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
