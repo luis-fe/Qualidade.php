@@ -589,7 +589,8 @@ const Consulta_Engenharias = async () => {
             dataType: 'json',
             data: {
                 acao: "obter_produtos_tendencia",
-                codPlano: $('#select-plano').val()
+                codPlano: $('#select-plano').val(),
+                nomeSimulacao:  $('#select-simulacao').val()
             }
         });
     $('#modal-selecaoEngenharias').modal('show');
@@ -1630,7 +1631,7 @@ function TabelaEngenharia(lista) {
             data: 'descricao'
         },
                 {
-                       data: null,
+                       data: percentual,
             render: () => `
                 <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
                     <input type="text" class="form-control percentual-input" style="width:80px; text-align:right;" placeholder="%">
