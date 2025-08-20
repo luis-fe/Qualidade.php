@@ -99,6 +99,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaTendencias('1', $dadosObjeto));
                     break;
+                case 'atualizaInserirSimulacaoProdutos':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(atualizaInserirSimulacaoProdutos($dadosObjeto));
+                    break;
                 case 'Simular_Programacao':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
@@ -477,6 +482,37 @@ function CadastroSimulacao($empresa, $dados)
     return json_decode($apiResponse, true);
 }
 
+function CadastroSimulacao($empresa, $dados)
+{
+    $baseUrl = '10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/atualizaInserirSimulacaoProdutos";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 function DeleteSimulacao($empresa, $dados)
 {
