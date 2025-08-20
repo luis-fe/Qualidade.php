@@ -75,7 +75,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Ultimo_CalculoTendencia':
                     $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
                     jsonResponse(Consulta_Ultimo_CalculoTendencia('1', $plano));
-                    break;
+                    break;,
+                case 'obter_produtos_tendencia':
+                    $codPlano = $_GET['codPlano'];
+                    jsonResponse(obter_produtos_tendencia($codPlano));
+                    break;,
+
 
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
@@ -265,6 +270,29 @@ function Detalha_PedidosGeralSaldo($plano, $consideraBloq, $empresa = '1')
 {
     $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/DetalhaPedidosGeralSaldo?codPlano={$plano}&consideraPedidosBloqueado={$consideraBloq}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function obter_produtos_tendencia($plano)
+{
+    $baseUrl = 'http://10.162.0.53:9000' ;
+    $apiUrl = "{$baseUrl}/pcp/api/obter_produtos_tendencia?codPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
