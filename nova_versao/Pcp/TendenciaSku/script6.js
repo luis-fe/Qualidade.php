@@ -1643,7 +1643,7 @@ function TabelaEngenharia(lista) {
 
         if (valor > 0) {
             // exemplo: supondo que o código do produto esteja na coluna 1
-            const codProduto = data[1]; 
+            const codProduto = data.codItemPai; 
             
             arrayProduto.push(codProduto);
             arrayPercentualProduto.push(valor);
