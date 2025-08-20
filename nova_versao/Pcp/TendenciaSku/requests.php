@@ -77,7 +77,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     jsonResponse(Consulta_Ultimo_CalculoTendencia('1', $plano));
                     break;
                 case 'obter_produtos_tendencia':
-                    $codPlano = $_GET['codPlano'];
+                    $codPlano = isset($_GET['codPlano']) ? $_GET['codPlano'] : null;
                     jsonResponse(obter_produtos_tendencia($codPlano));
                     break;
 
