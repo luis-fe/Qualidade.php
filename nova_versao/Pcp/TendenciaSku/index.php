@@ -357,8 +357,7 @@ include_once('../../templates/headerPcp.php');
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button> 
             </div>
 
-            <form id="form-nova-simulacao" 
-                  onsubmit="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+            <form id="form-nova-simulacao" >
                 
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
                     
@@ -391,6 +390,21 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-categorias-nova" class="row" placeholder="%100"></div>
                     </div>
 
+                                        <!-- seção de PRODUTOS fora do form -->
+                    <div class="px-3 pb-4">
+                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                        <div id="inputs-container-PRODUTOS" class="row">
+                            <button type="button" 
+                                    class="btn btn-salvar" 
+                                    style="width: 150px" 
+                                    id="btn-adicionar-lotes" 
+                                    onclick="Consulta_Engenharias()">
+                                <span><i class="bi bi-plus"></i></span>
+                                Escolher
+                            </button>
+                        </div>
+            </div>
+
                 </div>
 
                 <div class="modal-footer">
@@ -399,27 +413,14 @@ include_once('../../templates/headerPcp.php');
                         <span><i class="bi bi-x-octagon"></i></span>
                         Zerar Categorias
                     </button>
-                    <button type="submit" class="btn btn-salvar">
+                    <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
                         <span><i class="bi bi-floppy"></i></span>
                         Salvar e Simular
                     </button>
                 </div>
             </form>
 
-            <!-- seção de PRODUTOS fora do form -->
-            <div class="px-3 pb-4">
-                <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                <div id="inputs-container-PRODUTOS" class="row">
-                    <button type="button" 
-                            class="btn btn-salvar" 
-                            style="width: 150px" 
-                            id="btn-adicionar-lotes" 
-                            onclick="Consulta_Engenharias()">
-                        <span><i class="bi bi-plus"></i></span>
-                        Escolher
-                    </button>
-                </div>
-            </div>
+
 
         </div>
     </div>
