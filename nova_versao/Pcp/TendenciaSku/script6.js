@@ -394,7 +394,6 @@ async function registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, 
         });
 
         if (response[0]['Status'] == true) {
-            await Consulta_Notas();
             $('#loadingModal').modal('hide');
             Mensagem_Canto('produtos adicionados', 'success');
         } else {
