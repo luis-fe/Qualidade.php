@@ -541,7 +541,7 @@ async function Cadastro_Simulacao(simulacao, tipo) {
 };
 
 
-const Consulta_Lotes_Csw = async () => {
+const Consulta_Engenharias = async () => {
     $('#loadingModal').modal('show');
     try {
         const data = await $.ajax({
