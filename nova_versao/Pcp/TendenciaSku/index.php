@@ -312,7 +312,6 @@ include_once('../../templates/headerPcp.php');
                     <table class="table table-bordered table-striped" id="table-lotes-csw" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>Ações</th>
                                 <th>Marca<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 70px;"></th>
                                 <th>Código Produto<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 150px;"></th>
                                 <th>Descrição<br><input type="search" class="search-input search-input-lotes-csw" style="min-width: 150px;"></th>
