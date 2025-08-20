@@ -333,7 +333,7 @@ include_once('../../templates/headerPcp.php');
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-salvar" style="width: 100px" id="btn-selecionar-lotes">
+                <button class="btn btn-salvar" style="width: 100px" id="btn-salvarProdutosSimulacao">
                     <span><i class="bi bi-floppy"></i></span>
                     Salvar
                 </button>

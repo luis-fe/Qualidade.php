@@ -1623,15 +1623,35 @@ function TabelaEngenharia(lista) {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 
-    $('#btn-selecionar-lotes').off('click').on('click', () => {
-        LotesSelecionados = tabela.rows().nodes().toArray()
-            .filter(row => $(row).find('.row-checkbox').is(':checked'))
-            .map(row => tabela.row(row).data().codLote);
-        if (LotesSelecionados.length === 0) {
-            Mensagem('Nenhum lote selecionado!', 'warning');
-        } else {
-            Vincular_Lotes();
+ $('#btn-salvarProdutosSimulacao').off('click').on('click', () => {
+    const arrayProduto = [];
+    const arrayPercentualProduto = [];
 
+    // Pega instância do DataTable
+    const table = $('#table-lotes-csw').DataTable();
+
+    // Percorre todas as linhas visíveis
+    table.rows().every(function () {
+        const data = this.data(); // dados da linha
+
+        // acha o input dentro dessa linha
+        const $rowNode = $(this.node());
+        const percentual = $rowNode.find('.percentual-input').val();
+
+        // transforma em número (ignora símbolo % e vírgula)
+        const valor = parseFloat(percentual.replace('%','').replace(',','.')) || 0;
+
+        if (valor > 0) {
+            // exemplo: supondo que o código do produto esteja na coluna 1
+            const codProduto = data[1]; 
+            
+            arrayProduto.push(codProduto);
+            arrayPercentualProduto.push(valor);
         }
     });
+
+    console.log("Produtos:", arrayProduto);
+    console.log("Percentuais:", arrayPercentualProduto);
+});
+
 }
