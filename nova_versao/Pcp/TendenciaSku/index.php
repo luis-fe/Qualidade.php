@@ -351,16 +351,22 @@ include_once('../../templates/headerPcp.php');
 <div class="modal fade modal-custom" id="modal-nova-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
+            
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Nova Simulação</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button> 
             </div>
-            <form id="form-nova-simulacao" onsubmit="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+
+            <form id="form-nova-simulacao" 
+                  onsubmit="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                    
                     <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
+
                     <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
                         <h6 class="fw-bold text-white bg-dark">MARCA</h6>  
                         <div class="row">
@@ -374,31 +380,33 @@ include_once('../../templates/headerPcp.php');
                             </div>
                         </div>
                     </div>
+
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-container-nova" class="row">
-                        </div>
+                        <div id="inputs-container-nova" class="row"></div>
                     </div>
+
                     <div class="mt-5 col-12">   
                         <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias-nova" class="row" placeholder="%100">
-                        </div>
+                        <div id="inputs-container-categorias-nova" class="row" placeholder="%100"></div>
                     </div>
 
-
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
+                    <button type="button" class="btn btn-salvar" 
+                            onclick="$('.input-categoria-2').val('0,00%')">
                         <span><i class="bi bi-x-octagon"></i></span>
                         Zerar Categorias
                     </button>
                     <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-x-octagon"></i></span>
+                        <span><i class="bi bi-floppy"></i></span>
                         Salvar e Simular
                     </button>
                 </div>
             </form>
-                 <!-- botão fora do form -->
+
+            <!-- seção de PRODUTOS fora do form -->
             <div class="px-3 pb-4">
                 <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                 <div id="inputs-container-PRODUTOS" class="row">
@@ -416,6 +424,7 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
+
 
 
 
