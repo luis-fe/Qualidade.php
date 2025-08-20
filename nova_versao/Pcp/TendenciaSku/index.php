@@ -275,10 +275,14 @@ include_once('../../templates/headerPcp.php');
                       <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="row">
-                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
+                               <button type="button" 
+                                    class="btn btn-salvar" 
+                                    style="width: 150px" 
+                                    id="btn-adicionar-lotes" 
+                                    onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
                                 Escolher
-                                 </button>
+                            </button>
 
                         </div>
 
@@ -289,7 +293,7 @@ include_once('../../templates/headerPcp.php');
                     <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
                         <span><i class="bi bi-trash3-fill"></i></span> Excluir Simulação
                     </button>
-                    <button type="submit" class="btn btn-salvar">
+                    <button type="submit" class="btn btn-salvar" id="SimularSalvar">
                         <span><i class="bi bi-floppy"></i></span> Salvar e Simular
                     </button>
                 </div>
@@ -383,10 +387,14 @@ include_once('../../templates/headerPcp.php');
                     <div class="mt-5 col-12">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="row">
-                                <button class="btn btn-salvar" style="width: 150px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
-                                <span><i class="bi bi-plus"></i></span>
-                                Escolher
-                                 </button>
+                                <button type="button" 
+                                        class="btn btn-salvar" 
+                                        style="width: 150px" 
+                                        id="btn-adicionar-lotes" 
+                                        onclick="Consulta_Engenharias()">
+                                    <span><i class="bi bi-plus"></i></span>
+                                    Escolher
+                                </button>
 
                         </div>
 
