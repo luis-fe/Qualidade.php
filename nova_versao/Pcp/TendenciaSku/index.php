@@ -291,8 +291,7 @@ include_once('../../templates/headerPcp.php');
                                 style="width: 120px" 
                                 id="btn-limpar-lotes" 
                                 onclick="Consulta_Engenharias()">
-                            <span><i class="bi bi-x-circle"></i></span>
-                            <span style="font-size: 12px;">Limpar</span>
+                            <span><i class="bi bi-x-circle" style="font-size: 12px;"></i>Limpar</span>
                         </button>
 
                         
