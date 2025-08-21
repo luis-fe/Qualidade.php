@@ -278,21 +278,21 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
                             <button type="button" 
                                     class="btn btn-salvar" 
-                                    style="width: 100px" 
+                                    style="width: 120px" 
                                     id="btn-adicionar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
-                                <span style="font-size: 10px;">Escolher</span>
+                                <span style="font-size: 12px;">Escolher</span>
                                 
                             </button>
                             <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
                         <button type="button" 
                                 class="btn btn-excluir d-flex flex-column align-items-center justify-content-center" 
-                                style="width: 100px" 
+                                style="width: 120px" 
                                 id="btn-limpar-lotes" 
                                 onclick="Consulta_Engenharias()">
                             <span><i class="bi bi-x-circle"></i></span>
-                            <span style="font-size: 10px;">Limpar</span>
+                            <span style="font-size: 12px;">Limpar</span>
                         </button>
 
                         
@@ -413,11 +413,11 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
                             <button type="button" 
                                     class="btn btn-salvar" 
-                                    style="width: 100px" 
+                                    style="width: 120px" 
                                     id="btn-adicionar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
-                                <span style="font-size: 10px;">Escolher</span>
+                                <span style="font-size: 12px;">Escolher</span>
                                 
                             </button>
                             <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
