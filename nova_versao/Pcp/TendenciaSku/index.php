@@ -273,10 +273,9 @@ include_once('../../templates/headerPcp.php');
                     </div>
 
 
-                                        <!-- botão fora do form -->
                     <div class="px-3 pb-4">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                        <div id="inputs-container-PRODUTOS" class="row">
+                        <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
                             <button type="button" 
                                     class="btn btn-salvar" 
                                     style="width: 150px" 
@@ -285,9 +284,9 @@ include_once('../../templates/headerPcp.php');
                                 <span><i class="bi bi-plus"></i></span>
                                 Escolher
                             </button>
-                            <h7>Todas Selecionadas<h7>
+                            <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
                         </div>
-
+                    </div>
 
                 </div>
 
@@ -397,10 +396,9 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-categorias-nova" class="row" placeholder="%100"></div>
                     </div>
 
-                                        <!-- seção de PRODUTOS fora do form -->
                     <div class="px-3 pb-4">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                        <div id="inputs-container-PRODUTOS" class="row">
+                        <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
                             <button type="button" 
                                     class="btn btn-salvar" 
                                     style="width: 150px" 
@@ -409,8 +407,9 @@ include_once('../../templates/headerPcp.php');
                                 <span><i class="bi bi-plus"></i></span>
                                 Escolher
                             </button>
+                            <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
                         </div>
-                </div>
+                    </div>
 
 
                 <div class="modal-footer">
