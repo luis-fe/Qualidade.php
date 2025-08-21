@@ -282,7 +282,8 @@ include_once('../../templates/headerPcp.php');
                                     id="btn-adicionar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
-                                Escolher
+                                <span style="font-size: 10px;">Escolher</span>
+                                
                             </button>
                             <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
                         <button type="button" 
@@ -291,7 +292,7 @@ include_once('../../templates/headerPcp.php');
                                 id="btn-limpar-lotes" 
                                 onclick="Consulta_Engenharias()">
                             <span><i class="bi bi-x-circle"></i></span>
-                            <span style="font-size: 8px;">Limpar</span>
+                            <span style="font-size: 10px;">Limpar</span>
                         </button>
 
                         
@@ -416,7 +417,8 @@ include_once('../../templates/headerPcp.php');
                                     id="btn-adicionar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
-                                Escolher
+                                <span style="font-size: 10px;">Escolher</span>
+                                
                             </button>
                             <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
                         </div>
