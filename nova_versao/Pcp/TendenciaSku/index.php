@@ -271,33 +271,40 @@ include_once('../../templates/headerPcp.php');
                         <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
                         <div id="inputs-container-categorias" class="row"></div>
                     </div>
+
+
+                                        <!-- botão fora do form -->
+                    <div class="px-3 pb-4">
+                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                        <div id="inputs-container-PRODUTOS" class="row">
+                            <button type="button" 
+                                    class="btn btn-salvar" 
+                                    style="width: 150px" 
+                                    id="btn-adicionar-lotes" 
+                                    onclick="Consulta_Engenharias()">
+                                <span><i class="bi bi-plus"></i></span>
+                                Escolher
+                            </button>
+                            <h7>Todas Selecionadas<h7>
+                        </div>
+
+
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
                         <span><i class="bi bi-trash3-fill"></i></span> Excluir Simulação
                     </button>
-                    <button type="submit" class="btn btn-salvar" id="SimularSalvar">
-                        <span><i class="bi bi-floppy"></i></span> Salvar e Simular
+                    <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                        <span><i class="bi bi-floppy"></i></span>
+                        Salvar e Simular
                     </button>
                 </div>
 
-            </form>
 
-            <!-- botão fora do form -->
-            <div class="px-3 pb-4">
-                <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                <div id="inputs-container-PRODUTOS" class="row">
-                    <button type="button" 
-                            class="btn btn-salvar" 
-                            style="width: 150px" 
-                            id="btn-adicionar-lotes" 
-                            onclick="Consulta_Engenharias()">
-                        <span><i class="bi bi-plus"></i></span>
-                        Escolher
-                    </button>
-                </div>
+
             </div>
+            </form>
 
         </div>
     </div>
