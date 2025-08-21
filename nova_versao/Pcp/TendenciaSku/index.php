@@ -285,14 +285,15 @@ include_once('../../templates/headerPcp.php');
                                 Escolher
                             </button>
                             <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
-                            <button type="button" 
-                                    class="btn btn-excluir" 
-                                    style="width: 100px" 
-                                    id="btn-limpar-lotes" 
-                                    onclick="Consulta_Engenharias()">
-                                <span><i class="bi bi-plus"></i></span>
-                                limpar tudo
-                        
+                        <button type="button" 
+                                class="btn btn-excluir d-flex flex-column align-items-center justify-content-center" 
+                                style="width: 100px" 
+                                id="btn-limpar-lotes" 
+                                onclick="Consulta_Engenharias()">
+                            <span><i class="bi bi-x-circle"></i></span>
+                            <span style="font-size: 8px;">Limpar</span>
+                        </button>
+
                         
                         
                         </div>
