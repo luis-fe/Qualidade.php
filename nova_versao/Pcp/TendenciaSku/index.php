@@ -278,7 +278,7 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
                             <button type="button" 
                                     class="btn btn-salvar" 
-                                    style="width: 70px" 
+                                    style="width: 100px" 
                                     id="btn-adicionar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
@@ -287,7 +287,7 @@ include_once('../../templates/headerPcp.php');
                             <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
                             <button type="button" 
                                     class="btn btn-excluir" 
-                                    style="width: 70px" 
+                                    style="width: 100px" 
                                     id="btn-limpar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
@@ -411,7 +411,7 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
                             <button type="button" 
                                     class="btn btn-salvar" 
-                                    style="width: 70px" 
+                                    style="width: 100px" 
                                     id="btn-adicionar-lotes" 
                                     onclick="Consulta_Engenharias()">
                                 <span><i class="bi bi-plus"></i></span>
