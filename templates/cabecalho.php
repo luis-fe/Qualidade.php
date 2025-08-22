@@ -114,7 +114,6 @@ if (isset($_SESSION['empresa'])) {
                 </ul>
             </li>
         </ul>
-
         <ul>
             <li class="nav-item logout-item mt-auto">
                             <a href="../../templates/Logout/logout.php" class="nav-link menu-item text-danger">
