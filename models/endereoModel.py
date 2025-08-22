@@ -45,31 +45,46 @@ def Deletar_Endereco(Endereco):
         return pd.DataFrame({'Mensagem': [f'Endereco excluido!'], 'Status':True})
 
 def EnderecosDisponiveis(natureza, empresa):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
 
     # 1. Aqui carrego os enderecos do banco de dados, por uma view chamado enderecosReposicao,
     # essa view mostra o saldo de cada endereco cadastrado na plataforma, por empresa e por natureza
 
     # 1.1 Carregando somente os enderecos com saldo = 0
-    relatorioEndereço = pd.read_sql(
-        'select codendereco, contagem as saldo from "Reposicao"."enderecosReposicao" '
-        'where contagem = 0 and natureza = %s ', conn, params=(natureza,))
+    relatorioEndereco = pd.read_sql(
+        """
+            select 
+                codendereco, 
+                contagem as saldo 
+            from 
+                "Reposicao"."enderecosReposicao"
+            where 
+                contagem = 0 
+                and natureza = %s 
+                """, conn, params=(natureza,))
 
 
     #1.2 Carregando todos os enderecos
-    relatorioEndereço2 = pd.read_sql(
-        'select codendereco, contagem as saldo from "Reposicao"."enderecosReposicao" where natureza = %s'
-        ' ', conn, params=(natureza,))
+    relatorioEndereco2 = pd.read_sql(
+        """
+            select 
+                codendereco, 
+                contagem as saldo 
+            from 
+                "Reposicao"."enderecosReposicao" 
+            where natureza = %s 
+        """
+        , conn, params=(natureza,))
 
 
     # Calculando a Taxa de Ocupacao
-    TaxaOcupacao = 1-(relatorioEndereço["codendereco"].size/relatorioEndereço2["codendereco"].size)
+    TaxaOcupacao = 1-(relatorioEndereco["codendereco"].size/relatorioEndereco2["codendereco"].size)
     TaxaOcupacao = round(TaxaOcupacao, 2) * 100
 
 
     # Calculando o "tamanho"  de cada uma das consultas
-    tamanho = relatorioEndereço["codendereco"].size
-    tamanho2 = relatorioEndereço2["codendereco"].size
+    tamanho = relatorioEndereco["codendereco"].size
+    tamanho2 = relatorioEndereco2["codendereco"].size
     tamanho2 = "{:,.0f}".format(tamanho2)
     tamanho2 = str(tamanho2)
     tamanho2 = tamanho2.replace(',', '.')
@@ -77,7 +92,7 @@ def EnderecosDisponiveis(natureza, empresa):
     tamanho = str(tamanho)
     tamanho = tamanho.replace(',', '.')
 
-    conn.close()
+    relatorioEndereco = relatorioEndereco.head(1000)
 
     # Exibindo as informacoes para o Json
     data = {
@@ -85,7 +100,7 @@ def EnderecosDisponiveis(natureza, empresa):
         '1- Total de Enderecos Natureza ': tamanho2,
         '2- Total de Enderecos Disponiveis': tamanho,
         '3- Taxa de Oculpaçao dos Enderecos': f'{TaxaOcupacao} %',
-        '4- Enderecos disponiveis ': relatorioEndereço.to_dict(orient='records')
+        '4- Enderecos disponiveis ': relatorioEndereco.to_dict(orient='records')
     }
     return [data]
 
