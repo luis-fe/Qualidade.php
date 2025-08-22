@@ -143,11 +143,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                         </ul>
 
         <ul>
-            <li>
-                <a href="Logout.php">
-                <i class="bi bi-power" style="color: red; font-size: 20px; font-weight: bold;"></i>
-                    SAIR
-                </a>
+            <li class="nav-item logout-item mt-auto">
+                            <a href="../../templates/Logout/logout.php" class="nav-link menu-item text-danger">
+                                <i class="bi bi-box-arrow-right icon-menu"></i> Sair
+                            </a>
             </li>
         </ul>
 
