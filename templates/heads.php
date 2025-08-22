@@ -144,7 +144,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
 
         <ul>
             <li class="nav-item logout-item mt-auto">
-                            <a href="../templates/Logout/logout.php" class="nav-link menu-item text-danger">
+                            <a href="/templates/Logout/logout.php" class="nav-link menu-item text-danger">
                                 <i class="bi bi-box-arrow-right icon-menu"></i> Sair do WMS
                             </a>
             </li>
