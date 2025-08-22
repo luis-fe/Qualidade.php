@@ -141,6 +141,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                                 <a href="../../../Wms/src/VerificaTag" class="sidebar-link">Verificar Tag</a>
                             </li>
                         </ul>
+
+        <ul>
+            <li>
+                <a href="Logout.php">
+                <i class="bi bi-power" style="color: red; font-size: 20px; font-weight: bold;"></i>
+                    SAIR
+                </a>
+            </li>
+        </ul>
+
                     </li>
                     <!-- <li class="sidebar-header">
                         Multi Level Nav
