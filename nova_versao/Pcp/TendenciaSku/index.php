@@ -11,7 +11,7 @@ include_once('../../templates/headerPcp.php');
 
 
 #modal-selecaoEngenharias {
-  z-index: 1095 !important; /* acima do modal padrão (1050) */
+  z-index: 1195 !important; /* acima do modal padrão (1050) */
 }
 #modal-selecaoEngenharias + .modal-backdrop {
   z-index: 1180 !important;
