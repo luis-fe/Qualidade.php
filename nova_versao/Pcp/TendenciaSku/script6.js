@@ -1778,6 +1778,13 @@ function TabelaEngenharia(lista) {
             arrayProduto.push(codProduto);
             arrayPercentualProduto.push(valor);
             Produtos_Simulacao();
+        } 
+        else if (percentual !== "" && valor === 0) {
+            // capturar os que foram zerados manualmente
+            arrayProdutoZero.push(codProduto);
+            arrayPercentualZero.push(0);
+            console.log("Produtos ZERADOS:", arrayProdutoZero);
+            console.log("Percentuais ZERADOS:", arrayPercentualZero);
         }
     });
 
@@ -1787,6 +1794,7 @@ function TabelaEngenharia(lista) {
     registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
    
 
-});
+    }
+);
 
 }
