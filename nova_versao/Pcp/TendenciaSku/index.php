@@ -291,7 +291,7 @@ include_once('../../templates/headerPcp.php');
                                 style="width: 120px" 
                                 id="btn-limpar-lotes" 
                                 onclick="Deletar_SimulacaoProduto()">
-                                <span class="d-inline-flex align-items-center" style="gap: 4px; font-size: 10px;">
+                                <span class="d-inline-flex align-items-center" style="gap: 4px; font-size: 11px;">
                                     <i class="bi bi-x-circle"></i>
                                      Limpar
                                 </span>             

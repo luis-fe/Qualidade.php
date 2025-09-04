@@ -907,11 +907,15 @@ function TabelaTendencia(listaTendencia) {
                     $('#inputs-container-categorias').empty();
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
+                    Produtos_Simulacao();
+
                 } else {
                     //await Consulta_Abc_Plano();
                     //await Consulta_Categorias();
                     $('#inputs-container-marcas').removeClass('d-none')
                     $('#inputs-container-categorias').removeClass('d-none')
+                    Produtos_Simulacao();
+
 
 
                 }
