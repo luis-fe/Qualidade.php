@@ -251,6 +251,36 @@ async function Deletar_Simulacao() {
 
 
 
+async function Produtos_Simulacao() {
+   
+$('#loadingModal').modal('show');
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "selecao_produtos_simulacao",
+                nomeSimulacao:  $('#select-simulacao').val()
+            }
+        }); 
+
+
+        document.getElementById("TituloSelecaoEngenharias").textContent = data['mensagem'][0];
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+                
+        console.log('atualizado produtos da selecacao');
+
+    }
+
+    
+}
+
+
 async function Deletar_SimulacaoProduto() {
 
     try {
@@ -281,9 +311,10 @@ async function Deletar_SimulacaoProduto() {
             console.log(response)
 
             if (response['resposta'][0]['status'] === true) {
-                Mensagem_Canto('Simulação deletada', 'success');
-                $('#modal-simulacao').modal('hide')
+                Mensagem_Canto('Produtos  deletados da Simulação', 'success');
             }
+
+            Produtos_Simulacao();
         }
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
@@ -863,6 +894,8 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-simulacao').modal('show');
+                Produtos_Simulacao();
+
                 $('#campo-simulacao').removeClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";

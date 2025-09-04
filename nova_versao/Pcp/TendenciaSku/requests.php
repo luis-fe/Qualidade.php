@@ -37,6 +37,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultaAbcPlano('1', $plano));
                     break;
+                case 'selecao_produtos_simulacao':
+                    $nomeSimulacao = $_GET['nomeSimulacao'];
+                    jsonResponse(selecao_produtos_simulacao('1', $nomeSimulacao));
+                    break;
                 case 'Detalha_OrdemProducao':
                     $codSku = $_GET['codReduzido'];
                     jsonResponse(DetalhaOrdemProducao('a44pcp22', $codSku));
@@ -713,6 +717,28 @@ function DetalhaOrdemProducao($token, $codSku){
     $empresa = "1";
     $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
     $apiUrl = "{$baseUrl}/pcp/api/OrdemProd_porSku?codSku={$codSku}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function selecao_produtos_simulacao($empresa, $nomeSimulacao){
+    
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/selecao_produtos_simulacao?codEmpresa={$empresa}&nomeSimulacao={$nomeSimulacao}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
