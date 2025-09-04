@@ -253,7 +253,6 @@ async function Deletar_Simulacao() {
 
 async function Produtos_Simulacao() {
    
-$('#loadingModal').modal('show');
     try {
         const data = await $.ajax({
             type: 'GET',
