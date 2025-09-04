@@ -123,6 +123,7 @@ $(document).ready(async () => {
         await Consulta_Abc_Plano(false);
         await Consulta_Categorias();
         await Consulta_Simulacao_Especifica();
+        Produtos_Simulacao();
     });
 
     $('#select-pedidos-bloqueados').select2({
