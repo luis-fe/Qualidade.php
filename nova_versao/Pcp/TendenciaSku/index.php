@@ -290,7 +290,7 @@ include_once('../../templates/headerPcp.php');
                                 class="btn btn-excluir d-flex flex-column align-items-center justify-content-center" 
                                 style="width: 120px" 
                                 id="btn-limpar-lotes" 
-                                onclick="Consulta_Engenharias()">
+                                onclick="Deletar_SimulacaoProduto()">
                                 <span class="d-inline-flex align-items-center" style="gap: 4px; font-size: 10px;">
                                     <i class="bi bi-x-circle"></i>
                                      Limpar

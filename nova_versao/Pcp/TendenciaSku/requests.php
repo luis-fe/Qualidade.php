@@ -154,7 +154,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
              case 'Deletar_SimulacaoProduto':
                 $dadosObjeto = (object)$dados;
                 header('Content-Type: application/json');
-                echo DeleteSimulacao("1", $dadosObjeto);
+                echo DeleteSimulacaoProduto($dadosObjeto);
                 break;
         }
         break;
@@ -563,9 +563,9 @@ function DeleteSimulacao($empresa, $dados)
 }
 
 
-function DeleteSimulacaoProduto($empresa, $dados)
+function DeleteSimulacaoProduto($dados)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.190:8000';
+    $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/limpar_produtos_simulacao_Especifica";
 
     $ch = curl_init($apiUrl);

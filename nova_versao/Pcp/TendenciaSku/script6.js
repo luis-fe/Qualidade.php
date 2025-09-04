@@ -250,6 +250,50 @@ async function Deletar_Simulacao() {
 }
 
 
+
+async function Deletar_SimulacaoProduto() {
+
+    try {
+        const result = await Swal.fire({
+            title: "Deseja deletar os Produtos dessa simulação?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+        });
+
+        if (result.isConfirmed) {
+            $('#loadingModal').modal('show');
+
+            const dados = {
+                "nomeSimulacao": $('#select-simulacao').val(),
+            };
+            const requestData = {
+                acao: "Deletar_SimulacaoProduto",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+            if (response['resposta'][0]['status'] === true) {
+                Mensagem_Canto('Simulação deletada', 'success');
+                $('#modal-simulacao').modal('hide')
+            }
+        }
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+
 function Consulta_Planos() {
     $('#loadingModal').modal('show');
     $.ajax({
