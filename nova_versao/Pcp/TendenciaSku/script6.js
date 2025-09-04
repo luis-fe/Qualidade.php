@@ -1801,7 +1801,6 @@ function TabelaEngenharia(lista) {
             
             arrayProduto.push(codProduto);
             arrayPercentualProduto.push(valor);
-            Produtos_Simulacao();
         } 
         else if (percentual !== "" && valor === 0) {
             const codProduto = data.codItemPai; 
@@ -1814,6 +1813,7 @@ function TabelaEngenharia(lista) {
     console.log("Produtos:", arrayProduto);
     console.log("Percentuais:", arrayPercentualProduto);
     const simulacao = $('#select-simulacao').val()
+    Produtos_Simulacao();
     registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
     exluindo_simulacao_Produtos_zerados(arrayProdutoZero, arrayPercentualZero)
    
