@@ -172,6 +172,7 @@ async function simulacao(texto, tipo) {
     await Consulta_Simulacoes();
     await Simular_Programacao(texto);
     nomeSimulacao = $('#select-simulacao').val()
+    console.log(`nomeSimulacao: ${nomeSimulacao}`)
 };
 
 
