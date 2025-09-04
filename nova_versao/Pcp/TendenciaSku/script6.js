@@ -1777,8 +1777,7 @@ function TabelaEngenharia(lista) {
             
             arrayProduto.push(codProduto);
             arrayPercentualProduto.push(valor);
-            document.getElementById("TituloSelecaoEngenharias").innerText = "Alguns Produtos Selecionados";
-
+            Produtos_Simulacao();
         }
     });
 
