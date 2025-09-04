@@ -264,6 +264,7 @@ async function Produtos_Simulacao() {
             }
         }); 
 
+        console.log(data)
         document.getElementById("TituloSelecaoEngenharias").textContent = data.mensagem;
 
 
