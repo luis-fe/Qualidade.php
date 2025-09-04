@@ -264,8 +264,7 @@ async function Produtos_Simulacao() {
             }
         }); 
 
-
-        document.getElementById("TituloSelecaoEngenharias").textContent = data['mensagem'][0];
+        document.getElementById("TituloSelecaoEngenharias").textContent = data[0].mensagem;
 
 
     } catch (error) {
