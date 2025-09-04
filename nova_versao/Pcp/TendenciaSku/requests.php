@@ -39,7 +39,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     break;
                 case 'selecao_produtos_simulacao':
                     $nomeSimulacao = $_GET['nomeSimulacao'];
-                    jsonResponse(selecao_produtos_simulacao('1', $nomeSimulacao));
+                    jsonResponse(selecao_produtos_simulacao('a44pcp22','1',$nomeSimulacao));
                     break;
                 case 'Detalha_OrdemProducao':
                     $codSku = $_GET['codReduzido'];
@@ -735,7 +735,7 @@ function DetalhaOrdemProducao($token, $codSku){
 }
 
 
-function selecao_produtos_simulacao($empresa, $nomeSimulacao){
+function selecao_produtos_simulacao($token, $empresa, $nomeSimulacao){
     
     $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/selecao_produtos_simulacao?codEmpresa={$empresa}&nomeSimulacao={$nomeSimulacao}";
