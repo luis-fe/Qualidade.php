@@ -1813,10 +1813,10 @@ function TabelaEngenharia(lista) {
     console.log("Produtos:", arrayProduto);
     console.log("Percentuais:", arrayPercentualProduto);
     const simulacao = $('#select-simulacao').val()
-    Produtos_Simulacao();
+    
     registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
     exluindo_simulacao_Produtos_zerados(arrayProdutoZero, arrayPercentualZero)
-   
+    Produtos_Simulacao();
 
     }
 );
