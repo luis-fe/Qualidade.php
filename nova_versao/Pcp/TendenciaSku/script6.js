@@ -497,7 +497,7 @@ async function Simular_Programacao(simulacao) {
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "nomeSimulacao": simulacao
+                "nomeSimulacao": $('#select-simulacao').val()
             }
 
         };
