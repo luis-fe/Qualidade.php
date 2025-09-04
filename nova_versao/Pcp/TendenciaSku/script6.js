@@ -1787,8 +1787,6 @@ function TabelaEngenharia(lista) {
             // capturar os que foram zerados manualmente
             arrayProdutoZero.push(codProduto);
             arrayPercentualZero.push(0);
-            console.log("Produtos ZERADOS:", arrayProdutoZero);
-            console.log("Percentuais ZERADOS:", arrayPercentualZero);
         }
     });
 
