@@ -1783,6 +1783,7 @@ function TabelaEngenharia(lista) {
             Produtos_Simulacao();
         } 
         else if (percentual !== "" && valor === 0) {
+            const codProduto = data.codItemPai; 
             // capturar os que foram zerados manualmente
             arrayProdutoZero.push(codProduto);
             arrayPercentualZero.push(0);
