@@ -736,7 +736,7 @@ function DetalhaOrdemProducao($token, $codSku){
 
 
 function selecao_produtos_simulacao($token, $empresa, $nomeSimulacao){
-    $nomeSimulacao = str_replace(' ', '%', $nomeSimulacao);
+    $nomeSimulacao = str_replace(' ', '%20', $nomeSimulacao);
     $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/selecao_produtos_simulacao?codEmpresa={$empresa}&nomeSimulacao={$nomeSimulacao}";
     $ch = curl_init($apiUrl);
