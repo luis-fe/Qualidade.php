@@ -4,6 +4,7 @@ let totalImagensEng = 0;
 let totalImagensColorBook = 0;
 let codigoMP = "";
 let imagensColorBook = [];
+let nomeSimulacao = ""
 
 const atualizarImagem = () => {
   if (!codigoMP || String(codigoMP).trim() === "") {
@@ -171,7 +172,7 @@ async function simulacao(texto, tipo) {
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
     await Simular_Programacao(texto);
-    nomeSimulacao = $('#select-simulacao').val()
+    nomeSimulacao = texto;
     console.log(`nomeSimulacao: ${nomeSimulacao}`)
 };
 
@@ -491,6 +492,7 @@ async function registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, 
 
 async function Simular_Programacao(simulacao) {
     $('#loadingModal').modal('show');
+    nomeSimulacao = simulacao
     try {
         const requestData = {
             acao: "Simular_Programacao",
