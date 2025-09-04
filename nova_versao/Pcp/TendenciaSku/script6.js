@@ -1757,6 +1757,9 @@ function TabelaEngenharia(lista) {
     const arrayProduto = [];
     const arrayPercentualProduto = [];
 
+    const arrayProdutoZero = [];
+    const arrayPercentualZero = [];
+
     // Pega instância do DataTable
     const table = $('#table-lotes-csw').DataTable();
 
