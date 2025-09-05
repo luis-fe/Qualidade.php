@@ -1348,7 +1348,8 @@ async function Detalha_OrdemProducao(codReduzido) {
         });
         console.log(response)
         TabelaDetalhamentoOrdemProd(response);
-        $('#modal-detalhamento-OrdemProd').modal('show')
+        const modal = new bootstrap.Modal(document.getElementById('modal-detalhamento-OrdemProd'));
+        modal.show();
     } catch (error) {
         console.error('Erro ao consultar ordemProd:', error);
     }finally {
