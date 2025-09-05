@@ -241,7 +241,7 @@ include_once('../../templates/headerPcp.php');
             </div>
 
             
-            <form id="form-simulacao" onsubmit="simulacao($('#select2-select-simulacao-container').val(), ''); return false;">
+            <form id="form-simulacao" onsubmit="simulacao($('#select-simulacao').val(), ''); return false;">
 
                 <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
                     <div class="select mb-4 text-start d-none" id="campo-simulacao">
