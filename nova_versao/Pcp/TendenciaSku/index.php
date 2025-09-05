@@ -4,7 +4,6 @@ include_once("../../templates/Loading.php");
 include_once('../../templates/headerPcp.php');
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
@@ -423,8 +422,8 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
-
-<div class="modal fade modal-custom" id="modal-detalhamento-skus" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+<div class="col-12 mt-3 modal-detalhamento-skus d-none"  style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+    <p class="fs-4 fw-bold text-dark">Solicitações e Ped>
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
             <div class="modal-header">
