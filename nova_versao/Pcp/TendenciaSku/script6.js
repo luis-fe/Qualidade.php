@@ -1214,12 +1214,14 @@ async function Detalha_SimulacaoSku(codReduzido) {
 
             // Ajuste de z-index só para esse modal
             modalEl.addEventListener('show.bs.modal', function () {
-                this.style.zIndex = 2000;
                 let backdrops = document.getElementsByClassName('modal-backdrop');
                 if (backdrops.length > 0) {
+                    // backdrop sempre atrás do modal
                     backdrops[backdrops.length - 1].style.zIndex = 1990;
                 }
+                this.style.zIndex = 2000;
             });
+
 
             modalEl.addEventListener('hidden.bs.modal', function () {
                 this.style.zIndex = '';
