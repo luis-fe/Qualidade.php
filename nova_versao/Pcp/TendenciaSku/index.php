@@ -309,7 +309,7 @@ include_once('../../templates/headerPcp.php');
                     <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
                         <span><i class="bi bi-trash3-fill"></i></span> Excluir Simulação
                     </button>
-                    <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                    <button type="button" class="btn btn-salvar" onclick="simulacao($('#select-simulacao').val(),'cadastro'); return false;">
                         <span><i class="bi bi-floppy"></i></span>
                         Salvar e Simular
                     </button>
