@@ -9,102 +9,87 @@ include_once('../../templates/headerPcp.php');
 
 <style>
 
-
-/*
 #modal-selecaoEngenharias {
-  z-index: 1195 !important; /* acima do modal padrão (1050) 
+  z-index: 1195 !important; /* acima do modal padrão (1050) */
 }
 
 #modal-detalhamento-sku {
-  z-index: 1195 !important; /* acima do modal padrão (1050) 
+  z-index: 1195 !important; /* acima do modal padrão (1050) */
 }
+
+
+/*
+#modal-selecaoEngenharias + .modal-backdrop {
+  z-index: 1180 !important;
+}*/
+
+/* modais de simulacao */
+
+    #modal-simulacao.modal-dialog {
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
+    }
+    
+    
+    #modal-nova-simulacao.modal-dialog {
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
+    }
 
 
 #modal-selecaoEngenharias + .modal-backdrop {
   z-index: 1180 !important;
 }
 
-/* modais de simulacao 
+/* modais de simulacao */
 
     #modal-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura 
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
     }
     
     
     #modal-nova-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura 
+        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
     }
 
 
-#modal-selecaoEngenharias + .modal-backdrop {
-  z-index: 1180 !important;
-}
-
-/* modais de simulacao 
-
-    #modal-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura 
-    }
-    
-    
-    #modal-nova-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura 
-    }
-
-
-/* modais do conteudo 
+/* modais do conteudo */
 
     #modal-simulacao .modal-content {
         height: 100%;
         display: flex;
-        flex-direction: column; /* organiza header, body e footer em coluna 
+        flex-direction: column; /* organiza header, body e footer em coluna */
     }
 
     
     #modal-nova-simulacao .modal-content {
         height: 100%;
         display: flex;
-        flex-direction: column; /* organiza header, body e footer em coluna 
+        flex-direction: column; /* organiza header, body e footer em coluna */
     }
 
 
-/* modais do body 
+/* modais do body */
 
     #modal-simulacao .modal-body {
-        flex: 1; /* ocupa todo o espaço livre 
-        overflow: auto; /* rola se o conteúdo for maior 
+        flex: 1; /* ocupa todo o espaço livre */
+        overflow: auto; /* rola se o conteúdo for maior */
     }
 
     #modal-simulacao .modal-footer {
-        flex-shrink: 0; /* mantém altura mínima dos botões 
+        flex-shrink: 0; /* mantém altura mínima dos botões */
     }
 
 
 
-/* modais do footer 
+/* modais do footer */
 
     #modal-nova-simulacao .modal-footer {
-        padding: 0.25rem 0.5rem; /* margens internas mínimas 
-        gap: 0.25rem; /* espaço mínimo entre os botões 
+        padding: 0.25rem 0.5rem; /* margens internas mínimas */
+        gap: 0.25rem; /* espaço mínimo entre os botões */
     }
 
     #modal-nova-simulacao .modal-footer .btn {
-        margin: 0; /* remove margens extras dos botões 
+        margin: 0; /* remove margens extras dos botões */
     } 
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
 
 
     .form-label {
