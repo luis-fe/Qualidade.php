@@ -240,13 +240,12 @@ include_once('../../templates/headerPcp.php');
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form id="form-simulacao" onsubmit="simulacao($('#select-simulacao').val(), ''); return false;">
+            <form id="form-simulacao" onsubmit="simulacao($('#select-simulacao'.val(), ''); return false;">
 
-                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
                     <div class="select mb-4 text-start d-none" id="campo-simulacao">
                         <label for="select-simulacao" class="form-label">Simulação</label>
-                        <select id="select-simulacao" class="form-select">
-                        </select>
+                        <select id="select-simulacao" class="form-select"></select>
                     </div>
 
                     <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
