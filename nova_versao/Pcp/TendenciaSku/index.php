@@ -13,6 +13,12 @@ include_once('../../templates/headerPcp.php');
 #modal-selecaoEngenharias {
   z-index: 1195 !important; /* acima do modal padrão (1050) */
 }
+
+#modal-detalhamento-sku {
+  z-index: 1195 !important; /* acima do modal padrão (1050) */
+}
+
+
 #modal-selecaoEngenharias + .modal-backdrop {
   z-index: 1180 !important;
 }
@@ -27,7 +33,6 @@ include_once('../../templates/headerPcp.php');
     #modal-nova-simulacao.modal-dialog {
         height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
     }
-
 
 
 /* modais do conteudo */
