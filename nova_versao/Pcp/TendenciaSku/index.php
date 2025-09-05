@@ -422,7 +422,7 @@ include_once('../../templates/headerPcp.php');
 
 
 
-<div class="col-12 mt-3 detalhamento-skus d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+<div class="col-12 mt-3 div-detalhamento-skus d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
     <p class="fs-4 fw-bold text-dark">Analise da Simulacao de Previsao</p>
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-detalhamento-skus" style="width: 100%;">
