@@ -1209,25 +1209,8 @@ async function Detalha_SimulacaoSku(codReduzido) {
             TabelaDetalhamentoSku(response);
 
             // 🔥 Bootstrap 5: abre o modal corretamente
-            let modalEl = document.getElementById('modal-detalhamento-skus');
-            let modal = new bootstrap.Modal(modalEl);
+            abrirModal('modal-detalhamento-skus');
 
-            // Ajuste de z-index só para esse modal
-            modalEl.addEventListener('show.bs.modal', function () {
-                let backdrops = document.getElementsByClassName('modal-backdrop');
-                if (backdrops.length > 0) {
-                    // backdrop sempre atrás do modal
-                    backdrops[backdrops.length - 1].style.zIndex = 1990;
-                }
-                this.style.zIndex = 2000;
-            });
-
-
-            modalEl.addEventListener('hidden.bs.modal', function () {
-                this.style.zIndex = '';
-            });
-
-            modal.show();
 
         } catch (error) {
             console.error('Erro na solicitação AJAX:', error);
@@ -1236,6 +1219,31 @@ async function Detalha_SimulacaoSku(codReduzido) {
             $('#loadingModal').modal('hide');
         }
     }
+}
+
+
+function abrirModal(modalId) {
+  let modalEl = document.getElementById(modalId);
+  let modal = new bootstrap.Modal(modalEl);
+
+  modalEl.addEventListener('show.bs.modal', function () {
+    // conta quantos modais já estão abertos
+    let opened = document.querySelectorAll('.modal.show').length;
+    
+    // ajusta a camada baseado no número de modais abertos
+    this.style.zIndex = 1055 + (opened * 10);
+    
+    setTimeout(() => {
+      let backdrops = document.querySelectorAll('.modal-backdrop');
+      backdrops[backdrops.length - 1].style.zIndex = 1050 + (opened * 10);
+    }, 10);
+  });
+
+  modalEl.addEventListener('hidden.bs.modal', function () {
+    this.style.zIndex = '';
+  });
+
+  modal.show();
 }
 
 
