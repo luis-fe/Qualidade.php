@@ -9,8 +9,8 @@ include_once('../../templates/headerPcp.php');
 
 <style>
 
-/*
- --- Modais principais (nível base) ---
+
+/* --- Modais principais (nível base) ---*/
     #modal-simulacao,
     #modal-nova-simulacao,
     #modal-detalhamento-OrdemProd,
@@ -24,7 +24,7 @@ include_once('../../templates/headerPcp.php');
     z-index: 1190 !important;
     }
 
- --- Modais de detalhamento (nível acima) --- 
+ /*--- Modais de detalhamento (nível acima) --- */
     #modal-detalhamento-skus,
     #modal-detalhamento-pedidos,
     #modal-detalhamento-pedidosSaldo {
@@ -36,14 +36,13 @@ include_once('../../templates/headerPcp.php');
     z-index: 1290 !important;
     }
 
- --- Modal de imagem (nível ainda acima, se quiser sobrepor tudo) --- 
+ /*--- Modal de imagem (nível ainda acima, se quiser sobrepor tudo) --- */ 
     #modal-imagemMP {
     z-index: 1400 !important;
     }
     #modal-imagemMP + .modal-backdrop {
     z-index: 1390 !important;
     }
-*/
 
 
     .form-label {
