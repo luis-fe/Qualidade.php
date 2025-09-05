@@ -1209,7 +1209,7 @@ async function Detalha_SimulacaoSku(codReduzido) {
             TabelaDetalhamentoSku(response);
 
             // 🔥 Bootstrap 5: abre o modal corretamente
-            abrirModal('modal-detalhamento-skus');
+            ('modal-detalhamento-skus').show();
 
 
         } catch (error) {
@@ -1221,30 +1221,6 @@ async function Detalha_SimulacaoSku(codReduzido) {
     }
 }
 
-
-function abrirModal(modalId) {
-  let modalEl = document.getElementById(modalId);
-  let modal = new bootstrap.Modal(modalEl);
-
-  modalEl.addEventListener('show.bs.modal', function () {
-    // conta quantos modais já estão abertos
-    let opened = document.querySelectorAll('.modal.show').length;
-    
-    // ajusta a camada baseado no número de modais abertos
-    this.style.zIndex = 1055 + (opened * 10);
-    
-    setTimeout(() => {
-      let backdrops = document.querySelectorAll('.modal-backdrop');
-      backdrops[backdrops.length - 1].style.zIndex = 1050 + (opened * 10);
-    }, 10);
-  });
-
-  modalEl.addEventListener('hidden.bs.modal', function () {
-    this.style.zIndex = '';
-  });
-
-  modal.show();
-}
 
 
 function TabelaDetalhamentoSku(listaDetalhes) {

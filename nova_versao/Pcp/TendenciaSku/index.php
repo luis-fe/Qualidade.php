@@ -4,74 +4,76 @@ include_once("../../templates/Loading.php");
 include_once('../../templates/headerPcp.php');
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <style>
 
-/* --- Modais principais (nível base) --- */
-#modal-simulacao,
-#modal-nova-simulacao,
-#modal-selecaoEngenharias {
-  z-index: 1200 !important;
-}
-#modal-simulacao + .modal-backdrop,
-#modal-nova-simulacao + .modal-backdrop,
-#modal-selecaoEngenharias + .modal-backdrop {
-  z-index: 1190 !important;
-}
+    /* --- Modais principais (nível base) --- */
+    #modal-simulacao,
+    #modal-nova-simulacao,
+    #modal-selecaoEngenharias {
+    z-index: 1200 !important;
+    }
+    #modal-simulacao + .modal-backdrop,
+    #modal-nova-simulacao + .modal-backdrop,
+    #modal-selecaoEngenharias + .modal-backdrop {
+    z-index: 1190 !important;
+    }
 
-/* --- Modais de detalhamento (nível acima) --- */
-#modal-detalhamento-skus,
-#modal-detalhamento-pedidos,
-#modal-detalhamento-OrdemProd,
-#modal-detalhamento-pedidosSaldo {
-  z-index: 1300 !important;
-}
-#modal-detalhamento-skus + .modal-backdrop,
-#modal-detalhamento-pedidos + .modal-backdrop,
-#modal-detalhamento-OrdemProd + .modal-backdrop,
-#modal-detalhamento-pedidosSaldo + .modal-backdrop {
-  z-index: 1290 !important;
-}
+    /* --- Modais de detalhamento (nível acima) --- */
+    #modal-detalhamento-skus,
+    #modal-detalhamento-pedidos,
+    #modal-detalhamento-OrdemProd,
+    #modal-detalhamento-pedidosSaldo {
+    z-index: 1300 !important;
+    }
+    #modal-detalhamento-skus + .modal-backdrop,
+    #modal-detalhamento-pedidos + .modal-backdrop,
+    #modal-detalhamento-OrdemProd + .modal-backdrop,
+    #modal-detalhamento-pedidosSaldo + .modal-backdrop {
+    z-index: 1290 !important;
+    }
 
-/* --- Modal de imagem (nível ainda acima, se quiser sobrepor tudo) --- */
-#modal-imagemMP {
-  z-index: 1400 !important;
-}
-#modal-imagemMP + .modal-backdrop {
-  z-index: 1390 !important;
-}
+    /* --- Modal de imagem (nível ainda acima, se quiser sobrepor tudo) --- */
+    #modal-imagemMP {
+    z-index: 1400 !important;
+    }
+    #modal-imagemMP + .modal-backdrop {
+    z-index: 1390 !important;
+    }
 
 
 
     .form-label {
-        font-weight: bold;
-        color: #555;
-    }
+            font-weight: bold;
+            color: #555;
+        }
 
     .inputs-percentuais {
-        background-color: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 10px 15px;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 15px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
 
     .inputs-percentuais:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        background-color: #fff;
-    }
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            background-color: #fff;
+        }
 
 
     .periodo-vendas {
-    font-size: 16px !important ;
-    color: #555; /* opcional para ajustar contraste */
-}
+        font-size: 16px !important ;
+        color: #555; /* opcional para ajustar contraste */
+    }
 
 </style>
+
 
 <div class="d-flex justify-content-between align-items-center titulo-tela" id="titulo">
     <div>
@@ -421,10 +423,6 @@ include_once('../../templates/headerPcp.php');
 
 
 
-
-
-
-
 <div class="modal fade modal-custom" id="modal-detalhamento-skus" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
@@ -464,6 +462,9 @@ include_once('../../templates/headerPcp.php');
         </div>
     </div>
 </div>
+
+
+
 
 <div class="modal fade modal-custom" id="modal-detalhamento-pedidos" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
