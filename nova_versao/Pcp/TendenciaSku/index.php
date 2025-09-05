@@ -13,11 +13,13 @@ include_once('../../templates/headerPcp.php');
     /* --- Modais principais (nível base) --- */
     #modal-simulacao,
     #modal-nova-simulacao,
+    #modal-detalhamento-OrdemProd,
     #modal-selecaoEngenharias {
     z-index: 1200 !important;
     }
     #modal-simulacao + .modal-backdrop,
     #modal-nova-simulacao + .modal-backdrop,
+    #modal-detalhamento-OrdemProd + .modal-backdrop,
     #modal-selecaoEngenharias + .modal-backdrop {
     z-index: 1190 !important;
     }
@@ -25,13 +27,11 @@ include_once('../../templates/headerPcp.php');
     /* --- Modais de detalhamento (nível acima) --- */
     #modal-detalhamento-skus,
     #modal-detalhamento-pedidos,
-    #modal-detalhamento-OrdemProd,
     #modal-detalhamento-pedidosSaldo {
     z-index: 1300 !important;
     }
     #modal-detalhamento-skus + .modal-backdrop,
     #modal-detalhamento-pedidos + .modal-backdrop,
-    #modal-detalhamento-OrdemProd + .modal-backdrop,
     #modal-detalhamento-pedidosSaldo + .modal-backdrop {
     z-index: 1290 !important;
     }
