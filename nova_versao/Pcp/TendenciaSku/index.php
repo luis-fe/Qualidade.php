@@ -9,87 +9,40 @@ include_once('../../templates/headerPcp.php');
 
 <style>
 
+/* --- Modais principais (nível base) --- */
+#modal-simulacao,
+#modal-nova-simulacao,
 #modal-selecaoEngenharias {
-  z-index: 1195 !important; /* acima do modal padrão (1050) */
+  z-index: 1200 !important;
+}
+#modal-simulacao + .modal-backdrop,
+#modal-nova-simulacao + .modal-backdrop,
+#modal-selecaoEngenharias + .modal-backdrop {
+  z-index: 1190 !important;
 }
 
-#modal-detalhamento-sku {
-  z-index: 1195 !important; /* acima do modal padrão (1050) */
+/* --- Modais de detalhamento (nível acima) --- */
+#modal-detalhamento-skus,
+#modal-detalhamento-pedidos,
+#modal-detalhamento-OrdemProd,
+#modal-detalhamento-pedidosSaldo {
+  z-index: 1300 !important;
+}
+#modal-detalhamento-skus + .modal-backdrop,
+#modal-detalhamento-pedidos + .modal-backdrop,
+#modal-detalhamento-OrdemProd + .modal-backdrop,
+#modal-detalhamento-pedidosSaldo + .modal-backdrop {
+  z-index: 1290 !important;
 }
 
+/* --- Modal de imagem (nível ainda acima, se quiser sobrepor tudo) --- */
+#modal-imagemMP {
+  z-index: 1400 !important;
+}
+#modal-imagemMP + .modal-backdrop {
+  z-index: 1390 !important;
+}
 
-/*
-#modal-selecaoEngenharias + .modal-backdrop {
-  z-index: 1180 !important;
-}*/
-
-/* modais de simulacao */
-
-    #modal-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
-    }
-    
-    
-    #modal-nova-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
-    }
-
-/*
-#modal-selecaoEngenharias + .modal-backdrop {
-  z-index: 1180 !important;
-}*/
-
-/* modais de simulacao */
-
-    #modal-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
-    }
-    
-    
-    #modal-nova-simulacao.modal-dialog {
-        height: calc(100dvh - var(--bs-modal-margin) * 2); /* mantém sua altura */
-    }
-
-
-/* modais do conteudo */
-
-    #modal-simulacao .modal-content {
-        height: 100%;
-        display: flex;
-        flex-direction: column; /* organiza header, body e footer em coluna */
-    }
-
-    
-    #modal-nova-simulacao .modal-content {
-        height: 100%;
-        display: flex;
-        flex-direction: column; /* organiza header, body e footer em coluna */
-    }
-
-
-/* modais do body */
-
-    #modal-simulacao .modal-body {
-        flex: 1; /* ocupa todo o espaço livre */
-        overflow: auto; /* rola se o conteúdo for maior */
-    }
-
-    #modal-simulacao .modal-footer {
-        flex-shrink: 0; /* mantém altura mínima dos botões */
-    }
-
-
-
-/* modais do footer */
-
-    #modal-nova-simulacao .modal-footer {
-        padding: 0.25rem 0.5rem; /* margens internas mínimas */
-        gap: 0.25rem; /* espaço mínimo entre os botões */
-    }
-
-    #modal-nova-simulacao .modal-footer .btn {
-        margin: 0; /* remove margens extras dos botões */
-    } 
 
 
     .form-label {
