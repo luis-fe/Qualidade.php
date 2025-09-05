@@ -1184,11 +1184,10 @@ function TabelaTendencia(listaTendencia) {
 
 async function Detalha_SimulacaoSku(codReduzido) {
     if (nomeSimulacao === "") {
-        Mensagem_Canto("Nenhuma simulação selecionada", "warning")
+        Mensagem_Canto("Nenhuma simulação selecionada", "warning");
     } else {
-        $('#loadingModal').modal('show');
+        $('#loadingModal').modal('show'); // ainda pode ser jQuery se esse modal for BS4
         try {
-
             const requestData = {
                 acao: "simulacaoDetalhadaPorSku",
                 dados: {
@@ -1197,7 +1196,6 @@ async function Detalha_SimulacaoSku(codReduzido) {
                     "codSku": codReduzido,
                     "nomeSimulacao": nomeSimulacao
                 }
-
             };
 
             const response = await $.ajax({
@@ -1206,9 +1204,29 @@ async function Detalha_SimulacaoSku(codReduzido) {
                 contentType: 'application/json',
                 data: JSON.stringify(requestData),
             });
-            console.log(response)
+
+            console.log(response);
             TabelaDetalhamentoSku(response);
-            $('#modal-detalhamento-skus').modal('show');
+
+            // 🔥 Bootstrap 5: abre o modal corretamente
+            let modalEl = document.getElementById('modal-detalhamento-skus');
+            let modal = new bootstrap.Modal(modalEl);
+
+            // Ajuste de z-index só para esse modal
+            modalEl.addEventListener('show.bs.modal', function () {
+                this.style.zIndex = 2000;
+                let backdrops = document.getElementsByClassName('modal-backdrop');
+                if (backdrops.length > 0) {
+                    backdrops[backdrops.length - 1].style.zIndex = 1990;
+                }
+            });
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                this.style.zIndex = '';
+            });
+
+            modal.show();
+
         } catch (error) {
             console.error('Erro na solicitação AJAX:', error);
             Mensagem_Canto('Erro', 'error');
@@ -1216,8 +1234,8 @@ async function Detalha_SimulacaoSku(codReduzido) {
             $('#loadingModal').modal('hide');
         }
     }
-
 }
+
 
 function TabelaDetalhamentoSku(listaDetalhes) {
     if ($.fn.DataTable.isDataTable('#table-detalhamento-skus')) {
