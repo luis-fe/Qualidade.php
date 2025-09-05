@@ -8,6 +8,12 @@ include_once('../../templates/headerPcp.php');
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <style>
+#modal-detalhamento-skus {
+  z-index: 2000 !important;
+}
+.modal-backdrop {
+  z-index: 1990 !important;
+}
 
 
 #modal-selecaoEngenharias {
