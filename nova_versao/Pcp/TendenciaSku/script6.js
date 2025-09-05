@@ -900,7 +900,7 @@ function TabelaTendencia(listaTendencia) {
             title: 'Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                const modal = new bootstrap.Modal(document.getElementById('#modal-simulacao'));
+                const modal = new bootstrap.Modal(document.getElementById('modal-simulacao'));
                 modal.show();
 
                 $('#campo-simulacao').removeClass('d-none');
