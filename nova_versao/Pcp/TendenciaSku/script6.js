@@ -1209,7 +1209,7 @@ async function Detalha_SimulacaoSku(codReduzido) {
             TabelaDetalhamentoSku(response);
 
             // 🔥 Bootstrap 5: abre o modal corretamente
-            ('#modal-detalhamento-skus').modal('show');
+            $('#modal-detalhamento-skus').modal('show');
 
 
         } catch (error) {
