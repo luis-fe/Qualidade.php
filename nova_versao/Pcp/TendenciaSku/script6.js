@@ -4,7 +4,8 @@ let totalImagensEng = 0;
 let totalImagensColorBook = 0;
 let codigoMP = "";
 let imagensColorBook = [];
-let nomeSimulacao = ""
+
+
 
 const atualizarImagem = () => {
   if (!codigoMP || String(codigoMP).trim() === "") {
@@ -167,6 +168,7 @@ $('#modal-imagemMP').on('hidden.bs.modal', function () {
 
 //let nomeSimulacao = ''
 async function simulacao(texto, tipo) {
+    console.log(`Simulacao Escolhida pela formula: ${texto}`)
     $('#modal-simulacao').modal('hide');
     $('#modal-nova-simulacao').modal('hide');
     await Cadastro_Simulacao(texto, tipo);
@@ -198,7 +200,7 @@ async function Consulta_Simulacoes() {
             });
             $('#loadingModal').modal('hide');
             const descricao = $('#descricao-simulacao').val();
-            console.log(descricao)
+            console.log(`Simulacao escolhida: ${descricao}`)
             $('#select-simulacao').val(descricao);
         },
 
