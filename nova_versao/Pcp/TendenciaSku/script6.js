@@ -545,3 +545,51 @@ const Consulta_Abc_Plano = async (padrão) => {
         console.error('Erro ao consultar planos:', error);
     }
 };
+
+
+
+const Consulta_Categorias = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Categorias',
+            }
+        });
+
+        const inputsContainer = $('#inputs-container-categorias');
+        inputsContainer.empty();
+        const inputsContainerNova = $('#inputs-container-categorias-nova');
+        inputsContainerNova.empty();
+
+        data.forEach((item) => {
+            const inputHtml1 = `
+    <div class="col-md-3 mb-3">
+        <label class="form-label">${item.nomeCategoria}</label>
+        <input type="text" class="inputs-percentuais input-categoria col-12" id="${item.nomeCategoria}" placeholder="%">
+    </div>
+`;
+
+            const inputHtml2 = `
+    <div class="col-md-3 mb-3">
+        <label class="form-label">${item.nomeCategoria}</label>
+        <input type="text" class="inputs-percentuais input-categoria-2 col-12" id="${item.nomeCategoria}-2" placeholder="%">
+    </div>
+`;
+            inputsContainer.append(inputHtml1);
+            inputsContainerNova.append(inputHtml2);
+        });
+
+        $('.input-categoria').mask("##0,00%", {
+            reverse: true
+        });
+
+        $('.input-categoria-2').mask("##0,00%", {
+            reverse: true
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
