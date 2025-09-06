@@ -131,7 +131,7 @@ include_once('../../templates/headerPcp.php');
 
     <p class="fs-4 fw-bold text-dark">SIMULAÇÃO</p>
     <div class="modal-body" style="align-items: start; text-align: left; overflow-y: auto;">
-        <div class="select mb-4 text-start d-none" id="campo-simulacao">
+        <div class="select mb-4 text-start " id="campo-simulacao">
             <label for="select-simulacao" class="form-label">Simulação</label>
             <select id="select-simulacao" class="form-select"></select>
         </div>
@@ -150,6 +150,16 @@ include_once('../../templates/headerPcp.php');
                     </div>
                 </div>
             </div>
+      <div class="mt-5 col-12">
+                        <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
+                        <div id="inputs-container" class="row"></div>
+                    </div>
+
+                    <div class="mt-5 col-12">
+                        <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
+                        <div id="inputs-container-categorias" class="row"></div>
+                    </div>
+
  
 </div>
 
