@@ -121,6 +121,12 @@ include_once('../../templates/headerPcp.php');
 
 <div class="col-12 mt-3 div-simulacao" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
     <p class="fs-4 fw-bold text-dark">SIMULAÇÃO</p>
+    <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
+                    <div class="select mb-4 text-start d-none" id="campo-simulacao">
+                        <label for="select-simulacao" class="form-label">Simulação</label>
+                        <select id="select-simulacao" class="form-select"></select>
+                    </div>
+
 </div>
 
 
