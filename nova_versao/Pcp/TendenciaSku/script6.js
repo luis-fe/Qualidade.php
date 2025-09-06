@@ -267,7 +267,7 @@ function TabelaTendencia(listaTendencia) {
             title: 'Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#div-simulacao').removeClass('d-none');
+                $('.div-simulacao').removeClass('d-none');
                 await Consulta_Abc_Plano();
                 await Consulta_Categorias();
             },
