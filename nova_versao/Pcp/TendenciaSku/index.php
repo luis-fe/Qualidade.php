@@ -119,6 +119,13 @@ include_once('../../templates/headerPcp.php');
 
 
 
+<div class="col-12 mt-3 div-simulacao" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+    <p class="fs-4 fw-bold text-dark">SIMULAÇÃO</p>
+</div>
+
+
+
+
 <?php
 include_once('../../templates/footerPcp.php');
 ?>

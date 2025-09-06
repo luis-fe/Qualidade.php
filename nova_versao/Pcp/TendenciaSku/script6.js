@@ -469,5 +469,12 @@ function TabelaTendencia(listaTendencia) {
 
     });
 
+}
 
+
+
+function formatarDataBrasileira(dataISO) {
+    if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
 }
