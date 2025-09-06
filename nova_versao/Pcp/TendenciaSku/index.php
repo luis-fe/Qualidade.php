@@ -136,6 +136,21 @@ include_once('../../templates/headerPcp.php');
             <select id="select-simulacao" class="form-select"></select>
         </div>
     </div>
+
+     <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
+            <h6 class="fw-bold text-white bg-dark">MARCA</h6>
+            <div class="row">
+                    <div class="col-12 col-md-3">
+                        <label class="fw-bold">M.POLLO</label>
+                        <input type="text" id="MPOLLO" class="inputs-percentuais input-marca col-12" placeholder="%" />
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="fw-bold">PACO</label>
+                        <input type="text" id="PACO" class="inputs-percentuais input-marca col-12" placeholder="%" />
+                    </div>
+                </div>
+            </div>
+ 
 </div>
 
 
