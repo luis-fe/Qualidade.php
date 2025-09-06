@@ -120,6 +120,16 @@ include_once('../../templates/headerPcp.php');
 
 
 <div class="mt-3 div-simulacao mx-auto" style="width: 60%; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+<div id="simulacao-container" 
+     class="mt-3 div-simulacao mx-auto" 
+     style="width: 60%; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px; position: relative;">
+    
+    <!-- Botão fechar -->
+    <button type="button" onclick="fecharSimulacao()" 
+            style="position: absolute; top: 8px; right: 8px; border: none; background: transparent; font-size: 20px; cursor: pointer;">
+        &times;
+    </button>
+
     <p class="fs-4 fw-bold text-dark">SIMULAÇÃO</p>
     <div class="modal-body" style="align-items: start; text-align: left; overflow-y: auto;">
         <div class="select mb-4 text-start d-none" id="campo-simulacao">

@@ -478,3 +478,8 @@ function formatarDataBrasileira(dataISO) {
     const [ano, mes, dia] = dataISO.split('-');
     return `${dia}/${mes}/${ano}`;
 }
+
+
+function fecharSimulacao() {
+    document.getElementById("simulacao-container").style.display = "none";
+}
