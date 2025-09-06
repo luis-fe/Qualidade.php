@@ -118,11 +118,11 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
-
 <div id="simulacao-container" 
      class="mt-3 div-simulacao mx-auto d-none" 
-     style="width: 60%; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
-    <form>
+     style="width: 60%; max-height: 80vh; overflow-y: auto; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+
+     <form>
     <!-- Botão fechar -->
     <button type="button" onclick="fecharSimulacao()" 
             style="position: absolute; top: 8px; right: 8px; border: none; background: transparent; font-size: 20px; cursor: pointer;">
