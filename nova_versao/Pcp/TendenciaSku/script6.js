@@ -266,6 +266,11 @@ function TabelaTendencia(listaTendencia) {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Simulação',
             title: 'Simulação',
             className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('#div-simulacao').removeClass('d-none');
+                await Consulta_Abc_Plano();
+                await Consulta_Categorias();
+            },
             
         },
         {
