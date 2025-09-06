@@ -122,7 +122,7 @@ include_once('../../templates/headerPcp.php');
 <div id="simulacao-container" 
      class="mt-3 div-simulacao mx-auto" 
      style="width: 60%; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
-    
+    <form>
     <!-- Botão fechar -->
     <button type="button" onclick="fecharSimulacao()" 
             style="position: absolute; top: 8px; right: 8px; border: none; background: transparent; font-size: 20px; cursor: pointer;">
@@ -188,6 +188,17 @@ include_once('../../templates/headerPcp.php');
                         
                         </div>
                     </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
+                        <span><i class="bi bi-trash3-fill"></i></span> Excluir Simulação
+                    </button>
+                    <button type="button" class="btn btn-salvar" onclick="simulacao($('#select-simulacao').val(),'cadastro'); return false;">
+                        <span><i class="bi bi-floppy"></i></span>
+                        Salvar e Simular
+                    </button>
+                </div>
+    </from>
 
  
 </div>
