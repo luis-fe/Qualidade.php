@@ -268,8 +268,11 @@ function TabelaTendencia(listaTendencia) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('.div-simulacao').removeClass('d-none');
-                await Consulta_Abc_Plano();
-                await Consulta_Categorias();
+                $('#campo-simulacao').removeClass('d-none');
+
+                const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
+                console.log(`Simulacao do teste ao clicar no modal de simulacao: ${simulacaoValue}`)
+                Produtos_Simulacao();
             },
             
         },
@@ -593,3 +596,35 @@ const Consulta_Categorias = async () => {
         console.error('Erro ao consultar planos:', error);
     }
 };
+
+
+
+async function Produtos_Simulacao() {
+   
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "selecao_produtos_simulacao",
+                nomeSimulacao:  $('#select-simulacao').val()
+            }
+        }); 
+
+        console.log(data)
+        console.log(data[0].mensagem);
+
+        document.getElementById("TituloSelecaoEngenharias").textContent = data[0].mensagem;
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+                
+        console.log('atualizado produtos da selecacao');
+
+    }
+
+    
+}
