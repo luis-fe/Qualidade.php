@@ -121,7 +121,7 @@ include_once('../../templates/headerPcp.php');
 
 <div id="simulacao-container" 
      class="mt-3 div-simulacao mx-auto" 
-     style="width: 60%; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px; position: relative; top: 20px;">
+     style="width: 60%; background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
     
     <!-- Botão fechar -->
     <button type="button" onclick="fecharSimulacao()" 
