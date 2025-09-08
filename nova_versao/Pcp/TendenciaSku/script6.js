@@ -697,7 +697,113 @@ function formatarDataBrasileira(dataISO) {
     return `${dia}/${mes}/${ano}`;
 }
 
+async function Cadastro_Simulacao(simulacao, tipo) {
+    $('#loadingModal').modal('show');
+    try {
+        const categorias = [];
+        const percentuais_categorias = [];
 
+        const abcs = [];
+        const percentuais_abc = [];
+
+        const marcas = [];
+        const percentuais_marca = [];
+
+        if (tipo === "cadastro") {
+            $('.input-categoria-2').each(function () {
+                const categoria = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (categoria && !isNaN(percentual)) {
+                    categorias.push(categoria);
+                    percentuais_categorias.push(percentual);
+                }
+            });
+
+            $('.input-abc-2').each(function () {
+                const abc = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (abc && !isNaN(percentual)) {
+                    abcs.push(abc);
+                    percentuais_abc.push(percentual);
+                }
+            });
+
+            $('.input-marca-nova').each(function () {
+                const marca = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (marca && !isNaN(percentual)) {
+                    marcas.push(marca);
+                    percentuais_marca.push(percentual);
+                }
+            });
+        } else {
+            $('.input-categoria').each(function () {
+                const categoria = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (categoria && !isNaN(percentual)) {
+                    categorias.push(categoria);
+                    percentuais_categorias.push(percentual);
+                }
+            });
+
+            $('.input-abc').each(function () {
+                const abc = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (abc && !isNaN(percentual)) {
+                    abcs.push(abc);
+                    percentuais_abc.push(percentual);
+                }
+            });
+
+            $('.input-marca').each(function () {
+                const marca = $(this).attr('id');
+                const percentual = parseFloat($(this).val().replace(',', '.'));
+
+                if (marca && !isNaN(percentual)) {
+                    marcas.push(marca);
+                    percentuais_marca.push(percentual);
+                }
+            });
+        }
+
+
+        const requestData = {
+            acao: "Cadastro_Simulacao",
+            dados: {
+                "nomeSimulacao": simulacao,
+                arrayAbc: [
+                    abcs,
+                    percentuais_abc
+
+                ],
+                arrayCategoria: [
+                    categorias,
+                    percentuais_categorias
+                ],
+                arrayMarca: [
+                    marcas,
+                    percentuais_marca
+                ]
+            }
+        };
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
 
 //let nomeSimulacao = ''
 async function simulacao(texto, tipo) {
