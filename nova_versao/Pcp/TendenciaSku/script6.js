@@ -553,6 +553,16 @@ function TabelaTendencia(listaTendencia) {
         const consideraPedidosBloqueado = $('#select-pedidos-bloqueados').val();
         Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan);
     });
+
+
+            $('#table-tendencia').on('click', '.detalha-pedidos', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codReduzido');
+        const codPlan = $('#select-plano').val();
+        const consideraPedidosBloqueado = $('#select-pedidos-bloqueados').val();
+        Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan);
+    });
+
 }
 
 
@@ -1029,3 +1039,30 @@ async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codP
             $('#loadingModal').modal('hide');
         }
 };
+
+
+async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) {
+            $('#loadingModal').modal('show');
+
+    try {
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "Detalha_Pedidos",
+                codPlano: codPlan,
+                consideraPedidosBloqueado: consideraPedidosBloqueado,
+                codReduzido: codReduzido
+            }
+        });
+        console.log(response)
+        TabelaDetalhamentoPedidos(response);
+        $('#modal-detalhamento-pedidos').modal('show')
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }finally {
+            $('#loadingModal').modal('hide');
+        }
+};
+
