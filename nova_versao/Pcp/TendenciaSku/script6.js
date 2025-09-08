@@ -1,3 +1,39 @@
+let imagemAtual = 0;
+let totalImagens = 0;
+let totalImagensEng = 0;
+let totalImagensColorBook = 0;
+let codigoMP = "";
+let imagensColorBook = [];
+
+
+
+
+const atualizarImagem = () => {
+  if (!codigoMP || String(codigoMP).trim() === "") {
+    console.error("codigoMP está vazio!");
+    return;
+  }
+
+  const baseURL = "http://10.162.0.53:9000";
+  let url = "";
+
+  if (imagemAtual < totalImagensColorBook) {
+    url = imagensColorBook[imagemAtual];
+  } else {
+    const indiceEng = imagemAtual - totalImagensColorBook;
+    url = `${baseURL}/imagemEng/${codigoMP}/${indiceEng}`;
+  }
+
+  $('#imagem-container').html(`
+    <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
+  `);
+
+  $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
+  $('#btn-anterior').prop('disabled', imagemAtual === 0);
+  $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
+};
+
+
 $(document).ready(async () => {
     Consulta_Planos();
     Consulta_Simulacoes();
