@@ -216,9 +216,8 @@ include_once('../../templates/headerPcp.php');
     
                 <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Seleção de Engenharias</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style=" min-width: 100%; max-height: 600px; overflow: auto">
+            <div class="modal-body" style=" min-width: 100%; max-height: 100%; overflow: auto">
                 <div class="div-tabela-lotes-csw" style="max-width: 100%; overflow: auto;">
                     <table class="table table-bordered table-striped" id="table-lotes-csw" style="width: 100%;">
                         <thead>
