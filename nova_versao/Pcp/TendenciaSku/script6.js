@@ -560,6 +560,9 @@ function fecharSimulacao() {
     document.getElementById("simulacao-container").classList.add("d-none");
 }
 
+function fecharselecaoEngenharia() {
+    document.getElementById("modal-selecaoEngenharias").classList.add("d-none");
+}
 
 
 
