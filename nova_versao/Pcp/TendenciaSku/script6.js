@@ -545,6 +545,14 @@ function TabelaTendencia(listaTendencia) {
         console.log(`codigo reduzido escolhido ${codReduzido}`)
         Detalha_OrdemProducao(codReduzido);
     });
+
+            $('#table-tendencia').on('click', '.detalha-pedidos2', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codReduzido');
+        const codPlan = $('#select-plano').val();
+        const consideraPedidosBloqueado = $('#select-pedidos-bloqueados').val();
+        Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan);
+    });
 }
 
 
@@ -916,3 +924,31 @@ function TabelaEngenharia(lista) {
 );
 
 }
+
+
+
+
+async function Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan) {
+            $('#loadingModal').modal('show');
+
+    try {
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "Detalha_PedidosSaldo",
+                codPlano: codPlan,
+                consideraPedidosBloqueado: consideraPedidosBloqueado,
+                codReduzido: codReduzido
+            }
+        });
+        console.log(response)
+        TabelaDetalhamentoPedidosSaldo(response);
+        $('#modal-detalhamento-pedidosSaldo').modal('show')
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+            $('#loadingModal').modal('hide');
+        }
+};
