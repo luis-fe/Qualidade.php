@@ -563,6 +563,13 @@ function TabelaTendencia(listaTendencia) {
         Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan);
     });
 
+        $('#table-tendencia').on('click', '.detalha-SimulacaoSku', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codReduzido');
+
+        Detalha_SimulacaoSku(codReduzido);
+    });
+
 }
 
 
@@ -1065,6 +1072,126 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
             $('#loadingModal').modal('hide');
         }
 };
+
+
+async function Detalha_SimulacaoSku(codReduzido) {
+    if (nomeSimulacao === "") {
+        Mensagem_Canto("Nenhuma simulação selecionada", "warning");
+    } else {
+        $('#loadingModal').modal('show'); // ainda pode ser jQuery se esse modal for BS4
+        try {
+            const requestData = {
+                acao: "simulacaoDetalhadaPorSku",
+                dados: {
+                    "codPlano": $('#select-plano').val(),
+                    "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
+                    "codSku": codReduzido,
+                    "nomeSimulacao": nomeSimulacao
+                }
+            };
+
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response);
+            TabelaDetalhamentoSku(response);
+
+
+            $('.div-detalhamento-skus').removeClass('d-none');
+
+
+        } catch (error) {
+            console.error('Erro na solicitação AJAX:', error);
+            Mensagem_Canto('Erro', 'error');
+        } finally {
+            $('#loadingModal').modal('hide');
+        }
+    }
+}
+
+
+function TabelaDetalhamentoSku(listaDetalhes) {
+    if ($.fn.DataTable.isDataTable('#table-detalhamento-skus')) {
+        $('#table-detalhamento-skus').DataTable().destroy();
+    }
+
+    const tabela = $('#table-detalhamento-skus').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 15,
+        dom: 'Bfrtip', // <-- necessário para os botões aparecerem
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                title: 'Tendências de Vendas',
+                className: 'btn-tabelas',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (typeof data === 'string') {
+                                return data.replace(/\./g, '').replace(',', '.');
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+        ],
+        data: listaDetalhes,
+        columns: [
+            { data: 'nomeSimulacao' },
+            { data: 'codReduzido' },
+            { data: 'previcaoVendasOriginal' },
+            { data: 'percentualMarca' },
+            { data: 'percentualABC' },
+            { data: 'percentualCategoria' },
+            { data: '_%Considerado' },
+            { data: 'NovaPrevicao' },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-detalhamento-skus').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamento-skus span').remove();
+            $('#pagination-detalhamento-skus a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    // Adiciona os botões à interface
+    tabela.buttons().container().appendTo('#table-detalhamento-skus_wrapper .col-md-6:eq(0)');
+
+    $('#itens-detalhamentoSkuSimulado').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
+    $('.search-input-detalhamentoSkuSimulado').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+};
+
 
 
 function TabelaDetalhamentoPedidos(listaDetalhes) {

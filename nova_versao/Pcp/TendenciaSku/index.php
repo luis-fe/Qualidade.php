@@ -379,6 +379,42 @@ include_once('../../templates/headerPcp.php');
 
 </div>
 
+
+
+
+<div class="col-12 mt-3 div-detalhamento-skus d-none" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+    <p class="fs-4 fw-bold text-dark">Analise da Simulacao de Previsao</p>
+    <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+        <table class="table table-bordered" id="table-detalhamento-skus" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Nome<br>Simulação</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>Reduzido<br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>Previsão Vendas<br>Original</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>%<br>Marca</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>%<br>ABC</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>%<br>Categoria</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>%<br>Considerado</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                                <th>Nova<br>Previsão</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados da tabela -->
+                        </tbody>
+        </table>
+    </div>
+    <div class="custom-pagination-container pagination-detalhamento-skus d-md-flex col-12 text-center text-md-start">
+        <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
+            <label for="text">Itens por página</label>
+            <input id="itens-detalhamento-skus" class="input-itens" type="text" value="10" min="1">
+        </div>
+        <div id="pagination-detalhamento-skus" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+        </div>
+    </div>
+</div>
+
+
+
 <?php
 include_once('../../templates/footerPcp.php');
 ?>
