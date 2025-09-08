@@ -818,6 +818,68 @@ async function simulacao(texto, tipo) {
 };
 
 
+async function Simular_Programacao(simulacao) {
+    $('#loadingModal').modal('show');
+    nomeSimulacao = simulacao
+    try {
+        const requestData = {
+            acao: "Simular_Programacao",
+
+            dados: {
+                "codPlano": $('#select-plano').val(),
+                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
+                "nomeSimulacao": $('#select-simulacao').val()
+            }
+
+        };
+
+        const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+
+        const respostaPeriodoVendas = await PeriodoVendasPlano();
+        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
+        respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
+        respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
+
+        $('#titulo').html(`
+            <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+        <div>
+            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+            Tendência de Vendas
+            <span style="display: inline-block; position: relative;">
+              <strong>${simulacao}</strong>
+              <button onclick="Consulta_Tendencias()" 
+                      style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
+                ×
+              </button>
+            </span>
+        </div>
+    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
+            <div>
+                <i class="bi bi-calendar3 me-1"></i>
+                <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+            </div>
+            <div>
+                <i class="bi bi-calendar3 me-1"></i>
+                <span>Período Fatura. :<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+            </div>
+        </div>
+    </div>
+          `);
+        TabelaTendencia(response);
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
 function fecharSimulacao() {
     document.getElementById("simulacao-container").classList.add("d-none");
 }
