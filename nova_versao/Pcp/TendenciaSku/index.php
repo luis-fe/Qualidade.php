@@ -374,7 +374,7 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="modal fade modal-custom" id="modal-detalhamento-simulacaoSku" tabindex="-1" aria-labelledby="customModalLabel"
+<div class="modal fade modal-custom" id="modal-detalhamento-pedidosSaldo" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
         <div class="modal-content">
@@ -467,7 +467,7 @@ include_once('../../templates/headerPcp.php');
 
 
 
-<div class="modal fade modal-custom" id="modal-detalhamento-pedidosSaldo" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
+<div class="modal fade modal-custom" id="modal-detalhamento-simulacaoSku" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
     <p class="fs-4 fw-bold text-dark">Analise da Simulacao de Previsao</p>
     <div class="div-tabela" style="max-width: 100%; overflow: auto;">
         <table class="table table-bordered" id="table-detalhamento-skus" style="width: 100%;">
