@@ -189,16 +189,17 @@ include_once('../../templates/headerPcp.php');
                     </div>
 
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-salvar" 
-                            onclick="$('.input-categoria-2').val('0,00%')">
-                        <span><i class="bi bi-x-octagon"></i></span>
-                        Zerar Categorias
-                    </button>
-                    <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
-                        <span><i class="bi bi-floppy"></i></span>
-                        Salvar e Simular
-                    </button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-salvar" 
+                                onclick="$('.input-categoria-2').val('0,00%')">
+                            <span><i class="bi bi-x-octagon"></i></span>
+                            Zerar Categorias
+                        </button>
+                        <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                            <span><i class="bi bi-floppy"></i></span>
+                            Salvar e Simular
+                        </button>
+                    </div>
                 </div>
     </form>
 
