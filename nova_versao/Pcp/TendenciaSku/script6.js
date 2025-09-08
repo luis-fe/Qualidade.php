@@ -538,6 +538,13 @@ function TabelaTendencia(listaTendencia) {
                 }
             }
         });
+
+                $('#table-tendencia').on('click', '.detalha-ordemProd', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        const codReduzido = $(this).attr('data-codReduzido');
+        console.log(`codigo reduzido escolhido ${codReduzido}`)
+        Detalha_OrdemProducao(codReduzido);
+    });
 }
 
 
@@ -727,80 +734,6 @@ async function Detalha_OrdemProducao(codReduzido) {
 };
 
 
-
-function TabelaDetalhamentoOrdemProd(listaDetalhes) {
-    if ($.fn.DataTable.isDataTable('#table-detalhamento-OrdemProd')) {
-        $('#table-detalhamento-OrdemProd').DataTable().destroy();
-    }
-
-    const tabela = $('#table-detalhamento-OrdemProd').DataTable({
-        searching: true,
-        paging: true,
-        lengthChange: false,
-        info: false,
-        pageLength: 15,
-        dom: 'Bfrtip', // <-- necessário para os botões aparecerem
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-                title: 'Tendências de Vendas',
-                className: 'btn-tabelas',
-                exportOptions: {
-                    columns: ':visible',
-                    format: {
-                        body: function (data, row, column, node) {
-                            if (typeof data === 'string') {
-                                return data.replace(/\./g, '').replace(',', '.');
-                            }
-                            return data;
-                        }
-                    }
-                }
-            }
-        ],
-        data: listaDetalhes,
-        columns: [
-            { data: 'numeroop' },
-            {data: 'codFaseAtual'},
-            {data: 'nomeFase'},
-            { data: 'total_pcs' },
-        ],
-        language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
-            info: "Página _PAGE_ de _PAGES_",
-            emptyTable: "Nenhum dado disponível na tabela",
-            zeroRecords: "Nenhum registro encontrado"
-        },
-        drawCallback: function () {
-            $('#pagination-detalhamento-ordemProd').html($('.dataTables_paginate').html());
-            $('#pagination-detalhamento-ordemProd span').remove();
-            $('#pagination-detalhamento-ordemProd a').off('click').on('click', function (e) {
-                e.preventDefault();
-                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
-                if ($(this).hasClass('next')) tabela.page('next').draw('page');
-            });
-            $('.dataTables_paginate').hide();
-        }
-    });
-
-    // Adiciona os botões à interface
-    tabela.buttons().container().appendTo('#table-detalhamento-ordemProd .col-md-6:eq(0)');
-
-    $('#itens-detalhamento-ordemProd').on('input', function () {
-        const valor = parseInt($(this).val(), 10);
-        if (!isNaN(valor) && valor > 0) {
-            tabela.page.len(valor).draw();
-        }
-    });
-
-    $('.search-input-detalhamento-ordemProd').on('input', function () {
-        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
-    });
-}
 
 
 
