@@ -698,6 +698,20 @@ function formatarDataBrasileira(dataISO) {
 }
 
 
+
+//let nomeSimulacao = ''
+async function simulacao(texto, tipo) {
+    console.log(`Simulacao Escolhida pela formula: ${texto}`)
+    fecharSimulacao();
+    fecharNovaSimulacao();
+    await Cadastro_Simulacao(texto, tipo);
+    await Consulta_Simulacoes();
+    await Simular_Programacao(texto);
+    nomeSimulacao = texto;
+    console.log(`nomeSimulacao: ${nomeSimulacao}`)
+};
+
+
 function fecharSimulacao() {
     document.getElementById("simulacao-container").classList.add("d-none");
 }
