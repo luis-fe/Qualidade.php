@@ -554,6 +554,14 @@ function TabelaTendencia(listaTendencia) {
         Detalha_PedidosSaldo(codReduzido, consideraPedidosBloqueado, codPlan);
     });
 
+                // Evento para abrir o modal ao clicar no código
+        $('#table-tendencia').on('click', '.detalhaImg', function (event) {
+        event.stopPropagation(); // Impede a propagação do clique
+        codigoPai = $(this).data('coditempai');
+        console.log(`imagem: ${codigoPai}`)
+        Consulta_Imagem(codigoPai);
+        });
+
 
             $('#table-tendencia').on('click', '.detalha-pedidos', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
@@ -579,7 +587,62 @@ function TabelaTendencia(listaTendencia) {
 
 }
 
+const Consulta_Imagem = async (codigoPai) => {
+  codigoMP = String(codigoPai);
+  $('#loadingModal').modal('show');
 
+  try {
+    // 1. Inicia em paralelo: consulta total da ColorBook e da imagemEng
+    const [primeiraColorBook, dataEng] = await Promise.all([
+      $.ajax({
+        type: 'GET',
+        url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
+        dataType: 'json'
+      }),
+      $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: {
+          acao: 'Consulta_Imagem',
+          codigoMP: codigoPai
+        },
+        xhrFields: { withCredentials: true }
+      })
+    ]);
+
+    // Pega totais
+    totalImagensColorBook = primeiraColorBook.total_imagens || 0;
+    totalImagensEng = dataEng.total_imagens || 0;
+
+    // 2. Faz chamadas paralelas para os restantes do ColorBook (índice 1+)
+    const colorBookRequests = [];
+    for (let i = 0; i < totalImagensColorBook; i++) {
+      colorBookRequests.push(
+        $.ajax({
+          type: 'GET',
+          url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
+          dataType: 'json'
+        })
+      );
+    }
+
+    const imagensColorData = await Promise.all(colorBookRequests);
+    imagensColorBook = imagensColorData.map(img => img.imagem_url);
+
+    // 3. Atualiza totais e imagem inicial
+    totalImagens = totalImagensColorBook + totalImagensEng;
+    imagemAtual = 0;
+    atualizarImagem();
+
+    $('#loadingModal').modal('hide');
+    $('#modal-imagemMP').modal('show');
+  } catch (error) {
+    console.error('Erro ao consultar imagens:', error);
+    Mensagem_Canto('Erro', 'error');
+    $('#loadingModal').modal('hide');
+  }
+};
 
 function formatarDataBrasileira(dataISO) {
     if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
