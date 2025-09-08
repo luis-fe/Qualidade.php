@@ -212,7 +212,7 @@ include_once('../../templates/headerPcp.php');
 <div 
     id="modal-selecaoEngenharias" 
     class="mt-3 div-selecaoEngenharias mx-auto d-none p-3 border border-dark rounded" 
-    style="width: 60%; max-height: 80vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+    style="width: 60%; max-height: 90vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
     
                 <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Seleção de Engenharias</h5>
