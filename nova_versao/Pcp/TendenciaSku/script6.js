@@ -637,6 +637,83 @@ const Consulta_Abc_Plano = async (padrão) => {
 };
 
 
+function TabelaDetalhamentoPedidosSaldo(listaDetalhes) {
+    if ($.fn.DataTable.isDataTable('#table-detalhamento-pedidosSaldo')) {
+        $('#table-detalhamento-pedidosSaldo').DataTable().destroy();
+    }
+
+    const tabela = $('#table-detalhamento-pedidosSaldo').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 15,
+        dom: 'Bfrtip', // <-- necessário para os botões aparecerem
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                title: 'Tendências de Vendas',
+                className: 'btn-tabelas',
+                exportOptions: {
+                    columns: ':visible',
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (typeof data === 'string') {
+                                return data.replace(/\./g, '').replace(',', '.');
+                            }
+                            return data;
+                        }
+                    }
+                }
+            }
+        ],
+        data: listaDetalhes,
+        columns: [
+            { data: 'codReduzido' },
+            { data: 'codPedido' },
+            { data: 'codTipoNota' },
+            { data: 'dataEmissao' },
+            { data: 'dataPrevFat' },
+            { data: 'SaldoColAnt' },
+            { data: 'qtdeFaturadaSaldo' },
+            { data: 'qtdePedidaSaldo' },
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-detalhamento-pedidos').html($('.dataTables_paginate').html());
+            $('#pagination-detalhamento-pedidos span').remove();
+            $('#pagination-detalhamento-pedidos a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    // Adiciona os botões à interface
+    tabela.buttons().container().appendTo('#table-detalhamento-pedidos_wrapper .col-md-6:eq(0)');
+
+    $('#itens-detalhamento-pedidos').on('input', function () {
+        const valor = parseInt($(this).val(), 10);
+        if (!isNaN(valor) && valor > 0) {
+            tabela.page.len(valor).draw();
+        }
+    });
+
+    $('.search-input-detalhamento-pedidos').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+}
 
 const Consulta_Categorias = async () => {
     try {
