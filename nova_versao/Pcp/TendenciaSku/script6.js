@@ -1210,6 +1210,73 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
 };
 
 
+async function exluindo_simulacao_Produtos_zerados(arrayProdutoZerados, arrayPercentualZerados) {
+
+            const dados = {
+                "nomeSimulacao": $('#select-simulacao').val(),
+                "arrayProdutoZerados": arrayProdutoZerados,
+                "arrayPercentualZerados": arrayPercentualZerados,
+            };
+            const requestData = {
+                acao: "exluindo_simulacao_Produtos_zerados",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+    
+}
+
+
+async function Deletar_SimulacaoProduto() {
+
+    try {
+        const result = await Swal.fire({
+            title: "Deseja deletar os Produtos dessa simulação?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+        });
+
+        if (result.isConfirmed) {
+            $('#loadingModal').modal('show');
+
+            const dados = {
+                "nomeSimulacao": $('#select-simulacao').val(),
+            };
+            const requestData = {
+                acao: "Deletar_SimulacaoProduto",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+            if (response['resposta'][0]['status'] === true) {
+                Mensagem_Canto('Produtos  deletados da Simulação', 'success');
+            }
+
+            Produtos_Simulacao();
+        }
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
 async function Detalha_SimulacaoSku(codReduzido) {
     if (nomeSimulacao === "") {
         Mensagem_Canto("Nenhuma simulação selecionada", "warning");
