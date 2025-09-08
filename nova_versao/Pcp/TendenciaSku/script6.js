@@ -384,6 +384,17 @@ function TabelaTendencia(listaTendencia) {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Nova Simulação',
             title: 'Nova Simulação',
             className: 'btn-tabelas',
+            action: async function (e, dt, node, config) {
+                $('.div-nova-simulacao').removeClass('d-none');
+                $('#inputs-container-novas-marcas').removeClass('d-none');
+                await Consulta_Abc_Plano(true);
+                await Consulta_Categorias();
+            },
+
+
+
+
+
         },
         ],
         columns: [{
