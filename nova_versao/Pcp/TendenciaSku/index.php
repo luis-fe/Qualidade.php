@@ -467,10 +467,19 @@ include_once('../../templates/headerPcp.php');
 
 
 
-<div class="modal fade modal-custom" id="modal-detalhamento-simulacaoSku" style="background-color: lightgray; border-radius: 8px; border: 1px solid black; padding: 16px;">
-    <p class="fs-4 fw-bold text-dark">Analise da Simulacao de Previsao</p>
-    <div class="div-tabela" style="max-width: 100%; overflow: auto;">
-        <table class="table table-bordered" id="table-detalhamento-skus" style="width: 100%;">
+<div class="modal fade modal-custom" id="modal-detalhamento-simulacaoSku"tabindex="-1" aria-labelledby="customModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Analise da Simulacao de Previsao</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="modal-body" style="align-items: start; text-align: left">
+        <div class="div-tabela" style="max-width: 100%; overflow: auto;">
+
+                            <table class="table table-bordered" id="table-detalhamento-skus" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Nome<br>Simulação</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
@@ -481,21 +490,20 @@ include_once('../../templates/headerPcp.php');
                                 <th>%<br>Categoria</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
                                 <th>%<br>Considerado</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
                                 <th>Nova<br>Previsão</br><input type="search" class="search-input search-input-detalhamento-skus"></th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Dados da tabela -->
                         </tbody>
-        </table>
-    </div>
-    <div class="custom-pagination-container pagination-detalhamento-skus d-md-flex col-12 text-center text-md-start">
-        <div id="custom-info" class="col-12 col-md-6 mb-2 mb-md-0">
-            <label for="text">Itens por página</label>
-            <input id="itens-detalhamento-skus" class="input-itens" type="text" value="10" min="1">
+                    </table>
+
         </div>
-        <div id="pagination-detalhamento-skus" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
-        </div>
+
+
     </div>
+
+
 </div>
 
 
