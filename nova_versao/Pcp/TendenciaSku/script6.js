@@ -241,6 +241,7 @@ async function gerarTendenciaNova (congelamento) {
 };
 
 
+
 const Consulta_Engenharias = async () => {
     $('#loadingModal').modal('show');
     try {
