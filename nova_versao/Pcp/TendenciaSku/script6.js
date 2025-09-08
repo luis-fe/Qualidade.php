@@ -1502,8 +1502,7 @@ async function Detalha_SimulacaoSku(codReduzido) {
             console.log(response);
             TabelaDetalhamentoSku(response);
 
-
-            $('.div-detalhamento-skus').removeClass('d-none');
+            $('#modal-detalhamento-simulacaoSku').modal('show')
 
 
         } catch (error) {
