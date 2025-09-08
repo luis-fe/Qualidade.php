@@ -489,7 +489,7 @@ function formatarDataBrasileira(dataISO) {
 
 
 function fecharSimulacao() {
-    document.getElementById("simulacao-container").style.display = "none";
+    document.getElementById(".div-simulacao").style.display = "none";
 }
 
 
