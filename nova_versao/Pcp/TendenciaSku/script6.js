@@ -9,6 +9,18 @@ $(document).ready(async () => {
     });
 
 
+    $('#select-simulacao').on('change', async function () {
+        $('#inputs-container-marcas').removeClass('d-none');
+        $('#inputs-container-categorias').removeClass('d-none');
+        $('#inputs-container').removeClass('d-none');
+
+        await Consulta_Abc_Plano(false);
+        await Consulta_Categorias();
+        await Consulta_Simulacao_Especifica();
+        Produtos_Simulacao();
+    });
+
+
 
 });
 
@@ -136,7 +148,40 @@ const Consulta_Ultimo_CalculoTendencia = async () => {
 };
 
 
+const Consulta_Simulacao_Especifica = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Simulacao_Especifica',
+                simulacao: $('#select-simulacao').val()
+            }
+        });
 
+        if (!data) {
+            Mensagem_Canto('Não possui simulação para editar', 'warning');
+            $('#modal-simulacao').modal('hide');
+            return;
+        }
+
+        const campos = ["2- ABC", "3- Categoria", "4- Marcas"];
+        campos.forEach(campo => {
+            if (data[0][campo]) {
+                data[0][campo].forEach(item => {
+                    const key = item.class || item.categoria || item.marca;
+                    const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
+                    if (input.length) {
+                        input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    }
+};
 
 async function gerarTendenciaNova (congelamento) {
       $('#loadingModal').modal('show');
