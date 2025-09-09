@@ -184,7 +184,7 @@ include_once('../../templates/headerPcp.php');
                                 <span style="font-size: 12px;">Escolher</span>
                                 
                             </button>
-                            <span id="TituloSelecaoEngenharias">Todas Selecionadas</span>
+                            <span id="TituloSelecaoEngenharias2">Todas Selecionadas</span>
                         </div>
                     </div>
 

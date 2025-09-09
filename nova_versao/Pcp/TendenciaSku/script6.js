@@ -1095,6 +1095,7 @@ async function Produtos_Simulacao() {
         console.log(data[0].mensagem);
 
         document.getElementById("TituloSelecaoEngenharias").textContent = data[0].mensagem;
+        document.getElementById("TituloSelecaoEngenharias2").textContent = data[0].mensagem;
 
 
     } catch (error) {
