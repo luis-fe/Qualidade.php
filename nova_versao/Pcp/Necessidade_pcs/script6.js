@@ -1274,3 +1274,17 @@ if (listaDetalhes.length > 0) {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 }
+
+function fecharSimulacao() {
+    document.getElementById("simulacao-container").classList.add("d-none");
+}
+
+
+function fecharNovaSimulacao() {
+    document.getElementById("nova-simulacao-container").classList.add("d-none");
+}
+
+
+function fecharselecaoEngenharia() {
+    document.getElementById("modal-selecaoEngenharias").classList.add("d-none");
+}
