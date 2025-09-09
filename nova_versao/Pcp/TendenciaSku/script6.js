@@ -382,7 +382,7 @@ function TabelaTendencia(listaTendencia) {
                 if (simulacaoValue === "") {
                     $('#inputs-container-categorias').empty();
                     $('#inputs-container').empty();
-                    $('#inputs-container-marcas').empty();
+                    $('#inputs-container-marcas').addClass('d-none')
                     Produtos_Simulacao();
 
                 } else {
