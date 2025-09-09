@@ -517,6 +517,7 @@ const Consulta_Categorias = async () => {
 };
 
 async function Consulta_Simulacoes() {
+    $('#loadingModal').modal('show');
     $.ajax({
         type: 'GET',
         url: 'requests.php',
@@ -534,17 +535,18 @@ async function Consulta_Simulacoes() {
                         </option>
                     `);
             });
+            $('#loadingModal').modal('hide');
             const descricao = $('#descricao-simulacao').val();
-            console.log(descricao)
+            console.log(`Simulacao escolhida: ${descricao}`)
             $('#select-simulacao').val(descricao);
         },
 
         error: function (xhr, status, error) {
             console.error('Erro ao consultar planos:', error);
+            $('#loadingModal').modal('hide');
         }
     });
 }
-
 
 const Consulta_Ultimo_Calculo = async () => {
     try {
