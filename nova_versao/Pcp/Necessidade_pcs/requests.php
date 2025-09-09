@@ -114,6 +114,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 header('Content-Type: application/json');
                 echo DeleteSimulacao("1", $dadosObjeto);
                 break;
+            case 'exluindo_simulacao_Produtos_zerados':
+                $dadosObjeto = (object)$dados;
+                header('Content-Type: application/json');
+                echo exluindo_simulacao_Produtos_zerados($dadosObjeto);
+                break;
         }
         break;
     default:
