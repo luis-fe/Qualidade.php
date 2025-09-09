@@ -109,12 +109,7 @@ $(document).ready(async () => {
         width: '100%'
     });
 
-    $('#select-simulacao').select2({
-        placeholder: "Selecione uma simulação",
-        allowClear: false,
-        width: '100%',
-        dropdownParent: $('#modal-simulacao')
-    });
+
 
 
     $('#select-simulacao').on('change', async function () {
