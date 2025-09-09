@@ -1320,3 +1320,28 @@ async function Produtos_Simulacao() {
 
     
 }
+
+
+const Consulta_Engenharias = async () => {
+    $('#loadingModal').modal('show');
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "obter_produtos_tendencia",
+                codPlano: $('#select-plano').val(),
+                nomeSimulacao:  $('#select-simulacao').val()
+            }
+        });
+        $('.div-selecaoEngenharias').removeClass('d-none');
+        TabelaEngenharia(data);
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+        
+    }
+};
