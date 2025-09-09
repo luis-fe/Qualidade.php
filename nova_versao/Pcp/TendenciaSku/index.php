@@ -203,7 +203,7 @@ include_once('../../templates/headerPcp.php');
 
             <button type="button" 
                     class="btn btn-success" 
-                    onclick="simulacao($('#select-simulacao').val(),'cadastro'); return false;"> 
+                    onclick="simulacao($('#select-simulacao').val(),''); return false;"> 
                 <i class="bi bi-floppy"></i> Salvar e Simular 
             </button> 
         </div> 
@@ -228,7 +228,7 @@ include_once('../../templates/headerPcp.php');
             aria-label="Fechar">
         </button> 
 
-                <p class="fs-4 fw-bold text-dark">Nova Simulação</p> 
+                <p class="fs-4 fw-bold text-dark">Nova Simulação</p>
 
 
                 
