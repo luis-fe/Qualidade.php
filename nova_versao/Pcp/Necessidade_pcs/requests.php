@@ -48,6 +48,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
                     jsonResponse(Consulta_Ultimo_Calculo('1', $plano));
                     break;
+                case 'obter_produtos_tendencia':
+                    $codPlano = isset($_GET['codPlano']) ? $_GET['codPlano'] : null;
+                    $nomeSimulacao = isset($_GET['nomeSimulacao']) ? $_GET['nomeSimulacao'] : '';
+                    jsonResponse(obter_produtos_tendencia($codPlano,$nomeSimulacao));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
