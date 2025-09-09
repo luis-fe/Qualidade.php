@@ -173,7 +173,7 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
     conn.close()
 
     # Impressão em lote depois do loop
-    if imprimir == True and etiquetas_para_impressao:
+    if imprimir == True and codempresa=='4':
         # Gera nome dinâmico do PDF
         nome_pdf = f"etiquetas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
         nome_pdf = 'teste.pdf'
