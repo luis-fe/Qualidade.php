@@ -1342,3 +1342,111 @@ const Consulta_Engenharias = async () => {
         
     }
 };
+
+function TabelaEngenharia(lista) {
+    if ($.fn.DataTable.isDataTable('#table-lotes-csw')) {
+        $('#table-lotes-csw').DataTable().destroy();
+    }
+
+    const tabela = $('#table-lotes-csw').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: lista,
+        columns: [
+        {
+            data: 'marca'
+        },
+        {
+            data: 'codItemPai'
+        },
+                {
+            data: 'descricao'
+        },
+                {
+             data: "percentual",
+                    render: (data, type, row) => `
+                        <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
+                            <input type="text" 
+                                class="form-control percentual-input" 
+                                style="width:80px; text-align:right;" 
+                                placeholder="%" 
+                                value="${data ?? ''}">
+                        </div>`
+        }
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#pagination-lotes-csw').html($('.dataTables_paginate').html());
+            $('#pagination-lotes-csw span').remove();
+            $('#pagination-lotes-csw a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        }
+    });
+
+    $('.search-input-lotes-csw').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+
+ $('#btn-salvarProdutosSimulacao').off('click').on('click', () => {
+    const arrayProduto = [];
+    const arrayPercentualProduto = [];
+
+    const arrayProdutoZero = [];
+    const arrayPercentualZero = [];
+
+    // Pega instância do DataTable
+    const table = $('#table-lotes-csw').DataTable();
+
+    // Percorre todas as linhas visíveis
+    table.rows().every(function () {
+        const data = this.data(); // dados da linha
+
+        // acha o input dentro dessa linha
+        const $rowNode = $(this.node());
+        const percentual = $rowNode.find('.percentual-input').val();
+
+        // transforma em número (ignora símbolo % e vírgula)
+        const valor = parseFloat(percentual.replace('%','').replace(',','.')) || 0;
+
+        if (valor > 0) {
+            // exemplo: supondo que o código do produto esteja na coluna 1
+            const codProduto = data.codItemPai; 
+            
+            arrayProduto.push(codProduto);
+            arrayPercentualProduto.push(valor);
+        } 
+        else if (percentual !== "" && valor === 0) {
+            const codProduto = data.codItemPai; 
+            // capturar os que foram zerados manualmente
+            arrayProdutoZero.push(codProduto);
+            arrayPercentualZero.push(0);
+        }
+    });
+
+    console.log("Produtos:", arrayProduto);
+    console.log("Percentuais:", arrayPercentualProduto);
+    const simulacao = $('#select-simulacao').val()
+    
+    registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
+    exluindo_simulacao_Produtos_zerados(arrayProdutoZero, arrayPercentualZero)
+    Produtos_Simulacao();
+
+    }
+);
+
+}
