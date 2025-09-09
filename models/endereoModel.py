@@ -153,6 +153,8 @@ def ImportEndereco(rua, ruaLimite, modulo, moduloLimite, posicao, posicaoLimite,
                     imprimirEtiquetaModel.EtiquetaPrateleira(caminho_pdf2, codendereco, ruaAtual,moduloAtual,posicaoAtual, natureza)
 
                     imprimirEtiquetaModel.imprimir_pdf(caminho_pdf2)
+                if codempresa =='4':
+                    etiquetas_para_impressao.append((codendereco, ruaAtual, moduloAtual, posicaoAtual, natureza))
 
                 if select.empty:
                     cursor.execute(query, (
