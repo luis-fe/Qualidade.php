@@ -476,3 +476,27 @@ function obter_produtos_tendencia($plano, $nomeSimulacao)
 
     return json_decode($apiResponse, true);
 }
+
+
+async function exluindo_simulacao_Produtos_zerados(arrayProdutoZerados, arrayPercentualZerados) {
+
+            const dados = {
+                "nomeSimulacao": $('#select-simulacao').val(),
+                "arrayProdutoZerados": arrayProdutoZerados,
+                "arrayPercentualZerados": arrayPercentualZerados,
+            };
+            const requestData = {
+                acao: "exluindo_simulacao_Produtos_zerados",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+    
+}
