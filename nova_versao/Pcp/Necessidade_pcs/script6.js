@@ -1452,26 +1452,3 @@ function TabelaEngenharia(lista) {
 }
 
 
-function obter_produtos_tendencia($plano, $nomeSimulacao)
-{
-    $baseUrl = 'http://10.162.0.53:9000';
-    $nomeSimulacao = rawurlencode($nomeSimulacao); // trata espaços e acentos
-    
-    $apiUrl = "{$baseUrl}/pcp/api/obter_produtos_tendencia?codPlano={$plano}&nomeSimulacao={$nomeSimulacao}";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
-
-    $apiResponse = curl_exec($ch);
-
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
