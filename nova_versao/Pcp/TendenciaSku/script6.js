@@ -207,7 +207,7 @@ const Consulta_Simulacao_Especifica = async () => {
                 data[0][campo].forEach(item => {
                     const key = item.class || item.categoria || item.marca;
                     const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
-                    console.log(`cadastro:${input.length}`)
+                    console.log(`cadastro:${input.length},item${item}`)
                     if (input.length) {
                         input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
                     }
