@@ -78,6 +78,7 @@ const Consultar_Tipo_Op = async () => {
                     $('<input class="form-check-input" type="checkbox">')
                         .attr('value', opcao['Tipo Producao'])
                         .attr('id', `checkbox${opcao['Tipo Producao']}`)
+                        .prop('checked', true) // 🔹 aqui ativa por padrão
                 )
                 .append(
                     $('<label class="form-check-label">')
