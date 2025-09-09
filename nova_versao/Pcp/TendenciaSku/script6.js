@@ -721,7 +721,12 @@ function formatarDataBrasileira(dataISO) {
 
 async function Cadastro_Simulacao(simulacao, tipo) {
     $('#loadingModal').modal('show');
+
+
+
     try {
+
+
         const categorias = [];
         const percentuais_categorias = [];
 
@@ -850,7 +855,7 @@ async function Simular_Programacao(simulacao) {
             dados: {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "nomeSimulacao": $('#select-simulacao').val()
+                "nomeSimulacao": simulacao
             }
 
         };
