@@ -608,6 +608,10 @@ function TabelaTendencia(listaTendencia) {
             }
         });
 
+            $('.search-input-tendencia').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+
                 $('#table-tendencia').on('click', '.detalha-ordemProd', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
