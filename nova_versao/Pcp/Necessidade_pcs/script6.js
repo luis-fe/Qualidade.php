@@ -43,7 +43,7 @@ const Consulta_Imagem = async (codigoPai) => {
     const [primeiraColorBook, dataEng] = await Promise.all([
       $.ajax({
         type: 'GET',
-        url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
+        url: `http://10.162.0.53:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
         dataType: 'json'
       }),
       $.ajax({
@@ -68,7 +68,7 @@ const Consulta_Imagem = async (codigoPai) => {
       colorBookRequests.push(
         $.ajax({
           type: 'GET',
-          url: `http://192.168.0.183:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
+          url: `http://10.162.0.53:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
           dataType: 'json'
         })
       );
