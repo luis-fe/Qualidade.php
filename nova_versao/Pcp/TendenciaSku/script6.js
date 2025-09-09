@@ -271,7 +271,7 @@ async function gerarTendenciaNova (congelamento) {
         Mensagem_Canto('Erro', 'error')
     } finally {
         $('#loadingModal').modal('hide');
-        document.getElementById("ConfPedidosSaldo").classList.remove("d-none");
+       // document.getElementById("ConfPedidosSaldo").classList.remove("d-none");
     }
     
 };
