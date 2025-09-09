@@ -1288,3 +1288,35 @@ function fecharNovaSimulacao() {
 function fecharselecaoEngenharia() {
     document.getElementById("modal-selecaoEngenharias").classList.add("d-none");
 }
+
+
+async function Produtos_Simulacao() {
+   
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "selecao_produtos_simulacao",
+                nomeSimulacao:  $('#select-simulacao').val()
+            }
+        }); 
+
+        console.log(data)
+        console.log(data[0].mensagem);
+
+        document.getElementById("TituloSelecaoEngenharias").textContent = data[0].mensagem;
+        document.getElementById("TituloSelecaoEngenharias2").textContent = data[0].mensagem;
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+                
+        console.log('atualizado produtos da selecacao');
+
+    }
+
+    
+}
