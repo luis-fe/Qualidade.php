@@ -114,7 +114,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 header('Content-Type: application/json');
                 echo DeleteSimulacao("1", $dadosObjeto);
                 break;
-            case 'exluindo_simulacao_Produtos_zerados':
+             case 'Deletar_SimulacaoProduto':
+                $dadosObjeto = (object)$dados;
+                header('Content-Type: application/json');
+                echo DeleteSimulacaoProduto($dadosObjeto);
+                break;
+             case 'exluindo_simulacao_Produtos_zerados':
                 $dadosObjeto = (object)$dados;
                 header('Content-Type: application/json');
                 echo exluindo_simulacao_Produtos_zerados($dadosObjeto);
@@ -475,6 +480,47 @@ function obter_produtos_tendencia($plano, $nomeSimulacao)
     curl_close($ch);
 
     return json_decode($apiResponse, true);
+}
+
+
+
+function DeleteSimulacaoProduto($dados)
+{
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/limpar_produtos_simulacao_Especifica";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        $response = [
+            'status' => false,
+            'message' => "Erro na solicitação cURL: {$error}"
+        ];
+    } else {
+        $response = [
+            'status' => true,
+            'resposta' => json_decode($apiResponse, true)
+        ];
+    }
+
+    curl_close($ch);
+
+    return json_encode($response);
 }
 
 
