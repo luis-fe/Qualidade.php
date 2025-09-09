@@ -198,7 +198,8 @@ function ConsultarPlanos($empresa)
 
 function ConsultaSimulacaoEspecifica($empresa, $simulacao)
 {
-    $baseUrl = ($empresa == "1") ? '10.162.0.53:9000' : '192.168.0.183:9000';
+        $simulacao = str_replace(' ', '%20', $simulacao);
+    $baseUrl = '10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consultaDetalhadaSimulacao?nomeSimulacao=" . urlencode($simulacao);
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
