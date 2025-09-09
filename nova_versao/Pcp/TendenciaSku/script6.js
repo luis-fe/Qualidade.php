@@ -374,7 +374,7 @@ function TabelaTendencia(listaTendencia) {
                 $('.div-simulacao').removeClass('d-none');
                 $('#campo-simulacao').removeClass('d-none');
 
-                const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
+                const simulacaoValue = $('.select-simulacao').val()?.trim() || "";
                 console.log(`Simulacao do teste ao clicar no modal de simulacao: ${simulacaoValue}`)
                 Produtos_Simulacao();
 
