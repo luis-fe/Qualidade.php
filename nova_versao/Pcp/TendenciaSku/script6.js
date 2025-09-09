@@ -207,6 +207,7 @@ const Consulta_Simulacao_Especifica = async () => {
                 data[0][campo].forEach(item => {
                     const key = item.class || item.categoria || item.marca;
                     const input = $(`#${key.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`);
+                    console.log(`cadastro:${input.length}`)
                     if (input.length) {
                         input.val(`${parseFloat(item.percentual).toFixed(1).replace('.', ',')}%`);
                     }
@@ -385,8 +386,8 @@ function TabelaTendencia(listaTendencia) {
                     Produtos_Simulacao();
 
                 } else {
-                    //await Consulta_Abc_Plano();
-                    //await Consulta_Categorias();
+                   // await Consulta_Abc_Plano();
+                   // await Consulta_Categorias();
                     $('#inputs-container-marcas').removeClass('d-none')
                     $('#inputs-container-categorias').removeClass('d-none')
                     Produtos_Simulacao();
