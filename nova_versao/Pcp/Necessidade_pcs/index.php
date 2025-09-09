@@ -167,111 +167,185 @@ include_once('../../templates/headerPcp.php');
     </div>
 </div>
 
-<div class="modal fade modal-custom" id="modal-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Simulações</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="form-simulacao" onsubmit="simulacao($('#select-simulacao').val(), ''); return false;">
-                
-                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
-                    <div class="select mb-4 text-start d-none" id="campo-simulacao">
-                        <label for="select-simulacao" class="form-label">Simulação</label>
-                        <select id="select-simulacao" class="form-select">
-                        </select>
-                    </div>
-                    <div class="mb-4 col-12 d-none" id="inputs-container-marcas">
-                        <h6 class="fw-bold">MARCA</h6>
-                        <div class="row">
-                            <div class="col-12 col-md-3">
-                                <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca col-12" placeholder="%" />
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca col-12" placeholder="%" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-5 col-12">
-                        <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-container" class="row">
-                        </div>
-                    </div>
-                    <div class="mt-5 col-12">
-                        <h6 class="fw-bold">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias" class="row">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-excluir" onclick="Deletar_Simulacao()">
-                        <span><i class="bi bi-trash3-fill"></i></span>
-                        Excluir Simulação
-                    </button>
-                    <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-floppy"></i></span>
-                        Salvar e Simular
-                    </button>
-                </div>
-            </form>
+
+<div 
+    id="simulacao-container" 
+    class="mt-3 div-simulacao mx-auto d-none p-3 border border-dark rounded" 
+    style="width: 60%; max-height: 80vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+    
+    <form>
+        <!-- Botão fechar -->
+        <button 
+            type="button" 
+            onclick="fecharSimulacao()" 
+            class="btn-close position-absolute top-0 end-0 m-2" 
+            aria-label="Fechar">
+        </button> 
+
+        <p class="fs-4 fw-bold text-dark">SIMULAÇÃO</p> 
+
+        <div class="modal-body text-start overflow-auto"> 
+            <div class="mb-4" id="campo-simulacao"> 
+                <label for="select-simulacao" class="form-label">Simulação</label> 
+                <select id="select-simulacao" class="form-select"></select> 
+            </div> 
+        </div> 
+
+        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+            <h6 class="fw-bold text-white bg-dark p-1">MARCA</h6> 
+            <div class="row"> 
+                <div class="col-12 col-md-3"> 
+                    <label class="fw-bold">M.POLLO</label> 
+                    <input type="text" id="MPOLLO" class="form-control inputs-percentuais input-marca" placeholder="%" /> 
+                </div> 
+                <div class="col-12 col-md-3"> 
+                    <label class="fw-bold">PACO</label> 
+                    <input type="text" id="PACO" class="form-control inputs-percentuais input-marca" placeholder="%" /> 
+                </div> 
+            </div> 
+        </div> 
+
+        <div class="mt-5 col-12"> 
+            <h6 class="fw-bold text-white bg-dark p-1">CLASSIFICAÇÕES</h6> 
+            <div id="inputs-container" class="row"></div> 
         </div>
-    </div>
+
+        <div class="mt-5 col-12"> 
+            <h6 class="fw-bold text-white bg-dark p-1">CATEGORIAS</h6> 
+            <div id="inputs-container-categorias" class="row"></div> 
+        </div> 
+
+        <div class="px-3 pb-4"> 
+            <h6 class="fw-bold text-white bg-dark p-1">PRODUTOS</h6> 
+            <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2"> 
+                <button type="button" 
+                        class="btn btn-primary" 
+                        id="btn-adicionar-lotes" 
+                        onclick="Consulta_Engenharias()"> 
+                    <i class="bi bi-plus"></i> 
+                    <span style="font-size: 12px;">Escolher</span> 
+                </button> 
+
+                <span id="TituloSelecaoEngenharias">Todas Selecionadas</span> 
+
+                <button type="button" 
+                        class="btn btn-danger d-flex flex-column align-items-center justify-content-center" 
+                        id="btn-limpar-lotes" 
+                        onclick="Deletar_SimulacaoProduto()"> 
+                    <span class="d-inline-flex align-items-center" style="gap: 4px; font-size: 11px;"> 
+                        <i class="bi bi-x-circle"></i> Limpar 
+                    </span> 
+                </button> 
+            </div> 
+        </div> 
+
+        <div class="modal-footer"> 
+            <button type="button" 
+                    class="btn btn-danger" 
+                    onclick="Deletar_Simulacao()"> 
+                <i class="bi bi-trash3-fill"></i> Excluir Simulação 
+            </button> 
+
+            <button type="button" 
+                    class="btn btn-success" 
+                    onclick="simulacao($('#select-simulacao').val(),''); return false;"> 
+                <i class="bi bi-floppy"></i> Salvar e Simular 
+            </button> 
+        </div> 
+    </form> 
 </div>
 
-<div class="modal fade modal-custom" id="modal-nova-simulacao" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-top modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" style="color: black;">Nova Simulação</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="form-nova-simulacao" onsubmit="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+
+<div 
+    id="nova-simulacao-container" 
+    class="mt-3 div-nova-simulacao mx-auto d-none p-3 border border-dark rounded" 
+    style="width: 60%; max-height: 150vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+
+
+
+    <form id="form-nova-simulacao" >
+
+        <!-- Botão fechar -->
+        <button 
+            type="button" 
+            onclick="fecharNovaSimulacao()" 
+            class="btn-close position-absolute top-0 end-0 m-2" 
+            aria-label="Fechar">
+        </button> 
+
+                <p class="fs-4 fw-bold text-dark">Nova Simulação</p>
+
+
+                
                 <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                    
                     <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
+
                     <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
-                        <h6 class="fw-bold">MARCA</h6>
+                        <h6 class="fw-bold text-white bg-dark">MARCA</h6>  
                         <div class="row">
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" /> 100,00%
+                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
                             </div>
                             <div class="col-12 col-md-3">
                                 <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" value="100,00%" placeholder="%" />
+                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
                             </div>
                         </div>
                     </div>
+
                     <div class="mt-5 col-12">
-                        <h6 class="fw-bold">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-container-nova" class="row">
+                        <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
+                        <div id="inputs-container-nova" class="row"></div>
+                    </div>
+
+                    <div class="mt-5 col-12">   
+                        <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
+                        <div id="inputs-container-categorias-nova" class="row" placeholder="%100"></div>
+                    </div>
+
+                    <div class="px-3 pb-4">
+                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                        <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
+                            <button type="button" 
+                                    class="btn btn-salvar" 
+                                    style="width: 120px" 
+                                    id="btn-adicionar-lotes" 
+                                    onclick="Consulta_Engenharias()">
+                                <span><i class="bi bi-plus"></i></span>
+                                <span style="font-size: 12px;">Escolher</span>
+                                
+                            </button>
+                            <span id="TituloSelecaoEngenharias2">Todas Selecionadas</span>
                         </div>
                     </div>
-                    <div class="mt-5 col-12">
-                        <h6 class="fw-bold">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias-nova" class="row">
-                        </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-salvar" 
+                                onclick="$('.input-categoria-2').val('0,00%')">
+                            <span><i class="bi bi-x-octagon"></i></span>
+                            Zerar Categorias
+                        </button>
+                        <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                            <span><i class="bi bi-floppy"></i></span>
+                            Salvar e Simular
+                        </button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
-                        <span><i class="bi bi-x-octagon"></i></span>
-                        Zerar Categorias
-                    </button>
-                    <button type="submit" class="btn btn-salvar">
-                        <span><i class="bi bi-floppy"></i></span>
-                        Salvar e Simular
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    </form>
+
 </div>
+
+
+
+
+
+
 
 <div class="modal fade" id="modal-categoria" tabindex="-1" aria-labelledby="modal-categoria" aria-hidden="true">
     <div class="modal-dialog">
