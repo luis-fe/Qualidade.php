@@ -80,6 +80,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(CadastroSimulacao('1', $dadosObjeto));
                     break;
+                case 'atualizaInserirSimulacaoProdutos':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(atualizaInserirSimulacaoProdutos($dadosObjeto));
+                    break;
                 case 'detalharSku_x_AnaliseEmpenho':
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');

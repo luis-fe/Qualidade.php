@@ -689,3 +689,35 @@ function DeleteColecoes($empresa, $dados)
     return json_encode($response);
 }
 
+function atualizaInserirSimulacaoProdutos($dados)
+{
+    $baseUrl = '10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/atualizaInserirSimulacaoProdutos";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+

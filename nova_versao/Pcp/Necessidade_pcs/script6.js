@@ -1559,6 +1559,46 @@ async function Deletar_SimulacaoProduto() {
 }
 
 
+async function registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao) {
+        $('#loadingModal').modal('show');
+
+    try{
+             const requestData = {
+            acao: "atualizaInserirSimulacaoProdutos",
+            dados: {
+                "arrayProdutos": arrayProduto,
+                "arrayPercentual": arrayPercentualProduto,
+                "nomeSimulacao": simulacao
+            }
+
+        };
+
+            const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+
+        if (response[0]['Status'] == true) {
+            $('#loadingModal').modal('hide');
+            Mensagem_Canto('produtos adicionados', 'success');
+            fecharselecaoEngenharia();        
+        } else {
+            Mensagem_Canto('Erro', 'error'); 
+        }
+        
+        
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+    
+}
+
+
 
 
 
