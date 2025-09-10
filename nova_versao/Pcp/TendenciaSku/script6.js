@@ -418,6 +418,19 @@ function TabelaTendencia(listaTendencia) {
 
 
         },
+        {
+            text: '<i class="bi bi-gear-fill" style="margin-right: 5px;"></i> Config.',
+            title: 'Configuracoes',
+            className: 'btn-tabelas',
+
+
+
+
+
+        },
+
+
+
         ],
         columns: [{
             data: 'marca'
