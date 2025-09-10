@@ -214,7 +214,7 @@ include_once('../../templates/headerPcp.php');
 <div 
     id="nova-simulacao-container" 
     class="mt-3 div-nova-simulacao mx-auto d-none p-3 border border-dark rounded" 
-    style="width: 60%; max-height: 150vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+    style="width: 60%; height: 90%; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
 
 
 
