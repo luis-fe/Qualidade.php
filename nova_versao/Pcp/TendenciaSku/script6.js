@@ -843,16 +843,36 @@ async function simulacao(texto, tipo) {
     fecharNovaSimulacao();
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
-    await Simular_Programacao(texto);
+    await Simular_Programacao(texto, tipo);
     nomeSimulacao = texto;
     console.log(`nomeSimulacao: ${nomeSimulacao}`)
 };
 
 
-async function Simular_Programacao(simulacao) {
+async function Simular_Programacao(simulacao, tipo) {
     $('#loadingModal').modal('show');
     nomeSimulacao = simulacao
     try {
+
+        if(tipo=="Cadastro"){
+            // Captura o checkbox pelo ID
+        const checkbox = document.getElementById('igualarDisponivel');
+
+        // Verifica se está marcado
+        const estaMarcado = checkbox.checked;
+
+        }else{
+                        // Captura o checkbox pelo ID
+        const checkbox = document.getElementById('igualarDisponivel2');
+
+        // Verifica se está marcado
+        const estaMarcado = checkbox.checked;
+        }
+          
+
+        console.log('Checkbox está marcado?', estaMarcado);
+
+
         const requestData = {
             acao: "Simular_Programacao",
 
