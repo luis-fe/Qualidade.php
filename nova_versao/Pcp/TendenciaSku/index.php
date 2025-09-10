@@ -240,6 +240,11 @@ include_once('../../templates/headerPcp.php');
                     </div>
 
                     <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
+                    <h6 class="fw-bold text-white bg-dark bi bi-gear-fill">Configurações</h6>  
+
+                    </div>
+
+                    <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
                         <h6 class="fw-bold text-white bg-dark">MARCA</h6>  
                         <div class="row">
                             <div class="col-12 col-md-3">
