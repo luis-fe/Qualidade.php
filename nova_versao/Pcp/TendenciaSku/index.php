@@ -247,7 +247,7 @@ include_once('../../templates/headerPcp.php');
                         <div class="form-check mt-2">
                         <input class="form-check-input" type="checkbox" id="igualarDisponivel">
                         <label class="form-check-label" for="igualarDisponivel">
-                            Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar &lt; disponível</strong>?
+                            Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar menor  disponível</strong>?
                         </label>
                         </div>
                     </div>
