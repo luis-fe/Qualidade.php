@@ -855,7 +855,7 @@ async function Simular_Programacao(simulacao, tipo) {
 
     try {
         // Captura o checkbox correto com base no tipo
-        const checkboxId = (tipo === "Cadastro") ? 'igualarDisponivel' : 'igualarDisponivel2';
+        const checkboxId = (tipo === "cadastro") ? 'igualarDisponivel2' : 'igualarDisponivel';
         const checkbox = document.getElementById(checkboxId);
         const estaMarcado = checkbox?.checked ?? false;
 
