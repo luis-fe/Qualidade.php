@@ -239,7 +239,7 @@ include_once('../../templates/headerPcp.php');
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
 
-                    <div class="mb-4 col-12 d-none" id="inputs-container-configuracoess">
+                    <div class="mb-4 col-12" id="inputs-container-configuracoess">
                         <h6 class="fw-bold text-white bg-dark">
                         <i class="bi bi-gear-fill me-2"></i> Configurações
                         </h6>
