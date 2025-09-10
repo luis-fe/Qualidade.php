@@ -239,9 +239,17 @@ include_once('../../templates/headerPcp.php');
                         <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
                     </div>
 
-                    <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
-                    <h6 class="fw-bold text-white bg-dark bi bi-gear-fill">Configurações</h6>  
+                    <div class="mb-4 col-12 d-none" id="inputs-container-configuracoess">
+                        <h6 class="fw-bold text-white bg-dark">
+                        <i class="bi bi-gear-fill me-2"></i> Configurações
+                        </h6>
 
+                        <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="igualarDisponivel">
+                        <label class="form-check-label" for="igualarDisponivel">
+                            Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar &lt; disponível</strong>?
+                        </label>
+                        </div>
                     </div>
 
                     <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
