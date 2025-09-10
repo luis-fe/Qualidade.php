@@ -851,37 +851,24 @@ async function simulacao(texto, tipo) {
 
 async function Simular_Programacao(simulacao, tipo) {
     $('#loadingModal').modal('show');
-    nomeSimulacao = simulacao
+    let nomeSimulacao = simulacao;
+
     try {
-
-        if(tipo=="Cadastro"){
-            // Captura o checkbox pelo ID
-        const checkbox = document.getElementById('igualarDisponivel');
-
-        // Verifica se está marcado
-        const estaMarcado = checkbox.checked;
-
-        }else{
-                        // Captura o checkbox pelo ID
-        const checkbox = document.getElementById('igualarDisponivel2');
-
-        // Verifica se está marcado
-        const estaMarcado = checkbox.checked;
-        }
-          
+        // Captura o checkbox correto com base no tipo
+        const checkboxId = (tipo === "Cadastro") ? 'igualarDisponivel' : 'igualarDisponivel2';
+        const checkbox = document.getElementById(checkboxId);
+        const estaMarcado = checkbox?.checked ?? false;
 
         console.log('Checkbox está marcado?', estaMarcado);
 
-
         const requestData = {
             acao: "Simular_Programacao",
-
             dados: {
-                "codPlano": $('#select-plano').val(),
-                "consideraPedidosBloqueado": $('#select-pedidos-bloqueados').val(),
-                "nomeSimulacao": simulacao
+                codPlano: $('#select-plano').val(),
+                consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
+                nomeSimulacao: simulacao,
+                igualarDisponivel: estaMarcado // envia o status para o backend, se quiser
             }
-
         };
 
         const response = await $.ajax({
@@ -899,37 +886,39 @@ async function Simular_Programacao(simulacao, tipo) {
 
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
-        <div>
-            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
-            Tendência de Vendas
-            <span style="display: inline-block; position: relative;">
-              <strong>${simulacao}</strong>
-              <button onclick="Consulta_Tendencias()" 
-                      style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
-                ×
-              </button>
-            </span>
-        </div>
-    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
-            <div>
-                <i class="bi bi-calendar3 me-1"></i>
-                <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                <div>
+                    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+                    Tendência de Vendas
+                    <span style="display: inline-block; position: relative;">
+                        <strong>${simulacao}</strong>
+                        <button onclick="Consulta_Tendencias()" 
+                                style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
+                            ×
+                        </button>
+                    </span>
+                </div>
+                <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
+                    <div>
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span>Período Vendas: <strong>${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                    </div>
+                    <div>
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+                    </div>
+                </div>
             </div>
-            <div>
-                <i class="bi bi-calendar3 me-1"></i>
-                <span>Período Fatura. :<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
-            </div>
-        </div>
-    </div>
-          `);
+        `);
+
         TabelaTendencia(response);
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
-        Mensagem_Canto('Erro', 'error')
+        Mensagem_Canto('Erro', 'error');
     } finally {
         $('#loadingModal').modal('hide');
     }
-};
+}
+
 
 function fecharSimulacao() {
     document.getElementById("simulacao-container").classList.add("d-none");
