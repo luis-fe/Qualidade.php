@@ -279,6 +279,7 @@ include_once('../../templates/headerPcp.php');
                         </div>
                     </div>
 
+    </form>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-salvar" 
@@ -292,7 +293,6 @@ include_once('../../templates/headerPcp.php');
                         </button>
                     </div>
                 </div>
-    </form>
 
 </div>
 
