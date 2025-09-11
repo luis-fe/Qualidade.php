@@ -4,6 +4,7 @@ let totalImagensEng = 0;
 let totalImagensColorBook = 0;
 let codigoMP = "";
 let imagensColorBook = [];
+let searchTimeout;
 
 
 
