@@ -609,9 +609,16 @@ function TabelaTendencia(listaTendencia) {
         });
 
             $('.search-input-tendencia').on('input', function () {
-        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
-    });
+                const input = $(this);
+                clearTimeout(searchTimeout);
 
+                searchTimeout = setTimeout(() => {
+                    tabela
+                        .column(input.closest('th').index())
+                        .search(input.val())
+                        .draw();
+                }, 500); // espera 500ms após parar de digitar
+            });
                 $('#table-tendencia').on('click', '.detalha-ordemProd', function (event) {
         event.stopPropagation(); // Impede a propagação do clique
         const codReduzido = $(this).attr('data-codReduzido');
