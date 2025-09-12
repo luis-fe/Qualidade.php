@@ -247,7 +247,7 @@ async function gerarTendenciaNova (congelamento) {
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
-        respostaPeriodoVendas.metaFinanceira = ""+respostaPeriodoVendas.metaFinanceira;
+        respostaPeriodoVendas.metaFinanceira = formatarDataBrasileira(respostaPeriodoVendas.metaFinanceira);
 
         $('#titulo').html(`
 <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
@@ -746,6 +746,17 @@ function formatarDataBrasileira(dataISO) {
     if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
     const [ano, mes, dia] = dataISO.split('-');
     return `${dia}/${mes}/${ano}`;
+}
+
+
+function formatarMoedaBrasileira(valor) {
+    // Garante que seja número
+    const numero = parseFloat(valor);
+    
+    return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 }
 
 async function Cadastro_Simulacao(simulacao, tipo) {
