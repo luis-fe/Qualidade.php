@@ -917,7 +917,7 @@ async function Simular_Programacao(simulacao, tipo) {
                 </div>
                             <!-- Novo Card -->
                 <div class="card p-0 m-0 shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-primary text-white style="position: absolute; top: 0; right: -20px; ">
                         META PLANO
                     </div>
                     <div class="card-body">
