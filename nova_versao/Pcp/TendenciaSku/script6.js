@@ -918,17 +918,15 @@ async function Simular_Programacao(simulacao, tipo) {
 
 
 
-                                <!-- Novo Card -->
+            <!-- Novo Card -->
                 <div class="card mt-3 shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        Informações Extras
+                        META PLANO
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Resumo</h5>
-                        <p class="card-text">
-                            Aqui você pode inserir observações ou algum dado complementar sobre a simulação <strong>${simulacao}</strong>.
+=                        <p class="card-text">
+                             <strong>R$ XXXX</strong>.
                         </p>
-                        <button class="btn btn-sm btn-outline-primary">Detalhes</button>
                     </div>
             </div>
         `);
