@@ -911,7 +911,7 @@ async function Simular_Programacao(simulacao, tipo) {
                         </button>
                     </span>
                 </div>
-                <div class="d-flex flex-column text-end periodo-vendas p-1 m-0">
+                <div class="d-flex flex-column text-end periodo-vendas p-5 m-0">
                     <div>
                         <i class="bi bi-calendar3 me-1"></i>
                         <span>Período Vendas: <strong>${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
@@ -922,7 +922,7 @@ async function Simular_Programacao(simulacao, tipo) {
                     </div>
                 </div>
                             <!-- Novo Card -->
-                <div class="card-body  p-1 m-0">
+                <div class="card-body  p-5 m-0">
                         <h5 class="card-title">Meta R$</h5>
                         <p class="card-text">
                              <strong>R$xxxx</strong>.
