@@ -934,12 +934,11 @@ async function Simular_Programacao(simulacao, tipo) {
                     </div>
                 </div>
                             <!-- Novo Card -->
-         div class="card-body">
-                <h5 class="card-title">Resumo</h5>
-                <p class="card-text">
-                    Aqui você pode inserir observações ou algum dado complementar sobre a simulação <strong>${simulacao}</strong>.
-                </p>
-                <button class="btn btn-sm btn-outline-primary">Detalhes</button>
+                <div class="card-body">
+                        <h5 class="card-title">Meta R$</h5>
+                        <p class="card-text">
+                             <strong>${simulacao}</strong>.
+                        </p>
             </div>
             </div>
         `);
