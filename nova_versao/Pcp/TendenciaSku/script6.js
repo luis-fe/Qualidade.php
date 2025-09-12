@@ -251,18 +251,6 @@ async function gerarTendenciaNova (congelamento) {
         $('#titulo').html(`
     <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
 
-    <!-- Card à esquerda -->
-    <div class="card p-1 m-0 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            META PLANO
-        </div>
-        <div class="card-body">
-            <p class="card-text">
-                <strong>R$ XXXX</strong>
-            </p>
-        </div>
-    </div>
-
     <!-- Título -->
     <div class="ms-2">
         <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
@@ -934,12 +922,12 @@ async function Simular_Programacao(simulacao, tipo) {
                     </div>
                 </div>
                             <!-- Novo Card -->
-                <div class="card-body">
+                <div class="card-body  p-0 m-0">
                         <h5 class="card-title">Meta R$</h5>
                         <p class="card-text">
-                             <strong>${simulacao}</strong>.
+                             <strong>R$xxxx</strong>.
                         </p>
-            </div>
+                </div>
             </div>
         `);
 
