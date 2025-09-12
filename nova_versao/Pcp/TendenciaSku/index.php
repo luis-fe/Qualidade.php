@@ -367,7 +367,6 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
-
 <div class="modal fade modal-custom" id="modal-detalhamento-OrdemProd" tabindex="-1" aria-labelledby="customModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-xl">
