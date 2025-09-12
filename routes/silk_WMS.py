@@ -59,7 +59,7 @@ def delete_endpoint():
 
 @silkWMS_routes.route('/api/Silk/deleteTelasEndereco', methods=['DELETE'])
 @token_required
-def delete_endpoint():
+def delete_endpointD():
     # Obtenha os dados do corpo da requisição
     novo_usuario = request.get_json()
     # Extraia os valores dos campos do novo usuário
