@@ -247,6 +247,7 @@ async function gerarTendenciaNova (congelamento) {
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
+        respostaPeriodoVendas.metaFinanceira = ""+respostaPeriodoVendas.metaFinanceira;
 
         $('#titulo').html(`
 <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
@@ -273,7 +274,7 @@ async function gerarTendenciaNova (congelamento) {
       <div class="card-body p-0">
         <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
         <p class="card-text m-0">
-          <strong>R$ xxxx</strong>
+          <strong>R$${respostaPeriodoVendas.metaFinanceira}</strong>
         </p>
       </div>
   
@@ -335,7 +336,8 @@ const PeriodoVendasPlano = async () => {
             inicioVenda: data[0]['03- Inicio Venda'],
             finalVenda: data[0]['04- Final Venda'],
             inicioFaturamento: data[0]['05- Inicio Faturamento'],
-            finalFaturamento: data[0]['06- Final Faturamento']
+            finalFaturamento: data[0]['06- Final Faturamento'],
+            metaFinanceira: data[0]['12-metaFinanceira']
         };
 
 
