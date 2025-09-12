@@ -31,7 +31,7 @@ def exclusao_endereco(Ebdereco):
 
     sql = """
     delete from silk.enderecamento
-    where "Referencia" = %s
+    where "Endereco" = %s
     """
 
     with ConexaoPostgreMPL.conexao() as conn:
