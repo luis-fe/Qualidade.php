@@ -430,6 +430,9 @@ function TabelaTendencia(listaTendencia) {
                 await Consulta_Abc_Plano(true);
                 await Consulta_Categorias();
                 document.getElementById("TituloSelecaoEngenharias2").textContent = ""
+            let campo = document.getElementById("descricao-simulacao");
+                campo.value = ""; // limpa o campo
+                campo.placeholder = "Insira a descrição"; // coloca placeholder            
             },
 
 
