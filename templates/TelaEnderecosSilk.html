@@ -180,13 +180,17 @@
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data);
-                    alert('Tela exc com Sucesso!')
+                    alert('Tela EXCLUID com Sucesso!')
+                    document.getElementById('InputReferencias').value = "";
+
                 } else {
                     throw new Error('Erro ao obter os dados da API');
                 }
             } catch (error) {
                 console.error(error);
             }
+
+
 
         }
 
