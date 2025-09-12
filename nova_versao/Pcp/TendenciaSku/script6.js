@@ -250,31 +250,39 @@ async function gerarTendenciaNova (congelamento) {
 
         $('#titulo').html(`
     <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
-        <div>
-            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
-            Tendência de Vendas
+
+    <!-- Card à esquerda -->
+    <div class="card p-1 m-0 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            META PLANO
         </div>
-    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
-            <div>
-                <i class="bi bi-calendar3 me-1"></i>
-                <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
-            </div>
-            <div>
-                <i class="bi bi-calendar3 me-1"></i>
-                <span>Período Fatura. :<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
-            </div>
+        <div class="card-body">
+            <p class="card-text">
+                <strong>R$ XXXX</strong>
+            </p>
         </div>
-                                <!-- Novo Card -->
-                <div class="card p-0 m-0 shadow-sm">
-                    <div class="card-header bg-primary text-white style="position: absolute; top: 0; right: -20px; ">
-                        META PLANO
-                    </div>
-                    <div class="card-body">
-                      <p class="card-text">
-                             <strong>R$ XXXX</strong>.
-                        </p>
-                </div>
     </div>
+
+    <!-- Título -->
+    <div class="ms-2">
+        <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+        Tendência de Vendas
+    </div>
+
+    <!-- Períodos -->
+    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
+        <div>
+            <i class="bi bi-calendar3 me-1"></i>
+            <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+        </div>
+        <div>
+            <i class="bi bi-calendar3 me-1"></i>
+            <span>Período Fatura.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+        </div>
+    </div>
+
+</div>
+
           `);
         nomeSimulacao = "";
     } catch (error) {
