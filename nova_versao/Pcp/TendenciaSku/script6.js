@@ -429,6 +429,7 @@ function TabelaTendencia(listaTendencia) {
                 $('#inputs-container-novas-marcas').removeClass('d-none');
                 await Consulta_Abc_Plano(true);
                 await Consulta_Categorias();
+                document.getElementById("TituloSelecaoEngenharias2").textContent = ""
             },
 
 
