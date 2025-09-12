@@ -39,7 +39,7 @@ def exclusao_endereco(Ebdereco):
             curr.execute(sql,(Ebdereco,))
             conn.commit()
 
-    return pd.DataFrame([{'Mensagem':"Endereco excluido com sucesso",'status':True}])
+    return True
 
 
 def Funcao_Deletar (Endereco,Produto):
