@@ -919,6 +919,7 @@ async function Simular_Programacao(simulacao, tipo) {
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
+        respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
 
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
@@ -943,13 +944,14 @@ async function Simular_Programacao(simulacao, tipo) {
                         <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
                     </div>
                 </div>
-                            <!-- Novo Card -->
-                <div class="card-body  p-0 m-0 ms-3">
-                        <h5 class="card-title">Meta R$</h5>
-                        <p class="card-text">
-                             <strong>R$xxxx</strong>.
-                        </p>
-                </div>
+    <!-- Novo Card -->
+    <div class="card border rounded me-1" style="width: 190px;">
+      <div class="card-body p-0">
+        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+        <p class="card-text m-0">
+          <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+        </p>
+      </div>
             </div>
         `);
 
