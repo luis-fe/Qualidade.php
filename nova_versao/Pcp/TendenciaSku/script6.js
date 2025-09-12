@@ -429,6 +429,8 @@ function TabelaTendencia(listaTendencia) {
                 $('#inputs-container-novas-marcas').removeClass('d-none');
                 await Consulta_Abc_Plano(true);
                 await Consulta_Categorias();
+                $('#inputs-container-novas-marcas').empty()
+                $('#inputs-container-categorias-nova').empty();
                 document.getElementById("TituloSelecaoEngenharias2").textContent = ""
             let campo = document.getElementById("descricao-simulacao");
                 campo.value = ""; // limpa o campo
