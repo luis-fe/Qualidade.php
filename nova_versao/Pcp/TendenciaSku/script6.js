@@ -258,7 +258,7 @@ async function gerarTendenciaNova (congelamento) {
     </div>
 
     <!-- Períodos -->
-    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0">
+    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0 ms-20">
         <div>
             <i class="bi bi-calendar3 me-1"></i>
             <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
@@ -268,6 +268,13 @@ async function gerarTendenciaNova (congelamento) {
             <span>Período Fatura.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
         </div>
     </div>
+                                <!-- Novo Card -->
+                <div class="card-body  p-0 m-0 ms-3">
+                        <h5 class="card-title">Meta R$</h5>
+                        <p class="card-text">
+                             <strong>R$xxxx</strong>.
+                        </p>
+                </div>
 
 </div>
 
