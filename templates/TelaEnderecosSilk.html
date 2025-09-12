@@ -39,7 +39,7 @@
     flex-direction: column;
     display: none;
     border-radius: 10px; margin-top: 60px;">
-         
+
         <label for="text" style="color: black; font-size: 30px; font-weight: bold;">Op:</label>
         <input id="InputOpOpcoes" type="text" style="font-size: 30px; text-align: center;">
         <label for="text" style="color: black; font-size: 30px; font-weight: bold;">Referência:</label>
@@ -66,10 +66,15 @@
     flex-direction: column;
     display: none;
     border-radius: 10px; margin-top: 60px;">
-         
+
         <label for="text" style="color: black; font-size: 30px; font-weight: bold;">Endereço:</label>
         <input id="InputCadEndereco" type="text" style="font-size: 30px; text-align: center;">
-        <label for="text" id="LabelReferencias" style="color: black; font-size: 30px; font-weight: bold; display: none;">Referências:</label>
+  <!-- Botão com ícone -->
+  <button class="btn btn-outline-danger"
+          onclick="ExcluirReferencia(document.getElementById('InputCadEndereco').value)">
+    <i class="bi bi-trash"></i> Excluir
+  </button>
+                <label for="text" id="LabelReferencias" style="color: black; font-size: 30px; font-weight: bold; display: none;">Referências:</label>
         <textarea id="InputReferencias" style="font-size: 30px; text-align: center; white-space: pre-wrap; height: 200px; display: none"></textarea>
         <label for="text" id="NovaReferencia" style="color: black; font-size: 30px; font-weight: bold; display: none">Nova Referência:</label>
         <input id="InputNovaReferencia" type="text" style="font-size: 30px; text-align: center; display: none">
@@ -102,7 +107,7 @@
 
         document.getElementById('FecharCadastro').addEventListener('click', () => {
             document.getElementById('Cad').style.display = 'none';
-            
+
         });
 
         async function Consultas(Coluna, Operador, Nome) {
@@ -155,6 +160,36 @@
             }
         }
 
+
+        async function ExcluirReferencia(endereco) {
+            const dados = {
+                "endereco": endereco,
+                }
+
+
+             try {
+                const response = await fetch(`http://10.162.0.190:5000/api/Silk/deleteTelasEndereco`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Token
+                    },
+                    body: JSON.stringify(dados),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    alert('Tela exc com Sucesso!')
+                } else {
+                    throw new Error('Erro ao obter os dados da API');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+        }
+
         async function ConsultaReferencia(Op) {
             try {
                 const response = await fetch(`http://10.162.0.190:5000/api/Silk/PesquisaReferencia?numeroOP=${Op}`, {
@@ -177,7 +212,7 @@
             }
         }
 
-//---------------------------------------------------------------Clicar Em pesquisar-----------------------------------------------------------------------------------------------//       
+//---------------------------------------------------------------Clicar Em pesquisar-----------------------------------------------------------------------------------------------//
 document.getElementById('Pesquisar').addEventListener('click', async () => {
     const inputReferenciaOpcoes = document.getElementById('InputReferenciaOpcoes').value;
 
@@ -189,7 +224,7 @@ document.getElementById('Pesquisar').addEventListener('click', async () => {
         breakTextIntoLines(document.getElementById('InputEnderecoOpcoes'));
         document.getElementById('InputEnderecoOpcoes').style.display = 'flex';
         document.getElementById('LabelEnderecos').style.display = 'flex';
-        
+
     }
 });
 
@@ -234,7 +269,7 @@ function breakTextIntoLines(inputElement) {
 };
 
 
-//-------------------------------------------------------------- Apertando Enter para Pesquisar Endereços------------------------------------------------------------------------//       
+//-------------------------------------------------------------- Apertando Enter para Pesquisar Endereços------------------------------------------------------------------------//
 document.getElementById('InputCadEndereco').addEventListener("keydown", async function(event) {
     const Enderecos = document.getElementById('InputCadEndereco').value
         if (event.key === "Enter") {
@@ -285,7 +320,7 @@ document.getElementById('InputNovaReferencia').addEventListener("keydown", async
 });
 
 
-        
+
     </script>
 </body>
 </html>
