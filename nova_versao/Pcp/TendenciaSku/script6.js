@@ -249,7 +249,7 @@ async function gerarTendenciaNova (congelamento) {
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
 
         $('#titulo').html(`
-    <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+<div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
 
     <!-- Título -->
     <div class="ms-2">
@@ -258,7 +258,7 @@ async function gerarTendenciaNova (congelamento) {
     </div>
 
     <!-- Períodos -->
-    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0 ms-20">
+    <div class="d-flex flex-column text-end periodo-vendas p-0 me-10">
         <div>
             <i class="bi bi-calendar3 me-1"></i>
             <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
@@ -268,14 +268,16 @@ async function gerarTendenciaNova (congelamento) {
             <span>Período Fatura.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
         </div>
     </div>
-                                <!-- Novo Card -->
-                <div class="card-body  p-0 m-0 ms-3">
-                        <h5 class="card-title">Meta R$</h5>
-                        <p class="card-text">
-                             <strong>R$xxxx</strong>.
-                        </p>
-                </div>
-
+    <!-- Novo Card -->
+    <div class="card border rounded me-1" style="width: 150px;">
+      <div class="card-body p-0">
+        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+        <p class="card-text m-0">
+          <strong>R$ xxxx</strong>
+        </p>
+      </div>
+  
+    </div>
 </div>
 
           `);
