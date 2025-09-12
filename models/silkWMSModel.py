@@ -25,6 +25,21 @@ def PesquisaEnderecos(Coluna, Operador, Nome):
     return df
 
 
+def exclusao_endereco(Ebdereco):
+    '''Metodo que exclui o endereco'''
+
+
+    sql = """
+    delete from silk.enderecamento
+    where "Referencia" = %s
+    """
+
+    with ConexaoPostgreMPL.conexao() as conn:
+        with conn.cursor() as curr:
+            curr.execute(sql,(Ebdereco,))
+            conn.commit()
+
+    return pd.DataFrame([{'Mensagem':"Endereco excluido com sucesso",'status':True}])
 
 
 def Funcao_Deletar (Endereco,Produto):

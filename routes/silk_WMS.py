@@ -57,6 +57,24 @@ def delete_endpoint():
     else:
         return jsonify({'Mesagem':'Falha ao inserir'}), 500
 
+@silkWMS_routes.route('/api/Silk/deleteTelasEndereco', methods=['DELETE'])
+@token_required
+def delete_endpoint():
+    # Obtenha os dados do corpo da requisição
+    novo_usuario = request.get_json()
+    # Extraia os valores dos campos do novo usuário
+    endereco = novo_usuario.get('endereco')
+
+
+    # Chama a função Funcao_Deletar para realizar a exclusão
+    resultado = silkWMSModel.exclusao_endereco(endereco)
+
+    if resultado == True:
+        return jsonify({'Mesagem':f'ENDERECO EXCLUIDO NO CADASTRO DE TELAS'}), 200
+    else:
+        return jsonify({'Mesagem':'Falha ao inserir'}), 500
+
+
 
 @silkWMS_routes.route('/api/Silk/IserirTelas', methods=['PUT'])
 @token_required
