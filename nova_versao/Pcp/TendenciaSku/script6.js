@@ -915,6 +915,21 @@ async function Simular_Programacao(simulacao, tipo) {
                         <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
                     </div>
                 </div>
+
+
+
+                                <!-- Novo Card -->
+                <div class="card mt-3 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        Informações Extras
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Resumo</h5>
+                        <p class="card-text">
+                            Aqui você pode inserir observações ou algum dado complementar sobre a simulação <strong>${simulacao}</strong>.
+                        </p>
+                        <button class="btn btn-sm btn-outline-primary">Detalhes</button>
+                    </div>
             </div>
         `);
 
