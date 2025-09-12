@@ -247,7 +247,7 @@ async function gerarTendenciaNova (congelamento) {
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
-        respostaPeriodoVendas.metaFinanceira = formatarDataBrasileira(respostaPeriodoVendas.metaFinanceira);
+        respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
 
         $('#titulo').html(`
 <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
