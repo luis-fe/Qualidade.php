@@ -1403,7 +1403,7 @@ function TabelaEngenharia(lista) {
     if ($('#select-simulacao').is(':visible')) {
     console.log("Tá aparecendo! 👀");
 } else {
-    console.log("Tá escondido... 🫥");
+    simulacao = $("#descricao-simulacao").val();
 }
     
     registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
