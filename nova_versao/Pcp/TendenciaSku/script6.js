@@ -1563,6 +1563,17 @@ async function exluindo_simulacao_Produtos_zerados(arrayProdutoZerados, arrayPer
 
 async function Deletar_SimulacaoProduto() {
 
+
+    
+    var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
     try {
         const result = await Swal.fire({
             title: "Deseja deletar os Produtos dessa simulação?",
@@ -1575,7 +1586,7 @@ async function Deletar_SimulacaoProduto() {
             $('#loadingModal').modal('show');
 
             const dados = {
-                "nomeSimulacao": $('#select-simulacao').val(),
+                "nomeSimulacao": simulacao,
             };
             const requestData = {
                 acao: "Deletar_SimulacaoProduto",
