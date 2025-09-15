@@ -297,6 +297,18 @@ async function gerarTendenciaNova (congelamento) {
 
 const Consulta_Engenharias = async () => {
     $('#loadingModal').modal('show');
+
+    var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
+
+    
     try {
         const data = await $.ajax({
             type: 'GET',
@@ -305,7 +317,7 @@ const Consulta_Engenharias = async () => {
             data: {
                 acao: "obter_produtos_tendencia",
                 codPlano: $('#select-plano').val(),
-                nomeSimulacao:  $('#select-simulacao').val()
+                nomeSimulacao:  simulacao
             }
         });
         $('.div-selecaoEngenharias').removeClass('d-none');
@@ -1519,8 +1531,18 @@ async function Detalha_Pedidos(codReduzido, consideraPedidosBloqueado, codPlan) 
 
 async function exluindo_simulacao_Produtos_zerados(arrayProdutoZerados, arrayPercentualZerados) {
 
+
+        var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
             const dados = {
-                "nomeSimulacao": $('#select-simulacao').val(),
+                "nomeSimulacao": simulacao,
                 "arrayProdutoZerados": arrayProdutoZerados,
                 "arrayPercentualZerados": arrayPercentualZerados,
             };
