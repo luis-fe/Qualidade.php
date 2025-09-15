@@ -1399,6 +1399,12 @@ function TabelaEngenharia(lista) {
     console.log("Produtos:", arrayProduto);
     console.log("Percentuais:", arrayPercentualProduto);
     const simulacao = $('#select-simulacao').val()
+
+    if ($('#select-simulacao').is(':visible')) {
+    console.log("Tá aparecendo! 👀");
+} else {
+    console.log("Tá escondido... 🫥");
+}
     
     registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
     exluindo_simulacao_Produtos_zerados(arrayProdutoZero, arrayPercentualZero)
