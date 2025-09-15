@@ -1170,6 +1170,16 @@ const Consulta_Categorias = async () => {
 
 
 async function Produtos_Simulacao() {
+
+    var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
    
     try {
         const data = await $.ajax({
@@ -1178,7 +1188,7 @@ async function Produtos_Simulacao() {
             dataType: 'json',
             data: {
                 acao: "selecao_produtos_simulacao",
-                nomeSimulacao:  $('#select-simulacao').val()
+                nomeSimulacao: simulacao
             }
         }); 
 
