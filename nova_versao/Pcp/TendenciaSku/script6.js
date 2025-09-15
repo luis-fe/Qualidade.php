@@ -1398,7 +1398,7 @@ function TabelaEngenharia(lista) {
 
     console.log("Produtos:", arrayProduto);
     console.log("Percentuais:", arrayPercentualProduto);
-    const simulacao = $('#select-simulacao').val()
+    var simulacao = $('#select-simulacao').val()
 
     if ($('#select-simulacao').is(':visible')) {
     console.log("Tá aparecendo! 👀");
