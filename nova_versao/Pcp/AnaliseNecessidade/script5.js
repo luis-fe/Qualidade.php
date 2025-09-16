@@ -148,10 +148,14 @@ async function simulacao(texto, tipo) {
     $('#loadingModal').modal('show');
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
-    await Simular_Programacao(texto);
+    await Simular_Programacao(texto, tipo);
     nomeSimulacao = texto;
     $('#loadingModal').modal('hide');
 };
+
+
+
+
 
 const Consulta_Planos = async () => {
     $('#loadingModal').modal('show');
@@ -198,8 +202,16 @@ const Consulta_Naturezas = async () => {
     }
 };
 
-async function Simular_Programacao(simulacao) {
+async function Simular_Programacao(simulacao, tipo) {
     try {
+
+
+                // Captura o checkbox correto com base no tipo
+        const checkboxId = (tipo === "cadastro") ? 'igualarDisponivel2' : 'igualarDisponivel';
+        const checkbox = document.getElementById(checkboxId);
+        const estaMarcado = checkbox?.checked ?? false;
+
+
         const requestData = {
             acao: "Simular_Programacao",
 
@@ -207,7 +219,9 @@ async function Simular_Programacao(simulacao) {
                 "codPlano": $('#select-plano').val(),
                 "consideraPedBloq": $('#select-pedidos-bloqueados').val(),
                 "nomeSimulacao": simulacao,
-                "empresa": "1"
+                "empresa": "1",
+                "igualarDisponivel": estaMarcado // envia o status para o backend, se quiser
+
             }
 
         };
@@ -222,21 +236,51 @@ async function Simular_Programacao(simulacao) {
 
         } else {
             TabelaAnalise(response);
-            $('#titulo').html(`
-            <span class="span-icone"><i class="bi bi-bag-check"></i></span>
-            Análise de Materiais
-          `);
 
-            $('#titulo').html(`
-            <span class="span-icone"><i class="bi bi-bag-check"></i></span>
-            Análise de Materiais - 
-            <span style="display: inline-block; position: relative;">
-              <strong>${simulacao}</strong>
-              <button onclick="Selecionar_Calculo()" 
-                      style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
-                ×
-              </button>
-            </span>
+
+        const respostaPeriodoVendas = await PeriodoVendasPlano();
+        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
+        respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
+        respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
+        respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
+
+
+
+
+        $('#titulo').html(`
+            <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+                <div>
+                    <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+                    Análise de Materiais
+                    <span style="display: inline-block; position: relative;">
+                        <strong>${simulacao}</strong>
+                        <button onclick="Consulta_Tendencias()" 
+                                style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
+                            ×
+                        </button>
+                    </span>
+                </div>
+                <div class="d-flex flex-column text-end periodo-vendas p-0 m-0 ms-3">
+                    <div>
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span>Período Vendas: <strong>${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                    </div>
+                    <div>
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+                    </div>
+                </div>
+    <!-- Novo Card -->
+    <div class="card border rounded me-1" style="width: 190px;">
+      <div class="card-body p-0">
+        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+        <p class="card-text m-0">
+          <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+        </p>
+      </div>
+            </div>
+
           `);
         }
 
