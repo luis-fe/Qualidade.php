@@ -1625,6 +1625,61 @@ function TabelaEngenharia(lista) {
     }
 );
 
+async function Deletar_SimulacaoProduto() {
+
+
+    
+    var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
+    try {
+        const result = await Swal.fire({
+            title: "Deseja deletar os Produtos dessa simulação?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+        });
+
+        if (result.isConfirmed) {
+            $('#loadingModal').modal('show');
+
+            const dados = {
+                "nomeSimulacao": simulacao,
+            };
+            const requestData = {
+                acao: "Deletar_SimulacaoProduto",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+            if (response['resposta'][0]['status'] === true) {
+                Mensagem_Canto('Produtos  deletados da Simulação', 'success');
+            }
+
+            Produtos_Simulacao();
+        }
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem('Erro na solicitação', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+
 }
 async function exluindo_simulacao_Produtos_zerados(arrayProdutoZerados, arrayPercentualZerados) {
 
