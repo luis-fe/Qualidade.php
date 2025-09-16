@@ -191,6 +191,8 @@ include_once('../../templates/headerPcp.php');
             </div> 
         </div> 
 
+
+
         <div class="mb-4 col-12" id="inputs-container-marcas"> 
             <h6 class="fw-bold text-white bg-dark p-1">MARCA</h6> 
             <div class="row"> 
@@ -214,6 +216,19 @@ include_once('../../templates/headerPcp.php');
             <h6 class="fw-bold text-white bg-dark p-1">CATEGORIAS</h6> 
             <div id="inputs-container-categorias" class="row"></div> 
         </div> 
+
+        <div class="mb-4 col-12" id="inputs-container-configuracoess">
+            <h6 class="fw-bold text-white bg-dark">
+            <i class="bi bi-gear-fill me-2"></i> Configurações
+            </h6>
+
+            <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" id="igualarDisponivel" checked>
+            <label class="form-check-label" for="igualarDisponivel">
+                Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar menor que o disponível</strong>?
+            </label>
+            </div>
+        </div>
 
         <div class="px-3 pb-4"> 
             <h6 class="fw-bold text-white bg-dark p-1">PRODUTOS</h6> 
@@ -259,7 +274,7 @@ include_once('../../templates/headerPcp.php');
 <div 
     id="nova-simulacao-container" 
     class="mt-3 div-nova-simulacao mx-auto d-none p-3 border border-dark rounded" 
-    style="width: 60%; max-height: 150vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+    style="width: 60%; height: 90%; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
 
 
 
@@ -277,7 +292,7 @@ include_once('../../templates/headerPcp.php');
 
 
                 
-                <div class="modal-body col-12" style="align-items: start; text-align: left; max-height: 400px; overflow-y: auto;">
+                <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
                     
                     <div class="mb-4 col-12" id="campo-desc-simulacao">
                         <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
@@ -308,6 +323,19 @@ include_once('../../templates/headerPcp.php');
                         <div id="inputs-container-categorias-nova" class="row" placeholder="%100"></div>
                     </div>
 
+                        <div class="mb-4 col-12" id="inputs-container-configuracoess">
+                            <h6 class="fw-bold text-white bg-dark">
+                            <i class="bi bi-gear-fill me-2"></i> Configurações
+                            </h6>
+
+                            <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" id="igualarDisponivel2" checked>
+                            <label class="form-check-label" for="igualarDisponivel2">
+                                Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar menor que o disponível</strong>?
+                            </label>
+                            </div>
+                        </div>
+
                     <div class="px-3 pb-4">
                         <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
                         <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
@@ -324,6 +352,7 @@ include_once('../../templates/headerPcp.php');
                         </div>
                     </div>
 
+    </form>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-salvar" 
@@ -337,10 +366,8 @@ include_once('../../templates/headerPcp.php');
                         </button>
                     </div>
                 </div>
-    </form>
 
 </div>
-
 
 
 
