@@ -573,32 +573,54 @@ async function TabelaAnalise(listaAnalise) {
             title: 'Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-simulacao').modal('show');
+                $('.div-simulacao').removeClass('d-none');
                 $('#campo-simulacao').removeClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
+                console.log(`Simulacao do teste ao clicar no modal de simulacao: ${simulacaoValue}`)
+                Produtos_Simulacao();
+
 
                 if (simulacaoValue === "") {
                     $('#inputs-container-categorias').empty();
                     $('#inputs-container').empty();
                     $('#inputs-container-marcas').addClass('d-none')
+                    Produtos_Simulacao();
+
                 } else {
-                    await Consulta_Abc_Plano();
-                    await Consulta_Categorias();
+                   // await Consulta_Abc_Plano();
+                   // await Consulta_Categorias();
                     $('#inputs-container-marcas').removeClass('d-none')
+                    $('#inputs-container-categorias').removeClass('d-none')
+                    Produtos_Simulacao();
+
+
+
                 }
-            }
+
+
+
+
+            },
         },
         {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Nova Simulação',
             title: 'Nova Simulação',
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
-                $('#modal-nova-simulacao').modal('show');
+                $('.div-nova-simulacao').removeClass('d-none');
                 $('#inputs-container-novas-marcas').removeClass('d-none');
-                await Consulta_Abc_Plano();
+                await Consulta_Abc_Plano(true);
                 await Consulta_Categorias();
+                document.getElementById("TituloSelecaoEngenharias2").textContent = ""
+            let campo = document.getElementById("descricao-simulacao");
+                campo.value = ""; // limpa o campo
+                campo.placeholder = "Insira a descrição"; // coloca placeholder            
             },
+
+
+
+
         },
         ],
         columns: [{
@@ -1338,3 +1360,46 @@ const Consulta_Simulacao_Especifica = async () => {
         console.error('Erro ao consultar planos:', error);
     }
 };
+
+
+
+async function Produtos_Simulacao() {
+
+    var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
+   
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: "selecao_produtos_simulacao",
+                nomeSimulacao: simulacao
+            }
+        }); 
+
+        console.log(data)
+        console.log(data[0].mensagem);
+
+        document.getElementById("TituloSelecaoEngenharias").textContent = data[0].mensagem;
+        document.getElementById("TituloSelecaoEngenharias2").textContent = data[0].mensagem;
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+    } finally {
+                
+        console.log('atualizado produtos da selecacao');
+
+    }
+
+    
+}

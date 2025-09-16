@@ -36,6 +36,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Comprometidos_Compras':
                     jsonResponse(ConsultarComprometidoCompras('1'));
                     break;
+                case 'selecao_produtos_simulacao':
+                    $nomeSimulacao = $_GET['nomeSimulacao'];
+                    jsonResponse(selecao_produtos_simulacao('a44pcp22','1',$nomeSimulacao));
+                    break;
                 case 'Consulta_Simulacoes':
                     jsonResponse(ConsultaSimulacoes('1'));
                     break;
@@ -518,4 +522,27 @@ function obterImagemMP($codigoImagem)
         'imagem_url' => "{$baseUrl}/imagem/{$codigoImagem}/0", // começa com a primeira imagem
         'total_imagens' => $quantidade
     ];
+}
+
+
+
+function selecao_produtos_simulacao($token, $empresa, $nomeSimulacao){
+    $nomeSimulacao = str_replace(' ', '%20', $nomeSimulacao);
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/selecao_produtos_simulacao?codEmpresa={$empresa}&nomeSimulacao={$nomeSimulacao}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
 }
