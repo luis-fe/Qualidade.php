@@ -1626,6 +1626,78 @@ function TabelaEngenharia(lista) {
 );
 
 }
+async function exluindo_simulacao_Produtos_zerados(arrayProdutoZerados, arrayPercentualZerados) {
+
+
+        var simulacao = $('#select-simulacao').val()
+
+        if ($('#select-simulacao').is(':visible')) {
+        console.log("Tá aparecendo! 👀");
+    } else {
+        simulacao = $("#descricao-simulacao").val();
+    }
+
+
+            const dados = {
+                "nomeSimulacao": simulacao,
+                "arrayProdutoZerados": arrayProdutoZerados,
+                "arrayPercentualZerados": arrayPercentualZerados,
+            };
+            const requestData = {
+                acao: "exluindo_simulacao_Produtos_zerados",
+                dados: dados
+            };
+            const response = await $.ajax({
+                type: 'DELETE',
+                url: 'requests.php',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+            });
+
+            console.log(response)
+
+    
+}
+
+async function registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao) {
+        $('#loadingModal').modal('show');
+
+    try{
+             const requestData = {
+            acao: "atualizaInserirSimulacaoProdutos",
+            dados: {
+                "arrayProdutos": arrayProduto,
+                "arrayPercentual": arrayPercentualProduto,
+                "nomeSimulacao": simulacao
+            }
+
+        };
+
+            const response = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+        });
+
+        if (response[0]['Status'] == true) {
+            $('#loadingModal').modal('hide');
+            Mensagem_Canto('produtos adicionados', 'success');
+            fecharselecaoEngenharia();        
+        } else {
+            Mensagem_Canto('Erro', 'error'); 
+        }
+        
+        
+    } catch (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        Mensagem_Canto('Erro', 'error')
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+    
+}
+
 
 const PeriodoVendasPlano = async () => {
     try {
