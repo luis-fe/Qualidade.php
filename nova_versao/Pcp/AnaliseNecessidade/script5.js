@@ -1284,7 +1284,7 @@ async function Deletar_Simulacao() {
     }
 }
 
-const Consulta_Abc_Plano = async () => {
+const Consulta_Abc_Plano = async (padrão) => {
     try {
         const data = await $.ajax({
             type: 'GET',
@@ -1292,7 +1292,7 @@ const Consulta_Abc_Plano = async () => {
             dataType: 'json',
             data: {
                 acao: 'Consulta_Abc_Plano',
-                plano: $('#select-plano').val()
+                plano: $('#select-plano').val() 
             }
         });
 
@@ -1308,15 +1308,21 @@ const Consulta_Abc_Plano = async () => {
                     <input type="text" class="inputs-percentuais input-abc col-12" id="${item.nomeABC}" placeholder="%">
                 </div>
             `;
+
             const inputHtml2 = `
                 <div class="col-md-3 mb-3">
                     <label class="form-label">${item.nomeABC}</label>
-                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="nova-${item.nomeABC}" placeholder="%">
+                    <input type="text" class="inputs-percentuais input-abc-2 col-12" value=("0,00%") id="${item.nomeABC}" placeholder="%">
                 </div>
             `;
+
             inputsContainer.append(inputHtml1);
             inputsContainerNova.append(inputHtml2);
-        });
+
+            }
+        );
+
+        
 
         $('.input-abc').mask("##0,00%", {
             reverse: true
@@ -1325,10 +1331,13 @@ const Consulta_Abc_Plano = async () => {
         $('.input-abc-2').mask("##0,00%", {
             reverse: true
         });
+
+    
     } catch (error) {
         console.error('Erro ao consultar planos:', error);
     }
 };
+
 
 const Consulta_Abc = async () => {
     try {
