@@ -159,14 +159,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 async function simulacao(texto, tipo) {
-    $('#modal-simulacao').modal('hide');
-    $('#modal-nova-simulacao').modal('hide');
-    $('#loadingModal').modal('show');
+    console.log(`Simulacao Escolhida pela formula: ${texto}`)
+    fecharSimulacao();
+    fecharNovaSimulacao();
     await Cadastro_Simulacao(texto, tipo);
     await Consulta_Simulacoes();
-    await Simular_Programacao(texto);
-    nomeSimulacao = texto
-    $('#loadingModal').modal('hide');
+    await Simular_Programacao(texto, tipo);
+    nomeSimulacao = texto;
+    console.log(`nomeSimulacao: ${nomeSimulacao}`)
 };
 
 const Consulta_Planos = async () => {
@@ -279,7 +279,13 @@ async function Simular_Programacao(simulacao) {
 };
 
 async function Cadastro_Simulacao(simulacao, tipo) {
+    $('#loadingModal').modal('show');
+
+
+
     try {
+
+
         const categorias = [];
         const percentuais_categorias = [];
 
@@ -381,6 +387,7 @@ async function Cadastro_Simulacao(simulacao, tipo) {
         console.error('Erro na solicitação AJAX:', error);
         Mensagem_Canto('Erro', 'error')
     } finally {
+        $('#loadingModal').modal('hide');
     }
 };
 
