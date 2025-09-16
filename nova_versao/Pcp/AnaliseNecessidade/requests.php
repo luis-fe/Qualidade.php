@@ -26,6 +26,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Naturezas':
                     jsonResponse(ConsultarNaturezas('1'));
                     break;
+                case 'consultarInformacoesPlano':
+                    $plano = $_GET['plano'];
+                    $empresa = $_GET['empresa'];
+                    jsonResponse(consultarInformacoesPlano($empresa, "a44pcp22", $plano));
+                    break;
                 case 'Consulta_Imagem':
                     $codigoImagem = urldecode($_GET['codigoMP']);
                     jsonResponse(obterImagemMP($codigoImagem));
@@ -530,6 +535,27 @@ function selecao_produtos_simulacao($token, $empresa, $nomeSimulacao){
     $nomeSimulacao = str_replace(' ', '%20', $nomeSimulacao);
     $baseUrl = 'http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/selecao_produtos_simulacao?codEmpresa={$empresa}&nomeSimulacao={$nomeSimulacao}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function consultarInformacoesPlano($empresa, $token, $plano){
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/PlanoPorPlano?codigoPlano={$plano}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
