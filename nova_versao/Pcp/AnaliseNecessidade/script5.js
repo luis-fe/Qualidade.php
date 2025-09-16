@@ -1454,6 +1454,22 @@ function fecharselecaoEngenharia() {
     document.getElementById("modal-selecaoEngenharias").classList.add("d-none");
 }
 
+function formatarDataBrasileira(dataISO) {
+    if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+
+function formatarMoedaBrasileira(valor) {
+    // Garante que seja número
+    const numero = parseFloat(valor);
+    
+    return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
 
 
 const PeriodoVendasPlano = async () => {
