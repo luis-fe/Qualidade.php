@@ -652,6 +652,35 @@ const Consulta_Simulacao_Especifica = async () => {
     }
 };
 
+
+const PeriodoVendasPlano = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'consultarInformacoesPlano',
+                plano: $('#select-plano').val(),
+                empresa: '1'
+            }
+        });
+        return {
+            inicioVenda: data[0]['03- Inicio Venda'],
+            finalVenda: data[0]['04- Final Venda'],
+            inicioFaturamento: data[0]['05- Inicio Faturamento'],
+            finalFaturamento: data[0]['06- Final Faturamento'],
+            metaFinanceira: data[0]['12-metaFinanceira']
+        };
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+        return null; // ou algum valor padrão indicando erro
+
+    }
+};
+
 async function Analise_Materiais() {
     $('#loadingModal').modal('show');
     try {
@@ -671,12 +700,46 @@ async function Analise_Materiais() {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-
         TabelaAnalise(response);
         $('.div-analise').removeClass('d-none');
+           const respostaPeriodoVendas = await PeriodoVendasPlano();
+        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
+        respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
+        respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
+        respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
+
         $('#titulo').html(`
-            <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span>
-            Necessidade x Pçs a Programar
+<div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+
+    <!-- Título -->
+    <div class="ms-2">
+        <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+        Necessidade x Pçs a Programar
+    </div>
+
+    <!-- Períodos -->
+    <div class="d-flex flex-column text-end periodo-vendas p-0 me-10">
+        <div>
+            <i class="bi bi-calendar3 me-1"></i>
+            <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+        </div>
+        <div>
+            <i class="bi bi-calendar3 me-1"></i>
+            <span>Período Fatura.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+        </div>
+    </div>
+    <!-- Novo Card -->
+    <div class="card border rounded me-1" style="width: 190px;">
+      <div class="card-body p-0">
+        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+        <p class="card-text m-0">
+          <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+        </p>
+      </div>
+  
+    </div>
+</div>            
           `);
         nomeSimulacao = "";
     } catch (error) {
@@ -716,6 +779,16 @@ function confirmarCategoria() {
 }
 
 
+function formatarMoedaBrasileira(valor) {
+    // Garante que seja número
+    const numero = parseFloat(valor);
+    
+    return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
 
 async function Detalha_Necessidade(codReduzido) {
     $('#loadingModal').modal('show');
@@ -745,6 +818,12 @@ async function Detalha_Necessidade(codReduzido) {
     }
 }
 
+
+function formatarDataBrasileira(dataISO) {
+    if (!dataISO || !dataISO.includes('-')) return dataISO; // fallback seguro
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
 
 async function TabelaAnalise(listaAnalise) {
     if ($.fn.DataTable.isDataTable('#table-analise')) {

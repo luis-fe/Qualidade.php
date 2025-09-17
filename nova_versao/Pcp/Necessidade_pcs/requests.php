@@ -90,6 +90,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(detalharSku_x_AnaliseEmpenho('1', $dadosObjeto));
                     break;
+                case 'consultarInformacoesPlano':
+                    $plano = $_GET['plano'];
+                    $empresa = $_GET['empresa'];
+                    jsonResponse(consultarInformacoesPlano($empresa, "a44pcp22", $plano));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
                     break;
@@ -528,6 +533,25 @@ function DeleteSimulacaoProduto($dados)
     return json_encode($response);
 }
 
+function consultarInformacoesPlano($empresa, $token, $plano){
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/PlanoPorPlano?codigoPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 function atualizaInserirSimulacaoProdutos($dados)
 {
