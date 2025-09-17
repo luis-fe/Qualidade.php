@@ -359,7 +359,9 @@ const PeriodoVendasPlano = async () => {
             finalVenda: data[0]['04- Final Venda'],
             inicioFaturamento: data[0]['05- Inicio Faturamento'],
             finalFaturamento: data[0]['06- Final Faturamento'],
-            metaFinanceira: data[0]['12-metaFinanceira']
+            metaFinanceira: data[0]['12-metaFinanceira'],
+            metaPcs: data[0]['13-metaPecas']
+
         };
 
 
@@ -785,6 +787,19 @@ function formatarMoedaBrasileira(valor) {
     });
 }
 
+function formatarInteiro(valor) {
+    // Garante que seja número inteiro
+    const numero = parseInt(valor);
+
+    // Verifica se a conversão foi bem-sucedida
+    if (isNaN(numero)) {
+        return "Valor inválido";
+    }
+
+    // Formata como número inteiro no padrão pt-BR
+    return numero.toLocaleString("pt-BR");
+}
+
 async function Cadastro_Simulacao(simulacao, tipo) {
     $('#loadingModal').modal('show');
 
@@ -945,7 +960,7 @@ async function Simular_Programacao(simulacao, tipo) {
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
-        respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
+        respostaPeriodoVendas.metaPcs = formatarInteiro(respostaPeriodoVendas.metaPcs);
 
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
@@ -975,7 +990,7 @@ async function Simular_Programacao(simulacao, tipo) {
       <div class="card-body p-0">
         <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
         <p class="card-text m-0">
-          <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+          <strong>${respostaPeriodoVendas.metaPcs}</strong>
         </p>
       </div>
             </div>
