@@ -44,6 +44,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Categorias':
                     jsonResponse(ConsultaCategorias('1'));
                     break;
+                case 'consultarInformacoesPlano':
+                    $plano = $_GET['plano'];
+                    $empresa = $_GET['empresa'];
+                    jsonResponse(consultarInformacoesPlano($empresa, "a44pcp22", $plano));
+                    break;
                 case 'Consulta_Ultimo_Calculo':
                     $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
                     jsonResponse(Consulta_Ultimo_Calculo('1', $plano));
@@ -89,11 +94,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(detalharSku_x_AnaliseEmpenho('1', $dadosObjeto));
-                    break;
-                case 'consultarInformacoesPlano':
-                    $plano = $_GET['plano'];
-                    $empresa = $_GET['empresa'];
-                    jsonResponse(consultarInformacoesPlano($empresa, "a44pcp22", $plano));
                     break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);

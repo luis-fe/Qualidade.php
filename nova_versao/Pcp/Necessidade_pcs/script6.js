@@ -702,7 +702,7 @@ async function Analise_Materiais() {
         });
         TabelaAnalise(response);
         $('.div-analise').removeClass('d-none');
-           const respostaPeriodoVendas = await PeriodoVendasPlano();
+        const respostaPeriodoVendas = await PeriodoVendasPlano();
         respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
