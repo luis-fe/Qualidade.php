@@ -279,6 +279,15 @@ async function gerarTendenciaNova (congelamento) {
       </div>
   
     </div>
+        <div class="card border rounded me-1" style="width: 190px;">
+      <div class="card-body p-0">
+        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta Pçs</h5>
+        <p class="card-text m-0">
+          <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+        </p>
+      </div>
+  
+    </div>
 </div>
 
           `);
