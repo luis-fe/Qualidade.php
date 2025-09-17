@@ -962,6 +962,7 @@ async function Simular_Programacao(simulacao, tipo) {
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
         respostaPeriodoVendas.metaPcs = formatarInteiro(respostaPeriodoVendas.metaPcs);
 
+        
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
                 <div>
