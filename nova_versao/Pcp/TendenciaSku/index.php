@@ -137,14 +137,14 @@ include_once('../../templates/headerPcp.php');
 
 
 
-        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+        <div class="mb-4 col-12" id="informacaoAtualizacao"> 
             <h6 class="fw-bold text-white bg-dark p-1">Atualização da Tendência</h6> 
             <div class="row"> 
             <h6>Cálculado no dia: </h6>
             </div> 
         </div> 
 
-        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+        <div class="mb-4 col-12" id="informacaoSincronia"> 
             <h6 class="fw-bold text-white bg-dark p-1">Sincronia de Dados com ERP</h6> 
             <div class="row"> 
             <h6>Informativo de Vendas: </h6>
@@ -153,7 +153,7 @@ include_once('../../templates/headerPcp.php');
         </div> 
 
         
-        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+        <div class="mb-4 col-12" id="informacaoHistoricoAtualizacoes"> 
             <h6 class="fw-bold text-white bg-dark p-1">Historico de Simulacoes projetadas </h6> 
             <div class="row"> 
             <h6>Lista de Simulacoes </h6>
