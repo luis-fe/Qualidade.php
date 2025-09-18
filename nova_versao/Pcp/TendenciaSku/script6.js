@@ -290,12 +290,11 @@ async function gerarTendenciaNova (congelamento) {
         </p>
       </div>
     </div>
-        <div class="card border rounded me-1" style="width: 190px; cursor: pointer;"
-            data-bs-toggle="modal" data-bs-target="#informacoes-container">
-            <div class="p-2">
-                <i class="bi bi-info-circle"></i>
-                <strong>Informações</strong>
-            </div>
+        <div class="card border rounded me-1" style="width: 190px; cursor: pointer;"> 
+            <div> 
+                <i class="bi bi-info-circle"></i> 
+                <strong>Informações</strong> 
+            </div> 
         </div>
 
 </div>
