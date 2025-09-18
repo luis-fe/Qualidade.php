@@ -245,8 +245,7 @@ async function gerarTendenciaNova (congelamento) {
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
         const respostaPeriodoVendas = await PeriodoVendasPlano();
-        respostaPeriodoVendas.inicioVenda = 
-        (respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
@@ -306,8 +305,9 @@ async function gerarTendenciaNova (congelamento) {
 
     $('#btn-informacoes').on('click', function () {
     
-        $('.div-informacoes').removeClass('d-none');}
-);
+        $('.div-informacoes').removeClass('d-none');
+    
+    });
 
 
 
@@ -1015,8 +1015,23 @@ async function Simular_Programacao(simulacao, tipo) {
           <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
         </p>
       </div>
-            </div>
-        `);
+    </div>
+        <div id="btn-informacoes" class="card border rounded me-1" style="width: 190px; cursor: pointer;"> 
+            <div> 
+                <i class="bi bi-info-circle"></i> 
+                <strong>Informações</strong> 
+            </div> 
+        </div>
+
+</div>
+
+          `);
+
+    $('#btn-informacoes').on('click', function () {
+    
+        $('.div-informacoes').removeClass('d-none');
+    
+    });   
 
         TabelaTendencia(response);
     } catch (error) {
