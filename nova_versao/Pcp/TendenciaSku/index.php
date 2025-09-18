@@ -120,7 +120,7 @@ include_once('../../templates/headerPcp.php');
 
 <div 
     id="informacoes-container" 
-    class="mt-3 div-simulacao mx-auto p-3 border border-dark rounded" 
+    class="mt-3 div-simulacao mx-auto p-3 border border-dark rounded d-none" 
     style="width: 60%; max-height: 80vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
     
     <form>
