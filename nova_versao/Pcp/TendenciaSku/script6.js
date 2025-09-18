@@ -290,6 +290,13 @@ async function gerarTendenciaNova (congelamento) {
         </p>
       </div>
     </div>
+       <div class="card border rounded me-1" style="width: 190px;">
+      <div>
+        <i class="bi bi-info-circle"></i>
+          <strong>Informações</strong>
+      </div>
+    </div>
+
 </div>
 
           `);
