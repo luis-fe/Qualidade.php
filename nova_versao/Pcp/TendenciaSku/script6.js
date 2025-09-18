@@ -1031,7 +1031,9 @@ async function Simular_Programacao(simulacao, tipo) {
 function fecharSimulacao() {
     document.getElementById("simulacao-container").classList.add("d-none");
 }
-
+function fecharInformacoes() {
+    document.getElementById("informacoes-container").classList.add("d-none");
+}
 
 function fecharNovaSimulacao() {
     document.getElementById("nova-simulacao-container").classList.add("d-none");
