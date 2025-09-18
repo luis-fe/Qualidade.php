@@ -118,7 +118,54 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
+<div 
+    id="informacoes-container" 
+    class="mt-3 div-simulacao mx-auto p-3 border border-dark rounded" 
+    style="width: 60%; max-height: 80vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+    
+    <form>
+        <!-- Botão fechar -->
+        <button 
+            type="button" 
+            onclick="fecharInformacoes()" 
+            class="btn-close position-absolute top-0 end-0 m-2" 
+            aria-label="Fechar">
+        </button> 
 
+        <p class="fs-4 fw-bold text-dark">INFORMAÇÕES</p> 
+
+
+
+
+        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+            <h6 class="fw-bold text-white bg-dark p-1">Atualização da Tendência</h6> 
+            <div class="row"> 
+            <h6>Cálculado no dia: </h6>
+            </div> 
+        </div> 
+
+        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+            <h6 class="fw-bold text-white bg-dark p-1">Sincronia de Dados com ERP</h6> 
+            <div class="row"> 
+            <h6>Informativo de Vendas: </h6>
+            <h6>Estrutura da Materia Prima por Produto: </h6>
+            </div> 
+        </div> 
+
+        
+        <div class="mb-4 col-12" id="inputs-container-marcas"> 
+            <h6 class="fw-bold text-white bg-dark p-1">Historico de Simulacoes projetadas </h6> 
+            <div class="row"> 
+            <h6>Lista de Simulacoes </h6>
+            </div> 
+        </div> 
+
+        
+
+
+
+    </form> 
+</div>
 
 
 
