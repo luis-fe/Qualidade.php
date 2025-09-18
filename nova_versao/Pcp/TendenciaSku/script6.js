@@ -57,11 +57,7 @@ $(document).ready(async () => {
         Produtos_Simulacao();
     });
 
-     $('#btn-informacoes').on('click', function () {
-            // Executa a ação personalizada
-            $('.div-informacoes').removeClass('d-none');
 
-        });
 
 
 
@@ -307,6 +303,14 @@ async function gerarTendenciaNova (congelamento) {
 </div>
 
           `);
+
+    $('#btn-informacoes').on('click', function () {
+    
+        $('.div-informacoes').removeClass('d-none');}
+);
+
+
+
         nomeSimulacao = "";
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
