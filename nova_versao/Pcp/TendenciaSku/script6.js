@@ -57,6 +57,12 @@ $(document).ready(async () => {
         Produtos_Simulacao();
     });
 
+     $('#btn-informacoes').on('click', function () {
+            // Executa a ação personalizada
+            $('.div-informacoes').removeClass('d-none');
+
+        });
+
 
 
 });
@@ -243,7 +249,8 @@ async function gerarTendenciaNova (congelamento) {
         TabelaTendencia(response);
         $('.div-tendencia').removeClass('d-none');
         const respostaPeriodoVendas = await PeriodoVendasPlano();
-        respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
+        respostaPeriodoVendas.inicioVenda = 
+        (respostaPeriodoVendas.inicioVenda);
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
@@ -290,7 +297,7 @@ async function gerarTendenciaNova (congelamento) {
         </p>
       </div>
     </div>
-        <div class="card border rounded me-1" style="width: 190px; cursor: pointer;"> 
+        <div id="btn-informacoes" class="card border rounded me-1" style="width: 190px; cursor: pointer;"> 
             <div> 
                 <i class="bi bi-info-circle"></i> 
                 <strong>Informações</strong> 
@@ -310,6 +317,8 @@ async function gerarTendenciaNova (congelamento) {
     }
     
 };
+
+
 
 
 
