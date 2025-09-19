@@ -717,7 +717,7 @@ const PeriodoVendasPlano = async () => {
 async function Analise_Materiais() {
     $('#loadingModal').modal('show');
 
-    console.log(`A Simulacao da Selecao é ${simulacao}`)
+    console.log(`A Simulacao da Selecao é ${nomeSimulacao}`)
 
     try {
         const requestData = {
@@ -744,84 +744,84 @@ async function Analise_Materiais() {
         respostaPeriodoVendas.inicioFaturamento = formatarDataBrasileira(respostaPeriodoVendas.inicioFaturamento);
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
         respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
-if (nomeSimulacao) {
-    $('#titulo').html(`
-        <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+        if (nomeSimulacao) {
+            $('#titulo').html(`
+                <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
 
-            <!-- Título -->
-            <div class="ms-2">
-                <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
-                Necessidade x Pçs a Programar
-            </div>
+                    <!-- Título -->
+                    <div class="ms-2">
+                        <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+                        Necessidade x Pçs a Programar
+                    </div>
 
-            <!-- Períodos -->
-            <div class="d-flex flex-column text-end periodo-vendas p-0 me-10">
-                <div>
-                    <i class="bi bi-calendar3 me-1"></i>
-                    <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                    <!-- Períodos -->
+                    <div class="d-flex flex-column text-end periodo-vendas p-0 me-10">
+                        <div>
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <span>Período Vendas:<strong> ${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <span>Período Fatura.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Novo Card -->
+                    <div class="card border rounded me-1" style="width: 190px;">
+                        <div class="card-body p-0">
+                            <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+                            <p class="card-text m-0">
+                                <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
-                <div>
-                    <i class="bi bi-calendar3 me-1"></i>
-                    <span>Período Fatura.:<strong> ${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+            `);
+
+            nomeSimulacao = "";
+
+        } else {
+
+            $('#titulo').html(`
+                <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+                    <div>
+                        <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
+                        Necessidade x Pçs a Programar                    
+                        <span style="display: inline-block; position: relative;">
+                            <strong>${nomeSimulacao}</strong>
+                            <button onclick="Consulta_Tendencias()" 
+                                    style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
+                                ×
+                            </button>
+                        </span>
+                    </div>
+
+                    <div class="d-flex flex-column text-end periodo-vendas p-0 m-0 ms-3">
+                        <div>
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <span>Período Vendas: <strong>${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Novo Card -->
+                    <div class="card border rounded me-1" style="width: 190px;">
+                        <div class="card-body p-0">
+                            <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+                            <p class="card-text m-0">
+                                <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
+            `);
 
-            <!-- Novo Card -->
-            <div class="card border rounded me-1" style="width: 190px;">
-                <div class="card-body p-0">
-                    <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
-                    <p class="card-text m-0">
-                        <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    `);
-
-    nomeSimulacao = "";
-
-} else {
-
-    $('#titulo').html(`
-        <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
-            <div>
-                <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
-                Necessidade x Pçs a Programar                    
-                <span style="display: inline-block; position: relative;">
-                    <strong>${simulacao}</strong>
-                    <button onclick="Consulta_Tendencias()" 
-                            style="position: absolute; top: 0; right: -20px; border: none; background: none; font-weight: bold; color: red; cursor: pointer;">
-                        ×
-                    </button>
-                </span>
-            </div>
-
-            <div class="d-flex flex-column text-end periodo-vendas p-0 m-0 ms-3">
-                <div>
-                    <i class="bi bi-calendar3 me-1"></i>
-                    <span>Período Vendas: <strong>${respostaPeriodoVendas.inicioVenda} à ${respostaPeriodoVendas.finalVenda}</strong></span>
-                </div>
-                <div>
-                    <i class="bi bi-calendar3 me-1"></i>
-                    <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
-                </div>
-            </div>
-
-            <!-- Novo Card -->
-            <div class="card border rounded me-1" style="width: 190px;">
-                <div class="card-body p-0">
-                    <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
-                    <p class="card-text m-0">
-                        <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    `);
-
-}
+        }
 
 
         
