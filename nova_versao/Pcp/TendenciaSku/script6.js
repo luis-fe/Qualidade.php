@@ -175,7 +175,8 @@ const Consulta_Ultimo_CalculoTendencia = async () => {
         });
         return {
             status: data[0]['status'],
-            mensagem: data[0]['Mensagem']
+            mensagem: data[0]['Mensagem'],
+            dataHora: data[0]['dataHora']
         };
 
 
@@ -310,7 +311,7 @@ async function gerarTendenciaNova (congelamento) {
         $('.div-informacoes').removeClass('d-none');
         $('#informacaoAtualizacao')
         .find('.row h6')
-        .html(`Calculado no dia: ${respostaCalculo.mensagem}`);
+        .html(`Calculado no dia: <strong>${respostaCalculo.dataHora}</strong>`);
 
     });
 
