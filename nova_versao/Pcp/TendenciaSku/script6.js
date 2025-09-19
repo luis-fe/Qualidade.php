@@ -1058,10 +1058,21 @@ async function Simular_Programacao(simulacao, tipo) {
 
           `);
 
-
     $('#btn-informacoes').on('click', function () {
     
         $('.div-informacoes').removeClass('d-none');
+        $('#informacaoAtualizacao')
+        .find('.row h6')
+        .html(`Calculado no dia: <strong>${respostaCalculo.dataHora}</strong>`);
+
+        $('#informacaoSincronia h6').eq(1).html(
+        `<i class="bi bi-database"></i> Informativo de Vendas:<strong>${respostaCalculo.dataHoraPedidos}</strong>`
+        );
+
+        
+        $('#informacaoSincronia h6').eq(2).html(
+        `<i class="bi bi-database"></i> Estrutura da Materia Prima por Produto:<strong>${respostaCalculo.data_horaEstruturaMP}</strong>`
+        );
     
     });   
 
