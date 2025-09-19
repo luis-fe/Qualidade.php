@@ -308,7 +308,9 @@ async function gerarTendenciaNova (congelamento) {
     $('#btn-informacoes').on('click', function () {
     
         $('.div-informacoes').removeClass('d-none');
-    $('#informacaoAtualizacao .row h6').html(`Calculado no dia: ${respostaCalculo.mensagem}`);
+        $('#informacaoAtualizacao')
+        .find('.row h6')
+        .html(`Calculado no dia: ${respostaCalculo.mensagem}`);
 
     });
 
