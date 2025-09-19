@@ -315,7 +315,7 @@ async function gerarTendenciaNova (congelamento) {
         .html(`Calculado no dia: <strong>${respostaCalculo.dataHora}</strong>`);
 
         $('#informacaoSincronia h6').eq(1).html(
-        `<i class="bi bi-database"></i> Estrutura da Matéria Prima: <strong>${respostaCalculo.dataHoraPedidos}</strong>`
+        `<i class="bi bi-database"></i> Informativo de Vendas:<strong>${respostaCalculo.dataHoraPedidos}</strong>`
         );
 
 
