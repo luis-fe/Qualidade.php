@@ -314,9 +314,8 @@ async function gerarTendenciaNova (congelamento) {
         .find('.row h6')
         .html(`Calculado no dia: <strong>${respostaCalculo.dataHora}</strong>`);
 
-        $('#informacaoSincronia')
-        .find('.row h6')
-        .html(`Informativo de Vendas: <strong>${respostaCalculo.dataHoraPedidos}</strong>`);
+        $('#informacaoSincronia h6').first().html(`<i class="bi bi-check-circle"></i> Informativo de Vendas: <strong>${respostaCalculo.dataHoraPedidos}</strong>`);
+
 
 
     });
