@@ -1002,6 +1002,7 @@ async function Simular_Programacao(simulacao, tipo) {
         respostaPeriodoVendas.finalFaturamento = formatarDataBrasileira(respostaPeriodoVendas.finalFaturamento);
         respostaPeriodoVendas.metaPcs = formatarInteiro(respostaPeriodoVendas.metaPcs);
         respostaPeriodoVendas.metaFinanceira = formatarMoedaBrasileira(respostaPeriodoVendas.metaFinanceira);
+        const respostaCalculo = await Consulta_Ultimo_CalculoTendencia();
 
 
         $('#titulo').html(`

@@ -136,19 +136,22 @@ include_once('../../templates/headerPcp.php');
 
 
 
-
         <div class="mb-4 col-12" id="informacaoAtualizacao"> 
             <h6 class="fw-bold text-white bg-dark p-1">Atualização da Tendência</h6> 
             <div class="row"> 
-            <h6>Cálculado no dia: </h6>
+            <h6>Cálculado no dia*: </h6>      
+            <p><small><em>*A tendência é calculada manualmente pelo usuário e é utilizada para projetar cenários desejados de tendência de vendas no PCP</em></small></p>
+
             </div> 
         </div> 
 
         <div class="mb-4 col-12" id="informacaoSincronia"> 
             <h6 class="fw-bold text-white bg-dark p-1">Sincronia de Dados com ERP</h6> 
             <div class="row"> 
-            <h6>Informativo de Vendas: </h6>
-            <h6>Estrutura da Materia Prima por Produto: </h6>
+            <h6>Informativo de Vendas*: </h6>
+            <p><small><em>* Sincroniza com o ERP os dados de vendas e faturamento, necessarios as análises dessa plataforma.</em></small></p>
+            <h6>Estrutura da Materia Prima por Produto**: </h6>
+            <p><small><em>** Sincroniza com o ERP os dados de Estrutura de Produto x Componentes Cadastrados, necessarios as análises dessa plataforma.</em></small></p>
             </div> 
         </div> 
 
