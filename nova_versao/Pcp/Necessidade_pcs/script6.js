@@ -716,6 +716,9 @@ const PeriodoVendasPlano = async () => {
 
 async function Analise_Materiais() {
     $('#loadingModal').modal('show');
+
+    console.log(`A Simulacao da Selecao é ${simulacao}`)
+
     try {
         const requestData = {
             acao: "Analise_Materiais",
@@ -723,7 +726,7 @@ async function Analise_Materiais() {
                 codPlano: $('#select-plano').val(),
                 consideraPedidosBloqueado: $('#select-pedidos-bloqueados').val(),
                 arrayCategoriaMP: arrayCategoriaMP || [],
-                nomeSimulacao
+                "nomeSimulacao": nomeSimulacao
             }
         };
 
