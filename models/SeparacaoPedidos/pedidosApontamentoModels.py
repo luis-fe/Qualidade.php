@@ -605,7 +605,6 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 'WHERE codpedido = %s AND produto = %s and necessidade > 0 and endereco = %s',
                 conn, params=(codpedido, reduzido, enderecoAPI))
             if not pesquisaPedidoSKU2.empty:
-                conn.close()
                 return 12, reduzido, pesquisaPedidoSKU2['necessidade'][0], pesquisaPedidoSKU2['valorunitarioliq'][0], enderecoAPI
             else:
                 return 12, reduzido, pesquisaPedidoSKU1['necessidade'][0], pesquisaPedidoSKU1['valorunitarioliq'][0], pesquisaPedidoSKU1['endereco'][0]
