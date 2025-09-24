@@ -373,7 +373,7 @@ def RelatorioSeparacaoBI(empresa, dias):
         return
 
 def DetalhaRitmoRepositor(usuario, dataInicial, dataFInal):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
     Usuarios = pd.read_sql('Select codigo as codusuario, nome from "Reposicao".cadusuarios ', conn)
     Usuarios['codusuario'] = Usuarios['codusuario'].astype(str)
 
@@ -396,7 +396,6 @@ def DetalhaRitmoRepositor(usuario, dataInicial, dataFInal):
 
     #ritmo2 = ritmo2[ritmo2['codusuario'] == usuario]
 
-    conn.close()
 
     data = { 'Ritmo': ritmo2.to_dict(orient='records')}
 
