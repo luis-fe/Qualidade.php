@@ -513,16 +513,17 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
     # ETAPA 2 - Else caso a tag NAO seja encontrada na reposicao
     else:
 
-        pesquisa3 = pd.read_sql(
-            """
+        sql_pesquisa_Fila = f"""
                 SELECT 
                     "codbarrastag", 
                     "codreduzido" AS codreduzido 
                 FROM 
                     "Reposicao".filareposicaoportag f
                 WHERE 
-                    codbarrastag = %s 
-            """, conn, params=(codbarra,))
+                    codbarrastag = '{codbarra}'
+        """
+
+        pesquisa3 = pd.read_sql(sql_pesquisa_Fila, conn)
 
             # Pesquisar se a tag ja foi separada
         pesquisaSeparacao = pd.read_sql(
@@ -539,6 +540,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
 
 
         print(f'codpedido{codpedido}: dataframe pesquisaFila {pesquisa3}, dataframe: pesquisaSeparacao{pesquisaSeparacao}')
+        print(f'sql pesquisaFila:{sql_pesquisa_Fila}' )
 
         if (not pesquisa3.empty) and (pesquisaSeparacao.empty):
             # 2.1 - Caso a tag seja encontrada na fila mas nao na separacao
