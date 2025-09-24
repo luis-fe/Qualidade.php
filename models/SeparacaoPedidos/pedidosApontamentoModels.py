@@ -705,7 +705,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
             if not pesquisarInventario.empty:
                 pesquisa4 = pd.read_sql(
                     'SELECT p.codpedido, p.produto, p.necessidade FROM "Reposicao".pedidossku p '
-                    'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisaTagReposicao['codreduzido'][0]))
+                    'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisarInventario['codreduzido'][0]))
 
                 return 4, pesquisa4['codreduzido'][0], pesquisa4['necessidade'][0], 4, 4
             else:
