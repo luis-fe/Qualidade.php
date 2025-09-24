@@ -440,7 +440,7 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
                  'WHERE "codbarrastag" = %s;'
 
         cursor = conn.cursor()
-        cursor.execute(insert, (codusuario,'Veio Do Inventario',datahora, 'tagSeparado', codpedido, datahora, codbarra))
+        cursor.execute(insert, (codusuario,'Veio Do Inventario',datahora, 'tagSeparado', str(codpedido), datahora, codbarra))
         conn.commit()
         cursor.close()
         delete = 'Delete from "Reposicao"."tagsreposicao_inventario" ' \
