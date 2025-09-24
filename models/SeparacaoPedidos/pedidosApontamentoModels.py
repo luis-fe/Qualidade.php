@@ -101,6 +101,7 @@ def FilaAtribuidaUsuario(codUsuario):
 def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi, padrao= False):
     # Aqui inplanto uma funcao para verificar qual a validação de onde vem  o **Codigo Barras*** , exemplo vem da: fila ? reposicao? estornar? ....
     validacao, Reduzido, Necessidade, ValorUnit, endereco = VerificacoesApontamento(codbarra, codpedido, enderecoApi)
+    print(f'Pedido {codpedido} caiu na  validacao:{validacao}')
 
     if validacao == 1: # 1 Caso a tag venha NORMAL da Prateleira Reposta e também nao for duplicada  no pedido
 
@@ -457,7 +458,7 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
 
 # ESSA FUNCAO VERIFICA DE ONDE O CODIGO DE BARRAS ESTÁ SAINDO
 def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
-    conn = ConexaoPostgreMPL.conexao()
+    conn = ConexaoPostgreMPL.conexaoEngine()
 
     # ETAPA 1. Verificar se o codigobarra veio da Reposição ou se veio da Fila/Inventario
     pesquisaTagReposicao = pd.read_sql(
@@ -507,24 +508,48 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
     else:
 
         pesquisa3 = pd.read_sql(
-            'SELECT "codbarrastag", "codreduzido" AS codreduzido FROM "Reposicao".filareposicaoportag f '
-            'WHERE codbarrastag = %s', conn, params=(codbarra,))
+            """
+                SELECT 
+                    "codbarrastag", 
+                    "codreduzido" AS codreduzido 
+                FROM 
+                    "Reposicao".filareposicaoportag f
+                WHERE 
+                    codbarrastag = %s 
+            """, conn, params=(codbarra,))
 
             # Pesquisar se a tag ja foi separada
         pesquisaSeparacao = pd.read_sql(
-            'SELECT "codbarrastag", "codreduzido" AS codreduzido, codpedido FROM "Reposicao".tags_separacao f '
-            'WHERE codbarrastag = %s', conn, params=(codbarra,))
+            """
+                SELECT 
+                    "codbarrastag", 
+                    "codreduzido" AS codreduzido, 
+                    codpedido 
+                FROM 
+                    "Reposicao".tags_separacao f
+                WHERE 
+                    codbarrastag = %s 
+            """, conn, params=(codbarra,))
 
         if not pesquisa3.empty and pesquisaSeparacao.empty:
             # 2.1 - Caso a tag seja encontrada na fila mas nao na separacao
             pesquisa4 = pd.read_sql(
-                'SELECT p.codpedido, p.produto, p.necessidade FROM "Reposicao".pedidossku p '
-                'WHERE codpedido = %s AND produto = %s and endereco = %s', conn, params=(codpedido, pesquisa3['codreduzido'][0],enderecoAPI))
+                """
+                    SELECT 
+                        p.codpedido, 
+                        p.produto, 
+                        p.necessidade 
+                    FROM 
+                        "Reposicao".pedidossku p 
+                    WHERE 
+                        codpedido = %s 
+                        AND produto = %s 
+                        and endereco = %s 
+                """, conn, params=(codpedido, pesquisa3['codreduzido'][0],enderecoAPI))
 
 
 
             if not pesquisa4.empty :
-                conn.close()
                 return 3, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 3, 3
             else:
                 pesquisa4 = pd.read_sql(
@@ -532,7 +557,6 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                     'WHERE codpedido = %s AND produto = %s', conn,
                     params=(codpedido, pesquisa3['codreduzido'][0]))
 
-                conn.close()
                 return 3, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 3, 3
 
 
@@ -542,7 +566,6 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 'SELECT p.codpedido, p.produto, p.necessidade FROM "Reposicao".pedidossku p '
                 'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisa3['codreduzido'][0]))
 
-            conn.close()
 
             return 32, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 32, 32
 
@@ -552,7 +575,6 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 'SELECT p.codpedido, p.produto, p.necessidade FROM "Reposicao".pedidossku p '
                 'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisa3['codreduzido'][0]))
 
-            conn.close()
 
             return 32, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 32, 32
 
@@ -566,7 +588,6 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                     'SELECT p.codpedido, p.produto, p.necessidade FROM "Reposicao".pedidossku p '
                     'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisaTagReposicao['codreduzido'][0]))
 
-                conn.close()
                 return 4, pesquisa4['codreduzido'][0], pesquisa4['necessidade'][0], 4, 4
             else:
                 pesquisarSeparacao = pd.read_sql(
@@ -578,10 +599,8 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                         'SELECT p.codpedido, p.produto AS codreduzido, p.necessidade FROM "Reposicao".pedidossku p '
                         'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisarSeparacao['codreduzido'][0]))
 
-                    conn.close()
                     return 5, pesquisa5['codreduzido'][0], pesquisa5['necessidade'][0], 5, 5
                 else:
-                    conn.close()
                     return 0, 0, 0, 0, 0
 
 

@@ -30,7 +30,6 @@ def post_ApontamentoTagPedido():
     codbarras = datas['codbarras']
     dataSeparacao = datas['dataHoraBipágem']
     Estornar = datas.get('estornar', False)  # Valor padrão: False, se 'estornar' não estiver presente no corpo
-    print(f'imprimindo a requisicao do pedido {datas}')
 
     Endereco_det = pedidosApontamentoModels.ApontamentoTagPedido(str(codusuario), codpedido, codbarras, dataSeparacao, enderecoApi,
                                                           Estornar)
