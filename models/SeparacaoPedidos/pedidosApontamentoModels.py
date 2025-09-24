@@ -616,12 +616,27 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 return 12, reduzido, pesquisaPedidoSKU1['necessidade'][0], pesquisaPedidoSKU1['valorunitarioliq'][0], pesquisaPedidoSKU1['endereco'][0]
         else:
             pesquisaPedidoSKUEstornado = pd.read_sql(
-                'SELECT p.codpedido, p.produto, p.necessidade, p.valorunitarioliq, p.endereco FROM "Reposicao".pedidossku p '
-                'WHERE codpedido = %s AND produto = %s',
+                """
+                    SELECT 
+                        p.codpedido, 
+                        p.produto, 
+                        p.necessidade, 
+                        p.valorunitarioliq, 
+                        p.endereco 
+                    FROM 
+                        "Reposicao".pedidossku p
+                    WHERE 
+                        codpedido = %s AND produto = %s
+                        """,
                 conn, params=(codpedido, reduzido,))
 
+            if pesquisaPedidoSKUEstornado.empty:
+                endereco_novo =  pesquisaTagReposicao['Endereco'][0]
+            else:
+                endereco_novo = pesquisaPedidoSKUEstornado['endereco'][0]
+
             print('Pegou o 2 estornar')
-            return 2, reduzido, 2, 2, pesquisaPedidoSKUEstornado['endereco'][0]  # Se as condicoes nao forem atendidas
+            return 2, reduzido, 2, 2, endereco_novo # Se as condicoes nao forem atendidas
 
 
     # ETAPA 2 - Else caso a tag NAO seja encontrada na reposicao
