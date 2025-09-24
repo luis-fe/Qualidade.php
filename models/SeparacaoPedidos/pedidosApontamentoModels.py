@@ -316,32 +316,44 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
                     cursor.close()
 
                 else:
-                    insert = """
-                            insert into 
-                                "Reposicao".filareposicaoportag (
-                                                                codbarrastag ,
-                                                                codreduzido ,
-                                                                engenharia ,
-                                                                "descricao",
-                                                                "epc",
-                                                                "numeroop",
-                                                                "cor",
-                                                                "tamanho",
-                                                                "totalop"
-                                                                ) 
+                    select_codBarrasTag = f"""
                                     SELECT 
                                         "codbarrastag", "codreduzido", "engenharia", descricao, 
                                         "epc","numeroop","cor","tamanho", "totalop"
                                     from
                                         "Reposicao".tags_separacao t
                                     WHERE 
-                                        "codbarrastag" = %s ;
+                                        "codbarrastag" = '{codbarra}'
                     """
-                    cursor = conn.cursor()
-                    cursor.execute(insert,
-                                   (codbarra,))
-                    conn.commit()
-                    cursor.close()
+                    consulta_fila = pd.read_sql(select_codBarrasTag,conn)
+
+                    if consulta_fila.empty:
+                        insert = """
+                                insert into 
+                                    "Reposicao".filareposicaoportag (
+                                                                    codbarrastag ,
+                                                                    codreduzido ,
+                                                                    engenharia ,
+                                                                    "descricao",
+                                                                    "epc",
+                                                                    "numeroop",
+                                                                    "cor",
+                                                                    "tamanho",
+                                                                    "totalop"
+                                                                    ) 
+                                        SELECT 
+                                            "codbarrastag", "codreduzido", "engenharia", descricao, 
+                                            "epc","numeroop","cor","tamanho", "totalop"
+                                        from
+                                            "Reposicao".tags_separacao t
+                                        WHERE 
+                                            "codbarrastag" = %s ;
+                        """
+                        cursor = conn.cursor()
+                        cursor.execute(insert,
+                                       (codbarra,))
+                        conn.commit()
+                        cursor.close()
 
 
                 delete = 'Delete from "Reposicao"."tags_separacao" ' \
