@@ -470,18 +470,66 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
             return pd.DataFrame({'Mensagem': [f'tag  {codbarra} já foi apontada, deseja estornar ?'],'status': [False]} )
         if padrao == True:
             conn = ConexaoPostgreMPL.conexao()
-            insert = 'INSERT INTO "Reposicao".tagsreposicao ("usuario", "codbarrastag", "codreduzido", "Endereco", ' \
-                     '"engenharia", "DataReposicao", "descricao", "epc", "StatusEndereco", ' \
-                     '"numeroop", "cor", "tamanho", "totalop") ' \
-                     'SELECT %s, "codbarrastag", "codreduzido", "Endereco", "engenharia", ' \
-                     '"DataReposicao", "descricao", "epc", %s, "numeroop", "cor", "tamanho", "totalop"' \
-                     'FROM "Reposicao".tags_separacao t ' \
-                     'WHERE "codbarrastag" = %s;'
-            cursor = conn.cursor()
-            cursor.execute(insert,
-                           (codusuario, 'Estornado', codbarra))
-            conn.commit()
-            cursor.close()
+
+
+            if endereco != 'Veio Da Fila':
+                insert = 'INSERT INTO "Reposicao".tagsreposicao ("usuario", "codbarrastag", "codreduzido", "Endereco", ' \
+                         '"engenharia", "DataReposicao", "descricao", "epc", "StatusEndereco", ' \
+                         '"numeroop", "cor", "tamanho", "totalop") ' \
+                         'SELECT %s, "codbarrastag", "codreduzido", "Endereco", "engenharia", ' \
+                         '"DataReposicao", "descricao", "epc", %s, "numeroop", "cor", "tamanho", "totalop"' \
+                         'FROM "Reposicao".tags_separacao t ' \
+                         'WHERE "codbarrastag" = %s;'
+                cursor = conn.cursor()
+                cursor.execute(insert,
+                               (codusuario, 'Estornado', codbarra))
+                conn.commit()
+                cursor.close()
+            else:
+
+                select_codBarrasTag = f"""
+                                                    SELECT 
+                                                        "codbarrastag"
+                                                    from
+                                                        "Reposicao".filareposicaoportag t
+                                                    WHERE 
+                                                        "codbarrastag" = '{codbarra}'
+                                    """
+                consulta_fila = pd.read_sql(select_codBarrasTag, conn)
+
+                if consulta_fila.empty:
+                    insert = """
+                                                insert into 
+                                                    "Reposicao".filareposicaoportag (
+                                                                                    codbarrastag ,
+                                                                                    codreduzido ,
+                                                                                    engenharia ,
+                                                                                    "descricao",
+                                                                                    "epc",
+                                                                                    "numeroop",
+                                                                                    "cor",
+                                                                                    "tamanho",
+                                                                                    "totalop"
+                                                                                    ) 
+                                                        SELECT 
+                                                            "codbarrastag", "codreduzido", "engenharia", descricao, 
+                                                            "epc","numeroop","cor","tamanho", "totalop"
+                                                        from
+                                                            "Reposicao".tags_separacao t
+                                                        WHERE 
+                                                            "codbarrastag" = %s ;
+                                        """
+                    cursor = conn.cursor()
+                    cursor.execute(insert,
+                                   (codbarra,))
+                    conn.commit()
+                    cursor.close()
+
+
+
+
+
+
             delete = 'Delete from "Reposicao"."tags_separacao" ' \
                      'where "codbarrastag" = %s;'
             cursor = conn.cursor()
@@ -495,9 +543,16 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
                            'where "produto" = %s and codpedido= %s and endereco = %s ;'
             Necessidade = Necessidade + 1
             cursor = conn.cursor()
-            cursor.execute(uptadePedido
-                           , (
-                               Necessidade, Reduzido, codpedido, enderecoApi))
+
+            if endereco != "Veio Da Fila":
+                cursor.execute(uptadePedido
+                               , (
+                                   Necessidade, Reduzido, codpedido, enderecoApi))
+            else:
+                cursor.execute(uptadePedido
+                               , (
+                                   Necessidade, Reduzido, codpedido, 'Não Reposto'))
+
             conn.commit()
             cursor.close()
 
