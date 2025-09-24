@@ -707,7 +707,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                     'SELECT p.codpedido, p.produto, p.necessidade FROM "Reposicao".pedidossku p '
                     'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisarInventario['codreduzido'][0]))
 
-                return 4, pesquisa4['codreduzido'][0], pesquisa4['necessidade'][0], 4, 4
+                return 4, pesquisarInventario['codreduzido'][0], pesquisa4['necessidade'][0], 4, 4
             else:
                 pesquisarSeparacao = pd.read_sql(
                     'SELECT "codbarrastag", "codreduzido" AS codreduzido FROM "Reposicao".tags_separacao f '
