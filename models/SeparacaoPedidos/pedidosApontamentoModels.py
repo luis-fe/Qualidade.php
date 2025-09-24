@@ -719,7 +719,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                         'SELECT p.codpedido, p.produto AS codreduzido, p.necessidade FROM "Reposicao".pedidossku p '
                         'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisarSeparacao['codreduzido'][0]))
 
-                    return 5, pesquisa5['codreduzido'][0], pesquisa5['necessidade'][0], 5, 5
+                    return 5, pesquisa5['codreduzido'][0], pesquisa5['necessidade'][0], 5, pesquisaSeparacao['Endereco'][0]
                 else:
                     return 0, 0, 0, 0, 0
 
