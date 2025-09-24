@@ -300,18 +300,50 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
         else:
             if padrao == True:
                 conn = ConexaoPostgreMPL.conexao()
-                insert = 'INSERT INTO "Reposicao".tagsreposicao ("usuario", "codbarrastag", "codreduzido", "Endereco", ' \
-                         '"engenharia", "DataReposicao", "descricao", "epc", "StatusEndereco", ' \
-                         '"numeroop", "cor", "tamanho", "totalop") ' \
-                         'SELECT %s, "codbarrastag", "codreduzido", "Endereco", "engenharia", ' \
-                         '"DataReposicao", "descricao", "epc", %s, "numeroop", "cor", "tamanho", "totalop"' \
-                         'FROM "Reposicao".tags_separacao t ' \
-                         'WHERE "codbarrastag" = %s;'
-                cursor = conn.cursor()
-                cursor.execute(insert,
-                               (codusuario, 'Estornado', codbarra))
-                conn.commit()
-                cursor.close()
+
+                if endereco != 'Veio Da Fila':
+                    insert = 'INSERT INTO "Reposicao".tagsreposicao ("usuario", "codbarrastag", "codreduzido", "Endereco", ' \
+                             '"engenharia", "DataReposicao", "descricao", "epc", "StatusEndereco", ' \
+                             '"numeroop", "cor", "tamanho", "totalop") ' \
+                             'SELECT %s, "codbarrastag", "codreduzido", "Endereco", "engenharia", ' \
+                             '"DataReposicao", "descricao", "epc", %s, "numeroop", "cor", "tamanho", "totalop"' \
+                             'FROM "Reposicao".tags_separacao t ' \
+                             'WHERE "codbarrastag" = %s;'
+                    cursor = conn.cursor()
+                    cursor.execute(insert,
+                                   (codusuario, 'Estornado', codbarra))
+                    conn.commit()
+                    cursor.close()
+
+                else:
+                    insert = """
+                            insert into 
+                                "Reposicao".filareposicaotag (
+                                                                codbarrastag ,
+                                                                codreduzido ,
+                                                                engenharia ,
+                                                                "descricao",
+                                                                "epc",
+                                                                "numeroop",
+                                                                "cor",
+                                                                "tamanho",
+                                                                "totalop"
+                                                                ) 
+                                    SELECT 
+                                        "codbarrastag", "codreduzido", "engenharia", descricao, 
+                                        "epc","numeroop","cor","tamanho", "totalop"
+                                    from
+                                        "Reposicao".tags_separacao t
+                                    WHERE 
+                                        "codbarrastag" = %s ;
+                    """
+                    cursor = conn.cursor()
+                    cursor.execute(insert,
+                                   (codbarra,))
+                    conn.commit()
+                    cursor.close()
+
+
                 delete = 'Delete from "Reposicao"."tags_separacao" ' \
                          'where "codbarrastag" = %s;'
                 cursor = conn.cursor()
@@ -320,14 +352,25 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
                                    codbarra,))
                 conn.commit()
                 cursor.close()
-                uptadePedido = 'UPDATE "Reposicao".pedidossku' \
-                               ' SET necessidade= %s ' \
-                               'where "produto" = %s and codpedido= %s and endereco = %s ;'
+                uptadePedido = """  UPDATE 
+                                        "Reposicao".pedidossku
+                                    SET 
+                                        necessidade= %s
+                                    where 
+                                        "produto" = %s 
+                                        and codpedido= %s and endereco = %s ;"""
                 Necessidade = Necessidade + 1
                 cursor = conn.cursor()
-                cursor.execute(uptadePedido
+
+                if endereco != "Veio Da Fila":
+                    cursor.execute(uptadePedido
                                , (
                                    Necessidade, Reduzido, codpedido, enderecoApi))
+                else:
+                    cursor.execute(uptadePedido
+                                   , (
+                                       Necessidade, Reduzido, codpedido, 'Não Reposto'))
+
                 conn.commit()
                 cursor.close()
 
@@ -531,7 +574,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 SELECT 
                     "codbarrastag", 
                     "codreduzido" AS codreduzido, 
-                    codpedido 
+                    codpedido, "Endereco" 
                 FROM 
                     "Reposicao".tags_separacao f
                 WHERE 
@@ -578,7 +621,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisa3['codreduzido'][0]))
 
 
-            return 32, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 32, 32
+            return 32, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 32, pesquisaSeparacao['Endereco'][0]
 
         elif not pesquisa3.empty and not pesquisaSeparacao.empty and codpedido != pesquisaSeparacao['codpedido'][0]:
             # 2.2 - Caso a tag seja encontrada na separacao e na fila, faz um UPDATE no pedido na separacao
@@ -587,7 +630,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                 'WHERE codpedido = %s AND produto = %s', conn, params=(codpedido, pesquisa3['codreduzido'][0]))
 
 
-            return 32, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 32, 32
+            return 32, pesquisa3['codreduzido'][0], pesquisa4['necessidade'][0], 32, pesquisaSeparacao['Endereco'][0]
 
         else:
             pesquisarInventario = pd.read_sql(
