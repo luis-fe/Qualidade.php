@@ -481,7 +481,6 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
 
 
         if tamanhoPesquisa2 == 1:
-            conn.close()
             return 1, reduzido, pesquisaPedidoSKU1['necessidade'][0], pesquisaPedidoSKU1['valorunitarioliq'][0], pesquisaTagReposicao['Endereco'][0]
 
         elif tamanhoPesquisa2 > 1:
