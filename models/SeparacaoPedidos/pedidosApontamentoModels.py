@@ -318,10 +318,9 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
                 else:
                     select_codBarrasTag = f"""
                                     SELECT 
-                                        "codbarrastag", "codreduzido", "engenharia", descricao, 
-                                        "epc","numeroop","cor","tamanho", "totalop"
+                                        "codbarrastag"
                                     from
-                                        "Reposicao".tags_separacao t
+                                        "Reposicao".filareposicaoportag t
                                     WHERE 
                                         "codbarrastag" = '{codbarra}'
                     """
