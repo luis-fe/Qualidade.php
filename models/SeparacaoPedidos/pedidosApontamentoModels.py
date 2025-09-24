@@ -318,7 +318,7 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
                 else:
                     insert = """
                             insert into 
-                                "Reposicao".filareposicaotag (
+                                "Reposicao".filareposicaoportag (
                                                                 codbarrastag ,
                                                                 codreduzido ,
                                                                 engenharia ,
