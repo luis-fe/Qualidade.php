@@ -537,6 +537,9 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                     codbarrastag = %s 
             """, conn, params=(codbarra,))
 
+
+        print(f'codpedido{codpedido}: dataframe pesquisaFila {pesquisa3}, dataframe: pesquisaSeparacao{pesquisaSeparacao}')
+
         if (not pesquisa3.empty) and (pesquisaSeparacao.empty):
             # 2.1 - Caso a tag seja encontrada na fila mas nao na separacao
             pesquisa4 = pd.read_sql(
