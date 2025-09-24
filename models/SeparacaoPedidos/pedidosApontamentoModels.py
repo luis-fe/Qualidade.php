@@ -462,7 +462,14 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
 
     # ETAPA 1. Verificar se o codigobarra veio da Reposição ou se veio da Fila/Inventario
     pesquisaTagReposicao = pd.read_sql(
-        'SELECT "codbarrastag", "codreduzido", "Endereco" FROM "Reposicao".tagsreposicao f WHERE codbarrastag = %s',
+        """
+            SELECT 
+                "codbarrastag", 
+                "codreduzido", 
+                "Endereco" 
+            FROM 
+                "Reposicao".tagsreposicao f WHERE codbarrastag = %s
+        """,
         conn, params=(codbarra,))
 
     # ETAPA 1.1 Nesse caso o codigo veio normal da Reposicao
@@ -530,7 +537,7 @@ def VerificacoesApontamento(codbarra, codpedido, enderecoAPI):
                     codbarrastag = %s 
             """, conn, params=(codbarra,))
 
-        if not pesquisa3.empty and pesquisaSeparacao.empty:
+        if (not pesquisa3.empty) and (pesquisaSeparacao.empty):
             # 2.1 - Caso a tag seja encontrada na fila mas nao na separacao
             pesquisa4 = pd.read_sql(
                 """
