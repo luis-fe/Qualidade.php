@@ -430,17 +430,23 @@ def ApontamentoTagPedido(codusuario, codpedido, codbarra, datahora, enderecoApi,
 
     elif validacao == 4:
         conn = ConexaoPostgreMPL.conexao()
-        insert = 'INSERT INTO "Reposicao".tags_separacao ("usuario", "codbarrastag", "codreduzido", "Endereco", ' \
-                 '"engenharia", "DataReposicao", "descricao", "epc", "StatusEndereco", ' \
-                 '"numeroop", "cor", "tamanho", "totalop", "codpedido","dataseparacao") ' \
-                 'SELECT %s, "codbarrastag", "codreduzido", "Endereco", "engenharia", ' \
-                 '"DataReposicao", "descricao", "epc", %s, "numeroop", "cor", "tamanho", "totalop", ' \
-                 "%s, %s " \
-                 'FROM "Reposicao".tagsreposicao_inventario t ' \
-                 'WHERE "codbarrastag" = %s;'
+        insert = """
+                    INSERT INTO 
+                            "Reposicao".tags_separacao (
+                                                        "usuario", "codbarrastag", "codreduzido", "Endereco",
+                                                        "engenharia", "DataReposicao", "descricao", "epc", "StatusEndereco", 
+                                                        "numeroop", "cor", "tamanho", "totalop", "codpedido","dataseparacao"
+                                                        )
+                                SELECT 
+                                    %s, "codbarrastag", "codreduzido", "Endereco", "engenharia", 
+                                    "DataReposicao", "descricao", "epc", %s, "numeroop", "cor", "tamanho", "totalop", %s, %s 
+                                FROM 
+                                    "Reposicao".tagsreposicao_inventario t 
+                                WHERE 
+                                    "codbarrastag" = %s; """
 
         cursor = conn.cursor()
-        cursor.execute(insert, (codusuario,'Veio Do Inventario',datahora, 'tagSeparado', str(codpedido), datahora, codbarra))
+        cursor.execute(insert, (codusuario,'Veio Do Inventario', str(codpedido), datahora, codbarra))
         conn.commit()
         cursor.close()
         delete = 'Delete from "Reposicao"."tagsreposicao_inventario" ' \
