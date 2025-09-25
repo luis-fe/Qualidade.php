@@ -739,7 +739,9 @@ const PeriodoVendasPlano = async () => {
             finalVenda: data[0]['04- Final Venda'],
             inicioFaturamento: data[0]['05- Inicio Faturamento'],
             finalFaturamento: data[0]['06- Final Faturamento'],
-            metaFinanceira: data[0]['12-metaFinanceira']
+            metaFinanceira: data[0]['12-metaFinanceira'],
+            metaPcs: data[0]['13-metaPecas']
+
         };
 
 
