@@ -1788,3 +1788,17 @@ async function registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, 
     }
     
 }
+
+
+function formatarInteiro(valor) {
+    // Garante que seja número inteiro
+    const numero = parseInt(valor);
+
+    // Verifica se a conversão foi bem-sucedida
+    if (isNaN(numero)) {
+        return "Valor inválido";
+    }
+
+    // Formata como número inteiro no padrão pt-BR
+    return numero.toLocaleString("pt-BR");
+}
