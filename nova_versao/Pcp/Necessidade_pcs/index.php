@@ -370,7 +370,57 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
+<div 
+    id="informacoes-container" 
+    class="mt-3 div-informacoes mx-auto p-3 border border-dark rounded d-none" 
+    style="width: 60%; max-height: 80vh; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
+    
+    <form>
+        <!-- Botão fechar -->
+        <button 
+            type="button" 
+            onclick="fecharInformacoes()" 
+            class="btn-close position-absolute top-0 end-0 m-2" 
+            aria-label="Fechar">
+        </button> 
 
+        <p class="fs-4 fw-bold text-dark">INFORMAÇÕES</p> 
+
+
+
+        <div class="mb-4 col-12" id="informacaoAtualizacao"> 
+            <h6 class="fw-bold text-white bg-dark p-1">Atualização da Tendência</h6> 
+            <div class="row"> 
+            <h6>Cálculado no dia*: </h6>      
+            <p><small><em>*A tendência é calculada manualmente pelo usuário e é utilizada para projetar cenários desejados de tendência de vendas no PCP</em></small></p>
+
+            </div> 
+        </div> 
+
+        <div class="mb-4 col-12" id="informacaoSincronia"> 
+            <h6 class="fw-bold text-white bg-dark p-1">Sincronia de Dados com ERP</h6> 
+            <div class="row"> 
+            <h6>Informativo de Vendas*: </h6>
+            <p><small><em>* Sincroniza com o ERP os dados de vendas e faturamento, necessarios as análises dessa plataforma.</em></small></p>
+            <h6>Estrutura da Materia Prima por Produto**: </h6>
+            <p><small><em>** Sincroniza com o ERP os dados de Estrutura de Produto x Componentes Cadastrados, necessarios as análises dessa plataforma.</em></small></p>
+            </div> 
+        </div> 
+
+        
+        <div class="mb-4 col-12" id="informacaoHistoricoAtualizacoes"> 
+            <h6 class="fw-bold text-white bg-dark p-1">Historico de Simulacoes projetadas </h6> 
+            <div class="row"> 
+            <h6>Lista de Simulacoes </h6>
+            </div> 
+        </div> 
+
+        
+
+
+
+    </form> 
+</div>
 
 
 

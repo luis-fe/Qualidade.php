@@ -269,7 +269,7 @@ async function Simular_Programacao(simulacao) {
         const respostaCalculo = await Consulta_Ultimo_CalculoTendencia();
 
 
-$('#titulo').html(`
+        $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
                 <div>
                     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
@@ -322,6 +322,7 @@ $('#titulo').html(`
 </div>
 
           `);
+          
             $('#btn-informacoes').on('click', function () {
     
         $('.div-informacoes').removeClass('d-none');
