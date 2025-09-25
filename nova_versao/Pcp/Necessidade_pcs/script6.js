@@ -267,6 +267,7 @@ async function Simular_Programacao(simulacao) {
 
         $('#titulo').html(`
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
+                
                 <div>
                     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
                     Necessidade x Pçs a Programar
@@ -278,6 +279,7 @@ async function Simular_Programacao(simulacao) {
                         </button>
                     </span>
                 </div>
+                
                 <div class="d-flex flex-column text-end periodo-vendas p-0 m-0 ms-3">
                     <div>
                         <i class="bi bi-calendar3 me-1"></i>
@@ -288,34 +290,39 @@ async function Simular_Programacao(simulacao) {
                         <span>Período Fatura.: <strong>${respostaPeriodoVendas.inicioFaturamento} à ${respostaPeriodoVendas.finalFaturamento}</strong></span>
                     </div>
                 </div>
-    <!-- Novo Card -->
-    <div class="card border rounded me-1" style="width: 190px;">
-      <div class="card-body p-0">
-            <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
-            <p class="card-text m-0">
-            <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
-            </p>
-        </div>
-    </div>
+    
+                <!-- Novo Card -->
+                <div class="card border rounded me-1" style="width: 190px;">
+                    <div class="card-body p-0">
+                            <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta R$</h5>
+                            <p class="card-text m-0">
+                            <strong>${respostaPeriodoVendas.metaFinanceira}</strong>
+                            </p>
+                    </div>
+                </div>
+
+                <div class="card border rounded me-1" style="width: 190px;">
+                    <div class="card-body p-0">
+                        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta Pçs</h5>
+                        <p class="card-text m-0">
+                        <strong>${respostaPeriodoVendas.metaPcs}</strong>
+                        </p>
+                </div>
+
+                </div>
+                    <div id="btn-informacoes" class="card border rounded me-1" style="width: 190px; cursor: pointer;"> 
+                        <div> 
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>Informações</strong> 
+                        </div> 
+                    </div>
+
+                </div>
 
   
-    </div>
-    <div class="card border rounded me-1" style="width: 190px;">
-      <div class="card-body p-0">
-        <h5 class="card-title bg-primary text-white p-0 m-0 text-center">Meta Pçs</h5>
-        <p class="card-text m-0">
-          <strong>${respostaPeriodoVendas.metaPcs}</strong>
-        </p>
-      </div>
-    </div>
-        <div id="btn-informacoes" class="card border rounded me-1" style="width: 190px; cursor: pointer;"> 
-            <div> 
-                <i class="bi bi-info-circle"></i> 
-                <strong>Informações</strong> 
-            </div> 
-        </div>
+            </div>
+    
 
-</div>
 
           `);
 
