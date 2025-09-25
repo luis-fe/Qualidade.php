@@ -254,10 +254,7 @@ async function Simular_Programacao(simulacao) {
             contentType: 'application/json',
             data: JSON.stringify(requestData),
         });
-        if (response === null) {
 
-        } else {
-            TabelaAnalise(response);
         const respostaPeriodoVendas = await PeriodoVendasPlano();
         respostaPeriodoVendas.inicioVenda = formatarDataBrasileira(respostaPeriodoVendas.inicioVenda);
         respostaPeriodoVendas.finalVenda = formatarDataBrasileira(respostaPeriodoVendas.finalVenda);
@@ -273,7 +270,7 @@ async function Simular_Programacao(simulacao) {
             <div class="d-flex justify-content-between align-items-start w-100 p-0 m-0">
                 <div>
                     <span class="span-icone"><i class="bi bi-clipboard-data-fill"></i></span> 
-                    Tendência de Vendas
+                    Necessidade x Pçs a Programar
                     <span style="display: inline-block; position: relative;">
                         <strong>${simulacao}</strong>
                         <button onclick="Consulta_Tendencias()" 
@@ -322,7 +319,7 @@ async function Simular_Programacao(simulacao) {
 </div>
 
           `);
-          
+
             $('#btn-informacoes').on('click', function () {
     
         $('.div-informacoes').removeClass('d-none');
@@ -339,7 +336,9 @@ async function Simular_Programacao(simulacao) {
         `<i class="bi bi-database"></i> Estrutura da Materia Prima por Produto:<strong>${respostaCalculo.data_horaEstruturaMP}</strong>`
         );
     
-    });   }
+    });
+
+    TabelaAnalise(response);
 
     } catch (error) {
         console.error('Erro na solicitação AJAX:', error);
@@ -1834,3 +1833,7 @@ const Consulta_Ultimo_CalculoTendencia = async () => {
 
     }
 };
+
+function fecharInformacoes() {
+    document.getElementById("informacoes-container").classList.add("d-none");
+}
