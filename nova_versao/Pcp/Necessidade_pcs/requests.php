@@ -44,6 +44,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Categorias':
                     jsonResponse(ConsultaCategorias('1'));
                     break;
+                case 'Consulta_Ultimo_CalculoTendencia':
+                    $plano = isset($_GET['plano']) ? $_GET['plano'] : null;
+                    jsonResponse(Consulta_Ultimo_CalculoTendencia('1', $plano));
+                    break;
                 case 'consultarInformacoesPlano':
                     $plano = $_GET['plano'];
                     $empresa = $_GET['empresa'];
@@ -578,6 +582,29 @@ function atualizaInserirSimulacaoProdutos($dados)
         $error = curl_error($ch);
         error_log("Erro na solicitação cURL: {$error}");
         return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function Consulta_Ultimo_CalculoTendencia($empresa, $plano)
+{
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.191:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/obtendoUltimaTendencia_porPlano?codPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
     }
 
     curl_close($ch);

@@ -1802,3 +1802,32 @@ function formatarInteiro(valor) {
     // Formata como número inteiro no padrão pt-BR
     return numero.toLocaleString("pt-BR");
 }
+
+
+const Consulta_Ultimo_CalculoTendencia = async () => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consulta_Ultimo_CalculoTendencia',
+                plano: $('#select-plano').val()
+            }
+        });
+        return {
+            status: data[0]['status'],
+            mensagem: data[0]['Mensagem'],
+            dataHora: data[0]['dataHora'],
+            dataHoraPedidos: data[0]['dataHoraPedidos'],
+            data_horaEstruturaMP: data[0]['data_horaEstruturaMP'],
+ 
+        };
+
+
+    } catch (error) {
+        console.error('Erro ao consultar planos:', error);
+        return null; // ou algum valor padrão indicando erro
+
+    }
+};
