@@ -1103,7 +1103,7 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
 
-            const colunasSoma = [1];
+            const colunasSoma = [2];
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());

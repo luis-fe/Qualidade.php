@@ -386,7 +386,7 @@ include_once('../../../templates/headerGestao.php');
 
             <!-- Tabela por Categoria (inicialmente oculta) -->
             <table class="table table-bordered table-striped" id="table-resumo-filacategoria" style="width: 100%; display: none;">
-                    <thead>
+                    <thead id = 'CabecalhoModal'>
                         <tr>
                             <th>Fase Atual<br></th>
                             <th>Categoria<input type="search" class="search-input search-input-resumo-fila" style="min-width: 150px;"></th>
