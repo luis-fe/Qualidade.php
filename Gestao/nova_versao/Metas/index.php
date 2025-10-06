@@ -364,7 +364,7 @@ include_once('../../../templates/headerGestao.php');
 
             <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="max-height: 800px; overflow: auto">
+            <div class="modal-body" style="max-height: 1100px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-resumo-fila" style="width: 100%;">
                     <thead id = 'CabecalhoModal'>
                         <tr>
@@ -389,7 +389,7 @@ include_once('../../../templates/headerGestao.php');
                     <thead>
                         <tr>
                             <th>Fase Atual<br></th>
-                            <th>Categoria</th><input type="search" class="search-input search-input-resumo-fila" style="min-width: 150px;"></th>
+                            <th>Categoria<input type="search" class="search-input search-input-resumo-fila" style="min-width: 150px;"></th>
                             <th>Fila</th>
                         </tr>
                     </thead>
