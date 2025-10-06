@@ -1110,6 +1110,12 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
             });
         }
     });
+
+        $('.search-input-resumo-fila').on('input', function () {
+        tabela.column($(this).closest('th').index()).search($(this).val()).draw();
+    });
+
+
     $('#table-resumo-filacategoria').on('click', '.cargaClicado', function (event) {
         event.preventDefault();
         event.stopPropagation();
