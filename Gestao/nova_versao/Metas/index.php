@@ -321,13 +321,13 @@ include_once('../../../templates/headerGestao.php');
 
 
 <div class="modal fade modal-custom" id="modal-previsao-categorias" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered w-100 m-0">
+    <div class="modal-dialog modal-dialog w-100 m-0">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="color: black;">Previsão</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="max-height: 500px; overflow: auto">
+            <div class="modal-body" style="max-height: 900px; overflow: auto">
                 <table class="table table-bordered table-striped" id="table-previsao-categorias" style="width: 100%;">
                     <thead id = 'CabecalhoModal'>
                         <tr>
