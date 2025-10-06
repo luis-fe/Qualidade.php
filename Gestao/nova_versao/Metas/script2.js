@@ -269,9 +269,6 @@ const ConsultaFilaResumoCategoria = async (Fase, Plano) => {
 
        Tabela_fila_faseCategoria(response);
        console.log(response)
-       // Atualiza o título do modal com a fase
-      await $('#titulo-fila').text(`Resumo da Fila : ${Fase}`);
-           $('#modal-resumo-fila').modal('show');
 
    } catch (error) {
        console.error('Erro no detalha fila_fase:', error);
@@ -1113,7 +1110,7 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
             });
         }
     });
-    $('#table-resumo-fila').on('click', '.cargaClicado', function (event) {
+    $('#table-resumo-filacategoria').on('click', '.cargaClicado', function (event) {
         event.preventDefault();
         event.stopPropagation();
         const Plano = $('#select-plano').val();
@@ -1123,13 +1120,13 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
 
     $('#btn-fase').on('click', function () {
         $('#table-resumo-fila').show();
-        $('#table-resumo-categoria').hide();
+        $('#table-resumo-filacategoria').hide();
         $('#titulo-fila').text('Resumo da Fila por Fase');
     });
     
     $('#btn-categoria').on('click', function () {
         $('#table-resumo-fila').hide();
-        $('#table-resumo-categoria').show();
+        $('#table-resumo-filacategoria').show();
         $('#titulo-fila').text('Resumo da Fila por Categoria');
     });
 
