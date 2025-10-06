@@ -388,7 +388,8 @@ include_once('../../../templates/headerGestao.php');
             <table class="table table-bordered table-striped" id="table-resumo-categoria" style="width: 100%; display: none;">
                     <thead>
                         <tr>
-                            <th>Categoria</th>
+                            <th>Fase Atual<br></th>
+                            <th>Categoria</th><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
                             <th>Fila</th>
                         </tr>
                     </thead>
