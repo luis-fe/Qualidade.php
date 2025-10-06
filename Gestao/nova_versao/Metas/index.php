@@ -385,7 +385,7 @@ include_once('../../../templates/headerGestao.php');
 
 
             <!-- Tabela por Categoria (inicialmente oculta) -->
-            <table class="table table-bordered table-striped" id="table-resumo-categoria" style="width: 100%; display: none;">
+            <table class="table table-bordered table-striped" id="table-resumo-filacategoria" style="width: 100%; display: none;">
                     <thead>
                         <tr>
                             <th>Fase Atual<br></th>

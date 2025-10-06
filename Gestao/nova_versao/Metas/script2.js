@@ -242,6 +242,45 @@ const Consulta_fila_fase = async (Fase, Plano) => {
    }
 }
 
+const ConsultaFilaResumoCategoria = async (Fase, Plano) => {
+
+    $('#loadingModal').modal('show');
+
+    try {
+        const requestData = {
+            acao: "ConsultaFilaResumoCategoria",
+            dados: {
+                codigoPlano: Plano,
+                arrayCodLoteCsw: [$('#select-lote').val()],
+                nomeFase: Fase,
+                ArrayTipoProducao: TiposOpsSelecionados.length > 0 ? TiposOpsSelecionados : []
+            }
+        };
+
+       const response = await $.ajax({
+           type: 'POST',
+           url: 'requests.php',
+           contentType: 'application/json',
+           dataType: 'json',
+           data: JSON.stringify(requestData)
+       });
+       
+
+
+       Tabela_fila_faseCategoria(response);
+       console.log(response)
+       // Atualiza o título do modal com a fase
+      await $('#titulo-fila').text(`Resumo da Fila : ${Fase}`);
+           $('#modal-resumo-fila').modal('show');
+
+   } catch (error) {
+       console.error('Erro no detalha fila_fase:', error);
+   } finally {
+       $('#loadingModal').modal('hide');
+   }
+}
+
+
 const Consulta_Lotes = async () => {
     try {
         $('#loadingModal').modal('show');
@@ -575,6 +614,8 @@ function TabelaMetas(listaMetas) {
         const Plano = $('#select-plano').val();
         const Fase = $(this).attr('data-fase'); 
         Consulta_fila_fase(Fase, Plano);
+        ConsultaFilaResumoCategoria(Fase, Plano);
+
     });
     
 }
@@ -1017,6 +1058,82 @@ function Tabela_fila_fase(dadosFiltrados) {
 
 }
 
+
+function Tabela_fila_faseCategoria(dadosFiltrados) {
+    if ($.fn.DataTable.isDataTable('#table-resumo-filacategoria')) {
+        $('#table-resumo-filacategoria').DataTable().destroy();
+    }
+
+    const tabela = $('#table-resumo-filacategoria').DataTable({
+        searching: true,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        pageLength: 10,
+        data: dadosFiltrados,
+        columns: [
+            { data: 'faseAtual' },
+            { data: 'categoria' },
+            {
+                data: 'Fila',
+                type: 'num-formatted',
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return `<span class="cargaClicado" data-Fase="${row.faseAtual}" style="text-decoration: underline; color:rgb(0, 68, 255); cursor: pointer;">
+                                    ${parseInt(data).toLocaleString()}
+                                </span>`;
+                    }
+                    // Para ordenação e filtro, retorna o valor puro
+                    return parseInt(data);
+                }
+            }
+            
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
+
+            function somaColuna(index) {
+                return api.column(index, { page: 'current' }).data()
+                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+            }
+
+            const colunasSoma = [1];
+            colunasSoma.forEach(i => {
+                const valor = somaColuna(i);
+                $(api.column(i).footer()).html(valor.toLocaleString());
+            });
+        }
+    });
+    $('#table-resumo-fila').on('click', '.cargaClicado', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const Plano = $('#select-plano').val();
+        const Fase = $(this).attr('data-fase'); 
+        Consulta_cargaOP_fase(Fase, Plano);
+    });
+
+    $('#btn-fase').on('click', function () {
+        $('#table-resumo-fila').show();
+        $('#table-resumo-categoria').hide();
+        $('#titulo-fila').text('Resumo da Fila por Fase');
+    });
+    
+    $('#btn-categoria').on('click', function () {
+        $('#table-resumo-fila').hide();
+        $('#table-resumo-categoria').show();
+        $('#titulo-fila').text('Resumo da Fila por Categoria');
+    });
+
+}
 
 
   
