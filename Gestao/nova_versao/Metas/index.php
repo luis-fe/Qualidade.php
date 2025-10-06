@@ -389,7 +389,7 @@ include_once('../../../templates/headerGestao.php');
                     <thead>
                         <tr>
                             <th>Fase Atual<br></th>
-                            <th>Categoria</th><input type="search" class="search-input search-input-metas" style="min-width: 150px;"></th>
+                            <th>Categoria</th><input type="search" class="search-input search-input-resumo-fila" style="min-width: 150px;"></th>
                             <th>Fila</th>
                         </tr>
                     </thead>
@@ -397,6 +397,7 @@ include_once('../../../templates/headerGestao.php');
                     <tfoot>
                         <tr>
                             <th>Total</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </tfoot>
