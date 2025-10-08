@@ -246,11 +246,11 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                 SELECT 
                     op.numeroop 
                 from 
-                    tco.OrdemProd op 
+                    tco.MovimentacaoOPFase op 
                 WHERE 
-                    op.codempresa = 1 and op.situacao = 2
-                    and op.datafim >= '"""+datainicial+"""' 
-                    and op.datafim <= '"""+ datafinal+"""' 
+                    op.codempresa = 1 and op.codfase in (441)
+                    and op.databaixa >= '"""+datainicial+"""' 
+                    and op.databaixa <= '"""+ datafinal+"""' 
                 ) 
                 """
 
