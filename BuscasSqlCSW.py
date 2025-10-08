@@ -174,7 +174,6 @@ def TagsSegundaQualidadePeriodo(datainicial, datafinal):
             tcr.TagBarrasProduto t
         WHERE 
             t.codEmpresa = 1 
-            and t.codNaturezaAtual in (7, 54, 53) 
             and t.numeroOP in
                 (
                 SELECT 
@@ -194,9 +193,17 @@ def TagsSegundaQualidadePeriodo(datainicial, datafinal):
 #18- SQL DE BUSCA DAo cadastro de motivos : velocidade 0,09 segundos (otimo)
 
 def Motivos():
-    motivos = ' SELECT codMotivo as motivo2Qualidade , nome, codOrigem,'\
- '(SELECT o.nome from tcp.OrgSegQualidade o WHERE o.empresa = 1 and o.codorigem = m.codorigem) as nomeOrigem'\
- ' FROM tcp.Mot2Qualidade m WHERE m.Empresa = 1 '
+    motivos = """
+    SELECT 
+        codMotivo as motivo2Qualidade , 
+        nome, 
+        codOrigem,
+        (SELECT o.nome from tcp.OrgSegQualidade o WHERE o.empresa = 1 and o.codorigem = m.codorigem) as nomeOrigem
+    FROM 
+        tcp.Mot2Qualidade m 
+    WHERE 
+        m.Empresa = 1 
+        """
 
     return motivos
 
@@ -235,11 +242,16 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                 INNER JOIN tco.OrdemProd op on
                     op.codempresa = r.empresa and op.numeroop = CONVERT(VARCHAR(10), R.codOP)
                 WHERE R.Empresa = 1 and r.situac = 2 and op.numeroop in
-                    (
-                    SELECT SUBSTRING(m.numDocto, 11,10) FROM est.Movimento m
-                        WHERE codEmpresa = 1 and m.dataLcto >= '"""+datainicial +"""' and m.dataLcto <= '"""+datafinal+"""' 
-                        and operacao1 = '+' and numDocto like 'OP%'
-                        AND codNatureza1 IN (5,7))
+                (
+                SELECT 
+                    op.numeroop 
+                from 
+                    tco.OrdemProd op 
+                WHERE 
+                    op.codempresa = 1 and op.situacao = 2
+                    and op.datafim >= '"""+datainicial+"""' 
+                    and op.datafim <= '"""+ datafinal+"""' 
+                ) 
                 """
 
     return opBaixadas
