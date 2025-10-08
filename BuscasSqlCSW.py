@@ -241,7 +241,7 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                     TCT.RemessaOPsDistribuicao R
                 INNER JOIN tco.OrdemProd op on
                     op.codempresa = r.empresa and op.numeroop = CONVERT(VARCHAR(10), R.codOP)
-                WHERE R.Empresa = 1 and r.situac = 2 and op.numeroop in
+                WHERE R.Empresa = 1 and r.situac = 2 and R.codFase in (429, 55) and op.numeroop in
                 (
                 SELECT 
                     op.numeroop 
