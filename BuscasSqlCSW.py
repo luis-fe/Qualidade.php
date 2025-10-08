@@ -229,7 +229,7 @@ def OpsBaixadas(datainicial, datafinal):
 #20- Sql Obter as OPs Baixadas por faccionista no Periodo: velocidade 1,70 segundos (otimo)
 
 def OpsBaixadasFaccionista(datainicial, datafinal):
-    opBaixadas = """  
+    opBaixadas = f"""  
                 SELECT 
                     CONVERT(VARCHAR(10), R.codOP) AS numeroOP2, 
                     CONVERT(VARCHAR(6), R.codOP) AS OPpai, 
@@ -248,9 +248,9 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                 from 
                     tco.MovimentacaoOPFase op 
                 WHERE 
-                    op.codempresa = 1 and op.codfase in (441)
-                    and op.databaixa >= '"""+datainicial+"""' 
-                    and op.databaixa <= '"""+ datafinal+"""' 
+                    op.codempresa = 1 and op.codfase = 441
+                    and op.databaixa >= '{datainicial}' 
+                    and op.databaixa <= '{datafinal}' 
                 ) 
                 """
 
