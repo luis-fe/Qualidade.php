@@ -163,12 +163,13 @@ def MovimentacoesOpsNodia():
 #17- SQL DE BUSCA DAS QUALIDADES DAS TAGS ENTRE DATAS no dia : velocidade 2,00 segundos (REGULAR)
 def TagsSegundaQualidadePeriodo(datainicial, datafinal):
 
-        detalhado =   """
+        detalhado =   f"""
         SELECT 
             codBarrasTag , 
             codReduzido , 
             codNaturezaAtual , 
             numeroOP , 
+            CONVERT(VARCHAR(6), numeroOP) as OPpai,
             motivo2Qualidade  
         FROM 
             tcr.TagBarrasProduto t
@@ -182,8 +183,8 @@ def TagsSegundaQualidadePeriodo(datainicial, datafinal):
                     tco.OrdemProd op 
                 WHERE 
                     op.codempresa = 1 and op.situacao = 2
-                    and op.datafim >= '"""+datainicial+"""' 
-                    and op.datafim <= '"""+ datafinal+"""' 
+                    and op.datafim >= '{datainicial}' 
+                    and op.datafim <= '{datafinal}' 
                 ) 
         and motivo2Qualidade > 0 and situacao <> 1
         """
