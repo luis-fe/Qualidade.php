@@ -241,16 +241,18 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                     TCT.RemessaOPsDistribuicao R
                 INNER JOIN tco.OrdemProd op on
                     op.codempresa = r.empresa and op.numeroop = CONVERT(VARCHAR(10), R.codOP)
-                WHERE R.Empresa = 1 and r.situac = 2 and op.numeroop in
+                WHERE R.Empresa = 1 and r.situac = 2 and op.CONVERT(VARCHAR(6), R.codOP) in
                 (
-                SELECT 
-                    op.numeroop 
-                from 
-                    tco.MovimentacaoOPFase op 
-                WHERE 
-                    op.codempresa = 1 and op.codfase = 429
-                    and op.databaixa >= '{datainicial}' 
-                    and op.databaixa <= '{datafinal}' 
+					SELECT 
+						SUBSTRING(m.numDocto, 11,6) 
+					FROM 
+						est.Movimento m      
+					WHERE 
+						codEmpresa = 1 
+						and m.dataLcto >= '{datainicial}' 
+						and m.dataLcto <= '{datafinal}'
+                        and operacao1 = '+' and numDocto like 'OP%'
+                        AND codNatureza1 IN (5,7)
                 )  and tiprem = 1 and r.codfase = 429
                 """
 
