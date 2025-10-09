@@ -183,8 +183,8 @@ def TagsSegundaQualidadePeriodo(datainicial, datafinal):
                     tco.MovimentacaoOPFase op 
                 WHERE 
                     op.codempresa = 1 and op.codfase in (429, 441, 449)
-                    and op.datafim >= '{datainicial}' 
-                    and op.datafim <= '{datafinal}' 
+                    and op.datamov >= '{datainicial}' 
+                    and op.datamov <= '{datafinal}' 
                 ) 
         and motivo2Qualidade > 0 and situacao <> 1
         """
