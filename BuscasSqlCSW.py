@@ -252,8 +252,8 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                             est.Movimento m      
                         WHERE 
                             codEmpresa = 1 
-                            and op.datafim >= '{datainicial}' 
-                            and op.datafim <= '{datafinal}' 
+                            and m.dataLcto >= '{datainicial}' 
+                            and m.dataLcto <= '{datafinal}' 
                             and operacao1 = '+' and numDocto like 'OP%'
                             AND codNatureza1 IN (5,7)
                     )  
