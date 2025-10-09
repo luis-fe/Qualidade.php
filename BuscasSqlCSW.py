@@ -180,9 +180,9 @@ def TagsSegundaQualidadePeriodo(datainicial, datafinal):
                 SELECT 
                     op.numeroop 
                 from 
-                    tco.OrdemProd op 
+                    tco.MovimentacaoOPFase op 
                 WHERE 
-                    op.codempresa = 1 and op.situacao = 2
+                    op.codempresa = 1 and op.codfase in (429, 441, 449)
                     and op.datafim >= '{datainicial}' 
                     and op.datafim <= '{datafinal}' 
                 ) 
