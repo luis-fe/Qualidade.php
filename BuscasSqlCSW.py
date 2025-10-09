@@ -244,7 +244,7 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                 WHERE 
                     R.Empresa = 1 
                     and r.situac = 2 
-                    and op.CONVERT(VARCHAR(6), R.codOP) in
+                    and CONVERT(VARCHAR(6), R.codOP) in
                     (
                         SELECT 
                             SUBSTRING(m.numDocto, 11,6) 
@@ -252,8 +252,8 @@ def OpsBaixadasFaccionista(datainicial, datafinal):
                             est.Movimento m      
                         WHERE 
                             codEmpresa = 1 
-                            and op.datafim >= '"""+datainicial+"""' 
-                            and op.datafim <= '"""+ datafinal+"""' 
+                            and op.datafim >= '{datainicial}' 
+                            and op.datafim <= '{datafinal}' 
                             and operacao1 = '+' and numDocto like 'OP%'
                             AND codNatureza1 IN (5,7)
                     )  
