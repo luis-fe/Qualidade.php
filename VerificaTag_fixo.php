@@ -72,8 +72,8 @@ include_once("Wms/src/VerificaTag/requests.php");
 <body>
     
     <div class="h-100">
-                    <div class="sidebar-logo">
-                        <a href="#">Wms Mpl</a>
+                    <div class="sidebar-logo bg-primary" >
+                        <a>Wms Mpl - Consulta Pedido por Tags</a>
                     </div>
     <div class="container-fluid" id="form-container">
         <div class="Corpo auto-height" style="min-height: 75vh; align-items: center">
