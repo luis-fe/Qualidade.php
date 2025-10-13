@@ -90,6 +90,9 @@ include_once("Wms/src/VerificaTag/requests.php");
         const Consultar_Tags = async () => {
             $('#loadingModal').modal('show');
 
+            // 🕐 Dá um tempinho pro modal aparecer antes da consulta
+            await new Promise(resolve => setTimeout(resolve, 100));
+
             try {
                 const response = await $.ajax({
                     type: 'GET',
@@ -111,12 +114,11 @@ include_once("Wms/src/VerificaTag/requests.php");
             } catch (error) {
                 console.error('Erro:', error);
                 alert('Erro ao consultar tags. Verifique o console para mais detalhes.');
-                $('#loadingModal').modal('hide');
-
             } finally {
                 $('#loadingModal').modal('hide');
             }
         };
+
 
         $('#tag').on('keypress', function(event) {
             if (event.key === 'Enter') {
