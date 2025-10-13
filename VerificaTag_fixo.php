@@ -70,7 +70,6 @@ include_once("Wms/src/VerificaTag/requests.php");
 </style>
 <link rel="stylesheet" href="style.css">
 <body>
-    
     <div class="h-100">
                     <div class="sidebar-logo bg-primary" >
                         <a>Wms Mpl - Consulta Pedido por Tags</a>
