@@ -1,0 +1,107 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #d4d4d4;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    width: 500px;
+    margin-top: -100px;
+}
+
+.image{ 
+    text-align: center;
+}
+
+.image img {
+    width: 50%;
+    height: auto;
+    
+}
+
+.Login {
+    padding: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+}
+
+.Inputs {
+    position: relative;
+    margin-bottom: 20px;
+
+}
+
+.bi.bi-person-fill,
+.bi.bi-key-fill {
+    font-size: 30px;
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    left: 10px;
+    color: #004186;
+}
+
+input {
+    width: calc(100% - 55px);
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    padding-left: 40px;
+    font-size: 20px;
+    
+}
+
+input::placeholder{
+    color: black;
+}
+
+.input-login {
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.bi.bi-eye-fill,
+.bi.bi-eye-slash-fill {
+    font-size: 30px;
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    right: 10px;
+    color: #004186;
+    cursor: pointer;
+}
+
+.bi.bi-eye-slash-fill{
+    display: none;
+}
+

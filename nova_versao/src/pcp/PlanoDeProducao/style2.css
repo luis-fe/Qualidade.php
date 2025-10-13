@@ -1,0 +1,74 @@
+
+
+.select-container {
+    width: 300px;
+}
+
+.btn-opcoes {
+    padding: 10px;
+    margin: 0 15px;
+    border-radius: 10px;
+    border: none;
+    background-color: gray;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: background-color 0.3s, transform 0.1s; /* Transições suaves */
+}
+
+.btn-opcoes:hover {
+    background-color: #002955; /* Cor ao passar o mouse */
+    color: white;
+}
+
+.btn-opcoes:active {
+    transform: scale(0.95); /* Efeito de clique */
+}
+
+.btn-opcoes .icon {
+    font-size: 15px;
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+}
+
+
+.select2-container .select2-selection--single {
+    padding: 10px 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    height: auto;
+    min-height: 45px;
+    margin-top: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; 
+    transition: background-color 0.3s, transform 0.1s; /* Transições suaves */
+}
+
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    margin-top: 15px;
+    min-height: 20px;
+}
+
+.select2-results__option {
+    padding: 10px;
+}
+
+.select2-container .select2-selection--single {
+    font-size: 15px; /* Tamanho da fonte para o campo de seleção */
+}
+.select2-dropdown {
+    font-size: 15px; /* Tamanho da fonte para as opções do dropdown */
+}
+
+/* Estilizando o campo de pesquisa */
+.select2-search__field::placeholder {
+    color: #999;
+    font-size: 14px;
+}
+
+
+

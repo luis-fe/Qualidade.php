@@ -1,0 +1,101 @@
+.container{
+    background-color: var(--cor4);
+}
+.dados {
+    margin-top: 20px;
+    padding: 15px; /* Espaçamento interno */
+    border-radius: 8px; /* Cantos arredondados */
+}
+
+.dados label {
+    font-size: 28px;
+    font-weight: bold;
+    color: black;
+    margin-right: 25px;
+}
+
+#Ops,
+#Pcs {
+    font-size: 28px;
+    color: black;
+}
+
+
+.Pesquisa {
+    margin-bottom: 20px;
+}
+
+#pesquisar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.container2 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: var(--cor4);
+}
+
+.left-container,
+.right-container {
+    width: 50%;
+    flex: 1;
+}
+
+.button {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+}
+
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.button div {
+    margin-bottom: 10px;
+}
+
+.button div strong {
+    font-size: 18px;
+}
+
+.button .details {
+    display: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.button:hover .details {
+    display: block;
+    margin-top: 20px;
+    border-top: 1px solid #fff;
+    padding-top: 10px;
+}
+
+
+.statusDiv{
+    margin-top: -100px;
+}
+
+@media screen and (max-width: 1000px) {
+
+    .button{
+        flex-direction: column;
+    }
+
+    .statusDiv{
+        margin-top: 0;
+    }
+}

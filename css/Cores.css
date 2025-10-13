@@ -1,0 +1,9 @@
+:root {
+    --corBase: #0e2238;
+    --corSecundaria: #3b7ddd;
+    --branco: white;
+    --Preto: black;
+    --corFundoTabela: rgb(173, 215, 252);
+    --corFundo: rgb(205, 203, 203);
+    justify-content: space-around;
+}

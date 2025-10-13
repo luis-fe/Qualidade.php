@@ -1,0 +1,337 @@
+.accordion {
+    width: 80%;
+    margin: 0px auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.accordion h3 {
+    background-color: lightgray;
+    color: black;
+    margin: 0;
+    padding: 15px;
+    font-size: 16px;
+    border-bottom: 1px solid white;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid lightgray;
+}
+
+.accordion .ui-accordion-content {
+    background-color: white;
+    border-radius: 0 0 5px 5px;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+}
+
+.accordion h3.ui-state-active {
+    background-color: lightgray;
+}
+
+.inner-accordion h3.ui-state-active {
+    background-color: lightgray;
+    color: black;
+}
+
+.accordion h3:hover {
+    cursor: pointer;
+    background-color: lightgray;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.dropdown {
+    margin-top: 15px;
+}
+
+.inner-accordion {
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .accordion {
+        width: 95%;
+    }
+
+    .form-group,
+    .dropdown {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group .form-control {
+    border: 1px solid #007bff;
+    border-radius: 5px 0 0 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-group .btn {
+    border-radius: 0 5px 5px 0;
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-group .btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+table.dataTable {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    font-size: 14px;
+    padding: 5px;
+    font-weight: 600;
+}
+
+table.dataTable thead {
+    background-color: #002955;
+    color: white;
+    font-size: 15px;
+}
+
+table.dataTable thead th {
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid gray;
+}
+
+.table.dataTable th,
+.table.dataTable td {
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid #dee2e6;
+}
+
+
+table.dataTable td {
+    padding: 7px;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: lightblue;
+}
+
+table.dataTable tbody td {
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 20px;
+    text-align: right;
+    background-color: red;
+}
+
+#itemCountContainer .paginate_button,
+#itemCountContainer-ops .paginate_button,
+#itemCountContainer-sem-ops .paginate_button,
+#itemCountContainer-lista-pedidos .paginate_button {
+    padding: 5px 8px;
+    margin: 0 0px;
+    background: #007bff;
+    color: #002955;
+    background-color: white;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-right: 0.5px solid gray;
+    border-left: 0.5px solid gray;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#itemCountContainer .paginate_button.previous,
+#itemCountContainer-ops .paginate_button.previous,
+#itemCountContainer-sem-ops .paginate_button.previous,
+#itemCountContainer-lista-pedidos .paginate_button.previous {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left: 1px solid gray;
+}
+
+#itemCountContainer .paginate_button.next,
+#itemCountContainer-ops .paginate_button.next,
+#itemCountContainer-sem-ops .paginate_button.next,
+#itemCountContainer-lista-pedidos .paginate_button.next {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-right: 1px solid gray;
+}
+
+#itemCountContainer .paginate_button:hover,
+#itemCountContainer-ops .paginate_button:hover,
+#itemCountContainer-sem-ops .paginate_button:hover,
+#itemCountContainer-lista-pedidos .paginate_button:hover {
+    background: #002955;
+    color: white;
+    /* Cor do botão ao passar o mouse */
+}
+
+#itemCountContainer .paginate_button.current,
+#itemCountContainer-ops .paginate_button.current,
+#itemCountContainer-sem-ops .paginate_button.current,
+#itemCountContainer-lista-pedidos .paginate_button.current {
+    background: #002955;
+    color: white;
+}
+
+
+.search-row input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.pagination-container-pedidos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+#itemCount {
+    width: 60px;
+    display: inline-block;
+    border-radius: 15px;
+    border: 1px solid gray;
+    font-size: 13px;
+}
+
+.search {
+    margin-top: -10px;
+    border-radius: 15px;
+    padding: 1px 10px;
+}
+
+.dataTables_filter {
+    display: none;
+}
+
+.div-tabela input:focus {
+    outline: none;
+}
+
+.btn-close-custom {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: darkred;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.btn-close-custom::before,
+.btn-close-custom::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 70%;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.btn-close-custom::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.Informacoes {
+    margin: 20px auto;
+    padding: 15px;
+    width: 80%;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Informacoes label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+
+#TabelaGrades {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed; /* Garante que as colunas tenham largura fixa */
+}
+
+#TabelaGrades th, #TabelaGrades td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+
+#TabelaGrades th {
+    background-color: #004186;
+    color: white;
+    font-weight: bold;
+}
+
+#TabelaGrades td {
+    background-color: #f9f9f9;
+}
+
+#TabelaGrades td:nth-child(even) {
+    background-color: #f1f1f1; /* Alterna cores das células para melhor legibilidade */
+}
+
+/* Cores de fundo para cada tipo de quantidade */
+#TabelaGrades td[style*="background-color: white"] {
+    background-color: white;
+}
+
+#TabelaGrades td[style*="background-color: #FA8072"] {
+    background-color: #FA8072;
+}
+
+#TabelaGrades td[style*="background-color: #2E8B57"] {
+    background-color: #2E8B57;
+}
+
+#TabelaGrades td[style*="background-color: #FFFF66"] {
+    background-color: #FFFF66;
+}
+
+@media screen and (max-width: 768px) {
+    #TabelaGrades th, #TabelaGrades td {
+        font-size: 12px; /* Reduz o tamanho da fonte em telas pequenas */
+        padding: 8px; /* Ajusta o padding para telas pequenas */
+    }
+    
+    #TabelaGrades td {
+        display: block; /* Faz com que cada célula ocupe uma linha em telas pequenas */
+        width: 100%; /* Faz as células se expandirem para ocupar a largura total */
+    }
+}

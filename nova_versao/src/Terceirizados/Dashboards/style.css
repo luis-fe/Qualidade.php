@@ -1,0 +1,62 @@
+body {
+    background-color: #f8f9fa;
+    /* Fundo claro para um visual moderno */
+}
+
+.titulo {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid black;
+    color: black;
+    font-size: 18px;
+    /* Aumentei um pouco a fonte */
+    font-weight: 600;
+}
+
+.card {
+    background-color: #ffffff;
+    /* Fundo branco para as cartas */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: transform 0.2s;
+    /* Transição suave para hover */
+}
+
+.card:hover {
+    transform: scale(1.02);
+    /* Efeito de zoom ao passar o mouse */
+}
+
+.card p {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.icon {
+    margin-right: 10px;
+    /* Espaçamento entre o ícone e o texto */
+}
+
+
+#btn-filtros {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    background-color: #002955;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+

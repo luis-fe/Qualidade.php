@@ -1,0 +1,33 @@
+#form-container {
+    min-width: 100%;
+    width: 100%;
+    height: calc(100vh - 50px); /* Ajuste da altura para ocupar a altura restante da janela */
+    padding: 20px;
+    overflow-y: auto; /* Adicionando barra de rolagem apenas se necessário */
+    background-color: gray;
+}
+
+.Corpo {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--branco);
+    padding: 20px;
+    min-height: calc(98% - 50px); /* Ajuste da altura para ocupar a altura restante da janela */
+    max-height: calc(100% - 50px); /* Ajuste da altura para ocupar a altura restante da janela */
+}
+
+.card{
+    padding: 40px;
+    background-color: var(--corBase);
+    color: var(--branco);
+    border-radius: 10px;
+    margin-top: 250px;
+}
+
+@media (max-width: 768px) {
+    .card {
+        margin-top: 70px;
+    }
+}
