@@ -108,7 +108,7 @@ include_once("Wms/src/VerificaTag/requests.php");
 
 
 <script>
-$(document).ready(() => {
+    $(document).ready(() => {
 
     const Consultar_Tags = async () => {
         $('#loadingModal').modal('show');
