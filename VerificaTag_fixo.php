@@ -1,6 +1,5 @@
 <?php
 include_once("Wms/src/VerificaTag/requests.php");
-include_once("templates/heads.php");
 include("templates/Loading.php");
 ?>
 <style>
