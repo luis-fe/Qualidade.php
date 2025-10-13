@@ -90,7 +90,7 @@ include_once("Wms/src/VerificaTag/requests.php");
 
         const Consultar_Tags = async () => {
             // Mostra o modal
-            $('#loadingModal').modal('show');
+            //$('#loadingModal').modal('show');
 
             // 🔧 Força o navegador a "repaintar" antes de iniciar a requisição
             await new Promise(resolve => requestAnimationFrame(resolve));
@@ -127,7 +127,7 @@ include_once("Wms/src/VerificaTag/requests.php");
                     text: 'Verifique o console para mais detalhes.'
                 });
             } finally {
-                $('#loadingModal').modal('hide');
+                //$('#loadingModal').modal('hide');
             }
         };
 
