@@ -82,16 +82,18 @@ include_once("Wms/src/VerificaTag/requests.php");
     <!-- 🧩 Bibliotecas JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- 💻 Seu Script -->
     <script>
     $(document).ready(() => {
 
         const Consultar_Tags = async () => {
+            // Mostra o modal
             $('#loadingModal').modal('show');
 
-            // 🕐 Dá um tempinho pro modal aparecer antes da consulta
-            await new Promise(resolve => setTimeout(resolve, 100));
+            // 🔧 Força o navegador a "repaintar" antes de iniciar a requisição
+            await new Promise(resolve => requestAnimationFrame(resolve));
 
             try {
                 const response = await $.ajax({
@@ -108,12 +110,22 @@ include_once("Wms/src/VerificaTag/requests.php");
                     $('#pedido').val(response[0]['codpedido']);
                     $('#cliente').val(response[0]['codcliente']);
                 } else {
-                    alert('Nenhum registro encontrado para este código de barras.');
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Nada encontrado',
+                        text: 'Nenhum registro encontrado para este código de barras.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
 
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro ao consultar tags. Verifique o console para mais detalhes.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro ao consultar',
+                    text: 'Verifique o console para mais detalhes.'
+                });
             } finally {
                 $('#loadingModal').modal('hide');
             }
