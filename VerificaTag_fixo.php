@@ -105,7 +105,6 @@ include("/templates/Loading.php");
 </div>
 
 
-<?php include_once("../../../templates/footer.php"); ?>
 <script>
     $(document).ready(async () => {
         $('#NomeRotina').text("Verifica Tag");
