@@ -111,6 +111,8 @@ include_once("Wms/src/VerificaTag/requests.php");
             } catch (error) {
                 console.error('Erro:', error);
                 alert('Erro ao consultar tags. Verifique o console para mais detalhes.');
+                $('#loadingModal').modal('hide');
+
             } finally {
                 $('#loadingModal').modal('hide');
             }
