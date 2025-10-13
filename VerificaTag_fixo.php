@@ -70,7 +70,10 @@ include_once("Wms/src/VerificaTag/requests.php");
 </style>
 <link rel="stylesheet" href="style.css">
 
-
+<div class="h-100">
+                <div class="sidebar-logo">
+                    <a href="#">Wms Mpl</a>
+                </div>
 <div class="container-fluid" id="form-container">
     <div class="Corpo auto-height" style="min-height: 75vh; align-items: center">
         <!-- Campo Tag -->
