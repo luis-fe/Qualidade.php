@@ -1,7 +1,7 @@
 <?php
-include_once("/Wms/src/VerificaTag/requests.php");
-include_once("/templates/heads.php");
-include("/templates/Loading.php");
+include_once("Wms/src/VerificaTag/requests.php");
+include_once("templates/heads.php");
+include("templates/Loading.php");
 ?>
 <style>
     /* Ajustes gerais */
@@ -105,7 +105,7 @@ include("/templates/Loading.php");
 </div>
 
 
-<?php include_once("/templates/footer.php"); ?>
+<?php include_once("templates/footer.php"); ?>
 <script>
     $(document).ready(async () => {
         $('#NomeRotina').text("Verifica Tag");
