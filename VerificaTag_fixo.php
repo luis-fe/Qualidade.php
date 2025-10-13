@@ -69,41 +69,43 @@ include_once("Wms/src/VerificaTag/requests.php");
     }
 </style>
 <link rel="stylesheet" href="style.css">
-
-<div class="h-100">
-                <div class="sidebar-logo">
-                    <a href="#">Wms Mpl</a>
+<body>
+    
+    <div class="h-100">
+                    <div class="sidebar-logo">
+                        <a href="#">Wms Mpl</a>
+                    </div>
+    <div class="container-fluid" id="form-container">
+        <div class="Corpo auto-height" style="min-height: 75vh; align-items: center">
+            <!-- Campo Tag -->
+            <div class="input-container">
+                <label for="tag">Tag</label>
+                <div class="input-wrapper">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="tag" placeholder="Digite a tag..." />
                 </div>
-<div class="container-fluid" id="form-container">
-    <div class="Corpo auto-height" style="min-height: 75vh; align-items: center">
-        <!-- Campo Tag -->
-        <div class="input-container">
-            <label for="tag">Tag</label>
-            <div class="input-wrapper">
-                <i class="fa fa-search"></i>
-                <input type="text" id="tag" placeholder="Digite a tag..." />
             </div>
-        </div>
 
-        <!-- Campo Pedido -->
-        <div class="input-container">
-            <label for="pedido">Pedido</label>
-            <div class="input-wrapper">
-                <i class="fa fa-search"></i>
-                <input type="text" id="pedido" readonly />
+            <!-- Campo Pedido -->
+            <div class="input-container">
+                <label for="pedido">Pedido</label>
+                <div class="input-wrapper">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="pedido" readonly />
+                </div>
             </div>
-        </div>
 
-        <!-- Campo Cliente -->
-        <div class="input-container">
-            <label for="cliente">Cliente</label>
-            <div class="input-wrapper">
-                <i class="fa fa-search"></i>
-                <input type="text" id="cliente" readonly />
+            <!-- Campo Cliente -->
+            <div class="input-container">
+                <label for="cliente">Cliente</label>
+                <div class="input-wrapper">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="cliente" readonly />
+                </div>
             </div>
         </div>
     </div>
-</div>
+</body>
 
 
 <script>
