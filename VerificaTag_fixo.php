@@ -109,13 +109,8 @@ include_once("Wms/src/VerificaTag/requests.php");
 
 <script>
 
-<!-- jQuery primeiro -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Bootstrap (se estiver usando modal) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
     $(document).ready(() => {
 
