@@ -109,7 +109,6 @@ include_once("Wms/src/VerificaTag/requests.php");
 
 <script>
     $(document).ready(async () => {
-        $('#NomeRotina').text("Verifica Tag");
 
     });
     const Consultar_Tags = async () => {
