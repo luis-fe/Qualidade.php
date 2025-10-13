@@ -108,11 +108,11 @@ include_once("Wms/src/VerificaTag/requests.php");
 
 
 <script>
-    $(document).ready(async () => {
+$(document).ready(() => {
 
-    });
     const Consultar_Tags = async () => {
         $('#loadingModal').modal('show');
+
         try {
             const response = await $.ajax({
                 type: 'GET',
@@ -120,22 +120,32 @@ include_once("Wms/src/VerificaTag/requests.php");
                 dataType: 'json',
                 data: {
                     acao: 'Consultar_Tags',
-                    codigoBarras: $('#tag').val()
+                    codigoBarras: $('#tag').val().trim()
                 },
             });
-            $('#pedido').val(response[0]['codpedido']);
-            $('#cliente').val(response[0]['codcliente'])
+
+            if (response && response.length > 0) {
+                $('#pedido').val(response[0]['codpedido']);
+                $('#cliente').val(response[0]['codcliente']);
+            } else {
+                alert('Nenhum registro encontrado para este código de barras.');
+            }
+
         } catch (error) {
             console.error('Erro:', error);
+            alert('Erro ao consultar tags. Verifique o console para mais detalhes.');
         } finally {
             $('#loadingModal').modal('hide');
         }
     };
 
+    // evento de tecla "Enter"
     $('#tag').on('keypress', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
             Consultar_Tags();
         }
     });
+
+});
 </script>
