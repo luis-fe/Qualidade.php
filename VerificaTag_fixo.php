@@ -105,7 +105,6 @@ include_once("Wms/src/VerificaTag/requests.php");
                         codigoBarras: $('#tag').val().trim()
                     },
                 });
-
                 if (response && response.length > 0) {
                     $('#pedido').val(response[0]['codpedido']);
                     $('#cliente').val(response[0]['codcliente']);
