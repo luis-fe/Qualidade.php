@@ -1,5 +1,5 @@
 <?php
-include_once("/.../Wms/src/VerificaTag/requests.php");
+include_once("/VerificaTag/requests.php");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
