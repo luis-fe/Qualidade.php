@@ -10,10 +10,11 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
     $empresa = $_SESSION['empresa'];
     $token = $_SESSION['token'];
 } else {
-    header("Location: ../../../index.php");
+    $empresa = 1;
+    $token = "a40016aabcx9";
 }
 
-function ConsultarTags($empresa, $token, $codigoBarras)
+function Consultar;Tags($empresa, $token, $codigoBarras);
 {
     $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/ConsultaPedidoViaTag?codBarras={$codigoBarras}";
