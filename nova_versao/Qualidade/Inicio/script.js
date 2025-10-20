@@ -15,8 +15,8 @@ const Cosultar_Qualidade = async () => {
     $('#loadingModal').modal('show');
     try {
         // Pega os valores das datas no formato yyyy-mm-dd e formata para dd/mm/yyyy
-        const dataInicial = formatDateToDDMMYYYY($('#dataInicio').val());
-        const dataFinal = formatDateToDDMMYYYY($('#dataFim').val());
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
 
         const data = await $.ajax({
             type: 'GET',
