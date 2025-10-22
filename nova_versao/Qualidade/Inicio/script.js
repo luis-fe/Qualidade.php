@@ -13,11 +13,12 @@ $(document).ready(async () => {
 
 const Cosultar_Qualidade = async () => {
     $('#loadingModal').modal('show');
+    console.log(`${dataInicial} e ${dataFinal}`);
+
     try {
         // Pega os valores das datas no formato yyyy-mm-dd e formata para dd/mm/yyyy
         const dataInicial = $('#dataInicio').val();
         const dataFinal = $('#dataFim').val();
-        console.log(`${dataInicial} e ${dataFinal}`)
         const data = await $.ajax({
             type: 'GET',
             url: 'requests.php',
