@@ -3,7 +3,7 @@ $(document).ready(async () => {
     const formattedDate = today.toISOString().split('T')[0]; // Obtém a data de hoje no formato 'aaaa-mm-dd'
 
     // Exibe no campo, mas mantém um valor oculto para manipulação correta
-    //$('#dataInicio, #dataFim').val(formattedDate);
+    $('#dataInicio, #dataFim').val(formattedDate);
 
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
     await Cosultar_Qualidade();
