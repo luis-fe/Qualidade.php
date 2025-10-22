@@ -83,8 +83,6 @@ const Consultar_Motivos = async () => {
 const Cosultar_Origem = async () => {
     $('#loadingModal').modal('show');
     try {
-        const dataInicial = formatDateToDDMMYYYY($('#dataInicio').val());
-        const dataFinal = formatDateToDDMMYYYY($('#dataFim').val());
 
         const data = await $.ajax({
             type: 'GET',
