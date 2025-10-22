@@ -245,7 +245,7 @@ async function renderizarGraficoTerceirizados(data) {
         },
         series: [{
             name: 'Quantidade',
-            data: data.map(item => item.qtde)
+            data: data.map(item => item.qtd)
         }],
         xaxis: {
             categories: data.map(item => item.nomeFaccicionista),
