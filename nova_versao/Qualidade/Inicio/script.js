@@ -18,7 +18,6 @@ const Cosultar_Qualidade = async () => {
         const dataInicial = $('#dataInicio').val();
         const dataFinal = $('#dataFim').val();
         console.log(`${dataInicial} e ${dataFinal}`)
-
         const data = await $.ajax({
             type: 'GET',
             url: 'requests.php',
