@@ -83,6 +83,8 @@ const Consultar_Motivos = async () => {
 const Cosultar_Origem = async () => {
     $('#loadingModal').modal('show');
     try {
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
 
         const data = await $.ajax({
             type: 'GET',
