@@ -136,13 +136,13 @@ function ConsultaQualidade($empresa, $dataInicial, $dataFinal)
 
 function ConsultaOrigem($empresa, $dataInicial, $dataFinal)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.190:8000';
-    $apiUrl = "{$baseUrl}/api/OrigemAgrupado?DataIncial={$dataInicial}&DataFinal={$dataFinal}";
+    $baseUrl = 'http://10.162.0.53:9000';    
+    $apiUrl = "{$baseUrl}/api/defeitos_faccionista_agrupo_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
-        "Authorization: a40016aabcx9",
+        "Authorization: a44pcp22",
     ]);
 
     $apiResponse = curl_exec($ch);
