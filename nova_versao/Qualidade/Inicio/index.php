@@ -1,105 +1,87 @@
-<?php
-include_once('requests.php');
-include_once("../../templates/Loading.php");
-include_once('../../templates/headerGarantia.php');
-?>
-<link rel="stylesheet" href="style.css">
-<style>
-    label {
-        color: black !important;
-    }
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Alterado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #1d0ac4);
+            color: #333;
+        }
 
-    .grafico-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: space-between;
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 50px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            animation: fadeIn 1.5s ease-in-out;
+        }
 
-    }
+        .container img {
+            width: 100px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
 
-    .grafico {
-        flex: 1 1 45%;
-        min-width: 280px;
-        background: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-</style>
+        h1 {
+            margin: 15px 0;
+            font-size: 28px;
+            color: #333;
+        }
 
-<div class="titulo-tela">
-    <span class="span-icone"><i class="bi bi-speedometer"></i></span> Dashboards
-</div>
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
 
-<!-- Formulário de Filtro -->
-<div class="col-12 mt-2">
-    <div class="d-flex flex-wrap gap-3 align-items-end p-3">
-        <!-- Campo de Data Início -->
-        <div class="position-relative">
-            <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                <input type="date" id="dataInicio" class="form-control">
-            </div>
-        </div>
+        a {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #0f36e2;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
 
-        <!-- Campo de Data Fim -->
-        <div class="position-relative">
-            <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                <input type="date" id="dataFim" class="form-control">
-            </div>
-        </div>
+        a:hover {
+            background-color: #101fa3;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
 
-        <!-- Botão Atualizar -->
-        <button class="btn btn-geral" style="margin-bottom: 0;" onclick="async function atualizar (){await Cosultar_Qualidade(); await Consultar_Motivos(); await Cosultar_Origem()}; atualizar()">
-            <i class="fas fa-sync-alt"></i> Atualizar
-        </button>
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        <!-- Card Total de Peças -->
-        <div class="card text-center" style="min-width: 150px;">
-            <div class="card-body p-2">
-                <h6 class="card-title mb-1">Total de Peças</h6>
-                <h5 class="card-text fw-bold text-primary" id="totalPecas"></h5>
-            </div>
-        </div>
-
-        <!-- Card Total 2ª Qualidade -->
-        <div class="card text-center" style="min-width: 150px;">
-            <div class="card-body p-2">
-                <h6 class="card-title mb-1">Total 2ª Qualidade</h6>
-                <h5 class="card-text fw-bold text-danger" id="totalPecas2Qualidade"></h5>
-            </div>
-        </div>
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" alt="Aviso">
+        <h1>O link mudou!</h1>
+        <p>Você pode acessar o novo endereço clicando no botão abaixo:</p>
+        <a href="http://10.162.0.190:8081/nova_versao/Qualidade/Inicio/">Ir para o novo link</a>
     </div>
-</div>
-
-
-<div class="col-12 mt-1 p-3 grafico-container">
-    <div class="grafico" style="text-align: center;">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">% 2ª Qualidade</h2>
-        <div id="graficoDonut"></div>
-    </div>
-
-
-    <div class="grafico" style="text-align: center;">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por motivos</h2>
-        <div id="graficoBarras"></div>
-    </div>
-
-</div>
-<div class="col-12 mt-1 p-3 grafico-container">
-    <div class="grafico" style="text-align: center;">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por terceirizados</h2>
-        <div id="graficoTerceirizados" style="width: 100%;"></div>
-    </div>
-
-</div>
-
-
-
-<?php
-include_once('../../templates/footer.php');
-?>
-
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="script.js"></script>
+</body>
+</html>
