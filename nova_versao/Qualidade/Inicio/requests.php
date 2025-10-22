@@ -98,7 +98,7 @@ function ConsultarMotivos($empresa, $dataInicial, $dataFinal)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
-        "Authorization: a40016aabcx9",
+        "Authorization: a44pcp22",
     ]);
 
     $apiResponse = curl_exec($ch);
