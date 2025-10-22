@@ -202,7 +202,7 @@ async function renderizarGraficoBarras(data) {
         },
         series: [{
             name: 'Quantidade',
-            data: data.map(item => item.qtde)
+            data: data.map(item => item.qtd)
         }],
         xaxis: {
             categories: data.map(item => item.motivo2Qualidade),
