@@ -114,8 +114,8 @@ function ConsultarMotivos($empresa, $dataInicial, $dataFinal)
 
 function ConsultaQualidade($empresa, $dataInicial, $dataFinal)
 {
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/api/Dashboar2Qualidade?data_inincio={$dataInicial}&data_fim={$dataFinal}";
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/api/Dashboard2Qualidade?data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
