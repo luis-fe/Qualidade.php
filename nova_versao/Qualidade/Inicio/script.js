@@ -51,8 +51,8 @@ const Cosultar_Qualidade = async () => {
 const Consultar_Motivos = async () => {
     $('#loadingModal').modal('show');
     try {
-        const dataInicial = formatDateToDDMMYYYY($('#dataInicio').val());
-        const dataFinal = formatDateToDDMMYYYY($('#dataFim').val());
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
 
         const data = await $.ajax({
             type: 'GET',
