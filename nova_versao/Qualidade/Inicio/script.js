@@ -248,7 +248,7 @@ async function renderizarGraficoTerceirizados(data) {
             data: data.map(item => item.qtde)
         }],
         xaxis: {
-            categories: data.map(item => item.Origem),
+            categories: data.map(item => item.nomeFaccicionista),
             labels: {
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
