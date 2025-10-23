@@ -93,6 +93,20 @@ include_once('../../templates/headerGarantia.php');
         <div id="graficoTerceirizados" style="width: 100%;"></div>
     </div>
 
+    <div class="container mt-1 p-3">
+  <h2>Analise por Ordem</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Ordem<br>Prod.</th>
+        <th>Cod<br>Engenharia</th>
+        <th>Descricao<br>Produto</th>
+      </tr>
+    </thead>
+      
+  </table>
+</div>
+
 </div>
 
 
