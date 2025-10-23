@@ -73,40 +73,42 @@ include_once('../../templates/headerGarantia.php');
     </div>
 </div>
 
+<div class="col-12 mt-2">
 
-<div class="col-12 mt-1 p-3 grafico-container">
-    <div class="grafico" style="text-align: center;">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">% 2ª Qualidade</h2>
-        <div id="graficoDonut"></div>
+    <div class="col-12 mt-1 p-3 grafico-container">
+        <div class="grafico" style="text-align: center;">
+            <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">% 2ª Qualidade</h2>
+            <div id="graficoDonut"></div>
+        </div>
+
+
+        <div class="grafico" style="text-align: center;">
+            <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por motivos</h2>
+            <div id="graficoBarras"></div>
+        </div>
+
     </div>
+    <div class="col-12 mt-1 p-3 grafico-container">
+        <div class="grafico" style="text-align: center;">
+            <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por terceirizados</h2>
+            <div id="graficoTerceirizados" style="width: 100%;"></div>
+        </div>
 
+        <div class="container mt-1 p-3">
+        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto" >Analise por Ordem</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Ordem<br>Prod.</th>
+                <th>Cod<br>Engenharia</th>
+                <th>Descricao<br>Produto</th>
+            </tr>
+            </thead>
+            
+        </table>
+        </div>
 
-    <div class="grafico" style="text-align: center;">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por motivos</h2>
-        <div id="graficoBarras"></div>
     </div>
-
-</div>
-<div class="col-12 mt-1 p-3 grafico-container">
-    <div class="grafico" style="text-align: center;">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por terceirizados</h2>
-        <div id="graficoTerceirizados" style="width: 100%;"></div>
-    </div>
-
-    <div class="container mt-1 p-3">
-    <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto" >Analise por Ordem</h2>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Ordem<br>Prod.</th>
-            <th>Cod<br>Engenharia</th>
-            <th>Descricao<br>Produto</th>
-        </tr>
-        </thead>
-        
-    </table>
-    </div>
-
 </div>
 
 
