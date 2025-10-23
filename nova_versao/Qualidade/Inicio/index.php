@@ -94,18 +94,18 @@ include_once('../../templates/headerGarantia.php');
     </div>
 
     <div class="container mt-1 p-3">
-  <h2>Analise por Ordem</h2>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Ordem<br>Prod.</th>
-        <th>Cod<br>Engenharia</th>
-        <th>Descricao<br>Produto</th>
-      </tr>
-    </thead>
-      
-  </table>
-</div>
+    <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto" >Analise por Ordem</h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Ordem<br>Prod.</th>
+            <th>Cod<br>Engenharia</th>
+            <th>Descricao<br>Produto</th>
+        </tr>
+        </thead>
+        
+    </table>
+    </div>
 
 </div>
 
