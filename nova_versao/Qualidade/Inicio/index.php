@@ -88,27 +88,36 @@ include_once('../../templates/headerGarantia.php');
         </div>
 
     </div>
-    <div class="col-12 mt-1 p-3 grafico-container">
-        <div class="grafico" style="text-align: center;">
-            <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto">Defeitos por terceirizados</h2>
-            <div id="graficoTerceirizados" style="width: 100%;"></div>
-        </div>
+<div class="row mt-1 p-3 grafico-container">
+  <!-- Coluna do gráfico -->
+  <div class="col-md-6 grafico" style="text-align: center;">
+    <h2 style="font-size: 18px; font-weight: bold;">Defeitos por terceirizados</h2>
+    <div id="graficoTerceirizados" style="width: 100%; height: 300px;"></div>
+  </div>
 
-        <div class="container mt-1 p-3">
-        <h2 style="font-size: 18px; font-weight: bold; padding: auto; margin: auto" >Analise por Ordem</h2>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Ordem<br>Prod.</th>
-                <th>Cod<br>Engenharia</th>
-                <th>Descricao<br>Produto</th>
-            </tr>
-            </thead>
-            
-        </table>
-        </div>
+  <!-- Coluna da tabela -->
+  <div class="col-md-6">
+    <h2 style="font-size: 18px; font-weight: bold;">Análise por Ordem</h2>
+    <table class="table table-hover mt-2">
+      <thead>
+        <tr>
+          <th>Ordem<br>Prod.</th>
+          <th>Cod<br>Engenharia</th>
+          <th>Descrição<br>Produto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Exemplo de dados -->
+        <tr>
+          <td>12345</td>
+          <td>ENG-001</td>
+          <td>Produto XPTO</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-    </div>
 </div>
 
 
