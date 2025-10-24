@@ -100,10 +100,10 @@ include_once('../../templates/headerGarantia.php');
         style="max-height: 300px; overflow-y: auto;">
 
     <div class="grafico card mb-0" style="width: 100%;">
-        <div class="card-header p-0">
+        <div class="card-header pt-0">
             <h2 class="h6 mb-0">% 2ª Qualidade</h2>
         </div>
-        <div class="card-body p-2 d-flex justify-content-center align-items-center" 
+        <div class="card-body p-0 d-flex justify-content-center align-items-center" 
         style="max-height: 100px; overflow: hidden;"> 
             <div id="graficoDonut" class="w-100 h-100">
             </div>
