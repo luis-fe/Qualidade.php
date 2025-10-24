@@ -166,7 +166,10 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
     var optionsDonut = {
         chart: {
             type: 'donut',
-            height: 350
+            // Você provavelmente vai querer remover ou diminuir esse 'height: 350' para caber no seu container de 100px.
+            // Para caber nos 80px/100px que você definiu no HTML, você pode remover o 'height' aqui, 
+            // ou defini-lo como 'height: 80', desde que o div pai também esteja limitado.
+            height: '100%' // Usar 100% ou um valor menor (ex: 80) para respeitar o container de 80px/100px
         },
         series: [porcentagem2Qualidade, porcentagemDiferenca],
         labels: ["Peças com Motivo 2Qual.", "Peças Sem Defeito"],
@@ -199,18 +202,9 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
                 }
             }
         },
+        // >>> CONFIGURAÇÃO PARA REMOVER A LEGENDA <<<
         legend: {
-            position: 'bottom',
-            horizontalAlign: 'center',
-            fontSize: '14px',
-            markers: {
-                width: 12,
-                height: 12
-            },
-            itemMargin: {
-                horizontal: 10,
-                vertical: 5
-            }
+            show: false // Propriedade que desabilita a exibição da legenda
         }
     };
 
