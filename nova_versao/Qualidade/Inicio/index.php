@@ -46,10 +46,6 @@ include_once('../../templates/headerGarantia.php');
   }
 </style>
 
-<!-- ==================== TÍTULO ==================== -->
-<div class="titulo-tela">
-  <span class="span-icone"><i class="bi bi-speedometer"></i></span> Dashboards
-</div>
 
 <!-- ==================== FILTROS ==================== -->
 <div class="col-12 mt-2">
