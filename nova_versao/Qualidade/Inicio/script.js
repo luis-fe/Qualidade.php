@@ -180,7 +180,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
                 return val.toFixed(2) + "%"; // Exibe o percentual com 2 casas decimais
             },
             style: {
-                fontSize: '14px'
+                fontSize: '10px'
             }
         },
         plotOptions: {
