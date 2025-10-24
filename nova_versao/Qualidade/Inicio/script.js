@@ -311,7 +311,7 @@ function Tabela_detalha_defeitos(lista) {
         $('#tabela_detalhamento').DataTable().destroy();
     }
 
-    const tabela = $('#tabela_detalhamento').DataTable({
+    $('#tabela_detalhamento').DataTable({
         searching: true,
         paging: true,
         lengthChange: false,
@@ -319,30 +319,14 @@ function Tabela_detalha_defeitos(lista) {
         pageLength: 12,
         data: lista,
         dom: 'Bfrtip',
-        buttons: [{
-        }
-        ],
-        columns: [{
-            data: 'numeroOP'
-        },
-        {
-            data: 'codEngenharia'
-        },
-        {
-            data: 'descProd'
-        },
-        {
-            data: 'data_receb'
-        },
-        {
-            data: 'nomeOrigem'
-        },
-        {
-            data: 'nome'
-        },
-        {
-            data: 'qtd'
-        }
+        columns: [
+            { data: 'numeroOP' },
+            { data: 'codEngenharia' },
+            { data: 'descProd' },
+            { data: 'data_receb' },
+            { data: 'nomeOrigem' },
+            { data: 'nome' },
+            { data: 'qtd' }
         ],
         language: {
             paginate: {
@@ -352,26 +336,7 @@ function Tabela_detalha_defeitos(lista) {
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
-        },
-        drawCallback: function () {
-            $('#tabela_detalhamento').html($('.dataTables_paginate').html());
-            $('#tabela_detalhamento span').remove();
-            $('#tabela_detalhamento a').off('click').on('click', function (e) {
-                e.preventDefault();
-                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
-                if ($(this).hasClass('next')) tabela.page('next').draw('page');
-            });
-            $('.dataTables_paginate').hide();
-        },
-    footerCallback: function (row, data, start, end, display) {
-        const api = this.api();
-
-}
-
-
-
-
+        }
     });
-
 }
 
