@@ -91,14 +91,14 @@ include_once('../../templates/headerGarantia.php');
 <!-- ==================== GRÁFICOS ==================== -->
 <div class="col-12 mt-2">
   <div class="col-12 mt-0 p-0 grafico-container" 
-        style="max-height: 400px; overflow-y: auto;">
+        style="max-height: 450px; overflow-y: auto;">
 
     <div class="grafico card mb-0" style="width: 100%;">
         <div class="card-header pt-0">
             <h2 class="h6 mb-0">% 2ª Qualidade</h2>
         </div>
         <div class="card-body p-0 d-flex justify-content-center align-items-center" 
-            style="height: 100px; overflow: hidden;"> 
+            style="overflow: hidden;"> 
             <div id="graficoDonut" style="width: 80px; height: 80px;">
             </div>
         </div>
