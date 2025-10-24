@@ -100,12 +100,12 @@ include_once('../../templates/headerGarantia.php');
 
     <div class="grafico">
       <h2>% 2ª Qualidade</h2>
-      <div id="graficoDonut" style="width: 100%; height: 290px;"></div>
+      <div id="graficoDonut" style="width: 100%; max-height: 290px;"></div>
     </div>
 
     <div class="grafico">
       <h2>Defeitos por motivos</h2>
-      <div id="graficoBarras" style="width: 100%; height: 290px;"></div>
+      <div id="graficoBarras" style="width: 100%; max-height: 200px;"></div>
     </div>
 
   </div>
