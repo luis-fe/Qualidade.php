@@ -192,7 +192,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
                         total: {
                             show: true,
                             label: 'Total 2ª Qualidade',
-                            fontSize: '16px',
+                            fontSize: '12px',
                             color: '#333',
                             formatter: function () {
                                 return porcentagem2Qualidade.toFixed(2) + '%';
