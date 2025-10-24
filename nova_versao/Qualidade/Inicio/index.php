@@ -99,7 +99,7 @@ include_once('../../templates/headerGarantia.php');
         </div>
         <div class="card-body p-0 d-flex justify-content-center align-items-center" 
             style="overflow: hidden;"> 
-            <div id="graficoDonut" style="width: 80px; height: 80px;">
+            <div id="graficoDonut">
             </div>
         </div>
     </div>
