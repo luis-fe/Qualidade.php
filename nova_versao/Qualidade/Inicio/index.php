@@ -31,9 +31,9 @@ include_once('../../templates/headerGarantia.php');
 
   .grafico {
     flex: 1 1 45%;
-    min-width: 280px;
+    min-width: 50px;
     background: #fff;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
