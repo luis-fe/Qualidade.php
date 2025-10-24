@@ -213,12 +213,12 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
 };
 
 async function renderizarGraficoBarras(data) {
-    const chartWidth = Math.max(500, data.length * 50);
+    const chartWidth = Math.max(200, data.length * 25);
 
     const chartOptions = {
         chart: {
             type: 'bar',
-            height: 500,
+            height: 200,
             width: `${chartWidth}px`,  // Mantém a largura dinâmica
             toolbar: { show: false },
             dropShadow: { enabled: false }
@@ -233,7 +233,7 @@ async function renderizarGraficoBarras(data) {
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
-                    fontSize: '12px',
+                    fontSize: '10px',
                     whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
                 }
             }
