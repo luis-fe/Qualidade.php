@@ -186,11 +186,12 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
         plotOptions: {
             pie: {
                 donut: {
-                    size: '50%', // Ajusta o tamanho do buraco do donut
+                    size: '70%', // Ajusta o tamanho do buraco do donut
                     labels: {
                         show: true,
                         total: {
                             show: true,
+                            label: 'indice 2º.',
                             fontSize: '12px',
                             color: '#333',
                             formatter: function () {
