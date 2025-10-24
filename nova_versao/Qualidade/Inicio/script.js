@@ -191,7 +191,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
                         show: true,
                         total: {
                             show: true,
-                            label: 'Total 2ª Qualidade',
+                            label: '%2ªQual.',
                             fontSize: '12px',
                             color: '#333',
                             formatter: function () {
