@@ -109,7 +109,7 @@ include_once('../../templates/headerGarantia.php');
                 <h2 class="h6 mb-0">Defeitos por motivos</h2>
             </div>
             <div class="card-body p-2 d-flex justify-content-center align-items-center" 
-                style="max-height: 150px; overflow: hidden;"> 
+                style="max-height: 250px; overflow: hidden;"> 
                 <div id="graficoBarras" class="w-100 h-100"></div>
             </div>
     </div>
