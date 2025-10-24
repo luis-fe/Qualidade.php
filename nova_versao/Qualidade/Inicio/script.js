@@ -234,7 +234,7 @@ async function renderizarGraficoBarras(data) {
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '10px',
-                    whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                  //  whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
                 }
             }
         },
