@@ -99,20 +99,25 @@ include_once('../../templates/headerGarantia.php');
   <div class="col-12 mt-1 p-1 grafico-container" 
   style="max-height: 300px; overflow-y: auto;">
 
-    <div class="grafico card" style="width: 100%;">
-        <div class="card-header">
-            <h2>% 2ª Qualidade</h2>
+    <div class="grafico card mb-2" style="width: 100%;">
+        <div class="card-header p-2">
+            <h2 class="h6 mb-0">% 2ª Qualidade</h2>
         </div>
-        <div class="card-body p-3 d-flex justify-content-center align-items-center" 
-        style="max-height: 290px; overflow: hidden;">
+        <div class="card-body p-2 d-flex justify-content-center align-items-center" 
+        style="max-height: 150px; overflow: hidden;"> 
             <div id="graficoDonut" class="w-100 h-100">
-                </div>
+            </div>
         </div>
     </div>
 
-    <div class="grafico" style="width: 100%; max-height: 290px;">
-      <h2>Defeitos por motivos</h2>
-      <div id="graficoBarras"></div>
+    <div class="grafico card" style="width: 100%;">
+            <div class="card-header p-2">
+                <h2 class="h6 mb-0">Defeitos por motivos</h2>
+            </div>
+            <div class="card-body p-2 d-flex justify-content-center align-items-center" 
+                style="max-height: 150px; overflow: hidden;"> 
+                <div id="graficoBarras" class="w-100 h-100"></div>
+            </div>
     </div>
 
   </div>
