@@ -6,6 +6,12 @@ include_once('../../templates/headerGarantia.php');
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" 
   href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script 
+  src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+  
 <style>
     label {
         color: black !important;
@@ -101,15 +107,15 @@ include_once('../../templates/headerGarantia.php');
   <div class="col-md-6">
     <h2 style="font-size: 18px; font-weight: bold;">Análise por Ordem</h2>
     <table class="table table-hover mt-2" id="tabela_detalhamento">
-      <thead>
-        <tr style="font-size: 14px;">
-          <th  id="numeroOP" >Ordem<br>Prod.</th>
-          <th  id="codEngenharia">Cod<br>Engenharia</th>
-          <th  id="descProd">Descrição<br>Produto</th>
-          <th  id="data_receb">Data<br>Diagnostico</th>
-          <th  id="nomeOrigem">Origem<br></th>
-          <th  id="nome">Motivo<br></th>
-          <th  id="qtd">Qtd.<br></th>
+      <thead style="font-size: 14px;">
+        <tr >
+          <th>Ordem<br>Prod.</th>
+          <th>Cod<br>Engenharia</th>
+          <th>Descrição<br>Produto</th>
+          <th>Data<br>Diagnostico</th>
+          <th>Origem<br></th>
+          <th>Motivo<br></th>
+          <th>Qtd.<br></th>
 
         </tr>
       </thead>
