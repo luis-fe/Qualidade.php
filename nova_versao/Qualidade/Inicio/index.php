@@ -110,7 +110,7 @@ include_once('../../templates/headerGarantia.php');
             </div>
             <div class="card-body p-2 d-flex justify-content-center align-items-center" 
                 style="max-height: 250px; overflow: hidden;"> 
-                <div id="graficoBarras"></div>
+                <div id="graficoBarras" ></div>
             </div>
     </div>
 
