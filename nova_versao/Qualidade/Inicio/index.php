@@ -25,7 +25,6 @@ include_once('../../templates/headerGarantia.php');
   .grafico-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     justify-content: space-between;
   }
 
