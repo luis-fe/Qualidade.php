@@ -213,12 +213,12 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
 };
 
 async function renderizarGraficoBarras(data) {
-    const chartWidth = Math.max(200, data.length * 25);
+    const chartWidth = Math.max(500, data.length * 50);
 
     const chartOptions = {
         chart: {
             type: 'bar',
-            height: 200,
+            height: 500,
             width: `${chartWidth}px`,  // Mantém a largura dinâmica
             toolbar: { show: false },
             dropShadow: { enabled: false }
@@ -241,7 +241,7 @@ async function renderizarGraficoBarras(data) {
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: '70%', // Ajusta a altura das barras
+                barHeight: '50%', // Ajusta a altura das barras
             }
         },
         grid: {
