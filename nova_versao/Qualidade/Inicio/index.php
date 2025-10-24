@@ -98,14 +98,14 @@ include_once('../../templates/headerGarantia.php');
 <div class="col-12 mt-2">
   <div class="col-12 mt-1 p-3 grafico-container" style="max-height: 300px; overflow-y: auto;">
 
-    <div class="grafico">
+    <div class="grafico" style="width: 100%; max-height: 290px;">
       <h2>% 2ª Qualidade</h2>
-      <div id="graficoDonut" style="width: 100%; max-height: 290px;"></div>
+      <div id="graficoDonut" ></div>
     </div>
 
-    <div class="grafico">
+    <div class="grafico" style="width: 100%; max-height: 290px;">
       <h2>Defeitos por motivos</h2>
-      <div id="graficoBarras" style="width: 100%; max-height: 200px;"></div>
+      <div id="graficoBarras"></div>
     </div>
 
   </div>
