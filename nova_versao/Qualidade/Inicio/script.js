@@ -8,7 +8,8 @@ $(document).ready(async () => {
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
     await Cosultar_Qualidade();
     await Consultar_Motivos();
-    await Cosultar_Origem()
+    await Cosultar_Origem();
+    await detalha_defeitos();
 });
 
 const Cosultar_Qualidade = async () => {
@@ -112,6 +113,34 @@ const Cosultar_Origem = async () => {
     }
 };
 
+
+const detalha_defeitos = async () => {
+    $('#loadingModal').modal('show');
+    try {
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
+
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'detalha_defeitos',
+                dataInicial: dataInicial,
+                dataFinal: dataFinal
+            }
+        });
+
+
+        Tabela_detalha_defeitos(data);
+
+
+    } catch (error) {
+        console.error('Erro ao consultar motivos:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
 
 // Função para formatar a data de yyyy-mm-dd para dd/mm/yyyy
 const formatDateToDDMMYYYY = (date) => {
@@ -274,5 +303,75 @@ async function renderizarGraficoTerceirizados(data) {
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
     chart.render();
+}
+
+
+function Tabela_detalha_defeitos(lista) {
+    if ($.fn.DataTable.isDataTable('#tabela_detalhamento')) {
+        $('#tabela_detalhamento').DataTable().destroy();
+    }
+
+    const tabela = $('#tabela_detalhamento').DataTable({
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        info: false,
+        pageLength: 12,
+        data: lista,
+        dom: 'Bfrtip',
+        buttons: [{
+        }
+        ],
+        columns: [{
+            data: 'numeroOP'
+        },
+        {
+            data: 'codEngenharia'
+        },
+        {
+            data: 'descProd'
+        },
+        {
+            data: 'data_receb'
+        },
+        {
+            data: 'nomeOrigem'
+        },
+        {
+            data: 'nome'
+        },
+        {
+            data: 'qtd'
+        }
+        ],
+        language: {
+            paginate: {
+                previous: '<i class="fa-solid fa-backward-step"></i>',
+                next: '<i class="fa-solid fa-forward-step"></i>'
+            },
+            info: "Página _PAGE_ de _PAGES_",
+            emptyTable: "Nenhum dado disponível na tabela",
+            zeroRecords: "Nenhum registro encontrado"
+        },
+        drawCallback: function () {
+            $('#tabela_detalhamento').html($('.dataTables_paginate').html());
+            $('#tabela_detalhamento span').remove();
+            $('#tabela_detalhamento a').off('click').on('click', function (e) {
+                e.preventDefault();
+                if ($(this).hasClass('previous')) tabela.page('previous').draw('page');
+                if ($(this).hasClass('next')) tabela.page('next').draw('page');
+            });
+            $('.dataTables_paginate').hide();
+        },
+    footerCallback: function (row, data, start, end, display) {
+        const api = this.api();
+
+}
+
+
+
+
+    });
+
 }
 

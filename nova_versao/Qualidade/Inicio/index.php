@@ -4,6 +4,8 @@ include_once("../../templates/Loading.php");
 include_once('../../templates/headerGarantia.php');
 ?>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" 
+  href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <style>
     label {
         color: black !important;
@@ -98,7 +100,7 @@ include_once('../../templates/headerGarantia.php');
   <!-- Coluna da tabela -->
   <div class="col-md-6">
     <h2 style="font-size: 18px; font-weight: bold;">Análise por Ordem</h2>
-    <table class="table table-hover mt-2">
+    <table class="table table-hover mt-2" id='tabela_detalhamento'>
       <thead>
         <tr style="font-size: 14px;">
           <th>Ordem<br>Prod.</th>
@@ -112,10 +114,7 @@ include_once('../../templates/headerGarantia.php');
         </tr>
       </thead>
       <tbody>
-        <!-- Exemplo de dados -->
-        <tr>
 
-        </tr>
       </tbody>
     </table>
   </div>
