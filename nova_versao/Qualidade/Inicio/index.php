@@ -103,7 +103,7 @@ include_once('../../templates/headerGarantia.php');
         <div class="card-header">
             <h2>% 2ª Qualidade</h2>
         </div>
-        <div class="card-body p-0 d-flex justify-content-center align-items-center" 
+        <div class="card-body p-3 d-flex justify-content-center align-items-center" 
         style="max-height: 290px; overflow: hidden;">
             <div id="graficoDonut" class="w-100 h-100">
                 </div>
