@@ -96,7 +96,8 @@ include_once('../../templates/headerGarantia.php');
 
 <!-- ==================== GRÁFICOS ==================== -->
 <div class="col-12 mt-2">
-  <div class="col-12 mt-1 p-3 grafico-container" style="max-height: 300px; overflow-y: auto;">
+  <div class="col-12 mt-1 p-1 grafico-container" 
+  style="max-height: 300px; overflow-y: auto;">
 
     <div class="grafico card" style="width: 100%;">
         <div class="card-header">
