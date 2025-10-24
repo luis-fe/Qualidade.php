@@ -100,18 +100,21 @@ include_once('../../templates/headerGarantia.php');
     <h2 style="font-size: 18px; font-weight: bold;">Análise por Ordem</h2>
     <table class="table table-hover mt-2">
       <thead>
-        <tr>
+        <tr style="font-size: 14px;">
           <th>Ordem<br>Prod.</th>
           <th>Cod<br>Engenharia</th>
           <th>Descrição<br>Produto</th>
+          <th>Data<br>Diagnostico</th>
+          <th>Origem<br></th>
+          <th>Motivo<br></th>
+          <th>Qtd.<br></th>
+
         </tr>
       </thead>
       <tbody>
         <!-- Exemplo de dados -->
         <tr>
-          <td>12345</td>
-          <td>ENG-001</td>
-          <td>Produto XPTO</td>
+
         </tr>
       </tbody>
     </table>
