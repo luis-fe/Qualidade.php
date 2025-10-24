@@ -22,7 +22,11 @@ include_once('../../templates/headerGarantia.php');
     color: black !important;
   }
 
-
+  .grafico-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 
   .grafico {
     flex: 1 1 45%;
@@ -94,7 +98,7 @@ include_once('../../templates/headerGarantia.php');
             <h2 class="h6 mb-0">% 2ª Qualidade</h2>
         </div>
         <div class="card-body p-0 d-flex justify-content-center align-items-center" 
-            style="max-height: 100px; overflow: hidden;"> 
+            style="height: 100px; overflow: hidden;"> 
             <div id="graficoDonut" style="width: 80px; height: 80px;">
             </div>
         </div>
