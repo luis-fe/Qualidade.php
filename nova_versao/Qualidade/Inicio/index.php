@@ -100,16 +100,16 @@ include_once('../../templates/headerGarantia.php');
   <!-- Coluna da tabela -->
   <div class="col-md-6">
     <h2 style="font-size: 18px; font-weight: bold;">Análise por Ordem</h2>
-    <table class="table table-hover mt-2" id='tabela_detalhamento'>
+    <table class="table table-hover mt-2" id="tabela_detalhamento">
       <thead>
         <tr style="font-size: 14px;">
-          <th>Ordem<br>Prod.</th>
-          <th>Cod<br>Engenharia</th>
-          <th>Descrição<br>Produto</th>
-          <th>Data<br>Diagnostico</th>
-          <th>Origem<br></th>
-          <th>Motivo<br></th>
-          <th>Qtd.<br></th>
+          <th  id="numeroOP" >Ordem<br>Prod.</th>
+          <th  id="codEngenharia">Cod<br>Engenharia</th>
+          <th  id="descProd">Descrição<br>Produto</th>
+          <th  id="data_receb">Data<br>Diagnostico</th>
+          <th  id="nomeOrigem">Origem<br></th>
+          <th  id="nome">Motivo<br></th>
+          <th  id="qtd">Qtd.<br></th>
 
         </tr>
       </thead>
