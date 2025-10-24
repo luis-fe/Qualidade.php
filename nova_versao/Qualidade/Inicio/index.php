@@ -73,15 +73,15 @@ include_once('../../templates/headerGarantia.php');
     </button>
 
     <!-- Cards de Totais -->
-    <div class="card text-center" style="min-width: 150px;">
-      <div class="card-body p-2">
+    <div class="card text-center" style="min-width: 100px;">
+      <div class="card-body p-1">
         <h6 class="card-title mb-1">Total de Peças</h6>
         <h5 class="card-text fw-bold text-primary" id="totalPecas"></h5>
       </div>
     </div>
 
-    <div class="card text-center" style="min-width: 150px;">
-      <div class="card-body p-2">
+    <div class="card text-center" style="min-width: 100px;">
+      <div class="card-body p-1">
         <h6 class="card-title mb-1">Total 2ª Qualidade</h6>
         <h5 class="card-text fw-bold text-danger" id="totalPecas2Qualidade"></h5>
       </div>
