@@ -48,7 +48,7 @@ include_once('../../templates/headerGarantia.php');
 
 
 <!-- ==================== FILTROS ==================== -->
-<div class="col-12 mt-2">
+<div class="col-12 mt-0">
   <div class="d-flex flex-wrap gap-3 align-items-end p-0">
 
     <!-- Data Início -->
