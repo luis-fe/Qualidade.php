@@ -96,7 +96,7 @@ include_once('../../templates/headerGarantia.php');
 
 <!-- ==================== GRÁFICOS ==================== -->
 <div class="col-12 mt-2">
-  <div class="col-12 mt-1 p-3 grafico-container">
+  <div class="col-12 mt-1 p-3 grafico-container" style="max-width: 70%; margin: 0 auto;">
 
     <div class="grafico">
       <h2>% 2ª Qualidade</h2>
@@ -137,26 +137,26 @@ include_once('../../templates/headerGarantia.php');
     </div>
   </div>
 
-<div class="row mt-1 p-3 grafico-container">
-        <!-- Tabela -->
-    <div class="col-md-6">
-      <h2>Análise por Ordem</h2>
-      <table id="tabela_detalhamento" class="table table-hover mt-1">
-        <thead style="font-size: 14px;">
-          <tr>
-            <th>Ordem<br>Prod.</th>
-            <th>Cod<br>Engenharia</th>
-            <th>Descrição<br>Produto</th>
-            <th>Data<br>Diagnóstico</th>
-            <th>Origem</th>
-            <th>Motivo</th>
-            <th>Qtd.</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div class="row mt-1 p-3 grafico-container">
+            <!-- Tabela -->
+        <div class="col-md-6">
+        <h2>Análise por Ordem</h2>
+        <table id="tabela_detalhamento" class="table table-hover mt-1">
+            <thead style="font-size: 14px;">
+            <tr>
+                <th>Ordem<br>Prod.</th>
+                <th>Cod<br>Engenharia</th>
+                <th>Descrição<br>Produto</th>
+                <th>Data<br>Diagnóstico</th>
+                <th>Origem</th>
+                <th>Motivo</th>
+                <th>Qtd.</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        </div>
     </div>
-</div>
 </div>
 
 <?php
