@@ -91,9 +91,9 @@ include_once('../../templates/headerGarantia.php');
 <!-- ==================== GRÁFICOS ==================== -->
 <div class="col-12 mt-2">
   <div class="col-12 mt-0 p-0 grafico-container" 
-        style="max-height: 400px; overflow-y: auto;">
+        style="max-height: 300px; overflow-y: auto;">
 
-    <div class="grafico card mb-0" style="width: 100%;">
+    <div class="grafico card mb-0" style="width: 100%; height: 100%;">
         <div class="card-header pt-0">
             <h2 class="h6 mb-0">% 2ª Qualidade</h2>
         </div>
@@ -104,7 +104,7 @@ include_once('../../templates/headerGarantia.php');
         </div>
     </div>
 
-    <div class="grafico card" style="width: 100%;">
+    <div class="grafico card" style="width: 100%; height: 100%;">
             <div class="card-header p-0">
                 <h2 class="h6 mb-0">Defeitos por Origem</h2>
             </div>
