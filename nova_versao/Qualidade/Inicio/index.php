@@ -106,11 +106,11 @@ include_once('../../templates/headerGarantia.php');
 
     <div class="grafico card" style="width: 100%;">
             <div class="card-header p-0">
-                <h2 class="h6 mb-0">Defeitos por motivos</h2>
+                <h2 class="h6 mb-0">Defeitos por Origem</h2>
             </div>
             <div class="card-body p-2 d-flex justify-content-center align-items-center" 
                 style="max-height: 400px; overflow: hidden;"> 
-                <div id="graficoBarras" ></div>
+                <div id="graficoOrigemAgrupado" ></div>
             </div>
     </div>
 

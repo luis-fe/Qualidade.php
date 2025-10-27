@@ -8,6 +8,7 @@ $(document).ready(async () => {
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
     await Cosultar_Qualidade();
     await Consultar_Motivos();
+    await Cosultar_Origem_faccionista();
     await Cosultar_Origem();
     await detalha_defeitos();
 });
@@ -81,7 +82,7 @@ const Consultar_Motivos = async () => {
     }
 };
 
-const Cosultar_Origem = async () => {
+const Cosultar_Origem_faccionista = async () => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -104,6 +105,38 @@ const Cosultar_Origem = async () => {
         } else {
             $('#graficoTerceirizados').html('');
             renderizarGraficoTerceirizados(data);
+        }
+
+    } catch (error) {
+        console.error('Erro ao consultar motivos:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+const Cosultar_Origem = async () => {
+    $('#loadingModal').modal('show');
+    try {
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
+
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'defeitos_porOrigem',
+                dataInicial: dataInicial,
+                dataFinal: dataFinal
+            }
+        });
+
+        // Verifica se os dados estão vazios
+        if (data === null) {
+            $('#graficoOrigemAgrupado').html('<p>Nenhum dado a ser exibido</p>');
+        } else {
+            $('#graficoOrigemAgrupado').html('');
+            renderizarGraficoOrigemAgrupado(data);
         }
 
     } catch (error) {
@@ -296,6 +329,51 @@ async function renderizarGraficoTerceirizados(data) {
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
+    chart.render();
+}
+
+
+async function renderizarGraficoOrigemAgrupado(data) {
+    const chartHeight = Math.max(500, data.length * 50);
+
+    const chartOptions = {
+        chart: {
+            type: 'bar',
+            height: `${chartHeight}px`,
+            width: '100%',  // Mantém a largura dinâmica
+            toolbar: { show: false },
+            dropShadow: { enabled: false }
+        },
+        series: [{
+            name: 'Quantidade',
+            data: data.map(item => item.qtd)
+        }],
+        xaxis: {
+            categories: data.map(item => item.nomeFaccicionista),
+            labels: {
+                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
+                trim: false,  // Garante que o texto não seja cortado
+                style: {
+                    fontSize: '10px',
+                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                }
+            }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                barHeight: 40,
+                horizontal: true,
+            }
+        },
+        grid: {
+            padding: {
+                bottom: 100 // Dá mais espaço para a legenda não ser cortada
+            }
+        }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
     chart.render();
 }
 
