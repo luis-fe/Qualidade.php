@@ -65,10 +65,10 @@ include_once('../../templates/headerGarantia.php');
       </div>
     </div>
 
-        <!-- Botão Atualizar -->
-        <button class="btn btn-geral" style="margin-bottom: 0;" onclick="atualizar();">
-            <i class="fas fa-sync-alt"></i> Atualizar
-        </button>
+    <!-- Botão Atualizar -->
+    <button type="button" class="btn btn-geral" style="margin-bottom: 0;" onclick="atualizar();">
+        <i class="fas fa-sync-alt"></i> Atualizar
+    </button>
 
     <!-- Cards de Totais -->
     <div class="card text-center" style="min-width: 100px;">
