@@ -108,8 +108,8 @@ include_once('../../templates/headerGarantia.php');
             <div class="card-header p-0">
                 <h2 class="h6 mb-0">Defeitos por Origem</h2>
             </div>
-            <div class="card-body p-2 d-flex justify-content-center align-items-center" 
-                style="max-height: 400px; overflow: hidden;"> 
+            <div class="card-body p-2 d-flex" 
+                style="width: 100%; height: 300px;"> 
                 <div id="graficoOrigemAgrupado" ></div>
             </div>
     </div>
