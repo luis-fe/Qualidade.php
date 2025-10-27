@@ -351,7 +351,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         xaxis: {
             categories: data.map(item => item.nomeOrigem),
             labels: {
-                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
+                rotate: 0,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '10px',

@@ -109,7 +109,7 @@ include_once('../../templates/headerGarantia.php');
                 <h2 class="h6 mb-0">Defeitos por Origem</h2>
             </div>
             <div class="card-body p-2 d-flex" 
-                style="width: 100%; height: 300px;"> 
+                style="width: 100%; height: 100%;"> 
                 <div id="graficoOrigemAgrupado" ></div>
             </div>
     </div>
