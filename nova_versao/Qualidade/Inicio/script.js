@@ -307,7 +307,7 @@ async function renderizarGraficoTerceirizados(data) {
         chart: {
             type: 'bar',
             height: `${chartHeight}px`,
-            width: '100%',  // Mantém a largura dinâmica
+            width: '100%',
             toolbar: { show: false },
             dropShadow: { enabled: false }
         },
@@ -315,35 +315,42 @@ async function renderizarGraficoTerceirizados(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
+        // 🚨 CONFIGURAÇÃO PARA OCULTAR O EIXO X (O EIXO DOS VALORES) 🚨
         xaxis: {
+            labels: { show: false }, // Oculta os números (rótulos)
+            axisBorder: { show: false }, // Oculta a linha do eixo
+            axisTicks: { show: false } // Oculta as marcações/ticks
+            // 💡 Se você quiser manter as categorias no X para um gráfico VERTICAL,
+            // precisaria remover 'horizontal: true' e manter este X.
+        },
+        // 🚨 CONFIGURAÇÃO CORRETA PARA AS CATEGORIAS NO GRÁFICO HORIZONTAL 🚨
+        yaxis: {
             categories: data.map(item => item.nomeFaccicionista),
             labels: {
-                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
-                trim: false,  // Garante que o texto não seja cortado
+                // Configurações de estilo que estavam no seu xaxis
+                rotate: 0, // Não precisa de rotação em gráficos horizontais
+                trim: false,
                 style: {
                     fontSize: '10px',
-                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
                 }
             }
         },
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: 40,
-                horizontal: true,
+                barHeight: 30,
+                horizontal: true, // Mantém como gráfico de barras horizontal
             }
         },
         grid: {
-                    xaxis: { lines: { show: false } },
-                    yaxis: { lines: { show: false } },
-                    padding: { bottom: 0 }
-                }
+            xaxis: { lines: { show: false } },
+            yaxis: { lines: { show: false } },
+            padding: { bottom: 0 }
+        }
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
     chart.render();
-   // chart.resize();
-
 }
 
 
