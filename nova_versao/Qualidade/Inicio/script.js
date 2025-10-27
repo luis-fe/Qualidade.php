@@ -340,7 +340,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         chart: {
             type: 'bar',
             height: `${chartHeight}px`,
-            width: '100%',  // Mantém a largura dinâmica
+            width: '100%',
             toolbar: { show: false },
             dropShadow: { enabled: false }
         },
@@ -351,11 +351,16 @@ async function renderizarGraficoOrigemAgrupado(data) {
         xaxis: {
             categories: data.map(item => item.nomeOrigem),
             labels: {
-                rotate: 0,  // Rotaciona totalmente para evitar sobreposição
-                trim: false,  // Garante que o texto não seja cortado
+                show: false // 👈 Oculta os valores do eixo X
+            },
+            axisTicks: { show: false }, // 👈 Remove as marquinhas
+            axisBorder: { show: false } // 👈 Remove a linha do eixo
+        },
+        yaxis: {
+            labels: {
+                show: true, // 👈 Mantém os rótulos visíveis
                 style: {
-                    fontSize: '10px',
-                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                    fontSize: '10px'
                 }
             }
         },
@@ -363,12 +368,13 @@ async function renderizarGraficoOrigemAgrupado(data) {
             bar: {
                 borderRadius: 4,
                 barHeight: 40,
-                horizontal: true,
+                horizontal: true
             }
         },
         grid: {
+            xaxis: { lines: { show: false } }, // 👈 Remove as linhas de grade verticais
             padding: {
-                bottom: 100 // Dá mais espaço para a legenda não ser cortada
+                bottom: 100
             }
         }
     };
@@ -376,6 +382,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
     const chart = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
     chart.render();
 }
+
 
 
 function Tabela_detalha_defeitos(lista) {
