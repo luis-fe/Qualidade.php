@@ -307,7 +307,7 @@ async function renderizarGraficoTerceirizados(data) {
         chart: {
             type: 'bar',
             height: `${chartHeight}px`,
-            width: '100%',
+            width: '100%',  // Mantém a largura dinâmica
             toolbar: { show: false },
             dropShadow: { enabled: false }
         },
@@ -315,47 +315,35 @@ async function renderizarGraficoTerceirizados(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
-        
-        // --- 1. CONFIGURAÇÃO DO EIXO X (OCULTAR OS VALORES) ---
-        // Em um gráfico horizontal, o X é o eixo dos valores.
         xaxis: {
-            labels: { show: false },        // Oculta os números (rótulos de 0, 10, 20...)
-            axisBorder: { show: false },    // Oculta a linha do eixo na base
-            axisTicks: { show: false }      // Oculta as marcações (pequenas linhas do eixo)
-        },
-
-        // --- 2. CONFIGURAÇÃO DO EIXO Y (MANTER OS NOMES/CATEGORIAS) ---
-        // Em um gráfico horizontal, o Y é o eixo das categorias.
-        yaxis: {
             categories: data.map(item => item.nomeFaccicionista),
             labels: {
-                rotate: 0, 
-                trim: false,
+                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
+                trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '10px',
-                    // whiteSpace: 'break-spaces' // Descomente se precisar quebrar linha
+                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
                 }
             }
         },
-
         plotOptions: {
             bar: {
                 borderRadius: 4,
                 barHeight: 30,
-                horizontal: true, // Mantém como gráfico de barras horizontal
-                // Você pode adicionar dataLabels: { position: 'top' } para mostrar o valor na ponta da barra
+                horizontal: true,
             }
         },
         grid: {
-            show: true, // Garante que o grid geral esteja ativo
-            xaxis: { lines: { show: false } }, // Oculta as linhas de grade verticais (relacionadas ao eixo X)
-            yaxis: { lines: { show: false } }, // Oculta as linhas de grade horizontais (relacionadas ao eixo Y)
-            padding: { bottom: 0 }
-        }
+                    xaxis: { lines: { show: false } },
+                    yaxis: { lines: { show: false } },
+                    padding: { bottom: 0 }
+                }
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
     chart.render();
+   // chart.resize();
+
 }
 
 
