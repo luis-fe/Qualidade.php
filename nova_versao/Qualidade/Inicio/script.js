@@ -266,7 +266,7 @@ async function renderizarGraficoBarras(data) {
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
-                    fontSize: '8px',
+                    fontSize: '12px',
                   //  whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
                 }
             }
