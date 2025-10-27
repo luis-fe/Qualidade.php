@@ -289,7 +289,7 @@ async function renderizarGraficoBarras(data) {
         },
         grid: {
             padding: {
-                bottom: 50 // Dá mais espaço para a legenda não ser cortada
+                bottom: 5 // Dá mais espaço para a legenda não ser cortada
             }
         }
     };
@@ -335,7 +335,7 @@ async function renderizarGraficoTerceirizados(data) {
         },
         grid: {
             padding: {
-                bottom: 100 // Dá mais espaço para a legenda não ser cortada
+                bottom: 5 // Dá mais espaço para a legenda não ser cortada
             }
         }
     };
