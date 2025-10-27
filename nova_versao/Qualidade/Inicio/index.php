@@ -65,10 +65,10 @@ include_once('../../templates/headerGarantia.php');
       </div>
     </div>
 
-    <!-- Botão Atualizar -->
-    <button id="btnAtualizar" class="btn btn-geral" style="margin-bottom: 0;">
-      <i class="fas fa-sync-alt"></i> Atualizar
-    </button>
+        <!-- Botão Atualizar -->
+        <button class="btn btn-geral" style="margin-bottom: 0;" onclick="async function atualizar (){await Cosultar_Qualidade(); await Consultar_Motivos(); await Cosultar_Origem()}; atualizar()">
+            <i class="fas fa-sync-alt"></i> Atualizar
+        </button>
 
     <!-- Cards de Totais -->
     <div class="card text-center" style="min-width: 100px;">
