@@ -15,6 +15,10 @@ async function atualizar(){
     await Cosultar_Origem_faccionista();
     await Cosultar_Origem();
     await detalha_defeitos();
+      // 👇 força o navegador a redesenhar os gráficos
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 300);
 };
 
 const Cosultar_Qualidade = async () => {
