@@ -315,36 +315,41 @@ async function renderizarGraficoTerceirizados(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
-        // 🚨 CONFIGURAÇÃO PARA OCULTAR O EIXO X (O EIXO DOS VALORES) 🚨
+        
+        // --- 1. CONFIGURAÇÃO DO EIXO X (OCULTAR OS VALORES) ---
+        // Em um gráfico horizontal, o X é o eixo dos valores.
         xaxis: {
-            labels: { show: false }, // Oculta os números (rótulos)
-            axisBorder: { show: false }, // Oculta a linha do eixo
-            axisTicks: { show: false } // Oculta as marcações/ticks
-            // 💡 Se você quiser manter as categorias no X para um gráfico VERTICAL,
-            // precisaria remover 'horizontal: true' e manter este X.
+            labels: { show: false },        // Oculta os números (rótulos de 0, 10, 20...)
+            axisBorder: { show: false },    // Oculta a linha do eixo na base
+            axisTicks: { show: false }      // Oculta as marcações (pequenas linhas do eixo)
         },
-        // 🚨 CONFIGURAÇÃO CORRETA PARA AS CATEGORIAS NO GRÁFICO HORIZONTAL 🚨
+
+        // --- 2. CONFIGURAÇÃO DO EIXO Y (MANTER OS NOMES/CATEGORIAS) ---
+        // Em um gráfico horizontal, o Y é o eixo das categorias.
         yaxis: {
             categories: data.map(item => item.nomeFaccicionista),
             labels: {
-                // Configurações de estilo que estavam no seu xaxis
-                rotate: 0, // Não precisa de rotação em gráficos horizontais
+                rotate: 0, 
                 trim: false,
                 style: {
                     fontSize: '10px',
+                    // whiteSpace: 'break-spaces' // Descomente se precisar quebrar linha
                 }
             }
         },
+
         plotOptions: {
             bar: {
                 borderRadius: 4,
                 barHeight: 30,
                 horizontal: true, // Mantém como gráfico de barras horizontal
+                // Você pode adicionar dataLabels: { position: 'top' } para mostrar o valor na ponta da barra
             }
         },
         grid: {
-            xaxis: { lines: { show: false } },
-            yaxis: { lines: { show: false } },
+            show: true, // Garante que o grid geral esteja ativo
+            xaxis: { lines: { show: false } }, // Oculta as linhas de grade verticais (relacionadas ao eixo X)
+            yaxis: { lines: { show: false } }, // Oculta as linhas de grade horizontais (relacionadas ao eixo Y)
             padding: { bottom: 0 }
         }
     };
