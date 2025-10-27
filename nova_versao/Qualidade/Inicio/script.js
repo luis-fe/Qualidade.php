@@ -289,7 +289,7 @@ async function renderizarGraficoBarras(data) {
         },
         grid: {
             padding: {
-                bottom: 5 // Dá mais espaço para a legenda não ser cortada
+                bottom: 50 // Dá mais espaço para a legenda não ser cortada
             }
         }
     };
