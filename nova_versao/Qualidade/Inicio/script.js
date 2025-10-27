@@ -335,7 +335,7 @@ async function renderizarGraficoTerceirizados(data) {
         },
         grid: {
                     xaxis: { lines: { show: false } },
-                    yaxis: { lines: { show: true } },
+                    yaxis: { lines: { show: false } },
                     padding: { bottom: 0 }
                 }
     };
