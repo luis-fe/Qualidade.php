@@ -334,7 +334,7 @@ async function renderizarGraficoTerceirizados(data) {
 
 
 async function renderizarGraficoOrigemAgrupado(data) {
-    const chartHeight = Math.max(500, data.length * 50);
+    const chartHeight = 400; // altura fixa mais apropriada para barras verticais
 
     const chartOptions = {
         chart: {
@@ -351,37 +351,37 @@ async function renderizarGraficoOrigemAgrupado(data) {
         xaxis: {
             categories: data.map(item => item.nomeOrigem),
             labels: {
-                show: false // 👈 Oculta os valores do eixo X
+                rotate: -45, // 👈 Inclina o texto para não sobrepor
+                trim: false,
+                style: { fontSize: '10px' }
             },
-            axisTicks: { show: false }, // 👈 Remove as marquinhas
-            axisBorder: { show: false } // 👈 Remove a linha do eixo
+            axisTicks: { show: false },
+            axisBorder: { show: false }
         },
         yaxis: {
             labels: {
-                show: true, // 👈 Mantém os rótulos visíveis
-                style: {
-                    fontSize: '10px'
-                }
+                show: true,
+                style: { fontSize: '10px' }
             }
         },
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: 40,
-                horizontal: true
+                horizontal: false, // 👈 Agora as barras ficam verticais
+                columnWidth: '60%' // 👈 Ajusta a espessura das barras
             }
         },
         grid: {
-            xaxis: { lines: { show: false } }, // 👈 Remove as linhas de grade verticais
-            padding: {
-                bottom: 100
-            }
+            xaxis: { lines: { show: false } },
+            yaxis: { lines: { show: true } },
+            padding: { bottom: 40 }
         }
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
     chart.render();
 }
+
 
 
 
