@@ -349,7 +349,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
             data: data.map(item => item.qtd)
         }],
         xaxis: {
-            categories: data.map(item => item.nomeFaccicionista),
+            categories: data.map(item => item.nomeOrigem),
             labels: {
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
