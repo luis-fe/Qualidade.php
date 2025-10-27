@@ -1,7 +1,11 @@
 $(document).ready(async () => {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; // Obtém a data de hoje no formato 'aaaa-mm-dd'
+    atualizar();
 
+});
+
+async function atualizar(){
     // Exibe no campo, mas mantém um valor oculto para manipulação correta
     $('#dataInicio, #dataFim').val(formattedDate);
 
@@ -11,7 +15,7 @@ $(document).ready(async () => {
     await Cosultar_Origem_faccionista();
     await Cosultar_Origem();
     await detalha_defeitos();
-});
+};
 
 const Cosultar_Qualidade = async () => {
     $('#loadingModal').modal('show');

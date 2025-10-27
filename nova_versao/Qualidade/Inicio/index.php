@@ -66,13 +66,7 @@ include_once('../../templates/headerGarantia.php');
     </div>
 
         <!-- Botão Atualizar -->
-        <button class="btn btn-geral" style="margin-bottom: 0;" onclick="async function atualizar (){
-            await Cosultar_Qualidade();
-            await Consultar_Motivos();
-            await Cosultar_Origem_faccionista();
-            await Cosultar_Origem();
-            await detalha_defeitos();
-        };">
+        <button class="btn btn-geral" style="margin-bottom: 0;" onclick="atualizar();">
             <i class="fas fa-sync-alt"></i> Atualizar
         </button>
 
