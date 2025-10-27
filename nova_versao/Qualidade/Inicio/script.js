@@ -1,13 +1,13 @@
 $(document).ready(async () => {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; // Obtém a data de hoje no formato 'aaaa-mm-dd'
-    atualizar(formattedDate);
+    await $('#dataInicio, #dataFim').val(formattedDate);
+    atualizar();
 
 });
 
-async function atualizar(formattedDate){
+async function atualizar(){
     // Exibe no campo, mas mantém um valor oculto para manipulação correta
-    $('#dataInicio, #dataFim').val(formattedDate);
 
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
     await Cosultar_Qualidade();
