@@ -106,7 +106,7 @@
             background-color: #10045a;
             border-bottom: 1px solid rgb(238, 233, 233);
             border-radius: 0 0 15px 15px;
-            padding: 8px 15px;
+            padding: 8px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -168,7 +168,7 @@
         .span-icone {
             background-color: #10045a;
             color: white;
-            padding: 8px;
+            padding: 5px;
             border-radius: 40%
         }
 
@@ -190,7 +190,7 @@
         .btn-menu {
             border: 1px solid white;
             background-color: lightgray;
-            padding: 10px;
+            padding: 5px;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             font-size: 0.9rem;
@@ -426,7 +426,7 @@
             background-color: #10045a;
             color: white;
             border-radius: 5px;
-            padding: 0px 10px;
+            padding: 0px 5px;
             cursor: pointer;
             font-size: 1rem;
         }
