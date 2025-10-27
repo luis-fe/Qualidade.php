@@ -329,7 +329,7 @@ async function renderizarGraficoTerceirizados(data) {
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: '90%',
+                barHeight: '70%',
                 horizontal: true,
             }
         },
