@@ -123,25 +123,13 @@ include_once('../../templates/headerGarantia.php');
       <div id="graficoTerceirizados" style="width: 100%; height: 300px;"></div>
     </div>
 
-    <!-- Tabela -->
-    <div class="col-md-6">
-      <h2>Análise por Ordem</h2>
-      <table id="tabela_detalhamento2" class="table table-hover mt-2">
-        <thead style="font-size: 14px;">
-          <tr>
-            <th>Ordem<br>Prod.</th>
-            <th>Cod<br>Engenharia</th>
-            <th>Descrição<br>Produto</th>
-            <th>Data<br>Diagnóstico</th>
-            <th>Origem</th>
-            <th>Motivo</th>
-            <th>Qtd.</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+   <div class="row mt-1 p-3 grafico-container">
+    <!-- Gráfico Terceirizados -->
+    <div class="col-md-6 grafico">
+      <h2>Defeitos por Motivo</h2>
+      <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
     </div>
-  </div>
+
 
     <div class="row mt-1 p-3 grafico-container">
             <!-- Tabela -->
