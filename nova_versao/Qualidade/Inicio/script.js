@@ -251,6 +251,8 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
 
     var chartDonut = new ApexCharts(chartElementDonut, optionsDonut);
     chartDonut.render();
+    chartDonut.resize();
+
 };
 
 async function renderizarGraficoBarras(data) {
@@ -294,6 +296,8 @@ async function renderizarGraficoBarras(data) {
 
     const chart = new ApexCharts(document.querySelector("#graficoBarras"), chartOptions);
     chart.render();
+    chart.resize();
+
 }
 
 async function renderizarGraficoTerceirizados(data) {
@@ -338,6 +342,8 @@ async function renderizarGraficoTerceirizados(data) {
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
     chart.render();
+    chart.resize();
+
 }
 
 
@@ -388,6 +394,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
 
     const chart = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
     chart.render();
+        chart.resize();
 }
 
 
