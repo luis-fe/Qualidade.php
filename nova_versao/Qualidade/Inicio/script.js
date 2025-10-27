@@ -301,7 +301,7 @@ async function renderizarGraficoBarras(data) {
 }
 
 async function renderizarGraficoTerceirizados(data) {
-    const chartHeight = Math.max(500, data.length * 50);
+    const chartHeight = Math.max(400, data.length * 50);
 
     const chartOptions = {
         chart: {
@@ -334,10 +334,10 @@ async function renderizarGraficoTerceirizados(data) {
             }
         },
         grid: {
-            padding: {
-                bottom: 5 // Dá mais espaço para a legenda não ser cortada
-            }
-        }
+                    xaxis: { lines: { show: false } },
+                    yaxis: { lines: { show: true } },
+                    padding: { bottom: 0 }
+                }
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
