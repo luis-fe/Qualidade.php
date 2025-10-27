@@ -104,7 +104,7 @@ include_once('../../templates/headerGarantia.php');
         </div>
     </div>
 
-    <div class="grafico card" style="width: 100%; height: 100%;">
+    <div class="grafico card" style="width: 100%;">
             <div class="card-header p-0">
                 <h2 class="h6 mb-0">Defeitos por Origem</h2>
             </div>
