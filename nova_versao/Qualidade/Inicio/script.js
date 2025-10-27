@@ -334,7 +334,7 @@ async function renderizarGraficoTerceirizados(data) {
 
 
 async function renderizarGraficoOrigemAgrupado(data) {
-    const chartHeight = 400; // altura fixa mais apropriada para barras verticais
+    const chartHeight = 300; // altura fixa mais apropriada para barras verticais
 
     const chartOptions = {
         chart: {
@@ -374,7 +374,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         grid: {
             xaxis: { lines: { show: false } },
             yaxis: { lines: { show: true } },
-            padding: { bottom: 10 }
+            padding: { bottom: 2 }
         }
     };
 
