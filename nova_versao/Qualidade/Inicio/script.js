@@ -1,11 +1,11 @@
 $(document).ready(async () => {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; // Obtém a data de hoje no formato 'aaaa-mm-dd'
-    atualizar();
+    atualizar(formattedDate);
 
 });
 
-async function atualizar(){
+async function atualizar(formattedDate){
     // Exibe no campo, mas mantém um valor oculto para manipulação correta
     $('#dataInicio, #dataFim').val(formattedDate);
 
