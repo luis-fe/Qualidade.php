@@ -374,7 +374,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         grid: {
             xaxis: { lines: { show: false } },
             yaxis: { lines: { show: true } },
-            padding: { bottom: 2 }
+            padding: { bottom: 0 }
         }
     };
 
