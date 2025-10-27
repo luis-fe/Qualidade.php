@@ -301,7 +301,7 @@ async function renderizarGraficoBarras(data) {
 }
 
 async function renderizarGraficoTerceirizados(data) {
-    const chartHeight = Math.max(400, data.length * 50);
+    const chartHeight = Math.max(300, data.length * 50);
 
     const chartOptions = {
         chart: {
