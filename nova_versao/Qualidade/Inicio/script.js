@@ -562,7 +562,11 @@ async function renderizarGraficoOrigemAgrupado(data) {
                 trim: false,
                 hideOverlappingLabels: false, // 👈 NÃO esconder labels
                 showDuplicates: false, // evita duplicar nomes iguais
-                style: { fontSize: '10px' }
+                style: { fontSize: '10px', 
+                        textAlign: 'center' // 👈 Centraliza o texto!
+
+
+                }
             },
             tickPlacement: 'on', // garante que os ticks fiquem alinhados aos nomes
             axisTicks: { show: false },
