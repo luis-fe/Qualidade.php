@@ -557,7 +557,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
             categories: data.map(item => item.nomeOrigem),
             labels: {
                 show: true,
-                rotate: 0, // 👈 inclina um pouco para evitar sobreposição
+                rotate: -45, // 👈 inclina um pouco para evitar sobreposição
                 trim: false,
                 hideOverlappingLabels: false, // 👈 NÃO esconder labels
                 showDuplicates: false, // evita duplicar nomes iguais
