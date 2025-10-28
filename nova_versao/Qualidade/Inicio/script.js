@@ -591,12 +591,15 @@ async function renderizarGraficoOrigemAgrupado(data) {
 
 
 
+let searchTimeout;
+
 function Tabela_detalha_defeitos(lista) {
     if ($.fn.DataTable.isDataTable('#tabela_detalhamento')) {
         $('#tabela_detalhamento').DataTable().destroy();
-    }
+        }
 
-    $('#tabela_detalhamento').DataTable({
+    // 1. 🎯 Capturar a instância da tabela na variável 'tabela'
+    const tabela = $('#tabela_detalhamento').DataTable({
         searching: true,
         paging: true,
         lengthChange: false,
@@ -605,37 +608,33 @@ function Tabela_detalha_defeitos(lista) {
         data: lista,
         dom: 'Bfrtip',
         buttons: {
-            // ⭐️ CONFIGURAÇÃO PARA DIMINUIR BOTÕES DO DATATABLES ⭐️
             buttons: [
                 {
-               extend: 'excelHtml5',
-            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-            title: 'Analise Defeitos por OP/Motivo',
-            className: 'btn-tabelas',
-            exportOptions: {
-                columns: ':visible',}
+                    extend: 'excelHtml5',
+                    text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+                    title: 'Analise Defeitos por OP/Motivo',
+                    className: 'btn-tabelas',
+                    exportOptions: {
+                        columns: ':visible',
+                    }
                 },
                 // ... outros botões
             ]
-            
-            // OU, de forma mais geral:
-            // buttonClasses: 'btn-sm' // (Se sua versão do Buttons suportar)
         },
-        
-        // ⭐️ CONFIGURAÇÕES PARA LARGURA DA TABELA ⭐️
-        autoWidth: false, // Força a tabela a se ajustar ao container
-        scrollX: true,    // Adiciona barra de rolagem horizontal se necessário
+
+        autoWidth: false,
+        scrollX: true,
 
         columns: [
-            { data: 'numeroOP', width: '5%' }, // Ajusta as larguras para o total de 100%
+            { data: 'numeroOP', width: '5%' },
             { data: 'codEngenharia', width: '5%' },
-            { data: 'descProd', width: '10%' }, // Dá mais espaço para a descrição
+            { data: 'descProd', width: '10%' },
             { data: 'data_receb', width: '5%' },
             { data: 'nomeOrigem', width: '10%' },
             { data: 'nome', width: '25%' },
             { data: 'nomeFaccicionista', width: '15%' },
             { data: 'fornencedorPreferencial', width: '15%' },
-            { data: 'qtd', width: '10%' } 
+            { data: 'qtd', width: '10%' }
         ],
         language: {
             paginate: {
@@ -646,9 +645,12 @@ function Tabela_detalha_defeitos(lista) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-            footerCallback: function (row, data, start, end, display) {
-
-                    $('.search-input-defeitos').on('input', function () {
+        
+        // 2. 🚀 Mover a lógica de pesquisa para initComplete (executado apenas uma vez)
+        initComplete: function () {
+            // A instância da tabela já está disponível na variável 'tabela'
+            
+            $('.search-input-defeitos').on('input', function () {
                 const input = $(this);
                 clearTimeout(searchTimeout);
 
@@ -659,12 +661,16 @@ function Tabela_detalha_defeitos(lista) {
                         .draw();
                 }, 500); // espera 500ms após parar de digitar
             });
-}
-
-
-
-
+        },
+        
+        // 3. 🗑️ Remover a lógica de evento do footerCallback (se não fizer mais nada)
+        // Se o seu footerCallback só tem o código acima, remova-o.
+        // Se ele também cria os inputs de pesquisa no rodapé, você deve deixá-lo, mas sem o .on('input'):
+        footerCallback: function (row, data, start, end, display) {
+            // Exemplo: Código para criar/inserir os inputs de pesquisa no <tfoot>
+            // Se você só tem a lógica de evento, pode APAGAR este callback.
+            // Se você está inserindo os inputs dinamicamente, deixe a lógica de inserção aqui.
+        }
     });
-
 }
 
