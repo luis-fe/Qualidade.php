@@ -666,33 +666,39 @@ function Tabela_detalha_defeitos(lista) {
         // 3. 🗑️ Remover a lógica de evento do footerCallback (se não fizer mais nada)
         // Se o seu footerCallback só tem o código acima, remova-o.
         // Se ele também cria os inputs de pesquisa no rodapé, você deve deixá-lo, mas sem o .on('input'):
-        footerCallback: function (row, data, start, end, display) {
+       footerCallback: function (row, data, start, end, display) {
             
             var api = this.api();
             var coluna_qtd_indice = 8; // 'Qtd' é a 9ª coluna, índice 8 (0 a 8)
 
-            // Função de ajuda para converter dados e somar
+            // 1. Função de ajuda para converter dados e somar
             var intVal = function (i) {
+                // Tenta remover qualquer caracter que não seja dígito, vírgula ou ponto.
+                // Depois, troca a vírgula (decimal brasileiro) por ponto (decimal JS) e converte para número.
+                // Ajustado para garantir que funcione com inteiros puros também.
                 return typeof i === 'string'
-                    ? i.replace(/[^\d,-]/g, '').replace(',', '.') * 1 // Remove tudo exceto dígitos, vírgula e hífen
+                    ? i.replace(/[^0-9,-]/g, '').replace(',', '.') * 1
                     : typeof i === 'number'
                     ? i
                     : 0;
             };
 
-            // Total dos dados FILTRADOS/VISÍVEIS na tabela
+            // 2. 🎯 Total dos dados FILTRADOS/VISÍVEIS na tabela 🎯
+            // Usando { search: 'applied' } garante que apenas os dados que passaram
+            // pelos filtros (tanto o global quanto os de coluna) serão somados.
             var totalVisivel = api
-                .column(coluna_qtd_indice, { search: 'applied' }) // Soma apenas os dados após os filtros
+                .column(coluna_qtd_indice, { search: 'applied' }) 
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0);
 
-            // Atualiza a célula de rodapé (na coluna 8) usando o ID do seu TH
+            // 3. Atualiza a célula de rodapé (na coluna 8)
             $('#total-quantidade').html(
-                // Formatando o número (ex: 1.234,00)
+                // Formatando o número como inteiro, se a Qtd for sempre inteira.
                 totalVisivel.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) 
-            );
+            ).css('font-weight', 'bold'); // Opcional: destaque o total
+
         },
     });
 }
