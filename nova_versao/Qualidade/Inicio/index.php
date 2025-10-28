@@ -159,6 +159,17 @@ include_once('../../templates/headerGarantia.php');
         </table>
         </div>
     </div>
+
+        <div class="row mt-1 p-3 grafico-container">
+        <div class="col-md-6 grafico"> 
+            <h2>Defeitos por Base Tecido</h2>
+            <div id="graficoBaseTecido" style="width: 100%; height: 300px;"></div>
+        </div>
+
+    </div>
+
+
+
 </div>
 
 <?php
