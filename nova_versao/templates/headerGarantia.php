@@ -15,7 +15,7 @@
     <style>
         /* Sidebar Styles */
         #sidebar {
-            height: 70vh;
+            height: 100vh;
             width: 280px;
             position: fixed;
             top: 0;
@@ -488,7 +488,7 @@
     </div>
 
     <!-- Content -->
-    <div class="container mt-5 content">
+    <div class="container mt-3 content">
 
 
         <!-- Bootstrap JS -->
