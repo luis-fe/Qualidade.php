@@ -143,8 +143,8 @@ include_once('../../templates/headerGarantia.php');
             <!-- Tabela -->
         <div class="col-md-6">
         <h2>Análise por Ordem</h2>
-        <table id="tabela_detalhamento" class="table table-hover mt-1">
-            <thead style="font-size: 12px;">
+        <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1">
+            <thead>
             <tr>
                 <th>Ordem<br>Prod.</th>
                 <th>Cod<br>Engenharia</th>
