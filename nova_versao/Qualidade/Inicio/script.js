@@ -558,7 +558,6 @@ async function renderizarGraficoOrigemAgrupado(data) {
             labels: {
                 show: true,
                 rotate: 0, // 👈 inclina um pouco para evitar sobreposição
-                rotateAlways: true, // 👈 força a rotação mesmo se o gráfico achar que não precisa
                 trim: false,
                 hideOverlappingLabels: false, // 👈 NÃO esconder labels
                 showDuplicates: false, // evita duplicar nomes iguais
