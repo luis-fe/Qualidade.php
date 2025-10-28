@@ -115,13 +115,21 @@ include_once('../../templates/headerGarantia.php');
     </div>
 
   </div>
-
+<div class="col-12 mt-2">
   <div class="row mt-1 p-3 grafico-container">
     <!-- Gráfico Terceirizados -->
     <div class="col-md-6 grafico">
       <h2>Defeitos por terceirizados</h2>
       <div id="graficoTerceirizados" style="width: 100%; height: 300px;"></div>
     </div>
+
+    <div class="row mt-1 p-3 grafico-container">
+    <!-- Gráfico Terceirizados -->
+    <div class="col-md-6 grafico">
+      <h2>Defeitos por Fornecedor</h2>
+      <div id="graficoFornecedores" style="width: 100%; height: 300px;"></div>
+    </div>
+</div>
 
    <div class="row mt-1 p-3 grafico-container">
     <!-- Gráfico Terceirizados -->

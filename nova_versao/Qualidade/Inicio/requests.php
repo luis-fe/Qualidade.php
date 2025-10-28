@@ -35,6 +35,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $dataFinal = $_GET['dataFinal'];
                     jsonResponse(ConsultaOrigem('1', $dataInicial, $dataFinal));
                     break;
+                case 'Cosultar_Fornecedor':
+                    $dataInicial = $_GET['dataInicial'];
+                    $dataFinal = $_GET['dataFinal'];
+                    jsonResponse(Cosultar_Fornecedor('1', $dataInicial, $dataFinal));
+                    break;
                 case 'detalha_defeitos':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
@@ -196,6 +201,28 @@ function defeitos_porOrigem($empresa, $dataInicial, $dataFinal)
 {
     $baseUrl = 'http://10.162.0.53:9000';    
     $apiUrl = "{$baseUrl}/api/defeitos_origem_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal)
+{
+    $baseUrl = 'http://10.162.0.53:9000';    
+    $apiUrl = "{$baseUrl}/api/defeitos_fornecedor_agrupo_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [

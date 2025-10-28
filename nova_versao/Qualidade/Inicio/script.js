@@ -13,6 +13,7 @@ async function atualizar(){
     await Cosultar_Qualidade();
     await Consultar_Motivos();
     await Cosultar_Origem_faccionista();
+    await Cosultar_Origem_fornecedor();
     await Cosultar_Origem();
     await detalha_defeitos();
       // 👇 força o navegador a redesenhar os gráficos
@@ -113,6 +114,39 @@ const Cosultar_Origem_faccionista = async () => {
         } else {
             $('#graficoTerceirizados').html('');
             renderizarGraficoTerceirizados(data);
+        }
+
+    } catch (error) {
+        console.error('Erro ao consultar motivos:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+
+const Cosultar_Origem_fornecedor = async () => {
+    $('#loadingModal').modal('show');
+    try {
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
+
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Cosultar_Fornecedor',
+                dataInicial: dataInicial,
+                dataFinal: dataFinal
+            }
+        });
+
+        // Verifica se os dados estão vazios
+        if (data === null) {
+            $('#graficoFornecedores').html('<p>Nenhum dado a ser exibido</p>');
+        } else {
+            $('#graficoFornecedores').html('');
+            renderizarGraficoFornecedor(data);
         }
 
     } catch (error) {
@@ -341,6 +375,52 @@ async function renderizarGraficoTerceirizados(data) {
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
+    chart.render();
+   // chart.resize();
+
+}
+
+async function renderizarGraficoFornecedor(data) {
+    const chartHeight = Math.max(300, data.length * 50);
+
+    const chartOptions = {
+        chart: {
+            type: 'bar',
+            height: `${chartHeight}px`,
+            width: '100%',  // Mantém a largura dinâmica
+            toolbar: { show: false },
+            dropShadow: { enabled: false }
+        },
+        series: [{
+            name: 'Quantidade',
+            data: data.map(item => item.qtd)
+        }],
+        xaxis: {
+            categories: data.map(item => item.fornencedorPreferencial),
+            labels: {
+                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
+                trim: false,  // Garante que o texto não seja cortado
+                style: {
+                    fontSize: '10px',
+                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                }
+            }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                barHeight: '80%',
+                horizontal: true,
+            }
+        },
+        grid: {
+                    xaxis: { lines: { show: false } },
+                    yaxis: { lines: { show: false } },
+                    padding: { bottom: 0 }
+                }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#graficoFornecedores"), chartOptions);
     chart.render();
    // chart.resize();
 
