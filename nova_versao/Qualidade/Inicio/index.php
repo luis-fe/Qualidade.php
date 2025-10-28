@@ -124,7 +124,7 @@ include_once('../../templates/headerGarantia.php');
       </div>
     </div>
 
-        <div class="input-group">
+    <div class="position-relative">
         <input type="text" 
                 class="form-control" 
                 id="campoBusca" 
@@ -132,7 +132,7 @@ include_once('../../templates/headerGarantia.php');
         <span class="input-group-text">
             <i class="bi bi-search"></i>
         </span>
-        </div>
+    </div>
 
 
   </div>
