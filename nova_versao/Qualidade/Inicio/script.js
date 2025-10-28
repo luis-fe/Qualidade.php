@@ -645,7 +645,26 @@ function Tabela_detalha_defeitos(lista) {
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
-        }
+        },
+            footerCallback: function (row, data, start, end, display) {
+
+                    $('.search-input-defeitos').on('input', function () {
+                const input = $(this);
+                clearTimeout(searchTimeout);
+
+                searchTimeout = setTimeout(() => {
+                    tabela
+                        .column(input.closest('th').index())
+                        .search(input.val())
+                        .draw();
+                }, 500); // espera 500ms após parar de digitar
+            });
+}
+
+
+
+
     });
+
 }
 
