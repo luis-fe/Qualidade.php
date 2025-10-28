@@ -179,27 +179,31 @@ include_once('../../templates/headerGarantia.php');
 
 
     <div class="row mt-1 p-3 tabela-container">
-            <!-- Tabela -->
-            <div class="col-12">
+        <div class="col-12">
             <h2>Análise Detalha por OP/Motivo</h2>
-        <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1 tabela-fonte-pequena">
-            <thead>
-            <tr>
-                <th>Ordem<br>Prod.</th>
-                <th>Cod<br>Engenharia</th>
-                <th>Descrição<br>Produto</th>
-                <th>Data<br>Diagnóstico</th>
-                <th>Origem</th>
-                <th>Motivo<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>
-                <th>Faccionista<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>   
-                <th>Fornecedor<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>   
-                <th style="text-align: right;">Qtd:</th> <th id="total-quantidade"></th> </tr>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
+            <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1 tabela-fonte-pequena">
+                <thead>
+                    <tr>
+                        <th>Ordem<br>Prod.</th>
+                        <th>Cod<br>Engenharia</th>
+                        <th>Descrição<br>Produto</th>
+                        <th>Data<br>Diagnóstico</th>
+                        <th>Origem</th>
+                        <th>Motivo<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>
+                        <th>Faccionista<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>  
+                        <th>Fornecedor<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>  
+                        <th>Qtd:</th> </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="8" style="text-align: right;">Total Visível:</th>
+                        
+                        <th id="total-quantidade"></th> 
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 

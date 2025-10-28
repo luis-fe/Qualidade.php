@@ -667,52 +667,33 @@ function Tabela_detalha_defeitos(lista) {
         // Se o seu footerCallback só tem o código acima, remova-o.
         // Se ele também cria os inputs de pesquisa no rodapé, você deve deixá-lo, mas sem o .on('input'):
         footerCallback: function (row, data, start, end, display) {
-
-            // --- Lógica de Totalização ---
+            
             var api = this.api();
-            var coluna_qtd_indice = 8; // A coluna 'qtd' é a 9ª coluna, índice 8 (0 a 8)
+            var coluna_qtd_indice = 8; // 'Qtd' é a 9ª coluna, índice 8 (0 a 8)
 
-            // Função para converter dados e somar (Remove vírgulas, converte para número)
+            // Função de ajuda para converter dados e somar
             var intVal = function (i) {
                 return typeof i === 'string'
-                    ? i.replace(/[\$,]/g, '') * 1
+                    ? i.replace(/[^\d,-]/g, '').replace(',', '.') * 1 // Remove tudo exceto dígitos, vírgula e hífen
                     : typeof i === 'number'
                     ? i
                     : 0;
             };
 
-            // Total de TODOS os dados (incluindo dados fora da página atual)
-            var totalGeral = api
-                .column(coluna_qtd_indice)
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
-
-            // Total dos dados FILTRADOS e VISÍVEIS na tabela
-            var totalFiltrado = api
-                .column(coluna_qtd_indice, { page: 'current' }) // 'current' para apenas a página atual
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
-                
-            // Se você quiser somar apenas o que está na tela (filtrado, mas em todas as páginas):
+            // Total dos dados FILTRADOS/VISÍVEIS na tabela
             var totalVisivel = api
-                .column(coluna_qtd_indice, { search: 'applied' }) // 'search: applied' para dados filtrados
+                .column(coluna_qtd_indice, { search: 'applied' }) // Soma apenas os dados após os filtros
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0);
 
-            // Atualiza a célula de rodapé (9ª célula do rodapé, índice 8)
-            // Você pode escolher exibir o totalVisivel ou totalGeral
-            $(api.column(coluna_qtd_indice).footer()).html(
-                // Exemplo: formatando o número com separador de milhar se necessário
-                totalVisivel.toLocaleString('pt-BR') 
+            // Atualiza a célula de rodapé (na coluna 8) usando o ID do seu TH
+            $('#total-quantidade').html(
+                // Formatando o número (ex: 1.234,00)
+                totalVisivel.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) 
             );
-         
-        }
+        },
     });
 }
 
