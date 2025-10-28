@@ -611,6 +611,7 @@ function Tabela_detalha_defeitos(lista) {
             { data: 'data_receb' },
             { data: 'nomeOrigem' },
             { data: 'nome' },
+            {data: 'nomeFaccicionista'},
             { data: 'qtd' }
         ],
         language: {

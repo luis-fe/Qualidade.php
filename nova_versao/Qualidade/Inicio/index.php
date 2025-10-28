@@ -152,6 +152,7 @@ include_once('../../templates/headerGarantia.php');
                 <th>Data<br>Diagnóstico</th>
                 <th>Origem</th>
                 <th>Motivo</th>
+                <th>Faccionista<th>    
                 <th>Qtd.</th>
             </tr>
             </thead>
