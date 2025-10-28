@@ -124,13 +124,15 @@ include_once('../../templates/headerGarantia.php');
       </div>
     </div>
 
-    <div class="position-relative">
-        <input type="text" 
-                class="form-control" 
-                id="campoBusca" 
-                placeholder="Busca Avançada...">
-            <i class="bi bi-search"></i>
+    <div class="position-relative" style="max-width: 300px;">
+    <input type="text" 
+            class="form-control pe-5" 
+            id="campoBusca" 
+            placeholder="Busca Avançada...">
+    <i class="bi bi-search position-absolute" 
+        style="right: 10px; top: 50%; transform: translateY(-50%); color: #6c757d;"></i>
     </div>
+
 
 
   </div>
