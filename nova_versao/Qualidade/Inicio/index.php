@@ -139,7 +139,7 @@ include_once('../../templates/headerGarantia.php');
     </div>
 
 
-    <div class="row mt-1 p-3 grafico-container">
+    <div class="row mt-1 p-3 tabela-container">
             <!-- Tabela -->
         <div class="col-md-6">
         <h2>Análise por Ordem</h2>
