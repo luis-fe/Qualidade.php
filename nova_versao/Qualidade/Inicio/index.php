@@ -190,9 +190,9 @@ include_once('../../templates/headerGarantia.php');
                 <th>Descrição<br>Produto</th>
                 <th>Data<br>Diagnóstico</th>
                 <th>Origem</th>
-                <th>Motivo<br><input type="search" class="search-input search-input-defeitos" style="min-width: 5px;"></th>
-                <th>Faccionista<br><input type="search" class="search-input search-input-defeitos" style="min-width: 5px;"></th>   
-                <th>Fornecedor<br><input type="search" class="search-input search-input-defeitos" style="min-width: 5px;"></th>   
+                <th>Motivo<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>
+                <th>Faccionista<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>   
+                <th>Fornecedor<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>   
                 <th>Qtd.</th>
             </tr>
             </thead>
