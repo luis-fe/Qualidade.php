@@ -192,6 +192,7 @@ include_once('../../templates/headerGarantia.php');
                 <th>Origem</th>
                 <th>Motivo</th>
                 <th>Faccionista</th>    
+                <th>Fornecedor</th>    
                 <th>Qtd.</th>
             </tr>
             </thead>

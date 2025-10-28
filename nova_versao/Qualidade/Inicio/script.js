@@ -610,7 +610,7 @@ function Tabela_detalha_defeitos(lista) {
                 {
                extend: 'excelHtml5',
             text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
-            title: 'Tendências de Vendas',
+            title: 'Analise Defeitos por OP/Motivo',
             className: 'btn-tabelas',
             exportOptions: {
                 columns: ':visible',}
@@ -633,7 +633,8 @@ function Tabela_detalha_defeitos(lista) {
             { data: 'data_receb', width: '10%' },
             { data: 'nomeOrigem', width: '10%' },
             { data: 'nome', width: '20%' },
-            { data: 'nomeFaccicionista', width: '20%' },
+            { data: 'nomeFaccicionista', width: '10%' },
+            { data: 'fornencedorPreferencial', width: '10%' },
             { data: 'qtd', width: '5%' } 
         ],
         language: {
