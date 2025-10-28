@@ -371,12 +371,12 @@ async function renderizarGraficoBarras(data) {
 }
 
 async function renderizarGraficoBarras_baseTecido(data) {
-    const chartWidth = Math.max(400, data.length * 50);
+    const chartWidth = Math.max(300, data.length * 30);
 
     const chartOptions = {
         chart: {
             type: 'bar',
-            height: 400,
+            height: 300,
             width: `${chartWidth}px`,  // Mantém a largura dinâmica
             toolbar: { show: false },
             dropShadow: { enabled: false }
@@ -398,8 +398,8 @@ async function renderizarGraficoBarras_baseTecido(data) {
         },
         plotOptions: {
             bar: {
-                borderRadius: 4,
-                barHeight: '70%', // Ajusta a altura das barras
+                borderRadius: 3,
+                barHeight: '80%', // Ajusta a altura das barras
             }
         },
         grid: {
