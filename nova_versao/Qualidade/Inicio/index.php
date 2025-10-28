@@ -129,9 +129,7 @@ include_once('../../templates/headerGarantia.php');
                 class="form-control" 
                 id="campoBusca" 
                 placeholder="Busca Avançada...">
-        <span class="input-group-text">
             <i class="bi bi-search"></i>
-        </span>
     </div>
 
 
