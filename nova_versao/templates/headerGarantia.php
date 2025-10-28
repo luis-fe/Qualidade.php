@@ -15,7 +15,7 @@
     <style>
         /* Sidebar Styles */
         #sidebar {
-            height: 100vh;
+            height: 70vh;
             width: 280px;
             position: fixed;
             top: 0;
