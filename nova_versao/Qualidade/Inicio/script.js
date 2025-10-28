@@ -634,8 +634,8 @@ function Tabela_detalha_defeitos(lista) {
             { data: 'nomeOrigem', width: '10%' },
             { data: 'nome', width: '20%' },
             { data: 'nomeFaccicionista', width: '10%' },
-            { data: 'fornencedorPreferencial', width: '10%' },
-            { data: 'qtd', width: '5%' } 
+            { data: 'fornencedorPreferencial', width: '7%' },
+            { data: 'qtd', width: '8%' } 
         ],
         language: {
             paginate: {
