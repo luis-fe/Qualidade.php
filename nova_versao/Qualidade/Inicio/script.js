@@ -648,44 +648,36 @@ function Tabela_detalha_defeitos(lista) {
         
         // 2. 🚀 Mover a lógica de pesquisa para initComplete (executado apenas uma vez)
         initComplete: function () {
-            // A instância da tabela já está disponível na variável 'tabela'
+            // 🎯 Usar a API diretamente garante que a instância é a correta
+            var tabelaApi = this.api(); 
             
             $('.search-input-defeitos').on('input', function () {
                 const input = $(this);
                 clearTimeout(searchTimeout);
 
                 searchTimeout = setTimeout(() => {
-                    tabela
+                    tabelaApi // ⭐️ Usar a instância segura
                         .column(input.closest('th').index())
                         .search(input.val())
                         .draw();
-                }, 500); // espera 500ms após parar de digitar
+                }, 500);
             });
         },
         
-        // 3. 🗑️ Remover a lógica de evento do footerCallback (se não fizer mais nada)
-        // Se o seu footerCallback só tem o código acima, remova-o.
-        // Se ele também cria os inputs de pesquisa no rodapé, você deve deixá-lo, mas sem o .on('input'):
-       footerCallback: function (row, data, start, end, display) {
+        footerCallback: function (row, data, start, end, display) {
             
             var api = this.api();
-            var coluna_qtd_indice = 8; // 'Qtd' é a 9ª coluna, índice 8 (0 a 8)
+            var coluna_qtd_indice = 8; 
 
-            // 1. Função de ajuda para converter dados e somar
+            // ⭐️ Simplificação da função de conversão (assume que Qtd é inteiro)
             var intVal = function (i) {
-                // Tenta remover qualquer caracter que não seja dígito, vírgula ou ponto.
-                // Depois, troca a vírgula (decimal brasileiro) por ponto (decimal JS) e converte para número.
-                // Ajustado para garantir que funcione com inteiros puros também.
-                return typeof i === 'string'
-                    ? i.replace(/[^0-9,-]/g, '').replace(',', '.') * 1
-                    : typeof i === 'number'
-                    ? i
-                    : 0;
+                if (typeof i === 'string') {
+                   // Remove tudo que não seja dígito.
+                   return i.replace(/[^0-9]/g, '') * 1;
+                }
+                return typeof i === 'number' ? i : 0;
             };
 
-            // 2. 🎯 Total dos dados FILTRADOS/VISÍVEIS na tabela 🎯
-            // Usando { search: 'applied' } garante que apenas os dados que passaram
-            // pelos filtros (tanto o global quanto os de coluna) serão somados.
             var totalVisivel = api
                 .column(coluna_qtd_indice, { search: 'applied' }) 
                 .data()
@@ -693,12 +685,10 @@ function Tabela_detalha_defeitos(lista) {
                     return intVal(a) + intVal(b);
                 }, 0);
 
-            // 3. Atualiza a célula de rodapé (na coluna 8)
+            // Acesso direto ao <tfoot> ou ao seletor de coluna
             $('#total-quantidade').html(
-                // Formatando o número como inteiro, se a Qtd for sempre inteira.
                 totalVisivel.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) 
-            ).css('font-weight', 'bold'); // Opcional: destaque o total
-
+            ).css('font-weight', 'bold');
         },
     });
 }
