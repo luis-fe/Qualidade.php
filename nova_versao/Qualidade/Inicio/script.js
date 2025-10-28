@@ -467,7 +467,7 @@ async function renderizarGraficoTerceirizados(data) {
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
             style: {
-                fontSize: '10px', // Altere para o tamanho desejado
+                fontSize: '11px', // Altere para o tamanho desejado
                 fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
                 fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
                 // color: '#000000' // Opcional: para mudar a cor do texto
@@ -523,7 +523,7 @@ async function renderizarGraficoFornecedor(data) {
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
             style: {
-                fontSize: '10px', // Altere para o tamanho desejado
+                fontSize: '11px', // Altere para o tamanho desejado
                 fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
                 fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
                 // color: '#000000' // Opcional: para mudar a cor do texto
