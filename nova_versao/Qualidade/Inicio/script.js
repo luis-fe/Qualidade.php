@@ -556,10 +556,15 @@ async function renderizarGraficoOrigemAgrupado(data) {
         xaxis: {
             categories: data.map(item => item.nomeOrigem),
             labels: {
-                rotate: 0, // 👈 Inclina o texto para não sobrepor
+                show: true,
+                rotate: 0, // 👈 inclina um pouco para evitar sobreposição
+                rotateAlways: true, // 👈 força a rotação mesmo se o gráfico achar que não precisa
                 trim: false,
+                hideOverlappingLabels: false, // 👈 NÃO esconder labels
+                showDuplicates: false, // evita duplicar nomes iguais
                 style: { fontSize: '10px' }
             },
+            tickPlacement: 'on', // garante que os ticks fiquem alinhados aos nomes
             axisTicks: { show: false },
             axisBorder: { show: false }
         },
