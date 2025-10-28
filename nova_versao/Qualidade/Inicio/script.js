@@ -553,24 +553,24 @@ async function renderizarGraficoOrigemAgrupado(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
-        xaxis: {
-            categories: data.map(item => item.nomeOrigem),
-            labels: {
-                show: true,
-                rotate: -45, // 👈 inclina um pouco para evitar sobreposição
-                trim: false,
-                hideOverlappingLabels: false, // 👈 NÃO esconder labels
-                showDuplicates: false, // evita duplicar nomes iguais
-                style: { fontSize: '10px', 
-                        textAlign: 'center' // 👈 Centraliza o texto!
-
-
-                }
-            },
-            tickPlacement: 'on', // garante que os ticks fiquem alinhados aos nomes
-            axisTicks: { show: false },
-            axisBorder: { show: false }
-        },
+       xaxis: {
+    categories: data.map(item => item.nomeOrigem),
+    labels: {
+        show: true,
+        rotate: -45,
+        rotateAlways: true,
+        trim: false,
+        hideOverlappingLabels: false,
+        style: {
+            fontSize: '10px',
+            fontWeight: 'normal',
+            textAlign: 'center' // 👈 Centraliza o texto!
+        }
+    },
+    tickPlacement: 'on',
+    axisTicks: { show: false },
+    axisBorder: { show: false }
+},
         yaxis: {
             title: {
         text: undefined // 👈 remove o título do eixo Y
