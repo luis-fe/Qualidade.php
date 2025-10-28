@@ -332,7 +332,7 @@ async function renderizarGraficoBarras(data) {
         chart: {
             type: 'bar',
             height: 350,
-            width: `${chartWidth}px`,  // Mantém a largura dinâmica
+            width: `${chartWidth}px`, // Mantém a largura dinâmica
             toolbar: { show: false },
             dropShadow: { enabled: false }
         },
@@ -343,11 +343,11 @@ async function renderizarGraficoBarras(data) {
         xaxis: {
             categories: data.map(item => item.motivo2Qualidade),
             labels: {
-                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
-                trim: false,  // Garante que o texto não seja cortado
+                rotate: -90, // Rotaciona totalmente para evitar sobreposição
+                trim: false, // Garante que o texto não seja cortado
                 style: {
                     fontSize: '12px',
-                  //  whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                    // whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
                 }
             }
         },
@@ -355,19 +355,29 @@ async function renderizarGraficoBarras(data) {
             bar: {
                 borderRadius: 4,
                 barHeight: '80%', // Ajusta a altura das barras
+                // Para rótulos de dados dentro da barra (opcional):
+                // dataLabels: { position: 'top' } 
             }
         },
         grid: {
             padding: {
-                bottom: 50 // Dá mais espaço para a legenda não ser cortada
+                bottom: 60 // Dá mais espaço para a legenda não ser cortada
+            }
+        },
+        // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
+        dataLabels: {
+            enabled: true, // É importante que esteja 'true'
+            style: {
+                fontSize: '10px', // Altere para o tamanho desejado
+                fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
+                fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
+                // color: '#000000' // Opcional: para mudar a cor do texto
             }
         }
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoBarras"), chartOptions);
     chart.render();
-    //chart.resize();
-
 }
 
 async function renderizarGraficoBarras_baseTecido(data) {
@@ -388,7 +398,7 @@ async function renderizarGraficoBarras_baseTecido(data) {
         xaxis: {
             categories: data.map(item => item.nomeItem),
             labels: {
-                rotate: -45,  // Rotaciona totalmente para evitar sobreposição
+                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '12px',
