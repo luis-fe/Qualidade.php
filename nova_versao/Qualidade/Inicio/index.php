@@ -193,7 +193,7 @@ include_once('../../templates/headerGarantia.php');
                 <th>Motivo<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>
                 <th>Faccionista<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>   
                 <th>Fornecedor<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>   
-                <th>Qtd.</th>
+                <th style="text-align: right;">Qtd:</th> <th id="total-quantidade"></th> </tr>
             </tr>
             </thead>
             <tbody>

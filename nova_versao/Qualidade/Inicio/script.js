@@ -667,9 +667,51 @@ function Tabela_detalha_defeitos(lista) {
         // Se o seu footerCallback só tem o código acima, remova-o.
         // Se ele também cria os inputs de pesquisa no rodapé, você deve deixá-lo, mas sem o .on('input'):
         footerCallback: function (row, data, start, end, display) {
-            // Exemplo: Código para criar/inserir os inputs de pesquisa no <tfoot>
-            // Se você só tem a lógica de evento, pode APAGAR este callback.
-            // Se você está inserindo os inputs dinamicamente, deixe a lógica de inserção aqui.
+
+            // --- Lógica de Totalização ---
+            var api = this.api();
+            var coluna_qtd_indice = 8; // A coluna 'qtd' é a 9ª coluna, índice 8 (0 a 8)
+
+            // Função para converter dados e somar (Remove vírgulas, converte para número)
+            var intVal = function (i) {
+                return typeof i === 'string'
+                    ? i.replace(/[\$,]/g, '') * 1
+                    : typeof i === 'number'
+                    ? i
+                    : 0;
+            };
+
+            // Total de TODOS os dados (incluindo dados fora da página atual)
+            var totalGeral = api
+                .column(coluna_qtd_indice)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total dos dados FILTRADOS e VISÍVEIS na tabela
+            var totalFiltrado = api
+                .column(coluna_qtd_indice, { page: 'current' }) // 'current' para apenas a página atual
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+                
+            // Se você quiser somar apenas o que está na tela (filtrado, mas em todas as páginas):
+            var totalVisivel = api
+                .column(coluna_qtd_indice, { search: 'applied' }) // 'search: applied' para dados filtrados
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Atualiza a célula de rodapé (9ª célula do rodapé, índice 8)
+            // Você pode escolher exibir o totalVisivel ou totalGeral
+            $(api.column(coluna_qtd_indice).footer()).html(
+                // Exemplo: formatando o número com separador de milhar se necessário
+                totalVisivel.toLocaleString('pt-BR') 
+            );
+         
         }
     });
 }
