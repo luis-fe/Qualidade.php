@@ -669,14 +669,15 @@ function Tabela_detalha_defeitos(lista) {
             var api = this.api();
             var coluna_qtd_indice = 8; 
 
-            // ⭐️ Simplificação da função de conversão (assume que Qtd é inteiro)
-            var intVal = function (i) {
-                if (typeof i === 'string') {
-                   // Remove tudo que não seja dígito.
-                   return i.replace(/[^0-9]/g, '') * 1;
-                }
-                return typeof i === 'number' ? i : 0;
-            };
+        var intVal = function (i) {
+            if (typeof i === 'string') {
+                // Tenta remover tudo que não seja número (0-9).
+                // Se houver separador de milhar (ponto) e não for usado como decimal, 
+                // a melhor forma é remover todos os caracteres não-dígitos.
+                return i.replace(/[^0-9]/g, '') * 1; 
+            }
+            return typeof i === 'number' ? i : 0;
+        };
 
             var totalVisivel = api
                 .column(coluna_qtd_indice, { search: 'applied' }) 
