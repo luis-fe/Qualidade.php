@@ -488,7 +488,7 @@
     </div>
 
     <!-- Content -->
-    <div class="container mt-3 content">
+    <div class="container mt-2 content">
 
 
         <!-- Bootstrap JS -->
