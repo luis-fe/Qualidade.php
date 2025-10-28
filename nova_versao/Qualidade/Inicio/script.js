@@ -622,7 +622,7 @@ function Tabela_detalha_defeitos(lista) {
             ]
         },
 
-        autoWidth: false,
+        autoWidth: true,
         scrollX: true,
 
         columns: [

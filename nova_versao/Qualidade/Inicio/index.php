@@ -198,7 +198,7 @@ include_once('../../templates/headerGarantia.php');
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="8" style="text-align: right;">Total Visível:</th>
+                        <th colspan="8" style="text-align: right;">Total:</th>
                         
                         <th id="total-quantidade"></th> 
                     </tr>
