@@ -606,17 +606,17 @@ function Tabela_detalha_defeitos(lista) {
         dom: 'Bfrtip',
         
         // ⭐️ CONFIGURAÇÕES PARA LARGURA DA TABELA ⭐️
-        autoWidth: true, // Força a tabela a se ajustar ao container
+        autoWidth: false, // Força a tabela a se ajustar ao container
         scrollX: true,    // Adiciona barra de rolagem horizontal se necessário
 
         columns: [
             { data: 'numeroOP', width: '8%' }, // Ajusta as larguras para o total de 100%
             { data: 'codEngenharia', width: '12%' },
-            { data: 'descProd', width: '25%' }, // Dá mais espaço para a descrição
+            { data: 'descProd', width: '20%' }, // Dá mais espaço para a descrição
             { data: 'data_receb', width: '10%' },
             { data: 'nomeOrigem', width: '10%' },
-            { data: 'nome', width: '15%' },
-            { data: 'nomeFaccicionista', width: '15%' },
+            { data: 'nome', width: '20%' },
+            { data: 'nomeFaccicionista', width: '20%' },
             { data: 'qtd', width: '5%' } 
         ],
         language: {
