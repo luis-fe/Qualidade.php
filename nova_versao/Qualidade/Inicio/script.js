@@ -454,7 +454,7 @@ async function renderizarGraficoTerceirizados(data) {
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: '80%',
+                barHeight: '90%',
                 horizontal: true,
             }
         },
@@ -510,7 +510,7 @@ async function renderizarGraficoFornecedor(data) {
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: '80%',
+                barHeight: '90%',
                 horizontal: true,
             }
         },
@@ -518,7 +518,17 @@ async function renderizarGraficoFornecedor(data) {
                     xaxis: { lines: { show: false } },
                     yaxis: { lines: { show: false } },
                     padding: { bottom: 0 }
-                }
+                },
+                 // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
+        dataLabels: {
+            enabled: true, // É importante que esteja 'true'
+            style: {
+                fontSize: '10px', // Altere para o tamanho desejado
+                fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
+                fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
+                // color: '#000000' // Opcional: para mudar a cor do texto
+            }
+        }
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoFornecedores"), chartOptions);
