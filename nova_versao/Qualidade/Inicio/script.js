@@ -623,7 +623,7 @@ function Tabela_detalha_defeitos(lista) {
         },
         
         // ⭐️ CONFIGURAÇÕES PARA LARGURA DA TABELA ⭐️
-        autoWidth: false, // Força a tabela a se ajustar ao container
+        autoWidth: true, // Força a tabela a se ajustar ao container
         scrollX: true,    // Adiciona barra de rolagem horizontal se necessário
 
         columns: [
