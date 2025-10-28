@@ -53,6 +53,7 @@ include_once('../../templates/headerGarantia.php');
 .tabela-fonte-pequena th {
     font-size: 12px; /* Ajuste o tamanho em pixels (ex: 10px, 12px) */
     /* font-size: 0.85rem; /* Ou em rem (ex: 0.85rem) */
+    background: blue;
 }
 
 
