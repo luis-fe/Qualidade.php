@@ -124,7 +124,7 @@ include_once('../../templates/headerGarantia.php');
       </div>
     </div>
 
-    <div class="position-relative" style="max-width: 100px;">
+    <div class="position-relative" style="max-width: 200px;">
     <input type="text" 
             class="form-control pe-5" 
             id="campoBusca" 
