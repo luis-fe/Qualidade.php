@@ -604,6 +604,21 @@ function Tabela_detalha_defeitos(lista) {
         pageLength: 12,
         data: lista,
         dom: 'Bfrtip',
+        buttons: {
+            // ⭐️ CONFIGURAÇÃO PARA DIMINUIR BOTÕES DO DATATABLES ⭐️
+            buttons: [
+                // Adicione suas configurações de botão aqui, ex: 'excel', 'pdf'
+                // E inclua a classe 'btn-sm'
+                {
+                    extend: 'excel',
+                    className: 'btn-sm' // Aplica a classe de botão pequeno
+                },
+                // ... outros botões
+            ]
+            
+            // OU, de forma mais geral:
+            // buttonClasses: 'btn-sm' // (Se sua versão do Buttons suportar)
+        },
         
         // ⭐️ CONFIGURAÇÕES PARA LARGURA DA TABELA ⭐️
         autoWidth: false, // Força a tabela a se ajustar ao container
