@@ -53,7 +53,9 @@ include_once('../../templates/headerGarantia.php');
 .tabela-fonte-pequena th {
     font-size: 12px; /* Ajuste o tamanho em pixels (ex: 10px, 12px) */
     /* font-size: 0.85rem; /* Ou em rem (ex: 0.85rem) */
-    background: blue;
+    background: #008FFB;
+    color: #e0e8eeff;
+
 }
 
 
@@ -157,7 +159,7 @@ include_once('../../templates/headerGarantia.php');
     <div class="row mt-1 p-3 tabela-container">
             <!-- Tabela -->
             <div class="col-12">
-            <h2>Análise por Ordem</h2>
+            <h2>Análise Detalha por OP/Motivo</h2>
         <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1 tabela-fonte-pequena">
             <thead>
             <tr>
