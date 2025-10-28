@@ -371,12 +371,12 @@ async function renderizarGraficoBarras(data) {
 }
 
 async function renderizarGraficoBarras_baseTecido(data) {
-    const chartWidth = Math.max(300, data.length * 30);
+    const chartWidth = Math.max(350, data.length * 35);
 
     const chartOptions = {
         chart: {
             type: 'bar',
-            height: 300,
+            height: 350,
             width: `${chartWidth}px`,  // Mantém a largura dinâmica
             toolbar: { show: false },
             dropShadow: { enabled: false }
@@ -388,7 +388,7 @@ async function renderizarGraficoBarras_baseTecido(data) {
         xaxis: {
             categories: data.map(item => item.nomeItem),
             labels: {
-                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
+                rotate: -45,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '12px',
