@@ -577,7 +577,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         text: undefined // 👈 remove o título do eixo Y
     },
             labels: {
-                show: true,
+                show: false,
                 style: { fontSize: '10px' }
             }
         },
