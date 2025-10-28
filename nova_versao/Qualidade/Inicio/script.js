@@ -667,10 +667,14 @@ function Tabela_detalha_defeitos(lista) {
                 clearTimeout(searchTimeout);
 
                 searchTimeout = setTimeout(() => {
-                    tabelaApi // ⭐️ Usar a instância segura
-                        .column(input.closest('th').index())
-                        .search(input.val())
-                        .draw();
+                                    tabelaApi
+                    .column(input.closest('th').index())
+                    .search(input.val())
+                    .draw();
+
+                // 👇 Força recalcular o total do footer
+                tabelaApi.rows().invalidate().draw(false);
+
                 }, 500);
             });
         },
