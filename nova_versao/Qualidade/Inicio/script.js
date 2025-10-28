@@ -658,26 +658,48 @@ function Tabela_detalha_defeitos(lista) {
         },
         
         // 2. 🚀 Mover a lógica de pesquisa para initComplete (executado apenas uma vez)
-        initComplete: function () {
-            // 🎯 Usar a API diretamente garante que a instância é a correta
+     initComplete: function () {
             var tabelaApi = this.api(); 
             
+            function atualizarTotal() {
+                var coluna_qtd_indice = 8;
+
+                var intVal = function (i) {
+                    if (typeof i === 'string') return i.replace(/[^0-9]/g, '') * 1;
+                    return typeof i === 'number' ? i : 0;
+                };
+
+                var totalVisivel = tabelaApi
+                    .column(coluna_qtd_indice, { search: 'applied' })
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                $('#total-quantidade')
+                    .html(totalVisivel.toLocaleString('pt-BR'))
+                    .css('font-weight', 'bold');
+            }
+
+            // Atualiza o total a cada filtro
             $('.search-input-defeitos').on('input', function () {
                 const input = $(this);
                 clearTimeout(searchTimeout);
 
                 searchTimeout = setTimeout(() => {
-                                    tabelaApi
-                    .column(input.closest('th').index())
-                    .search(input.val())
-                    .draw();
+                    tabelaApi
+                        .column(input.closest('th').index())
+                        .search(input.val())
+                        .draw();
 
-                // 👇 Força recalcular o total do footer
-                tabelaApi.rows().invalidate().draw(false);
-
+                    atualizarTotal(); // 👈 recalcula o total após o filtro
                 }, 500);
             });
+
+            // Chama 1x ao iniciar
+            atualizarTotal();
         },
+
         
         footerCallback: function (row, data, start, end, display) {
             
