@@ -627,15 +627,15 @@ function Tabela_detalha_defeitos(lista) {
         scrollX: true,    // Adiciona barra de rolagem horizontal se necessário
 
         columns: [
-            { data: 'numeroOP', width: '8%' }, // Ajusta as larguras para o total de 100%
-            { data: 'codEngenharia', width: '12%' },
-            { data: 'descProd', width: '20%' }, // Dá mais espaço para a descrição
-            { data: 'data_receb', width: '10%' },
+            { data: 'numeroOP', width: '5%' }, // Ajusta as larguras para o total de 100%
+            { data: 'codEngenharia', width: '10%' },
+            { data: 'descProd', width: '15%' }, // Dá mais espaço para a descrição
+            { data: 'data_receb', width: '5%' },
             { data: 'nomeOrigem', width: '10%' },
             { data: 'nome', width: '20%' },
-            { data: 'nomeFaccicionista', width: '10%' },
-            { data: 'fornencedorPreferencial', width: '7%' },
-            { data: 'qtd', width: '8%' } 
+            { data: 'nomeFaccicionista', width: '13%' },
+            { data: 'fornencedorPreferencial', width: '12%' },
+            { data: 'qtd', width: '5%' } 
         ],
         language: {
             paginate: {
