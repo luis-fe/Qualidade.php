@@ -556,7 +556,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         xaxis: {
             categories: data.map(item => item.nomeOrigem),
             labels: {
-                rotate: -45, // 👈 Inclina o texto para não sobrepor
+                rotate: 0, // 👈 Inclina o texto para não sobrepor
                 trim: false,
                 style: { fontSize: '10px' }
             },
@@ -573,7 +573,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
             bar: {
                 borderRadius: 4,
                 horizontal: false, // 👈 Agora as barras ficam verticais
-                columnWidth: '5%' // 👈 Ajusta a espessura das barras
+                columnWidth: '50%' // 👈 Ajusta a espessura das barras
             }
         },
         grid: {
