@@ -57,6 +57,28 @@ include_once('../../templates/headerGarantia.php');
     color: #e0e8eeff;
 
 }
+/* Seletor para diminuir o padding e a fonte dos botões de paginação */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    /* Diminui o padding interno da caixa */
+    padding: 0.25em 0.5em !important; 
+    
+    /* Diminui o tamanho da fonte */
+    font-size: 12px !important; 
+    
+    /* Garante que o ícone interno também seja menor */
+    line-height: 1.2; 
+}
+
+/* Opcional: Se os botões de Anterior/Próximo estiverem grandes */
+.dataTables_wrapper .dataTables_paginate .paginate_button i {
+    font-size: 12px !important; /* Ajusta o tamanho do ícone Font Awesome */
+}
+
+/* Opcional: Diminuir a margem entre os botões */
+.dataTables_wrapper .dataTables_paginate .paginate_button:not(.disabled) {
+    margin-left: 1px;
+    margin-right: 1px;
+}
 
 
 </style>

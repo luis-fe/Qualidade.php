@@ -607,11 +607,13 @@ function Tabela_detalha_defeitos(lista) {
         buttons: {
             // ⭐️ CONFIGURAÇÃO PARA DIMINUIR BOTÕES DO DATATABLES ⭐️
             buttons: [
-                // Adicione suas configurações de botão aqui, ex: 'excel', 'pdf'
-                // E inclua a classe 'btn-sm'
                 {
-                    extend: 'excel',
-                    className: 'btn-sm' // Aplica a classe de botão pequeno
+               extend: 'excelHtml5',
+            text: '<i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel',
+            title: 'Tendências de Vendas',
+            className: 'btn-tabelas',
+            exportOptions: {
+                columns: ':visible',}
                 },
                 // ... outros botões
             ]
