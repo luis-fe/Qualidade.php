@@ -573,6 +573,9 @@ async function renderizarGraficoOrigemAgrupado(data) {
             axisBorder: { show: false }
         },
         yaxis: {
+            title: {
+        text: undefined // 👈 remove o título do eixo Y
+    },
             labels: {
                 show: true,
                 style: { fontSize: '10px' }
