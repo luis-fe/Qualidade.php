@@ -573,7 +573,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
             bar: {
                 borderRadius: 4,
                 horizontal: false, // 👈 Agora as barras ficam verticais
-                columnWidth: '60%' // 👈 Ajusta a espessura das barras
+                columnWidth: '50%' // 👈 Ajusta a espessura das barras
             }
         },
         grid: {
