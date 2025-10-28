@@ -124,14 +124,16 @@ include_once('../../templates/headerGarantia.php');
       </div>
     </div>
 
-    <div class="position-relative">
-        <label for="campoBusca" class="form-label"></label>
-        <i class="bi bi-search"></i>
+        <div class="input-group">
         <input type="text" 
-            class="form-control" 
-            id="campoBusca" 
-            placeholder="Busca Avançada...">
-    </div>
+                class="form-control" 
+                id="campoBusca" 
+                placeholder="Busca Avançada...">
+        <span class="input-group-text">
+            <i class="bi bi-search"></i>
+        </span>
+        </div>
+
 
   </div>
 </div>
