@@ -701,33 +701,29 @@ function Tabela_detalha_defeitos(lista) {
         },
 
         
-        footerCallback: function (row, data, start, end, display) {
-            
-            var api = this.api();
-            var coluna_qtd_indice = 8; 
+       footerCallback: function (row, data, start, end, display) {
+    var api = this.api();
+    var coluna_qtd_indice = 8;
 
-        var intVal = function (i) {
-            if (typeof i === 'string') {
-                // Tenta remover tudo que não seja número (0-9).
-                // Se houver separador de milhar (ponto) e não for usado como decimal, 
-                // a melhor forma é remover todos os caracteres não-dígitos.
-                return i.replace(/[^0-9]/g, '') * 1; 
-            }
-            return typeof i === 'number' ? i : 0;
-        };
+    var intVal = function (i) {
+        if (typeof i === 'string') {
+            return i.replace(/[^0-9]/g, '') * 1;
+        }
+        return typeof i === 'number' ? i : 0;
+    };
 
-            var totalVisivel = api
-                .column(coluna_qtd_indice, { search: 'applied' }) 
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
+    var totalVisivel = api
+        .column(coluna_qtd_indice, { search: 'applied' })
+        .data()
+        .reduce(function (a, b) {
+            return intVal(a) + intVal(b);
+        }, 0);
 
-            // Acesso direto ao <tfoot> ou ao seletor de coluna
-            $('#total-quantidade').html(
-                totalVisivel.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) 
-            ).css('font-weight', 'bold');
-        },
+    $('#total-quantidade').html(
+        totalVisivel.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    ).css('font-weight', 'bold');
+},
+
     });
 }
 
