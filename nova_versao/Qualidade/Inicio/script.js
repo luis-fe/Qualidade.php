@@ -426,7 +426,7 @@ async function renderizarGraficoBarras_baseTecido(data) {
 }
 
 async function renderizarGraficoTerceirizados(data) {
-    const chartHeight = Math.max(300, data.length * 50);
+    const chartHeight = Math.max(250, data.length * 25);
 
     const chartOptions = {
         chart: {
@@ -454,7 +454,7 @@ async function renderizarGraficoTerceirizados(data) {
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: '90%',
+                barHeight: '95%',
                 horizontal: true,
             }
         },
@@ -482,7 +482,7 @@ async function renderizarGraficoTerceirizados(data) {
 }
 
 async function renderizarGraficoFornecedor(data) {
-    const chartHeight = Math.max(300, data.length * 50);
+    const chartHeight = Math.max(250, data.length * 25);
 
     const chartOptions = {
         chart: {
@@ -510,7 +510,7 @@ async function renderizarGraficoFornecedor(data) {
         plotOptions: {
             bar: {
                 borderRadius: 4,
-                barHeight: '90%',
+                barHeight: '95%',
                 horizontal: true,
             }
         },
