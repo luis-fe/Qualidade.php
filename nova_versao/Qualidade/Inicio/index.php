@@ -42,6 +42,15 @@ include_once('../../templates/headerGarantia.php');
     margin: auto;
     text-align: center;
   }
+
+
+  /* Defina esta classe no seu arquivo de estilos (.css) */
+.tabela-fonte-pequena td {
+    font-size: 11px; /* Ajuste o tamanho em pixels (ex: 10px, 12px) */
+    /* font-size: 0.85rem; /* Ou em rem (ex: 0.85rem) */
+}
+
+
 </style>
 
 
@@ -143,7 +152,7 @@ include_once('../../templates/headerGarantia.php');
             <!-- Tabela -->
             <div class="col-12">
             <h2>Análise por Ordem</h2>
-        <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1">
+        <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1 tabela-fonte-pequena">
             <thead>
             <tr>
                 <th>Ordem<br>Prod.</th>
