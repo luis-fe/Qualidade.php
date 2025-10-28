@@ -12,6 +12,7 @@ async function atualizar(){
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
     await Cosultar_Qualidade();
     await Consultar_Motivos();
+    await Consultar_defeito_baseTecido();
     await Cosultar_Origem_faccionista();
     await Cosultar_Origem_fornecedor();
     await Cosultar_Origem();
@@ -90,6 +91,41 @@ const Consultar_Motivos = async () => {
         $('#loadingModal').modal('hide');
     }
 };
+
+
+const Consultar_defeito_baseTecido = async () => {
+    $('#loadingModal').modal('show');
+    try {
+        const dataInicial = $('#dataInicio').val();
+        const dataFinal = $('#dataFim').val();
+
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Cosultar_Fornecedor_base',
+                dataInicial: dataInicial,
+                dataFinal: dataFinal
+            }
+        });
+
+        // Verifica se os dados estão vazios
+        if (data.length === 0) {
+            $('#graficoBaseTecido').html('<p>Nenhum dado a ser exibido</p>');
+        } else {
+            $('#graficoBaseTecido').html('');
+            renderizarGraficoBarras_baseTecido(data);
+        }
+
+    } catch (error) {
+        console.error('Erro ao consultar motivos:', error);
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+
 
 const Cosultar_Origem_faccionista = async () => {
     $('#loadingModal').modal('show');
@@ -329,6 +365,51 @@ async function renderizarGraficoBarras(data) {
     };
 
     const chart = new ApexCharts(document.querySelector("#graficoBarras"), chartOptions);
+    chart.render();
+    //chart.resize();
+
+}
+
+async function renderizarGraficoBarras_baseTecido(data) {
+    const chartWidth = Math.max(400, data.length * 50);
+
+    const chartOptions = {
+        chart: {
+            type: 'bar',
+            height: 400,
+            width: `${chartWidth}px`,  // Mantém a largura dinâmica
+            toolbar: { show: false },
+            dropShadow: { enabled: false }
+        },
+        series: [{
+            name: 'Quantidade',
+            data: data.map(item => item.qtd)
+        }],
+        xaxis: {
+            categories: data.map(item => item.nomeItem),
+            labels: {
+                rotate: -90,  // Rotaciona totalmente para evitar sobreposição
+                trim: false,  // Garante que o texto não seja cortado
+                style: {
+                    fontSize: '12px',
+                  //  whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                }
+            }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                barHeight: '70%', // Ajusta a altura das barras
+            }
+        },
+        grid: {
+            padding: {
+                bottom: 50 // Dá mais espaço para a legenda não ser cortada
+            }
+        }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#graficoBaseTecido"), chartOptions);
     chart.render();
     //chart.resize();
 
