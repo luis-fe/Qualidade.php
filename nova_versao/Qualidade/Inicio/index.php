@@ -125,7 +125,7 @@ include_once('../../templates/headerGarantia.php');
     </div>
 
     <div class="mb-3">
-        <label for="campoBusca" class="form-label">Buscar:</label>
+        <label for="campoBusca" class="form-label"></label>
         <input type="text" 
             class="form-control" 
             id="campoBusca" 
