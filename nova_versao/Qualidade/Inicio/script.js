@@ -452,6 +452,7 @@ async function renderizarGraficoTerceirizados(data) {
         xaxis: {
             categories: data.map(item => item.nomeFaccicionista),
             labels: {
+                show: false,
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
