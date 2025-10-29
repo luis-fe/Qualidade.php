@@ -23,7 +23,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consultar_Motivos':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(ConsultarMotivos('1', $dataInicial, $dataFinal));
+                    $textoAvancado = $_GET['campoBusca'];
+                    jsonResponse(ConsultarMotivos('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
                 case 'Cosultar_Qualidade':
                     $dataInicial = $_GET['dataInicial'];
@@ -33,27 +34,32 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Cosultar_Origem':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(ConsultaOrigem('1', $dataInicial, $dataFinal));
+                    $textoAvancado = $_GET['campoBusca'];
+                    jsonResponse(ConsultaOrigem('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
                 case 'Cosultar_Fornecedor':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(Cosultar_Fornecedor('1', $dataInicial, $dataFinal));
+                    $textoAvancado = $_GET['campoBusca'];
+                    jsonResponse(Cosultar_Fornecedor('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
                 case 'Cosultar_Fornecedor_base':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(Cosultar_Fornecedor_base('1', $dataInicial, $dataFinal));
+                    $textoAvancado = $_GET['campoBusca'];
+                    jsonResponse(Cosultar_Fornecedor_base('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
                 case 'detalha_defeitos':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(detalha_defeitos('1', $dataInicial, $dataFinal));
+                    $textoAvancado = $_GET['campoBusca'];
+                    jsonResponse(detalha_defeitos('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
                 case 'defeitos_porOrigem':
                     $dataInicial = $_GET['dataInicial'];
                     $dataFinal = $_GET['dataFinal'];
-                    jsonResponse(defeitos_porOrigem('1', $dataInicial, $dataFinal));
+                    $textoAvancado = $_GET['campoBusca'];
+                    jsonResponse(defeitos_porOrigem('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
@@ -110,10 +116,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 }
 
-function ConsultarMotivos($empresa, $dataInicial, $dataFinal)
+function ConsultarMotivos($empresa, $dataInicial, $dataFinal,$textoAvancado)
 {
     $baseUrl = 'http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/api/MotivosAgrupado?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/MotivosAgrupado?textoAvancado={$textoAvancado}&data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -154,10 +160,10 @@ function ConsultaQualidade($empresa, $dataInicial, $dataFinal)
     return json_decode($apiResponse, true);
 }
 
-function ConsultaOrigem($empresa, $dataInicial, $dataFinal)
+function ConsultaOrigem($empresa, $dataInicial, $dataFinal,$textoAvancado)
 {
     $baseUrl = 'http://10.162.0.53:9000';    
-    $apiUrl = "{$baseUrl}/api/defeitos_faccionista_agrupo_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/defeitos_faccionista_agrupo_periodo?textoAvancado={$textoAvancado}&data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -178,10 +184,10 @@ function ConsultaOrigem($empresa, $dataInicial, $dataFinal)
 
 
 
-function detalha_defeitos($empresa, $dataInicial, $dataFinal)
+function detalha_defeitos($empresa, $dataInicial, $dataFinal,$textoAvancado)
 {
     $baseUrl = 'http://10.162.0.53:9000';    
-    $apiUrl = "{$baseUrl}/api/defeitos_detalhado_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/defeitos_detalhado_periodo?textoAvancado={$textoAvancado}&data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -202,10 +208,10 @@ function detalha_defeitos($empresa, $dataInicial, $dataFinal)
 
 
 
-function defeitos_porOrigem($empresa, $dataInicial, $dataFinal)
+function defeitos_porOrigem($empresa, $dataInicial, $dataFinal,$textoAvancado)
 {
     $baseUrl = 'http://10.162.0.53:9000';    
-    $apiUrl = "{$baseUrl}/api/defeitos_origem_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/defeitos_origem_periodo?textoAvancado={$textoAvancado}&data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -224,10 +230,10 @@ function defeitos_porOrigem($empresa, $dataInicial, $dataFinal)
     return json_decode($apiResponse, true);
 }
 
-function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal)
+function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal,$textoAvancado)
 {
     $baseUrl = 'http://10.162.0.53:9000';    
-    $apiUrl = "{$baseUrl}/api/defeitos_fornecedor_agrupo_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/defeitos_fornecedor_agrupo_periodo?textoAvancado={$textoAvancado}&data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -246,10 +252,10 @@ function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal)
     return json_decode($apiResponse, true);
 }
 
-function Cosultar_Fornecedor_base($empresa, $dataInicial, $dataFinal)
+function Cosultar_Fornecedor_base($empresa, $dataInicial, $dataFinal,$textoAvancado)
 {
     $baseUrl = 'http://10.162.0.53:9000';    
-    $apiUrl = "{$baseUrl}/api/defeitos_fornecedor_base_agrupo_periodo?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/defeitos_fornecedor_base_agrupo_periodo?textoAvancado={$textoAvancado}&data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [

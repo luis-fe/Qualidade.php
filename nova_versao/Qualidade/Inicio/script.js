@@ -13,12 +13,12 @@ async function atualizar(){
     console.log(`teste input avançado: ${campoBusca}`)
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
     await Cosultar_Qualidade();
-    await Consultar_Motivos();
-    await Consultar_defeito_baseTecido();
-    await Cosultar_Origem_faccionista();
-    await Cosultar_Origem_fornecedor();
-    await Cosultar_Origem();
-    await detalha_defeitos();
+    await Consultar_Motivos(campoBusca);
+    await Consultar_defeito_baseTecido(campoBusca);
+    await Cosultar_Origem_faccionista(campoBusca);
+    await Cosultar_Origem_fornecedor(campoBusca);
+    await Cosultar_Origem(campoBusca);
+    await detalha_defeitos(campoBusca);
       // 👇 força o navegador a redesenhar os gráficos
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'));
@@ -62,7 +62,7 @@ const Cosultar_Qualidade = async () => {
     }
 };
 
-const Consultar_Motivos = async () => {
+const Consultar_Motivos = async (campoBusca) => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -75,7 +75,8 @@ const Consultar_Motivos = async () => {
             data: {
                 acao: 'Consultar_Motivos',
                 dataInicial: dataInicial,
-                dataFinal: dataFinal
+                dataFinal: dataFinal,
+                campoBusca: campoBusca
             }
         });
 
@@ -95,7 +96,7 @@ const Consultar_Motivos = async () => {
 };
 
 
-const Consultar_defeito_baseTecido = async () => {
+const Consultar_defeito_baseTecido = async (campoBusca) => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -108,7 +109,8 @@ const Consultar_defeito_baseTecido = async () => {
             data: {
                 acao: 'Cosultar_Fornecedor_base',
                 dataInicial: dataInicial,
-                dataFinal: dataFinal
+                dataFinal: dataFinal,
+                campoBusca: campoBusca
             }
         });
 
@@ -129,7 +131,7 @@ const Consultar_defeito_baseTecido = async () => {
 
 
 
-const Cosultar_Origem_faccionista = async () => {
+const Cosultar_Origem_faccionista = async (campoBusca) => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -142,7 +144,8 @@ const Cosultar_Origem_faccionista = async () => {
             data: {
                 acao: 'Cosultar_Origem',
                 dataInicial: dataInicial,
-                dataFinal: dataFinal
+                dataFinal: dataFinal,
+                campoBusca: campoBusca
             }
         });
 
@@ -162,7 +165,7 @@ const Cosultar_Origem_faccionista = async () => {
 };
 
 
-const Cosultar_Origem_fornecedor = async () => {
+const Cosultar_Origem_fornecedor = async (campoBusca) => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -175,7 +178,8 @@ const Cosultar_Origem_fornecedor = async () => {
             data: {
                 acao: 'Cosultar_Fornecedor',
                 dataInicial: dataInicial,
-                dataFinal: dataFinal
+                dataFinal: dataFinal,
+                campoBusca: campoBusca
             }
         });
 
@@ -194,7 +198,7 @@ const Cosultar_Origem_fornecedor = async () => {
     }
 };
 
-const Cosultar_Origem = async () => {
+const Cosultar_Origem = async (campoBusca) => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -207,7 +211,8 @@ const Cosultar_Origem = async () => {
             data: {
                 acao: 'defeitos_porOrigem',
                 dataInicial: dataInicial,
-                dataFinal: dataFinal
+                dataFinal: dataFinal,
+                campoBusca: campoBusca
             }
         });
 
@@ -227,7 +232,7 @@ const Cosultar_Origem = async () => {
 };
 
 
-const detalha_defeitos = async () => {
+const detalha_defeitos = async (campoBusca) => {
     $('#loadingModal').modal('show');
     try {
         const dataInicial = $('#dataInicio').val();
@@ -240,7 +245,8 @@ const detalha_defeitos = async () => {
             data: {
                 acao: 'detalha_defeitos',
                 dataInicial: dataInicial,
-                dataFinal: dataFinal
+                dataFinal: dataFinal,
+                campoBusca: campoBusca
             }
         });
 
