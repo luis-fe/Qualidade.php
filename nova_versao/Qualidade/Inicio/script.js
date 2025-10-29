@@ -508,6 +508,7 @@ async function renderizarGraficoFornecedor(data) {
         xaxis: {
             categories: data.map(item => item.fornencedorPreferencial),
             labels: {
+                show: false,
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
