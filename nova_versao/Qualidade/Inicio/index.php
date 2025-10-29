@@ -129,8 +129,9 @@ include_once('../../templates/headerGarantia.php');
             class="form-control pe-5" 
             id="campoBusca" 
             placeholder="Busca Avançada...">
-    <i class="bi bi-search position-absolute" 
-        style="right: 10px; top: 50%; transform: translateY(-50%); color: #6c757d;"></i>
+  <i class="bi bi-search position-absolute" 
+     style="right: 10px; top: 50%; transform: translateY(-50%); color: #6c757d; cursor: pointer;"
+     onclick="atualizar()"></i>
     </div>
 
 
