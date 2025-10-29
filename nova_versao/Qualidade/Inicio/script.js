@@ -8,7 +8,7 @@ $(document).ready(async () => {
 
 async function atualizar(){
     // Exibe no campo, mas mantém um valor oculto para manipulação correta
-    let campoBusca = document.getElementById("campoBusca");
+    let campoBusca = document.getElementById("#campoBusca");
 
     console.log(`teste input avançado: ${campoBusca}`)
     // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
