@@ -53,8 +53,11 @@ const Cosultar_Qualidade = async () => {
             renderizarGrafico(data[0]["1- Peças com Motivo de 2Qual."], data[0]["2- Total Peças Baixadas periodo"]);
         }
 
-        $('#totalPecas').text(data[0]['2- Total Peças Baixadas periodo'])
-        $('#totalPecas2Qualidade').text(data[0]['1- Peças com Motivo de 2Qual.'])
+        $('#totalPecas').text(
+            Number(data[0]['2- Total Peças Baixadas periodo']).toLocaleString('pt-BR')
+        );        
+        $('#totalPecas2Qualidade').text(
+            Number(data[0]['1- Peças com Motivo de 2Qual.']).toLocaleString('pt-BR'));
     } catch (error) {
         console.error('Erro ao consultar qualidade:', error);
         $('#graficoDonut').html('<p>Erro ao carregar os dados de qualidade</p>');
@@ -289,7 +292,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
             // Você provavelmente vai querer remover ou diminuir esse 'height: 350' para caber no seu container de 100px.
             // Para caber nos 80px/100px que você definiu no HTML, você pode remover o 'height' aqui, 
             // ou defini-lo como 'height: 80', desde que o div pai também esteja limitado.
-            height: '100%' // Usar 100% ou um valor menor (ex: 80) para respeitar o container de 80px/100px
+            height: '90%' // Usar 100% ou um valor menor (ex: 80) para respeitar o container de 80px/100px
         },
         series: [porcentagem2Qualidade, porcentagemDiferenca],
         labels: ["Peças com Motivo 2Qual.", "Peças Sem Defeito"],
@@ -312,7 +315,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
                         total: {
                             show: true,
                             label: 'indice 2º.',
-                            fontSize: '12px',
+                            fontSize: '14px',
                             color: '#333',
                             formatter: function () {
                                 return porcentagem2Qualidade.toFixed(2) + '%';
@@ -550,7 +553,7 @@ async function renderizarGraficoFornecedor(data) {
 
 
 async function renderizarGraficoOrigemAgrupado(data) {
-    const chartHeight = 200; // altura fixa mais apropriada para barras verticais
+    const chartHeight = 180; // altura fixa mais apropriada para barras verticais
 
     const chartOptions = {
         chart: {
@@ -602,6 +605,28 @@ async function renderizarGraficoOrigemAgrupado(data) {
             xaxis: { lines: { show: false } },
             yaxis: { lines: { show: true } },
             padding: { bottom: 0 }
+        },
+        // 👇 Aqui vem a mágica
+        dataLabels: {
+            enabled: true,
+             formatter: function (val) {
+        // 👇 transforma 1200 em "1.200"
+        return val.toLocaleString('pt-BR');},
+            style: {
+                colors: ['#fff'], // texto branco
+                fontSize: '12px',
+                fontWeight: 'bold'
+            },
+            background: {
+                enabled: true,
+                foreColor: '#1d0202ff', // cor do texto dentro do fundo
+                borderRadius: 3,
+                padding: 2,
+                opacity: 1,
+                borderWidth: 0,
+                borderColor: '#000',
+                color: '#000' // 👈 cor de fundo preta
+            }
         }
     };
 
