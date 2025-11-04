@@ -131,9 +131,9 @@
         #btn-menu,
         #btn-user {
             cursor: pointer;
-            font-size: 1.9rem;
+            font-size: 1.2rem;
             color: white;
-            margin-right: 50px;
+            margin-right: 10px;
         }
 
         .icon-menu {
