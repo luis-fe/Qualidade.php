@@ -500,6 +500,9 @@
           <a href="../Orcamento" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Orçamentos <!-- PCP -->
           </a>
+          <a href="../ControlePilotos" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Controle Pilotos <!-- PCP -->
+          </a>
     </ul>
   </div>
 
