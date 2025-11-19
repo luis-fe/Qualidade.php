@@ -53,9 +53,9 @@ const Cosultar_Qualidade = async () => {
             renderizarGrafico(data[0]["1- Peças com Motivo de 2Qual."], data[0]["2- Total Peças Baixadas periodo"]);
         }
 
-        $('#totalPecas').text(
-            Number(data[0]['2- Total Peças Baixadas periodo']).toLocaleString('pt-BR')
-        );        
+            $('#totalPecas').text(
+                Number(data[0]['2- Total Peças Baixadas periodo']).toLocaleString('pt-BR')
+            );        
         $('#totalPecas2Qualidade').text(
             Number(data[0]['1- Peças com Motivo de 2Qual.']).toLocaleString('pt-BR'));
     } catch (error) {
