@@ -121,8 +121,8 @@ const ConsultaPilotos = async (empresa) => {
                     Number(data.data[0]['EstoquePiloto']).toLocaleString('pt-BR')
                 );      
 
-        $('#totalPecasUnid2').text(
-                    Number(data.data[0]['PilotoUnd2']).toLocaleString('pt-BR')
+        $('#totalPecasEmTransito').text(
+                    Number(data.data[0]['em Transito']).toLocaleString('pt-BR')
                 );     
         Tabela_detalhada(data.data);
 

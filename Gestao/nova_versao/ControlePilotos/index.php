@@ -71,7 +71,7 @@ include_once('../../../templates/headerGestao.php');
         <div class="card text-center" style="min-width: 100px;">
             <div class="card-body p-1">
                 <h6 class="card-title mb-1">Em Transito</h6>
-                <h5 class="card-text fw-bold text-primary" id="totalPecas"></h5>
+                <h5 class="card-text fw-bold text-primary" id="totalPecasEmTransito"></h5>
             </div>
 
     </div>
