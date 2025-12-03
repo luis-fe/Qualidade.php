@@ -12,6 +12,14 @@ include_once('../../../templates/headerGestao.php');
     <span class="span-icone"><i class="bi bi-stack"></i></span> Procedimentos Industriais
 </div>
 
+    <div class="col-md-0  d-flex flex-column justify-content-center">
+        <p class="mb-1"><strong>Objetivo:</strong>
+        Garantir a Gestão Estoque das embalagens utilizadas nos produtos, 
+    </br>entregando acurácia de estoque, controle de desperdicios e apurando o custo de forma correta.
+    </p>
+    </div>
+
+
 <div class="col-12  bg-light p-0 border-start "> 
     <a href="URL_DESTINO_DO_ANUNCIO" target="_blank">
         <img src="Diagrama em branco.jpeg" class="img-fluid rounded shadow-sm" alt="Descrição do Anúncio" style="width: 2080px; height: 900px;">
