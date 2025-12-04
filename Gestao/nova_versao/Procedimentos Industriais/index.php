@@ -12,37 +12,37 @@ include_once('../../../templates/headerGestao.php');
     <span class="span-icone"><i class="bi bi-stack"></i></span> Procedimentos Industriais
 </div>
 
-    <div class="col-md-0  d-flex flex-column justify-content-center">
-        <p class="mb-1"><strong>Objetivo:</strong>
-        Garantir a Gestão Estoque das embalagens utilizadas nos produtos, 
-    </br>entregando acurácia de estoque, controle de desperdicios e apurando o custo de forma correta.
-    </p>
-    </div>
+   <div id="div-tabelaInv" class="p-3 border rounded">
+                    <h6>**Lista de Procedimentos**</h6>
+                    <table class="table table-striped table-hover table-bordered"  id="tabelaTagsInv">
+                        <thead>
+                            <tr>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Data Criacao</th>
+                                <th scope="col">Procedimento</th>
+                                <th scope="col">Autor</th>
+                                <th scope="col">Aprovado por</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="KanbanEmbalagens">PRC-001</td> <td>04/12/2025</td> 
+                                <td>Controle Kanban Embalagens</td> 
+                                <td>Luis Fernando Gonçalves</td> 
+                                <td>Ismael Maricato</td>
+                            </tr>
+                                <td><a href="Fluxograma Fases Industrial">PRC-002</td> <td>04/12/2025</td> 
+                                <td>Fluxograma Fases Industrial"</td> 
+                                <td>Odilon</td> 
+                                <td>Ismael Maricato</td>
+                        </tbody>
+                    </table>
+                </div>
 
 
-<div class="col-12  bg-light p-0 border-start "> 
-    <a href="URL_DESTINO_DO_ANUNCIO" target="_blank">
-        <img src="Diagrama em branco.jpeg" class="img-fluid rounded shadow-sm" alt="Descrição do Anúncio" style="width: 2080px; height: 900px;">
-    </a>
-</div>
 
-<div class="col-12 bg-light p-0 border-start d-flex">
-    <div class="col-md-8 p-0">
-                <h5 class="mb-2">Rotina de Geração de Requisicao Independente - CCSERQ010</h5>
-        <a href="URL_DESTINO_DO_ANUNCIO" target="_blank">
-            <img src="CSW_MODELOREQjpg.jpg"
-                 class="img-fluid rounded shadow-sm"
-                 alt="Descrição do Anúncio"
-                 style="height: 600px;">
-        </a>
-    </div>
 
-    <div class="col-md-4 p-3 d-flex flex-column justify-content-center">
-        <p class="mb-0"><strong>Responsabilidade:</strong> Setor de Expedicao de Terceirizados, </br>gera a requisicao de transferencia
-        se atentando ao tipo: Transferencia, nat.Origem 3 , nat.Destino 12 e observação com o nome do terceirizado
-    </p>
-    </div>
-</div>
 
 
 
