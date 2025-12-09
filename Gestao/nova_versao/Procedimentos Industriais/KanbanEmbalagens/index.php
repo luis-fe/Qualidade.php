@@ -33,27 +33,167 @@ include_once('../../../../templates/headerGestao.php');
 
 <div class="col-12  bg-light p-0 border-start "> 
     <a href="URL_DESTINO_DO_ANUNCIO" target="_blank">
-        <img src="Diagrama em branco.jpeg" class="img-fluid rounded shadow-sm" alt="Descrição do Anúncio" style="width: 2080px; height: 900px;">
+        <img src="Diagrama em branco.png" class="img-fluid rounded shadow-sm" alt="Descrição do Anúncio" style="width: 2080px; height: 900px;">
     </a>
 </div>
 
-<div class="col-12 bg-light p-0 border-start d-flex">
-    <div class="col-md-8 p-0">
-                <h5 class="mb-2">Rotina de Geração de Requisicao Independente - CCSERQ010</h5>
-        <a href="URL_DESTINO_DO_ANUNCIO" target="_blank">
-            <img src="CSW_MODELOREQjpg.jpg"
-                 class="img-fluid rounded shadow-sm"
-                 alt="Descrição do Anúncio"
-                 style="height: 600px;">
+<div class="bg-light p-0 border-start d-flex g-0">
+    <div class="col-md-6 ps-3 py-2 pe-0"> 
+        <h5>Diagrama de Causas - **Processo Kanban Embalagem**</h5>
+        <a href="URL_DESTINO_DO_DIAGRAMA" target="_blank">
+            <img src="causa_efeito.png"
+                class="img-fluid rounded shadow-sm"
+                alt="Diagrama de Causa e Efeito (Ishikawa) para o processo X"
+                style="height: 400px;">
         </a>
     </div>
 
-    <div class="col-md-4 p-3 d-flex flex-column justify-content-center">
-        <p class="mb-0"><strong>Responsabilidade:</strong> Setor de Expedicao de Terceirizados, </br>gera a requisicao de transferencia
-        se atentando ao tipo: Transferencia, nat.Origem 3 , nat.Destino 12 e observação com o nome do terceirizado
-    </p>
+    <div class="d-flex flex-column justify-content-start">
+        <p>
+            **Causas que podem levar à não conformidade neste processo:**
+            <br>
+            01 - **Cadastro de Engenharia: Analista de Cadastro**
+        </p>
+
+        <a href="URL_DESTINO_DO_DETALHE" target="_blank" class="mt-2">
+            <img src="1_cad engenharia.png"
+                class="img-fluid rounded shadow-sm"
+                alt="Detalhe da não conformidade em Cadastro de Engenharia"
+                style="height: 380px; width: 100%;"> 
+        </a>
     </div>
 </div>
+
+<div class="bg-light p-0 border-start d-flex g-0">
+    <div class="col-md-6 ps-3 py-2 pe-0"> 
+        <p>
+            <br>
+            02 - **⚠️Configuracao no ERP CSW(CCTCG090) -Area de Processos**
+        </p>
+        <a href="URL_DESTINO_DO_DETALHE" target="_blank" class="mt-2">
+            <img src="2ConfiguracaoKanban.png"
+                class="img-fluid rounded shadow-sm"
+                alt="Detalhe da não conformidade em Cadastro de Engenharia"
+                style="height: 190px; width: 95%;"> 
+        </a>
+
+
+    </div>
+
+    <div class="d-flex flex-column justify-content-start">
+        <p>
+            <br>
+            03 - **Rotina de Geração de Requisicao Independente - CCSERQ010:**
+        </p>
+
+        <a href="URL_DESTINO_DO_DETALHE" target="_blank" class="mt-2">
+            <img src="ReqTransf.png"
+                class="img-fluid rounded shadow-sm"
+                alt="Detalhe da não conformidade em Cadastro de Engenharia"
+                style="height: 380px; width: 100%;"> 
+        </a>
+    </div>
+</div>
+
+
+<div class="bg-light p-0 border-start d-flex g-0">
+    <div class="col-md-6 ps-3 py-2 pe-0"> 
+        <p>
+            <br>
+            04 - **Baixa da Requisicao Independente -CCSERQ050 **
+        </p>
+        <a href="URL_DESTINO_DO_DETALHE" target="_blank" class="mt-2">
+            <img src="ReqBaixa.png"
+                class="img-fluid rounded shadow-sm"
+                alt="Detalhe da não conformidade em Cadastro de Engenharia"
+                style="height: 250px; width: 92%;"> 
+        </a>
+
+
+    </div>
+
+    <div class="d-flex flex-column justify-content-start">
+        <p>
+            <br>
+            05 - **Dados de Base para a Visao de Power BI:**
+            <br>responsabilidade Analista de Processos
+            <h6>Regras a serem consideradas</h6>
+            <br><p><strong>I</strong>:Será fornecedido query do banco de dados do ERP para o desenvolvimento
+            <br>da visao de BI.</p>
+        </p>
+        <h6>Sql requisicao de transferencia:</h6>
+        <p class="mt-0">
+            <small class="text-muted fw-light">
+                SELECT
+                    *
+                FROM
+                    Serq.Requisicao r
+                WHERE
+                    r.codEmpresa = 1
+                    and r.centroCusto in (21120110); --21120110: EXPEDICAO DE TERCEIRIZADOS
+            </small>
+        </p>
+                <h6>Sql baixa de requisicao nivel item:</h6>
+        <p class="mt-0">
+            <small class="text-muted fw-light">
+                SELECT
+                    *
+                FROM
+                    Serq.RequisicaoItem ri
+                inner join Serq.Requisicao r
+                on r.codEmpresa = ri.codEmpresa 
+                and r.numero = ri.codRequisicao 
+                WHERE
+                    ri.codEmpresa = 1
+                    and r.centroCusto in (21120110)
+            </small>
+        </p>
+         <h6>Sql Obter os documentos de baixa de requisicao consumidas:</h6>
+        <p class="mt-0">
+            <small class="text-muted fw-light">
+            SELECT
+                r.numero as codReq,
+                r.numOPConfec as OP,
+                ri.codMaterial as codItem,
+                ri.qtdeEntregue,
+                r.dtBaixa 
+            FROM
+                tcq.Requisicao r
+            inner join tcq.RequisicaoItem ri 
+            on
+                ri.codEmpresa = 1
+                and ri.codRequisicao = r.numero 
+                and r.codNatEstoque = 61;
+            </small>
+        </p>
+ <br><p><strong>II</strong>:No controle de estoque por faccionista a saida será baixa kanban sistemico, 
+    ao movimentar a fase 429; 
+            <br>A regra é: caso nao tenha a fase revisao externa considera o faccionista da fase 429. 
+            caso contenha a fase "Revisao Externa" ou "Acabamento Externo" o faccionista é o da ultima fase externa
+        </p>
+        <h6>Sql Obter faccionistas da OP x codFase:</h6>
+        <p class="mt-0">
+            <small class="text-muted fw-light">
+        select
+            CONVERT(varchar(11),d.codOP) as OP, 
+            d.codFac,
+            d.codFase,
+            o.idroteiro
+        FROM
+            tct.RemessaOPsDistribuicao d
+        inner join tco.RoteiroOP o 
+        on o.codempresa = 1 and o.numeroop = CONVERT(varchar(11),d.codOP)
+        and o.codfase = d.codFase
+        WHERE
+            d.Empresa = 1;
+            </small>
+        </p>
+
+
+</div>
+
+
+
 
 
 
