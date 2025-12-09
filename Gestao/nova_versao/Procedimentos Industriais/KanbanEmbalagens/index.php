@@ -130,7 +130,7 @@ include_once('../../../../templates/headerGestao.php');
                     Serq.Requisicao r
                 WHERE
                     r.codEmpresa = 1
-                    and r.centroCusto in (21120110); --21120110: EXPEDICAO DE TERCEIRIZADOS
+                    and r.codcentrocusto in (21120110); --21120110: EXPEDICAO DE TERCEIRIZADOS
             </small>
         </p>
                 <h6>Sql baixa de requisicao nivel item:</h6>
@@ -145,7 +145,7 @@ include_once('../../../../templates/headerGestao.php');
                 and r.numero = ri.codRequisicao 
                 WHERE
                     ri.codEmpresa = 1
-                    and r.centroCusto in (21120110)
+                    and r.codcentrocusto in (21120110)
             </small>
         </p>
          <h6>Sql Obter os documentos de baixa de requisicao consumidas:</h6>
