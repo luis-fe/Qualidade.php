@@ -146,7 +146,8 @@ include_once('../../../../templates/headerGestao.php');
                     ri.codRequisicao,
                     ri.codNatureza,
                     r.codTransBaixa,
-                    r.codCCusto
+                    r.codCCusto,
+                    r.observacao1 as faccionistaTransf
                 FROM
                     Serq.RequisicaoItem ri
                 inner join Serq.Requisicao r
