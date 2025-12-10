@@ -164,7 +164,35 @@ include_once('../../../../templates/headerGestao.php');
             </small>
             </br>
             <small>***Obs.: para deixar a consulta mais rapido é preciso filtrar os codigos reduzido dos itens Kanban</small>
-
+                    </br>
+                    <small>nessa consulta é obtida o que foi consumido da nat61</small>
+            </br>
+            <small class="text-muted fw-light">
+                SELECT
+               		r.dtEmissao,
+                	r.dtBaixa,
+                    r.numOPConfec as OP,
+                    ri.codMaterial,
+                    ri.nomeMaterial,
+                    ri.codRequisicao,
+                    ri.codNatureza,
+                    r.codTransBaixa,
+                    r.codCCusto
+                FROM
+                    Serq.RequisicaoItem ri
+                inner join Serq.Requisicao r
+                on r.codEmpresa = ri.codEmpresa 
+                and r.numero = ri.codRequisicao 
+                WHERE
+                    ri.codEmpresa = 1
+                    and ri.codMaterial in (
+                    339344,
+					339348,
+					342487,
+					344023
+                    ) and ri.codNatureza = 61
+            </small>
+            </br>
         </p>
          <h6>Sql Obter os documentos de baixa de requisicao consumidas:</h6>
         <p class="mt-0">
