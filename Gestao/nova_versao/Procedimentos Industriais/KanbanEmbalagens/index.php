@@ -130,14 +130,23 @@ include_once('../../../../templates/headerGestao.php');
                     Serq.Requisicao r
                 WHERE
                     r.codEmpresa = 1
-                    and r.codcentrocusto in (21120110); --21120110: EXPEDICAO DE TERCEIRIZADOS
+                    and r.centroCusto in (21120110); --21120110: EXPEDICAO DE TERCEIRIZADOS
             </small>
         </p>
                 <h6>Sql baixa de requisicao nivel item:</h6>
         <p class="mt-0">
+            <small>nessa consulta é obtida o que foi transferido da nat.3 para nat61</small>
+            </br>
             <small class="text-muted fw-light">
                 SELECT
-                    *
+               		r.dtEmissao,
+                	r.dtBaixa,
+                    ri.codMaterial,
+                    ri.nomeMaterial,
+                    ri.codRequisicao,
+                    ri.codNatureza,
+                    r.codTransBaixa,
+                    r.codCCusto
                 FROM
                     Serq.RequisicaoItem ri
                 inner join Serq.Requisicao r
@@ -145,8 +154,16 @@ include_once('../../../../templates/headerGestao.php');
                 and r.numero = ri.codRequisicao 
                 WHERE
                     ri.codEmpresa = 1
-                    and r.codcentrocusto in (21120110)
+                    and ri.codMaterial in (
+                    339344,
+					339348,
+					342487,
+					344023
+                    ) and ri.codNatureza = 3
             </small>
+            </br>
+            <small>***Obs.: para deixar a consulta mais rapido é preciso filtrar os codigos reduzido dos itens Kanban</small>
+
         </p>
          <h6>Sql Obter os documentos de baixa de requisicao consumidas:</h6>
         <p class="mt-0">
@@ -174,18 +191,27 @@ include_once('../../../../templates/headerGestao.php');
         <h6>Sql Obter faccionistas da OP x codFase:</h6>
         <p class="mt-0">
             <small class="text-muted fw-light">
-        select
-            CONVERT(varchar(11),d.codOP) as OP, 
-            d.codFac,
-            d.codFase,
-            o.idroteiro
-        FROM
-            tct.RemessaOPsDistribuicao d
-        inner join tco.RoteiroOP o 
-        on o.codempresa = 1 and o.numeroop = CONVERT(varchar(11),d.codOP)
+    select
+        CONVERT(varchar(11),d.codOP) as OP,
+        d.codFac,
+        d.codFase,
+        o.idroteiro,
+        op.datageracao,
+        (select f.nome FROM tcg.Faccionista f
+        WHERE f.Empresa = 1 
+        and f.codfaccionista = d.codFac) as nomeFac
+    FROM
+        tct.RemessaOPsDistribuicao d
+    inner join tco.RoteiroOP o 
+        on o.codempresa = 1
+        and o.numeroop = CONVERT(varchar(11),d.codOP)
         and o.codfase = d.codFase
-        WHERE
-            d.Empresa = 1;
+    inner join tco.ordemprod op 
+        on op.codEmpresa = 1
+        and op.numeroOP = o.numeroop
+    WHERE
+        d.Empresa = 1
+        and op.dataProgramacao >'2025-01-01'
             </small>
         </p>
 
