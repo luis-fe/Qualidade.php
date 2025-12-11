@@ -194,24 +194,7 @@ include_once('../../../../templates/headerGestao.php');
             </small>
             </br>
         </p>
-         <h6>Sql Obter os documentos de baixa de requisicao consumidas:</h6>
-        <p class="mt-0">
-            <small class="text-muted fw-light">
-            SELECT
-                r.numero as codReq,
-                r.numOPConfec as OP,
-                ri.codMaterial as codItem,
-                ri.qtdeEntregue,
-                r.dtBaixa 
-            FROM
-                tcq.Requisicao r
-            inner join tcq.RequisicaoItem ri 
-            on
-                ri.codEmpresa = 1
-                and ri.codRequisicao = r.numero 
-                and r.codNatEstoque = 61;
-            </small>
-        </p>
+        
  <br><p><strong>II</strong>:No controle de estoque por faccionista a saida será baixa kanban sistemico, 
     ao movimentar a fase 429; 
             <br>A regra é: caso nao tenha a fase revisao externa considera o faccionista da fase 429. 
