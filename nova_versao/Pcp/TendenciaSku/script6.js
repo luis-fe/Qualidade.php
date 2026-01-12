@@ -58,6 +58,21 @@ $(document).ready(async () => {
     });
 
 
+    $('#btn-anterior').off('click').on('click', function () {
+  if (imagemAtual > 0) {
+    imagemAtual--;
+    atualizarImagem();
+  }
+});
+
+$('#btn-proximo').off('click').on('click', function () {
+  if (imagemAtual < totalImagens - 1) {
+    imagemAtual++;
+    atualizarImagem();
+  }
+});
+
+
 
 
 
