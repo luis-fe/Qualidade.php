@@ -1,3 +1,4 @@
+const API_BASE_URL = "http://10.162.0.53:9000";
 let arrayCategoriaMP = ''
 let menorSugestaoPC = null;
 let nomeSimulacao = '';
@@ -10,88 +11,30 @@ let imagensColorBook = [];
 
 
 const atualizarImagem = () => {
-  if (!codigoMP || String(codigoMP).trim() === "") {
-    console.error("codigoMP está vazio!");
-    return;
-  }
-
-  const baseURL = "http://192.168.0.183:9000";
-  let url = "";
-
-  if (imagemAtual < totalImagensColorBook) {
-    url = imagensColorBook[imagemAtual];
-  } else {
-    const indiceEng = imagemAtual - totalImagensColorBook;
-    url = `${baseURL}/imagemEng/${codigoMP}/${indiceEng}`;
-  }
-
-  $('#imagem-container').html(`
-    <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
-  `);
-
-  $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
-  $('#btn-anterior').prop('disabled', imagemAtual === 0);
-  $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
-};
-
-const Consulta_Imagem = async (codigoPai) => {
-  codigoMP = String(codigoPai);
-  $('#loadingModal').modal('show');
-
-  try {
-    // 1. Inicia em paralelo: consulta total da ColorBook e da imagemEng
-    const [primeiraColorBook, dataEng] = await Promise.all([
-      $.ajax({
-        type: 'GET',
-        url: `http://10.162.0.53:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=0`,
-        dataType: 'json'
-      }),
-      $.ajax({
-        type: 'GET',
-        url: 'requests.php',
-        dataType: 'json',
-        data: {
-          acao: 'Consulta_Imagem',
-          codigoMP: codigoPai
-        },
-        xhrFields: { withCredentials: true }
-      })
-    ]);
-
-    // Pega totais
-    totalImagensColorBook = primeiraColorBook.total_imagens || 0;
-    totalImagensEng = dataEng.total_imagens || 0;
-
-    // 2. Faz chamadas paralelas para o restante do ColorBook (índice 0+)
-    const colorBookRequests = [];
-    for (let i = 0; i < totalImagensColorBook; i++) {
-      colorBookRequests.push(
-        $.ajax({
-          type: 'GET',
-          url: `http://10.162.0.53:9000/pcp/api/obterImagemSColorBook?codItemPai=${codigoPai}&indice=${i}`,
-          dataType: 'json'
-        })
-      );
+    if (!codigoMP || String(codigoMP).trim() === "") {
+        console.error("codigoMP está vazio!");
+        return;
     }
 
-    const imagensColorData = await Promise.all(colorBookRequests);
-    imagensColorBook = imagensColorData.map(img => img.imagem_url);
+    let url = "";
 
-    // 3. Atualiza totais e imagem inicial
-    totalImagens = totalImagensColorBook + totalImagensEng;
-    imagemAtual = 0;
-    atualizarImagem();
+    if (imagemAtual < totalImagensColorBook) {
+        url = imagensColorBook[imagemAtual];
+    } else {
+        const indiceEng = imagemAtual - totalImagensColorBook;
+        url = `${API_BASE_URL}/imagemEng/${codigoMP}/${indiceEng}`;
+    }
 
-    // Garante que modal de detalhamento seja ocultado e imagem exibido
-    $('#modal-imagemMP').modal('show');
+    $('#imagem-container').html(`
+        <img src="${url}" alt="Imagem ${imagemAtual + 1}" class="img-fluid">
+    `);
 
-  } catch (error) {
-    console.error('Erro ao consultar imagens:', error);
-    Mensagem_Canto('Erro', 'error');
-  } finally {
-    $('#loadingModal').modal('hide');
-  }
+    $('#contador-imagens').text(`Imagem ${imagemAtual + 1} de ${totalImagens}`);
+    $('#btn-anterior').prop('disabled', imagemAtual === 0);
+    $('#btn-proximo').prop('disabled', imagemAtual >= totalImagens - 1);
 };
+
+
 
 $(document).ready(async () => {
     Consulta_Planos();
@@ -108,6 +51,9 @@ $(document).ready(async () => {
         allowClear: false,
         width: '100%'
     });
+
+
+    
 
 
 
@@ -168,6 +114,11 @@ async function simulacao(texto, tipo) {
     nomeSimulacao = texto;
     console.log(`nomeSimulacao: ${nomeSimulacao}`)
 };
+
+
+
+
+
 
 const Consulta_Planos = async () => {
     $('#loadingModal').modal('show');
@@ -927,21 +878,19 @@ async function TabelaAnalise(listaAnalise) {
             className: 'btn-tabelas',
             action: async function (e, dt, node, config) {
                 $('#modal-categoria').modal('show');
-
             },
         },
         {
             text: '<i class="bi bi-funnel-fill" style="margin-right: 5px;"></i> Simulação',
             title: 'Simulação',
             className: 'btn-tabelas',
-                 action: async function (e, dt, node, config) {
+            action: async function (e, dt, node, config) {
                 $('.div-simulacao').removeClass('d-none');
                 $('#campo-simulacao').removeClass('d-none');
 
                 const simulacaoValue = $('#select-simulacao').val()?.trim() || "";
                 console.log(`Simulacao do teste ao clicar no modal de simulacao: ${simulacaoValue}`)
                 Produtos_Simulacao();
-
 
                 if (simulacaoValue === "") {
                     $('#inputs-container-categorias').empty();
@@ -950,19 +899,10 @@ async function TabelaAnalise(listaAnalise) {
                     Produtos_Simulacao();
 
                 } else {
-                   // await Consulta_Abc_Plano();
-                   // await Consulta_Categorias();
                     $('#inputs-container-marcas').removeClass('d-none')
                     $('#inputs-container-categorias').removeClass('d-none')
                     Produtos_Simulacao();
-
-
-
                 }
-
-
-
-
             },
         },
         {
@@ -975,11 +915,11 @@ async function TabelaAnalise(listaAnalise) {
                 await Consulta_Abc_Plano(true);
                 await Consulta_Categorias();
                 document.getElementById("TituloSelecaoEngenharias2").textContent = ""
-            let campo = document.getElementById("descricao-simulacao");
+                let campo = document.getElementById("descricao-simulacao");
                 campo.value = ""; // limpa o campo
                 campo.placeholder = "Insira a descrição"; // coloca placeholder            
             },
- 
+
         },
         ],
         columns: [{
@@ -990,33 +930,29 @@ async function TabelaAnalise(listaAnalise) {
         },
         {
             data: 'codEngenharia',
-
+            // CORREÇÃO 1: Atributo em minúsculo (data-codengenharia) e usando ${data}
+            render: (data, type, row) => `<span class="detalhaImg" data-codengenharia="${data}" style="text-decoration: underline; color:hsl(217, 100.00%, 65.10%); cursor: pointer;">${data}</span>`
         },
         {
             data: 'codReduzido',
-
         },
         {
             data: 'nome',
         },
         {
             data: 'codCor',
-
         },
         {
             data: 'tam',
-
         },
         {
             data: 'faltaProg (Tendencia)',
-
         },
         {
             data: 'Sugestao_PCs',
             render: function (data, type, row) {
                 return `<span class="detalhamentoSku" data-codReduzido="${row.codReduzido}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`;
             }
-
         },
         {
             data: 'disponivel'
@@ -1040,51 +976,50 @@ async function TabelaAnalise(listaAnalise) {
                 if ($(this).hasClass('next')) tabela.page('next').draw('page');
             });
             $('.dataTables_paginate').hide();
-        },footerCallback: function (row, data, start, end, display) {
-                const api = this.api();
+        },
+        footerCallback: function (row, data, start, end, display) {
+            const api = this.api();
 
-                const intVal = (i) => {
-                    if (typeof i === 'string') {
-                        return parseFloat(i.replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-                    }
-                    return typeof i === 'number' ? i : 0;
-                };
+            const intVal = (i) => {
+                if (typeof i === 'string') {
+                    return parseFloat(i.replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+                }
+                return typeof i === 'number' ? i : 0;
+            };
 
-                const columnsToSum = [7,8]; // mantém o outro totalizador (faltaProg, por exemplo)
-                const disponivelColIndex = 9; // índice da coluna "disponivel"
+            const columnsToSum = [7, 8];
+            const disponivelColIndex = 9;
 
-                columnsToSum.forEach(colIndex => {
-                    const total = api
-                        .column(colIndex, { filter: 'applied' })
-                        .data()
-                        .reduce((a, b) => intVal(a) + intVal(b), 0);
+            columnsToSum.forEach(colIndex => {
+                const total = api
+                    .column(colIndex, { filter: 'applied' })
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
 
-                    $(api.column(colIndex).footer()).html(
-                        Math.round(total).toLocaleString('pt-BR') // Arredondando para inteiro
-                    );
-                });
-
-                // Lógica separada para coluna "disponivel"
-                let totalNegativos = 0;
-                let totalPositivos = 0;
-
-                api.column(disponivelColIndex, { filter: 'applied' }).data().each(function (value) {
-                    const val = intVal(value);
-                    if (val < 0) {
-                        totalNegativos += val;
-                    } else {
-                        totalPositivos += val;
-                    }
-                });
-
-                const formattedNeg = Math.round(totalNegativos).toLocaleString('pt-BR');
-                const formattedPos = Math.round(totalPositivos).toLocaleString('pt-BR');
-
-                $(api.column(disponivelColIndex).footer()).html(
-                    `<span style="color: red;">${formattedNeg}</span> / <span style="color: green;">+${formattedPos}</span>`
+                $(api.column(colIndex).footer()).html(
+                    Math.round(total).toLocaleString('pt-BR')
                 );
+            });
 
-            },
+            let totalNegativos = 0;
+            let totalPositivos = 0;
+
+            api.column(disponivelColIndex, { filter: 'applied' }).data().each(function (value) {
+                const val = intVal(value);
+                if (val < 0) {
+                    totalNegativos += val;
+                } else {
+                    totalPositivos += val;
+                }
+            });
+
+            const formattedNeg = Math.round(totalNegativos).toLocaleString('pt-BR');
+            const formattedPos = Math.round(totalPositivos).toLocaleString('pt-BR');
+
+            $(api.column(disponivelColIndex).footer()).html(
+                `<span style="color: red;">${formattedNeg}</span> / <span style="color: green;">+${formattedPos}</span>`
+            );
+        },
     });
 
     $('.search-input-analise').on('input', function () {
@@ -1098,14 +1033,100 @@ async function TabelaAnalise(listaAnalise) {
         }
     });
 
-    $('#table-analise').on('click', '.detalhamentoSku', function (event) {
-        event.stopPropagation(); // Impede a propagação do clique
+    // Evento de clique detalhamento SKU
+    $('#table-analise tbody').off('click', '.detalhamentoSku').on('click', '.detalhamentoSku', function (event) {
+        event.stopPropagation();
         const codReduzido = $(this).attr('data-codReduzido');
         Detalhar_Sku(codReduzido);
+    });
+
+    // CORREÇÃO 2: Evento de clique para Consulta_Imagem corrigido
+    $('#table-analise tbody').off('click', '.detalhaImg').on('click', '.detalhaImg', function (event) {
+        event.stopPropagation();
+        
+        // Usamos .attr com tudo minúsculo para garantir a leitura correta
+        const codigo = $(this).attr('data-codengenharia');
+        
+        console.log("Clique em TabelaAnalise. Código:", codigo);
+
+        if (codigo && codigo !== "undefined") {
+            Consulta_Imagem(codigo);
+        } else {
+            console.error("Código de engenharia inválido ou undefined.");
+        }
     });
 }
 
 
+const Consulta_Imagem = async (codigoPai) => {
+    // --- LÓGICA DE FORMATAÇÃO ---
+    // 1. Converte para string
+    // 2. .replace(/-0$/, '') -> Remove "-0" apenas se estiver no final da string
+    // 3. .replace(/^0/, '')  -> Remove "0" apenas se for o primeiro caractere
+    let codigoFormatado = String(codigoPai)
+        .replace(/-0$/, '') 
+        .replace(/^0/, '');
+
+    console.log(`Código Original: ${codigoPai} | Código Formatado: ${codigoFormatado}`);
+
+    // Atualiza a variável global com o código limpo
+    codigoMP = codigoFormatado; 
+    
+    $('#loadingModal').modal('show');
+
+    try {
+        // 1. Inicia em paralelo (Note que usei codigoFormatado na URL da API Java)
+        const [primeiraColorBook, dataEng] = await Promise.all([
+            $.ajax({
+                type: 'GET',
+                // AQUI: Usando o código formatado na URL
+                url: `${API_BASE_URL}/pcp/api/obterImagemSColorBook?codItemPai=${codigoFormatado}&indice=0`, 
+                dataType: 'json'
+            }),
+            $.ajax({
+                type: 'GET',
+                url: 'requests.php',
+                dataType: 'json',
+                data: {
+                    acao: 'Consulta_Imagem',
+                    // AQUI: Usando o código formatado para o PHP também (se necessário, caso contrário mantenha codigoPai)
+                    codigoMP: codigoFormatado 
+                },
+                xhrFields: { withCredentials: true }
+            })
+        ]);
+
+        totalImagensColorBook = primeiraColorBook.total_imagens || 0;
+        totalImagensEng = dataEng.total_imagens || 0;
+
+        // 2. Faz chamadas paralelas para os restantes do ColorBook
+        const colorBookRequests = [];
+        for (let i = 0; i < totalImagensColorBook; i++) {
+            colorBookRequests.push(
+                $.ajax({
+                    type: 'GET',
+                    // AQUI: Usando o código formatado na URL
+                    url: `${API_BASE_URL}/pcp/api/obterImagemSColorBook?codItemPai=${codigoFormatado}&indice=${i}`,
+                    dataType: 'json'
+                })
+            );
+        }
+
+        const imagensColorData = await Promise.all(colorBookRequests);
+        imagensColorBook = imagensColorData.map(img => img.imagem_url);
+
+        totalImagens = totalImagensColorBook + totalImagensEng;
+        imagemAtual = 0;
+        atualizarImagem(); // A função atualizarImagem usa a variável global `codigoMP`, que já formatamos lá em cima.
+
+        $('#loadingModal').modal('hide');
+        $('#modal-imagemMP').modal('show');
+    } catch (error) {
+        console.error('Erro ao consultar imagens:', error);
+        Mensagem_Canto('Erro', 'error');
+        $('#loadingModal').modal('hide');
+    }
+};
 
 function TabelaDetalhamento(listaDetalhes) {
     if ($.fn.DataTable.isDataTable('#table-detalhamento')) {
@@ -1555,32 +1576,28 @@ function TabelaEngenharia(lista) {
         pageLength: 10,
         data: lista,
         columns: [
-        {
-            data: 'marca'
-        },
-        {
-            data: 'codItemPai'
-        },
-                {
-            data: 'descricao'
-        },
-                {
-             data: "percentual",
-                    render: (data, type, row) => `
-                        <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
-                            <input type="text" 
-                                class="form-control percentual-input" 
-                                style="width:80px; text-align:right;" 
-                                placeholder="%" 
-                                value="${data ?? ''}">
-                        </div>`
-        }
-        ],
-        language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
+            { data: 'marca' },
+            { 
+                data: 'codItemPai', 
+                // Mantivemos a estrutura do span
+                render: (data, type, row) => `<span class="detalhaImg" data-codItemPai="${row.codItemPai}" style="text-decoration: underline; color:hsl(217, 100.00%, 65.10%); cursor: pointer;">${data}</span>` 
             },
+            { data: 'descricao' },
+            {
+                data: "percentual",
+                render: (data, type, row) => `
+                    <div class="acoes d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <input type="text" 
+                            class="form-control percentual-input" 
+                            style="width:80px; text-align:right;" 
+                            placeholder="%" 
+                            value="${data ?? ''}">
+                    </div>`
+            }
+        ],
+        // ... (resto das configurações de language e drawCallback mantidos) ...
+        language: {
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
@@ -1597,57 +1614,71 @@ function TabelaEngenharia(lista) {
         }
     });
 
-    $('.search-input-lotes-csw').on('input', function () {
+    $('.search-input-lotes-csw').off('input').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 
- $('#btn-salvarProdutosSimulacao').off('click').on('click', () => {
-    const arrayProduto = [];
-    const arrayPercentualProduto = [];
-
-    const arrayProdutoZero = [];
-    const arrayPercentualZero = [];
-
-    // Pega instância do DataTable
-    const table = $('#table-lotes-csw').DataTable();
-
-    // Percorre todas as linhas visíveis
-    table.rows().every(function () {
-        const data = this.data(); // dados da linha
-
-        // acha o input dentro dessa linha
-        const $rowNode = $(this.node());
-        const percentual = $rowNode.find('.percentual-input').val();
-
-        // transforma em número (ignora símbolo % e vírgula)
-        const valor = parseFloat(percentual.replace('%','').replace(',','.')) || 0;
-
-        if (valor > 0) {
-            // exemplo: supondo que o código do produto esteja na coluna 1
-            const codProduto = data.codItemPai; 
-            
-            arrayProduto.push(codProduto);
-            arrayPercentualProduto.push(valor);
-        } 
-        else if (percentual !== "" && valor === 0) {
-            const codProduto = data.codItemPai; 
-            // capturar os que foram zerados manualmente
-            arrayProdutoZero.push(codProduto);
-            arrayPercentualZero.push(0);
+    // --- CORREÇÃO DO EVENTO DE CLIQUE ---
+    // Usamos 'tbody' para garantir que o evento funcione mesmo se a tabela mudar de página
+    $('#table-lotes-csw tbody').off('click', '.detalhaImg').on('click', '.detalhaImg', function (event) {
+        event.stopPropagation();
+        
+        // Usamos .attr() em vez de .data() para garantir a leitura correta do atributo HTML exato
+        const codigo = $(this).attr('data-codItemPai');
+        
+        console.log("Clique detectado na Eng. Código:", codigo); // Log para debug
+        
+        if (codigo) {
+            Consulta_Imagem(codigo);
+        } else {
+            console.error("Código não encontrado no elemento clicado.");
         }
     });
 
-    console.log("Produtos:", arrayProduto);
-    console.log("Percentuais:", arrayPercentualProduto);
-    const simulacao = $('#select-simulacao').val()
-    
-    registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao)
-    exluindo_simulacao_Produtos_zerados(arrayProdutoZero, arrayPercentualZero)
-    Produtos_Simulacao();
+    // --- EVENTO DO BOTÃO SALVAR ---
+    $('#btn-salvarProdutosSimulacao').off('click').on('click', () => {
+        const arrayProduto = [];
+        const arrayPercentualProduto = [];
+        const arrayProdutoZero = [];
+        const arrayPercentualZero = [];
 
-    }
-);
+        const table = $('#table-lotes-csw').DataTable();
 
+        table.rows().every(function () {
+            const data = this.data();
+            const $rowNode = $(this.node());
+            // Procura o input. Se a linha não estiver desenhada no DOM (paginação), tenta pegar valor original ou tratar lógica
+            const percentualInput = $rowNode.find('.percentual-input');
+            const percentual = percentualInput.length ? percentualInput.val() : ""; 
+            
+            // Nota: Se a linha não estiver visível (paginação), .find() pode falhar dependendo da versão do DT.
+            // Mas seguindo sua lógica atual:
+            if(percentualInput.length > 0) {
+                 const valor = parseFloat(percentual.replace('%','').replace(',','.')) || 0;
+
+                if (valor > 0) {
+                    arrayProduto.push(data.codItemPai);
+                    arrayPercentualProduto.push(valor);
+                } 
+                else if (percentual !== "" && valor === 0) {
+                    arrayProdutoZero.push(data.codItemPai);
+                    arrayPercentualZero.push(0);
+                }
+            }
+        });
+
+        // Lógica de fallback para pegar a simulação correta
+        let simulacao = $('#select-simulacao').val();
+        if (!simulacao || simulacao.trim() === "") {
+             simulacao = $("#descricao-simulacao").val();
+        }
+
+        console.log("Salvando produtos para simulação:", simulacao);
+
+        registrarSimulacaoProdutos(arrayProduto, arrayPercentualProduto, simulacao);
+        exluindo_simulacao_Produtos_zerados(arrayProdutoZero, arrayPercentualZero);
+        // Produtos_Simulacao(); // Removido para não recarregar antes de salvar
+    });
 }
 
 

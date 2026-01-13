@@ -23,6 +23,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consulta_Planos':
                     jsonResponse(ConsultarPlanos('1'));
                     break;
+                case 'Consulta_Imagem':
+                    $codigoImagem = urldecode($_GET['codigoMP']);
+                    jsonResponse(obterImagemMP($codigoImagem));
+                    break;
                 case 'selecao_produtos_simulacao':
                     $nomeSimulacao = $_GET['nomeSimulacao'];
                     jsonResponse(selecao_produtos_simulacao('a44pcp22','1',$nomeSimulacao));
@@ -610,4 +614,33 @@ function Consulta_Ultimo_CalculoTendencia($empresa, $plano)
     curl_close($ch);
 
     return json_decode($apiResponse, true);
+}
+
+
+function obterImagemMP($codigoImagem)
+{
+    $baseUrl = 'http://10.162.0.53:9000';
+
+    // Consulta ao backend para obter o total de imagens
+    $quantidadeUrl = "{$baseUrl}/imagemEng/{$codigoImagem}/quantidade";
+
+    $quantidade = 1;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $quantidadeUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+
+    if ($response !== false) {
+        $json = json_decode($response, true);
+        if (isset($json['total_imagens'])) {
+            $quantidade = intval($json['total_imagens']);
+        }
+    }
+
+    curl_close($ch);
+
+    return [
+        'imagem_url' => "{$baseUrl}/imagemEng/{$codigoImagem}/0", // começa com a primeira imagem
+        'total_imagens' => $quantidade
+    ];
 }
