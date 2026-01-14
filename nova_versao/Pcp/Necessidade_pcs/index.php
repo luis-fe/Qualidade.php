@@ -271,102 +271,78 @@ include_once('../../templates/headerPcp.php');
 </div>
 
 
-<div 
-    id="nova-simulacao-container" 
-    class="mt-3 div-nova-simulacao mx-auto d-none p-3 border border-dark rounded" 
+<div id="nova-simulacao-container" class="mt-3 div-nova-simulacao mx-auto d-none p-3 border border-dark rounded" 
     style="width: 60%; height: 90%; overflow-y: auto; background-color: lightgray; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050;">
 
+    <form id="form-nova-simulacao">
+        <button type="button" onclick="fecharNovaSimulacao()" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Fechar"></button> 
+        <p class="fs-4 fw-bold text-dark">Nova Simulação</p>
 
+        <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
+            <div class="mb-4 col-12" id="campo-desc-simulacao">
+                <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
+                <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
+            </div>
 
-    <form id="form-nova-simulacao" >
-
-        <!-- Botão fechar -->
-        <button 
-            type="button" 
-            onclick="fecharNovaSimulacao()" 
-            class="btn-close position-absolute top-0 end-0 m-2" 
-            aria-label="Fechar">
-        </button> 
-
-                <p class="fs-4 fw-bold text-dark">Nova Simulação</p>
-
-
-                
-                <div class="modal-body col-12" style="align-items: start; text-align: left; overflow-y: auto;">
-                    
-                    <div class="mb-4 col-12" id="campo-desc-simulacao">
-                        <label for="descricao-simulacao" class="fw-bold">Descrição da Simulação</label>
-                        <input type="text" id="descricao-simulacao" class="form-control" placeholder="Insira a descrição" required />
+            <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
+                <h6 class="fw-bold text-white bg-dark">MARCA</h6>  
+                <div class="row">
+                    <div class="col-12 col-md-3">
+                        <label class="fw-bold">M.POLLO</label>
+                        <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
                     </div>
-
-                    <div class="mb-4 col-12 d-none" id="inputs-container-novas-marcas">
-                        <h6 class="fw-bold text-white bg-dark">MARCA</h6>  
-                        <div class="row">
-                            <div class="col-12 col-md-3">
-                                <label class="fw-bold">M.POLLO</label>
-                                <input type="text" id="MPOLLO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <label class="fw-bold">PACO</label>
-                                <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 col-12">
-                        <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
-                        <div id="inputs-container-nova" class="row"></div>
-                    </div>
-
-                    <div class="mt-5 col-12">   
-                        <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
-                        <div id="inputs-container-categorias-nova" class="row" placeholder="%100"></div>
-                    </div>
-
-                        <div class="mb-4 col-12" id="inputs-container-configuracoess">
-                            <h6 class="fw-bold text-white bg-dark">
-                            <i class="bi bi-gear-fill me-2"></i> Configurações
-                            </h6>
-
-                            <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" id="igualarDisponivel2" checked>
-                            <label class="form-check-label" for="igualarDisponivel2">
-                                Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar menor que o disponível</strong>?
-                            </label>
-                            </div>
-                        </div>
-
-                    <div class="px-3 pb-4">
-                        <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
-                        <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
-                            <button type="button" 
-                                    class="btn btn-salvar" 
-                                    style="width: 120px" 
-                                    id="btn-adicionar-lotes" 
-                                    onclick="Consulta_Engenharias()">
-                                <span><i class="bi bi-plus"></i></span>
-                                <span style="font-size: 12px;">Escolher</span>
-                                
-                            </button>
-                            <span id="TituloSelecaoEngenharias2">Todas Selecionadas</span>
-                        </div>
-                    </div>
-
-    </form>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-salvar" 
-                                onclick="$('.input-categoria-2').val('0,00%')">
-                            <span><i class="bi bi-x-octagon"></i></span>
-                            Zerar Categorias
-                        </button>
-                        <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
-                            <span><i class="bi bi-floppy"></i></span>
-                            Salvar e Simular
-                        </button>
+                    <div class="col-12 col-md-3">
+                        <label class="fw-bold">PACO</label>
+                        <input type="text" id="PACO" class="inputs-percentuais input-marca-nova col-12" placeholder="%100" />
                     </div>
                 </div>
+            </div>
 
+            <div class="mt-5 col-12">
+                <h6 class="fw-bold text-white bg-dark">CLASSIFICAÇÕES</h6>
+                <div id="inputs-container-nova" class="row"></div>
+            </div>
+
+            <div class="mt-5 col-12">   
+                <h6 class="fw-bold text-white bg-dark">CATEGORIAS</h6>
+                <div id="inputs-container-categorias-nova" class="row"></div>
+            </div>
+
+            <div class="mb-4 col-12" id="inputs-container-configuracoess">
+                <h6 class="fw-bold text-white bg-dark">
+                    <i class="bi bi-gear-fill me-2"></i> Configurações
+                </h6>
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="igualarDisponivel2" checked>
+                    <label class="form-check-label" for="igualarDisponivel2">
+                        Deseja igualar o <strong>"disponível"</strong> ao <strong>"falta programar"</strong> para os casos de <strong>falta programar menor que o disponível</strong>?
+                    </label>
+                </div>
+            </div>
+
+            <div class="px-3 pb-4">
+                <h6 class="fw-bold text-white bg-dark">PRODUTOS</h6>
+                <div id="inputs-container-PRODUTOS" class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-salvar" style="width: 120px" id="btn-adicionar-lotes" onclick="Consulta_Engenharias()">
+                        <span><i class="bi bi-plus"></i></span>
+                        <span style="font-size: 12px;">Escolher</span>
+                    </button>
+                    <span id="TituloSelecaoEngenharias2">Todas Selecionadas</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-salvar" onclick="$('.input-categoria-2').val('0,00%')">
+                <span><i class="bi bi-x-octagon"></i></span>
+                Zerar Categorias
+            </button>
+            <button type="button" class="btn btn-salvar" onclick="simulacao($('#descricao-simulacao').val(),'cadastro'); return false;">
+                <span><i class="bi bi-floppy"></i></span>
+                Salvar e Simular
+            </button>
+        </div>
+    </form>
 </div>
 
 

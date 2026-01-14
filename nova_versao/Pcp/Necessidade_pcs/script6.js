@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 async function simulacao(texto, tipo) {
+    $('#loadingModal').modal('show');
     console.log(`Simulacao Escolhida pela formula: ${texto}`)
     fecharSimulacao();
     fecharNovaSimulacao();
