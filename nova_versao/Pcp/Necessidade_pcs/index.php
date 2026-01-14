@@ -87,6 +87,35 @@ include_once('../../templates/headerPcp.php');
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 }
 
+/* Garante que as bordas colapsem para permitir estilizar a TR */
+    #table-analise {
+        border-collapse: collapse; 
+    }
+
+    /* Remove bordas das células individuais para não ter linhas verticais */
+    #table-analise td, 
+    #table-analise th {
+        border: none !important;
+    }
+
+    /* Aplica a borda na LINHA (TR) */
+    /* Escolha a Opção A ou B abaixo */
+
+    /* OPÇÃO A: Apenas linhas divisórias (horizontal) */
+    #table-analise tbody tr {
+        border-bottom: 1px solid #ccc; /* Cor da borda */
+    }
+
+    /* OPÇÃO B: Uma caixa em volta de cada linha (contorno completo) */
+    #table-analise tbody tr {
+        border: 1px solid #ccc;
+    }
+    
+    /* Opcional: Efeito hover para destacar a linha ao passar o mouse */
+    #table-analise tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
   
 
 
@@ -135,8 +164,10 @@ include_once('../../templates/headerPcp.php');
                     <th>Descrição<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Cor<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Tam<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Class<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>ClassCateg.<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Falta Prog<br><input type="search" class="search-input search-input-analise"></th>
-                    <th>Sugestão pela MP<br><input type="search" class="search-input search-input-analise"></th>
+                    <th>Sugestão MP.<br><input type="search" class="search-input search-input-analise"></th>
                     <th>Disponível Vendido<br><input type="search" class="search-input search-input-analise"></th>
                 </tr>
             </thead>
@@ -145,7 +176,7 @@ include_once('../../templates/headerPcp.php');
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="7" style="text-align: right;">Totais:</th>
+                    <th colspan="9" style="text-align: right;">Totais:</th>
                     <th></th> <!-- FaltaProg -->
                     <th></th> <!-- Sugestão PCs -->
                     <th></th> <!-- Disponível (sem total) -->

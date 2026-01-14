@@ -946,6 +946,12 @@ async function TabelaAnalise(listaAnalise) {
         {
             data: 'tam',
         },
+                {
+            data: 'class',
+        },
+                {
+            data: 'classCategoria',
+        },
         {
             data: 'faltaProg (Tendencia)',
         },
@@ -988,8 +994,8 @@ async function TabelaAnalise(listaAnalise) {
                 return typeof i === 'number' ? i : 0;
             };
 
-            const columnsToSum = [7, 8];
-            const disponivelColIndex = 9;
+            const columnsToSum = [9, 10];
+            const disponivelColIndex = 11;
 
             columnsToSum.forEach(colIndex => {
                 const total = api
@@ -1028,7 +1034,7 @@ async function TabelaAnalise(listaAnalise) {
     });
 
     $('#itens-analise').on('input', function () {
-        const valor = parseInt($(this).val(), 10);
+        const valor = parseInt($(this).val(), 12);
         if (!isNaN(valor) && valor > 0) {
             tabela.page.len(valor).draw();
         }
