@@ -1,6 +1,6 @@
 $(document).ready(async () => {
     await Consulta_Planos();
-    //Consultar_Tipo_Op()
+    Consultar_Tipo_Op()
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
         allowClear: false,
