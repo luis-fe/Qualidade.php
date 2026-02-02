@@ -473,7 +473,10 @@
       <div class="navbar-brand">
         <i class="fa-solid fa-bars" id="btn-menu"></i>
       </div>
-      <div class="ms-auto">
+  <div class="navbar-text text-white fw-bold mx-auto">
+      PLATAFORMA DE GESTÃO INDUSTRIAL
+    </div>      
+    <div class="ms-auto">
         <i class="bi bi-person-circle" id="btn-user"></i>
       </div>
     </div>
@@ -503,9 +506,11 @@
           <a href="../ControlePilotos" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Controle Pilotos <!-- PCP -->
           </a>
-          
           <a href="../Procedimentos Industriais" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Procedimentos Industriais <!-- PCP -->
+          </a>
+                    <a href="../Controle Automacao" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Controle Automacao <!-- PCP -->
           </a>
     </ul>
   </div>
