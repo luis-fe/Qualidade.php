@@ -64,7 +64,12 @@ include_once('../../../templates/headerGestao.php');
 
 
 
-#table-falta-produzir-categorias tbody tr:hover {
+#table-falta-produzir-categorias tbody tr:hover > td {
+    background-color: rgb(199, 225, 252) !important;
+    cursor: pointer;
+}
+
+#table-metas tbody tr:hover > td {
     background-color: rgb(199, 225, 252) !important;
     cursor: pointer;
 }
