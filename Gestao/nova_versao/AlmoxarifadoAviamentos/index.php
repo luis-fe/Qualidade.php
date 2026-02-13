@@ -192,6 +192,31 @@ include_once('../../../templates/headerGestao.php');
     float: right;
 }
 
+/* Remove a borda superior da linha escondida para parecer conectada à de cima */
+.hiddenRow {
+    padding: 0 !important;
+}
+
+/* Garante que o conteúdo interno ocupe tudo e anime corretamente */
+.accordion-body {
+    padding: 15px;
+    background-color: #f8f9fa; /* Fundo levemente cinza */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Fundo cinza claro para a área expandida (atrás da tabela de 70%) */
+.fundo-expandido {
+    background-color: #f0f2f5 !important;
+    padding: 10px 0; /* Espaçamento vertical */
+}
+
+/* Sombra suave para a tabela de 70% se destacar */
+.tabela-centralizada-shadow {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
 </style>
 
 <div class="titulo-tela">
@@ -212,7 +237,7 @@ include_once('../../../templates/headerGestao.php');
     <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 800px; border-radius: 8px;">
 
 <div class="col-12 div-metas" style="background-color: lightgray; border-radius: 8px; padding: 10px;">
-    <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 800px; border-radius: 8px;">
+    <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 100%; border-radius: 8px;">
         <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
             <thead style="position: sticky; top: 0; background-color: #003366; z-index: 10;">
                 <tr>
@@ -232,12 +257,15 @@ include_once('../../../templates/headerGestao.php');
                         Qtde Peças
                     </th>
                     <th class="sortable" data-prop="prioridade">
-                        Prioridade
+                        Prioridade<br>
+                        <input type="search" class="search-input search-input-metas" style="min-width: 100px;">
+
                     </th>
                     <th class="sortable" data-prop="dataBaixa_x">
                         Data Entrada<br>
                     </th>
-                    <th>Requisicoes</th>
+                    <th>Requisicoes
+                    </th>
                 </tr>
             </thead>
             <tbody>

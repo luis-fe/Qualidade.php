@@ -133,13 +133,14 @@ function aplicarFiltrosEOrdenacao() {
 }
 
 // --- FUNÇÃO DE RENDERIZAÇÃO (Mantida igual) ---
+// --- FUNÇÃO DE RENDERIZAÇÃO ATUALIZADA ---
 function renderizarTabela(dados) {
     const tbody = $('#table-metas tbody');
     const lblTotal = $('#lblTotalPecas'); 
     tbody.empty();
     lblTotal.text('0'); 
 
-    const totalColunas = $('#table-metas thead th').length || 7; 
+    const totalColunas = $('#table-metas thead th').length; 
 
     if (dados && dados.status === false) {
         tbody.append(`<tr><td colspan="${totalColunas}" class="text-center text-danger">Erro: ${dados.message}</td></tr>`);
@@ -154,45 +155,74 @@ function renderizarTabela(dados) {
     let acumuladorPecas = 0; 
 
     dados.forEach((row, index) => {
-        
         let qtd = parseFloat(row.QtdPecas_x) || 0;
         acumuladorPecas += qtd;
 
-        let htmlRequisicoes = "";
+        const idCollapse = `collapseReq_${index}`;
+        const temRequisicoes = row.requisicoes && Array.isArray(row.requisicoes) && row.requisicoes.length > 0;
 
-        if (row.requisicoes && Array.isArray(row.requisicoes) && row.requisicoes.length > 0) {
-            const idCollapse = `collapseReq_${index}`;
+        // --- 1. Botão de Ação + Resumo de IDs ---
+        let btnAcao = "";
+        
+        if (temRequisicoes) {
+            // Cria a string apenas com os números e barras
+            const listaIds = row.requisicoes
+                .map(r => r.requisicoes || r.ID_REQUISICAO) 
+                .join(' / '); 
+
+            // MUDANÇA AQUI: justify-content-start (alinha à esquerda) e removido o "..."
+            btnAcao = `
+                <div class="d-flex align-items-center justify-content-start">
+                    <button class="btn btn-sm btn-info" type="button" data-toggle="collapse" data-target="#${idCollapse}" aria-expanded="false" aria-controls="${idCollapse}" title="Ver Detalhes">
+                        <i class="bi bi-list-ul"></i>
+                    </button>
+                    <span class="ml-2 text-muted text-nowrap" style="font-size: 0.75rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
+                        ${listaIds}
+                    </span>
+                </div>`;
+        } else {
+            btnAcao = '<span class="text-muted small" style="font-size: 0.8em;">-</span>';
+        }
+
+        // --- 2. Conteúdo Interno (70% width) ---
+        let conteudoInterno = "";
+        if (temRequisicoes) {
             const linhasInternas = row.requisicoes.map(req => `
                 <tr>
-                    <td><strong>${req.requisicoes || req.ID_REQUISICAO || '-'}</strong></td>
-                    <td>${req.SITUACAO_REQUISICAO || '-'}</td>
-                    <td>${req.seqRoteiro || '-'}</td>
+                    <td class="text-center">${req.requisicoes || req.ID_REQUISICAO || '-'}</td>
+                    <td class="text-center">
+                        <span class="badge ${req.SITUACAO_REQUISICAO === 'BAIXADA' ? 'badge-success' : 'badge-warning'}">
+                            ${req.SITUACAO_REQUISICAO || '-'}
+                        </span>
+                    </td>
+                    <td class="text-center">${req.seqRoteiro || '-'}</td>
+                    <td class="text-center">${req.nome || '-'}</td>                    
+                    <td class="text-center">${req.nomeNatEstoque || '-'}</td>
+
                 </tr>
             `).join('');
 
-            htmlRequisicoes = `
-                <button class="btn btn-sm btn-info" type="button" data-toggle="collapse" data-target="#${idCollapse}">
-                    <i class="bi bi-list-ul"></i> Ver (${row.requisicoes.length})
-                </button>
-                <div class="collapse" id="${idCollapse}">
-                    <div class="card card-body mt-2 p-0">
-                        <table class="table table-sm table-bordered mb-0" style="font-size: 0.8rem;">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Req. ID</th>
-                                    <th>Situação</th>
-                                    <th>Seq.</th>
-                                </tr>
-                            </thead>
-                            <tbody>${linhasInternas}</tbody>
-                        </table>
-                    </div>
-                </div>`;
-        } else {
-            htmlRequisicoes = '<span class="badge badge-secondary">0 Req.</span>';
+            conteudoInterno = `
+                <div style="width: 75%; margin: 0 auto;" class="tabela-centralizada-shadow mt-2 mb-2">
+                    <table class="table table-sm table-bordered mb-0" style="background-color: white; font-size: 0.85rem;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-center" style="width: 15%">Requisicao.</th>
+                                <th class="text-center" style="width: 20%">Situação</th>
+                                <th class="text-center" style="width: 10%">FaseReq..</th>
+                                <th class="text-center" style="width: 10%">Nome..</th>
+                                <th class="text-center" style="width: 10%">Nat.Estoque</th>
+                            </tr>
+                        </thead>
+                        <tbody>${linhasInternas}</tbody>
+                    </table>
+                </div>
+            `;
         }
 
-        const tr = `
+        // --- 3. Linha Principal ---
+        // MUDANÇA AQUI: text-align: left na última TD
+        const trPrincipal = `
             <tr>
                 <td style="vertical-align: middle;"><strong>${row.numeroOP ?? '-'}</strong></td>
                 <td style="vertical-align: middle;"><strong>${row.codProduto ?? '-'}</strong></td>
@@ -200,13 +230,27 @@ function renderizarTabela(dados) {
                 <td style="vertical-align: middle;">${row.QtdPecas_x ?? '-'}</td>
                 <td style="vertical-align: middle;">${row.prioridade ?? '-'}</td>
                 <td style="vertical-align: middle;">${row.dataBaixa_x ?? row.dataBaixa ?? '-'}</td>
-                <td style="vertical-align: top;">${htmlRequisicoes}</td>
+                <td style="vertical-align: middle; text-align: left;">${btnAcao}</td>
             </tr>
         `;
 
-        tbody.append(tr);
+        // --- 4. Linha Filho ---
+        if (temRequisicoes) {
+            const trDetalhe = `
+                <tr class="p-0">
+                    <td colspan="${totalColunas}" class="p-0 border-0">
+                        <div class="collapse undo-row-bg fundo-expandido" id="${idCollapse}">
+                            ${conteudoInterno}
+                        </div>
+                    </td>
+                </tr>
+            `;
+            tbody.append(trPrincipal);
+            tbody.append(trDetalhe);
+        } else {
+            tbody.append(trPrincipal);
+        }
     });
 
-    // O total será atualizado conforme o filtro!
     lblTotal.text(acumuladorPecas.toLocaleString('pt-BR'));
 }
