@@ -512,6 +512,10 @@
                     <a href="../Controle Automacao" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Controle Automacao <!-- PCP -->
           </a>
+          </a>
+                    <a href="../AlmoxarifadoAviamentos" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Almoxarifado Aviamentos <!-- PCP -->
+          </a>
     </ul>
   </div>
 

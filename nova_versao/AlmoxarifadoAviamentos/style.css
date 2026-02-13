@@ -1,0 +1,17 @@
+.corpo{
+    margin-top: 15px;
+    width: 100%;
+    color: black;
+    font-weight: 100;
+}
+
+
+tfoot tr th {
+    background-color: #003366 !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center;
+}
+
+
+
