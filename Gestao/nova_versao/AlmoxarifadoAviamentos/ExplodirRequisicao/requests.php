@@ -13,11 +13,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (isset($_GET["acao"])) {
             $acao = $_GET["acao"];
             switch ($acao) {
-                case 'Consultar_OP_requisicao':
-                    jsonResponse(Consultar_OP_requisicao('1'));
-                    break;
-                case 'Consultar_Usuarios':
-                    jsonResponse(Consultar_Usuarios('1'));
+                case 'Consultar_requisicao':
+                    $codRequisicao = $_GET['codRequisicao'];
+                    jsonResponse(Consultar_requisicao('1', $codRequisicao));
                     break;
                 case 'Consulta_Lotes':
                     $plano = $_GET['plano'];
@@ -63,10 +61,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(Consultar_OP_requisicao('1'));
                     break;
-                case 'inserir_usuario':
-                    header('Content-Type: application/json');
-                    echo json_encode(inserir_usuario($dados));
-                    break;
                 case 'Consulta_Falta_Produzir_Categoria':
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
@@ -83,9 +77,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                         break;
                 case 'ConsultaFilaResumoCategoria':
                         jsonResponse(ConsultaFilaResumoCategoria($dados));
-                        break;
-                case 'atribuir_op_aviamentador':
-                        jsonResponse(atribuir_op_aviamentador($dados));
                         break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
@@ -132,25 +123,16 @@ function ConsultarLotes($empresa, $plano)
 
     return json_decode($apiResponse, true);
 }
-
-function ConsultaPrevisaoCategoria($dados)
+function Consultar_requisicao($empresa, $codRequisicao)
 {
-    $baseUrl = 'http://10.162.0.53:7070/pcp';
-    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase";
+    $baseUrl ='http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/DetalhamentoRequisicao?codRequisicao={$codRequisicao}";
     $ch = curl_init($apiUrl);
-
-    $options = [
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => json_encode($dados),
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER => [
-            'Content-Type: application/json',
-            "Authorization: a44pcp22",
-        ],
-    ];
-
-    curl_setopt_array($ch, $options);
-
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
 
     $apiResponse = curl_exec($ch);
 
@@ -163,11 +145,10 @@ function ConsultaPrevisaoCategoria($dados)
     return json_decode($apiResponse, true);
 }
 
-
-function inserir_usuario($dados)
+function ConsultaPrevisaoCategoria($dados)
 {
-    $baseUrl = 'http://10.162.0.53:9000/pcp';
-    $apiUrl = "{$baseUrl}/api/inserir_usuario_hablitado";
+    $baseUrl = 'http://10.162.0.53:7070/pcp';
+    $apiUrl = "{$baseUrl}/api/previsaoCategoriaFase";
     $ch = curl_init($apiUrl);
 
     $options = [
@@ -336,29 +317,6 @@ function Consultar_OP_requisicao($empresa)
 }
 
 
-function Consultar_Usuarios($empresa)
-{
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
-    $apiUrl = "{$baseUrl}/pcp/api/UsuarioHabilitadoAviamento?codEmpresa={$empresa}";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
-
-    $apiResponse = curl_exec($ch);
-
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
-
-
 function ConsultarMetas($empresa, $dados)
 {
     $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://10.162.0.53:7070';
@@ -390,42 +348,6 @@ function ConsultarMetas($empresa, $dados)
 
     return json_decode($apiResponse, true);
 }
-
-
-
-function atribuir_op_aviamentador($dados)
-{
-    $baseUrl ='http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/pcp/api/atribuir_op_aviamentador";
-
-    $ch = curl_init($apiUrl);
-
-    $options = [
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => json_encode($dados),
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER => [
-            'Content-Type: application/json',
-            "Authorization: a44pcp22",
-        ],
-    ];
-
-    curl_setopt_array($ch, $options);
-
-    $apiResponse = curl_exec($ch);
-
-    if (curl_errno($ch)) {
-        $error = curl_error($ch);
-        error_log("Erro na solicitação cURL: {$error}");
-        return false;
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
-
-
 
 function ConsultaFaltaProduzirCategoria_Fase($dados)
 {

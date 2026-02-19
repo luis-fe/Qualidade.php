@@ -217,11 +217,58 @@ include_once('../../../templates/headerGestao.php');
     overflow: hidden;
 }
 
+/* Esconde o link por padrão, joga para a linha de baixo e alinha à esquerda (left: 0) */
+.area-hover .dropdown-item {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; /* É isso aqui que garante o alinhamento à esquerda do título */
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 0.5rem !important; /* O !important sobrescreve o p-0 do seu HTML para não ficar esmagado */
+    white-space: nowrap;
+    z-index: 1050;
+    text-decoration: none;
+    color: #212529;
+}
+
+/* Faz o link aparecer quando o mouse passa em cima do título */
+.area-hover:hover .dropdown-item {
+    display: block;
+}
+
+/* Deixa o link cinza/azul quando o mouse passa por cima dele */
+.area-hover .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
 </style>
 
-<div class="titulo-tela">
-    <span class="span-icone"><i class="bi bi-bullseye"></i></span> Almoxarifado de Aviamentos - <strong>FILA DE REQUISICOES</strong>
+<div class="titulo-tela d-flex justify-content-between align-items-center mb-3">
+    
+    <div>
+        <span class="span-icone"><i class="bi bi-bullseye"></i></span> 
+        Almoxarifado de Aviamentos - <strong>FILA DE REQUISICOES</strong>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+        
+        <select id="selectUsuarioAviamentador" class="form-select form-select-sm" style="min-width: 250px;">
+            <option value="">Selecione usuário para atribuir</option>
+        </select>
+
+        <button type="button" class="btn btn-primary btn-sm text-nowrap" onclick="abrirModalInserirUsuario();">
+            <i class="bi bi-person-plus me-1"></i> Inserir Usuário Aviamentador
+        </button>
+
+    </div>
+
 </div>
+
+
 <div class="col-12 div-metas" style="background-color: lightgray; border-radius: 8px; padding: 10px;">
 
     <div class="row mb-2">
@@ -254,23 +301,97 @@ include_once('../../../templates/headerGestao.php');
                         <input type="search" class="search-input search-input-metas" style="min-width: 100px;">
                     </th>
                     <th class="sortable" data-prop="QtdPecas_x">
-                        Qtde Peças
+                        Qtde</br>Peças
                     </th>
                     <th class="sortable" data-prop="prioridade">
                         Prioridade<br>
-                        <input type="search" class="search-input search-input-metas" style="min-width: 100px;">
+                        <input type="search" class="search-input search-input-metas" style="min-width: 80px;">
+
+                    </th>
+                    <th class="sortable" data-prop="FaseAtual">
+                        FaseAtual<br>
+                        <input type="search" class="search-input search-input-metas" style="min-width: 90px;">
 
                     </th>
                     <th class="sortable" data-prop="dataBaixa_x">
-                        Data Entrada<br>
+                        Data</br>Entrada<br>
                     </th>
-                    <th>Requisicoes
+                    <th>Requisicoes</th>
+                    <th class="sortable" data-prop="nomeUsuario">
+                        Separador<br>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle;">
+                        Selecao:<br>
+                        <input class="form-check-input mt-0" type="checkbox" id="checkAllMetas" title="Selecionar Todos">
                     </th>
                 </tr>
             </thead>
             <tbody>
                 </tbody>
         </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalInserirUsuario" tabindex="-1" aria-labelledby="modalInserirUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            
+            <div class="modal-header text-white" style="background-color: #003366;">
+                <h5 class="modal-title" id="modalInserirUsuarioLabel">
+                    <i class="bi bi-people-fill me-2"></i>Gerenciar Usuários Aviamentadores
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+                
+                <div class="input-group mb-4">
+                    <input type="number" id="inputNovaMatricula" class="form-control" placeholder="Digite a matrícula do novo usuário..." aria-label="Matrícula">
+                    <button class="btn btn-success" type="button" onclick="salvarNovoUsuario()">
+                        <i class="bi bi-plus-circle me-1"></i> Adicionar
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered text-center align-middle" id="table-usuarios-aviamentadores">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 25%;">Matrícula</th>
+                                <th class="text-start">Nome</th>
+                                <th style="width: 15%;">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>123456</strong></td>
+                                <td class="text-start">João da Silva</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="excluirUsuario(123456)" title="Excluir Usuário">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>654321</strong></td>
+                                <td class="text-start">Maria Oliveira</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="excluirUsuario(654321)" title="Excluir Usuário">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+            
+        </div>
     </div>
 </div>
 
