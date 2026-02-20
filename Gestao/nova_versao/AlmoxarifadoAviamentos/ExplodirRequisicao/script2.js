@@ -86,3 +86,7 @@ async function Consultar_requisicao() {
         $('#loadingModal').modal('hide');
     }
 }
+
+function abrirModalImpressao() {
+    window.print();
+}

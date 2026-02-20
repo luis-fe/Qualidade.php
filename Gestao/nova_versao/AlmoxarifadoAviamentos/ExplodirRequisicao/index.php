@@ -217,6 +217,36 @@ include_once('../../../../templates/headerGestao.php');
         overflow: hidden;
     }
 
+    @media print {
+    /* Esconde tudo, menos o container de cards */
+    body * {
+        visibility: hidden;
+    }
+    #container-cards, #container-cards * {
+        visibility: visible;
+    }
+    #container-cards {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 10.1cm; /* Largura exata da etiqueta */
+    }
+
+    /* Força cada card a começar em uma nova página (etiqueta) */
+    .card {
+        page-break-after: always;
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+    }
+
+    /* Remove margens chatas do navegador */
+    @page {
+        size: 10.1cm 2.4cm;
+        margin: 0;
+    }
+}
+
 </style>
 
 <?php
@@ -233,8 +263,10 @@ $separador = isset($_GET['separador']) ? $_GET['separador'] : 'Não Informada';
     </button>
     <div class="titulo-tela mb-0" style="margin-top: 0;">
         <span class="span-icone"><i class="bi bi-bullseye"></i></span> REQUISICAO - <strong><?php echo htmlspecialchars($numeroRequisicao); ?></strong>
+            <button type="button" class="btn btn-primary btn-sm text-nowrap" onclick="abrirModalImpressao();">
+            <i class="bi bi-printer me-1"></i> Imprimir
+        </button>
     </div>
-    
 
     
 </div>

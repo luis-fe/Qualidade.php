@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
   <style>
     /* Sidebar Styles */
+    
     #sidebar {
       height: 100vh;
       width: 280px;
