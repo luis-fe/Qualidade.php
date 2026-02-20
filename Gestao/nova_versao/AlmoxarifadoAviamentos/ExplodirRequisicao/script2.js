@@ -46,11 +46,11 @@ async function Consultar_requisicao() {
                             <div class="d-flex flex-column justify-content-between h-100" style="width: calc(100% - 65px); padding-right: 5px; min-width: 0;">
                                 
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <strong class="text-primary" style="font-size: 0.85rem;">${item.codMaterialEdt}</strong>
+                                    <strong class="text-primary" style="font-size: 1.25rem;">${item.codMaterialEdt}</strong>
                                     <span class="badge bg-secondary" style="font-size: 0.55rem;">${item.localizacao}</span>
                                 </div>
                                 
-                                <div class="text-truncate text-muted fw-bold" style="font-size: 1.95rem; line-height: 1.5; margin-top: 1px;" title="${item.nomeMaterial}">
+                                <div class="text-truncate text-muted fw-bold" style="font-size: 1.25rem; line-height: 1.5; " title="${item.nomeMaterial}">
                                     ${item.nomeMaterial}
                                 </div>
                                 
