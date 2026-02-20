@@ -512,10 +512,27 @@
                     <a href="../Controle Automacao" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Controle Automacao <!-- PCP -->
           </a>
-          </a>
-                    <a href="../AlmoxarifadoAviamentos" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Almoxarifado Aviamentos <!-- PCP -->
-          </a>
+          <li class="nav-item">
+            <a href="#submenuAlmoxarifado" data-bs-toggle="collapse" class="nav-link submenu-item" aria-expanded="false">
+              <i class="bi bi-circle-fill"></i> Almoxarifado Aviamentos <i class="bi bi-chevron-down ms-auto"></i> 
+            </a>
+
+            <div class="collapse" id="submenuAlmoxarifado">
+              <ul class="nav flex-column ms-4"> <li class="nav-item">
+                  <a href="../AlmoxarifadoAviamentos" class="nav-link">
+                    <i class="bi bi-dot"></i> Gestão Requisição
+                  </a>
+                </li>
+                
+                <li class="nav-item">
+                  <a href="../GestaoEnderecos" class="nav-link">
+                    <i class="bi bi-dot"></i> Gestão Endereço
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
     </ul>
   </div>
 
