@@ -473,7 +473,10 @@
       <div class="navbar-brand">
         <i class="fa-solid fa-bars" id="btn-menu"></i>
       </div>
-      <div class="ms-auto">
+  <div class="navbar-text text-white fw-bold mx-auto">
+      PLATAFORMA DE GESTÃO INDUSTRIAL
+    </div>      
+    <div class="ms-auto">
         <i class="bi bi-person-circle" id="btn-user"></i>
       </div>
     </div>
@@ -485,32 +488,51 @@
       <img src="../../../templates/logo-grupompl.png" alt="" style="width: 60%; margin-top: 80px; margin-bottom: 20px">
     </div>
     <ul class="nav flex-column">
-      <li class="nav-item">
-        <a href="#" class="nav-link menu-item">
-          <i class="bi bi-clipboard-data icon-menu"></i> Gestão
-          <i class="fas fa-chevron-down"></i>
-        </a>
-        <ul class="submenu">
-          <a href="../../../FilaDeFases" class="nav-link submenu-item">
+          <a href="../FilaDeFases" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Fila de Fases <!-- PCP -->
           </a>
-        </ul>
-        <ul class="submenu">
-          <a href="../../../GestaoDeOps" class="nav-link submenu-item">
+          <a href="../GestaoDeOps" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Gestão de Op's <!-- PCP -->
           </a>
-        </ul>
-        <ul class="submenu">
-          <a href="../../../LeadTime" class="nav-link submenu-item">
+          <a href="../LeadTime" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Lead Time <!-- PCP -->
           </a>
-        </ul>
-        <ul class="submenu">
-          <a href="../../../Metas" class="nav-link submenu-item">
+          <a href="../Metas" class="nav-link submenu-item">
             <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
           </a>
-        </ul>
-      </li>
+          <a href="../Orcamento" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Orçamentos <!-- PCP -->
+          </a>
+          <a href="../ControlePilotos" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Controle Pilotos <!-- PCP -->
+          </a>
+          <a href="../Procedimentos Industriais" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Procedimentos Industriais <!-- PCP -->
+          </a>
+                    <a href="../Controle Automacao" class="nav-link submenu-item">
+            <i class="bi bi-circle-fill"></i> Controle Automacao <!-- PCP -->
+          </a>
+          <li class="nav-item">
+            <a href="#submenuAlmoxarifado" data-bs-toggle="collapse" class="nav-link submenu-item" aria-expanded="false">
+              <i class="bi bi-circle-fill"></i> Almoxarifado Aviamentos <i class="bi bi-chevron-down ms-auto"></i> 
+            </a>
+
+            <div class="collapse" id="submenuAlmoxarifado">
+              <ul class="nav flex-column ms-4"> <li class="nav-item">
+                  <a href="../AlmoxarifadoAviamentos" class="nav-link">
+                    <i class="bi bi-dot"></i> Gestão Requisição
+                  </a>
+                </li>
+                
+                <li class="nav-item">
+                  <a href="../GestaoEnderecos" class="nav-link">
+                    <i class="bi bi-dot"></i> Gestão Endereço
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
     </ul>
   </div>
 
