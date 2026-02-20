@@ -242,7 +242,7 @@ include_once('../../../../templates/headerGestao.php');
 
     /* Remove margens chatas do navegador */
     @page {
-        size: 10.1cm 2.4cm;
+        size: 10.6cm 2.6cm;
         margin: 0;
     }
 }

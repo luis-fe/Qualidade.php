@@ -50,16 +50,16 @@ async function Consultar_requisicao() {
                                     <span class="badge bg-secondary" style="font-size: 0.55rem;">${item.localizacao}</span>
                                 </div>
                                 
-                                <div class="text-truncate text-muted fw-bold" style="font-size: 0.75rem; line-height: 1.5; margin-top: 2px;" title="${item.nomeMaterial}">
+                                <div class="text-truncate text-muted fw-bold" style="font-size: 0.95rem; line-height: 1.5; margin-top: 1px;" title="${item.nomeMaterial}">
                                     ${item.nomeMaterial}
                                 </div>
                                 
-                                <div class="d-flex justify-content-between align-items-end mt-1" style="font-size: 0.65rem;">
+                                <div class="d-flex justify-content-between align-items-end mt-0" style="font-size: 0.75rem;">
                                     <span>OP: <strong>${item.numOPConfec}</strong></span>
                                     
                                     ${tagSeparador}
                                     
-                                    <span>Qtd: <strong class="text-success" style="font-size: 0.75rem;">${item.qtdeRequisitada}</strong></span>
+                                    <span>Qtd: <strong class="text-success" style="font-size: 0.95rem;">${item.qtdeRequisitada}</strong></span>
                                 </div>
                                 
                             </div>
