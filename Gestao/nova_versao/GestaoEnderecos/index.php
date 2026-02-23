@@ -21,13 +21,13 @@ include_once('../../../templates/headerGestao.php');
         position: absolute;
         left: 0;
         top: 0;
-        width: 10.1cm; 
+        width: 10.6cm; 
         margin: 0;
         padding: 0 !important;
     }
 
     .card-etiqueta {
-        width: 10.1cm;
+        width: 10.6cm;
         height: 2.6cm;
         page-break-after: always;
         border: none !important;
