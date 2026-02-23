@@ -211,7 +211,7 @@ async function imprimirSelecionados() {
                 <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
                     <div class="card-body d-flex flex-row align-items-center justify-content-start p-0" style="height: 100%; gap: 1cm;">
                         
-                        <div class="d-flex flex-row align-items-center" style="gap: 1cm;">
+                        <div class="d-flex flex-row align-items-center" style="gap: 0.5cm;">
                             
                             <div class="d-flex flex-column align-items-center justify-content-center">
                                 <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Rua</span>
@@ -225,7 +225,7 @@ async function imprimirSelecionados() {
 
                             <div class="d-flex flex-column align-items-center justify-content-center">
                                 <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Posicao</span>
-                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.2;">${item.posicao}</strong>
+                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.posicao}</strong>
                             </div>
 
                         </div>
