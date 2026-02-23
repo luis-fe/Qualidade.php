@@ -207,21 +207,21 @@ async function imprimirSelecionados() {
         const qrData = encodeURIComponent(item.endereco);
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=${qrData}`;
 
-        const cardHTML = `
-            <div class="card card-etiqueta" style="border: 1px solid #000; background-color: #fafafa; margin-bottom: 5px;">
-                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%;">
-                    
-                    <div class="d-flex flex-column justify-content-center h-100" style="padding-left: 10px; width: calc(100% - 75px);">
-                        <strong style="font-size: 2.8rem; color: #000; line-height: 1.2;">${item.endereco}</strong>
-                    </div>
+    const cardHTML = `
+                <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
+                    <div class="card-body d-flex flex-row align-items-center justify-content-start p-0" style="height: 100%; gap: 1cm;">
+                        
+                        <div class="d-flex flex-column justify-content-center h-100">
+                            <strong style="font-size: 2.8rem; color: #000; line-height: 1.2; white-space: nowrap;">${item.endereco}</strong>
+                        </div>
 
-                    <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
-                        <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="max-width: 100%; max-height: 100%;">
+                        <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
+                            <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="max-width: 100%; max-height: 100%;">
+                        </div>
+                        
                     </div>
-                    
                 </div>
-            </div>
-        `;
+            `;
         
         $('#container-cards').append(cardHTML);
     });

@@ -9,11 +9,8 @@ include_once('../../../templates/headerGestao.php');
 <style>
 @media print {
     /* Esconde elementos que não devem ir pro papel */
-    .no-print {
-        display: none !important;
-    }
+    .no-print { display: none !important; }
 
-    /* O restante do seu CSS de impressão continua igual: */
     body * { visibility: hidden; }
     #container-cards, #container-cards * { visibility: visible; }
     
@@ -21,13 +18,13 @@ include_once('../../../templates/headerGestao.php');
         position: absolute;
         left: 0;
         top: 0;
-        width: 10.6cm; 
-        margin: 0;
+        width: 10.1cm; 
+        margin: 0 !important;
         padding: 0 !important;
     }
 
     .card-etiqueta {
-        width: 10.6cm;
+        width: 10.1cm;
         height: 2.6cm;
         page-break-after: always;
         border: none !important;
@@ -36,9 +33,15 @@ include_once('../../../templates/headerGestao.php');
         padding: 0 !important;
     }
 
+    /* ZERA A MARGEM DO NAVEGADOR */
     @page {
         size: 10.6cm 2.6cm;
-        margin: 0;
+        margin: 0 !important; 
+    }
+    
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
 </style>
