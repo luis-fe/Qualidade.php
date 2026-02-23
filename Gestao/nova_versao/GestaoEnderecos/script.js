@@ -205,7 +205,7 @@ async function imprimirSelecionados() {
     // 3. Monta um card para cada item selecionado
     itensParaImprimir.forEach(item => {
         const qrData = encodeURIComponent(item.endereco);
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrData}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}`;
 
     const cardHTML = `
                 <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
@@ -225,7 +225,7 @@ async function imprimirSelecionados() {
 
                             <div class="d-flex flex-column align-items-center justify-content-center">
                                 <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Posicao</span>
-                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.posicao}</strong>
+                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.2;">${item.posicao}</strong>
                             </div>
 
                         </div>
