@@ -43,6 +43,19 @@ include_once('../../../templates/headerGestao.php');
         margin: 0 !important;
         padding: 0 !important;
     }
+
+    /* Garante que imagens sempre sejam impressas e no tamanho certo */
+    img {
+        visibility: visible !important;
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    /* Força o tamanho do QR Code no papel */
+    .img-qrcode {
+        width: 100px !important;
+        height: 100px !important;
+    }
 }
 </style>
 

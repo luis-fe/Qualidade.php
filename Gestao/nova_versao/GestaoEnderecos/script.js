@@ -230,8 +230,8 @@ async function imprimirSelecionados() {
 
                 </div>
 
-                <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
-                    <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="max-width: 100%; max-height: 100%;">
+                <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; min-width: 100px; flex-shrink: 0;">
+                    <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 100px; height: 100px; display: block;">
                 </div>
                 
             </div>
