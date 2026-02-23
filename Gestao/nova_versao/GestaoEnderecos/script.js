@@ -209,10 +209,25 @@ async function imprimirSelecionados() {
 
     const cardHTML = `
                 <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
-                    <div class="card-body d-flex flex-row align-items-center justify-content-start p-0" style="height: 100%; gap: 0.7cm;">
+                    <div class="card-body d-flex flex-row align-items-center justify-content-start p-0" style="height: 100%; gap: 1cm;">
                         
-                        <div class="d-flex flex-column justify-content-center h-100">
-                            <strong style="font-size: 2.8rem; color: #000; line-height: 1.2; white-space: nowrap;">${item.endereco}</strong>
+                        <div class="d-flex flex-row align-items-center" style="gap: 1cm;">
+                            
+                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                <span style="font-size: 0.6rem; color: #000; font-weight: bold;">RUA</span>
+                                <strong style="font-size: 2.8rem; color: #000; line-height: 1;">${item.rua}</strong>
+                            </div>
+
+                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                <span style="font-size: 0.6rem; color: #000; font-weight: bold;">QUADRA</span>
+                                <strong style="font-size: 2.8rem; color: #000; line-height: 1;">${item.quadra}</strong>
+                            </div>
+
+                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                <span style="font-size: 0.6rem; color: #000; font-weight: bold;">POSIÇÃO</span>
+                                <strong style="font-size: 2.8rem; color: #000; line-height: 1;">${item.posicao}</strong>
+                            </div>
+
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
