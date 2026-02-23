@@ -60,12 +60,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
-                case 'Consulta_cargaOP_fase':
+                case 'inserir_endereco':
                         header('Content-Type: application/json');
-                        echo json_encode(ConsultacargaOP_fase($dados));
+                        echo json_encode(inserir_endereco($dados));
                         break;
-                case 'Consulta_Previsao_Categoria':
-                        jsonResponse(ConsultaPrevisaoCategoria($dados));
+                case 'inserir_endereco_massa':
+                        jsonResponse(inserir_endereco_massa($dados));
                         break;
                 case 'Consulta_fila_fase':
                         jsonResponse(ConsultaFilaResumo($dados));
@@ -97,16 +97,24 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 }
 
 
-function ConsultarServicoAutomacao($empresa)
+function inserir_endereco($dados)
 {
-    $baseUrl ='http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/pcp/api/ServicoAutomacao";
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
+    $apiUrl = "{$baseUrl}/api/inserir_endereco_aviamento";
     $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
 
     $apiResponse = curl_exec($ch);
 
@@ -118,6 +126,37 @@ function ConsultarServicoAutomacao($empresa)
 
     return json_decode($apiResponse, true);
 }
+
+function inserir_endereco_massa($dados)
+{
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
+    $apiUrl = "{$baseUrl}/api/inserir_endereco_aviamento_em_massa";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 
 
 function ConsultarEnderecos($empresa)

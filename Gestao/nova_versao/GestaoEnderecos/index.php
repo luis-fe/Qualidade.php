@@ -4,40 +4,94 @@ include_once("../../../templates/LoadingGestao.php");
 include_once('../../../templates/headerGestao.php');
 ?>
 
-<!-- Adicione o CSS do Select2 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
+<style>
+@media print {
+    /* Esconde elementos que não devem ir pro papel */
+    .no-print {
+        display: none !important;
+    }
+
+    /* O restante do seu CSS de impressão continua igual: */
+    body * { visibility: hidden; }
+    #container-cards, #container-cards * { visibility: visible; }
+    
+    #container-cards {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 10.1cm; 
+        margin: 0;
+        padding: 0 !important;
+    }
+
+    .card-etiqueta {
+        width: 10.1cm;
+        height: 2.6cm;
+        page-break-after: always;
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    @page {
+        size: 10.6cm 2.6cm;
+        margin: 0;
+    }
+}
+</style>
 
 <div class="titulo-tela d-flex justify-content-between align-items-center mb-3">
-    
     <div>
         <span class="span-icone"><i class="bi bi-bullseye"></i></span> 
         Gestao de Enderecamento - <strong>Almoxarifado Aviamentos</strong>
     </div>
 
     <div class="d-flex align-items-center gap-2">
-        
- 
+        <button type="button" class="btn btn-warning btn-sm text-nowrap" onclick="imprimirSelecionados();">
+            <i class="bi bi-printer me-1"></i> Imprimir Selecionados
+        </button>
 
         <button type="button" class="btn btn-primary btn-sm text-nowrap" onclick="abrirModalInserirEndereco();">
             <i class="bi bi-person-plus me-1"></i> Inserir novo Endereço
         </button>
-
     </div>
-
 </div>
 
+<div id="container-cards" class="d-none d-flex flex-wrap gap-2 mt-3 p-2"></div>
 
 
 <div class="col-12 div-metas" style="background-color: lightgray; border-radius: 8px; padding: 10px;">
+    
+    <div class="row g-2 mb-3">
+        <div class="col-md-3">
+            <input type="text" id="filtroEndereco" class="form-control form-control-sm border-primary" placeholder="🔍 Filtrar Endereço...">
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="filtroRua" class="form-control form-control-sm border-primary" placeholder="🔍 Filtrar Rua...">
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="filtroQuadra" class="form-control form-control-sm border-primary" placeholder="🔍 Filtrar Quadra...">
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="filtroPosicao" class="form-control form-control-sm border-primary" placeholder="🔍 Filtrar Posição...">
+        </div>
+    </div>
+
     <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 800px; border-radius: 8px;">
         <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
-        <thead style="position: sticky; top: 0; background-color: #003366; z-index: 10;">
+            <thead style="position: sticky; top: 0; background-color: #003366; color: white; z-index: 10;">
                 <tr>
                     <th>Endereco</th>
                     <th>Rua</th>
                     <th>Quadra</th>
                     <th>Posicao</th>
+                    <th style="width: 60px; text-align: center;">
+                        Imprimir<br>
+                        <input class="form-check-input mt-1" type="checkbox" id="checkAllFiltro" title="Selecionar Todos os Filtrados">
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -49,7 +103,6 @@ include_once('../../../templates/headerGestao.php');
 <div class="modal fade" id="modalInserirEndereco" tabindex="-1" aria-labelledby="modalInserirEnderecoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            
             <div class="modal-header text-white" style="background-color: #003366;">
                 <h5 class="modal-title" id="modalInserirEnderecoLabel">
                     <i class="bi bi-geo-alt-fill me-2"></i> Inserir Endereço
@@ -58,7 +111,6 @@ include_once('../../../templates/headerGestao.php');
             </div>
             
             <div class="modal-body">
-                
                 <div class="d-flex justify-content-center mb-4">
                     <div class="btn-group" role="group" aria-label="Tipo de Inserção">
                         <input type="radio" class="btn-check" name="tipoInsercao" id="radioIndividual" value="individual" autocomplete="off" checked>
@@ -123,7 +175,6 @@ include_once('../../../templates/headerGestao.php');
                         </div>
                     </div>
                 </div>
-
             </div>
             
             <div class="modal-footer justify-content-between">
@@ -132,11 +183,9 @@ include_once('../../../templates/headerGestao.php');
                     <i class="bi bi-save me-1"></i> Salvar
                 </button>
             </div>
-            
         </div>
     </div>
 </div>
-
 
 <?php
 include_once('../../../templates/footerGestao.php');
