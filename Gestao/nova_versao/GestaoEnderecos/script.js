@@ -214,17 +214,17 @@ async function imprimirSelecionados() {
                         <div class="d-flex flex-row align-items-center" style="gap: 1cm;">
                             
                             <div class="d-flex flex-column align-items-center justify-content-center">
-                                <span style="font-size: 2.6rem; color: #000; font-weight: bold;">RUA</span>
+                                <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Rua</span>
                                 <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.rua}</strong>
                             </div>
 
                             <div class="d-flex flex-column align-items-center justify-content-center">
-                                <span style="font-size: 2.6rem; color: #000; font-weight: bold;">QUADRA</span>
+                                <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Quadra</span>
                                 <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.quadra}</strong>
                             </div>
 
                             <div class="d-flex flex-column align-items-center justify-content-center">
-                                <span style="font-size: 2.6rem; color: #000; font-weight: bold;">POSIÇÃO</span>
+                                <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Posicao</span>
                                 <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.posicao}</strong>
                             </div>
 
