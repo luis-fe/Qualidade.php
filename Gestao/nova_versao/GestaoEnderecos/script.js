@@ -208,35 +208,35 @@ async function imprimirSelecionados() {
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}`;
 
     const cardHTML = `
-                <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
-                    <div class="card-body d-flex flex-row align-items-center justify-content-start p-0" style="height: 100%; gap: 1cm;">
-                        
-                        <div class="d-flex flex-row align-items-center" style="gap: 0.5cm;">
-                            
-                            <div class="d-flex flex-column align-items-center justify-content-center">
-                                <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Rua</span>
-                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.rua}</strong>
-                            </div>
-
-                            <div class="d-flex flex-column align-items-center justify-content-center">
-                                <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Quadra</span>
-                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.quadra}</strong>
-                            </div>
-
-                            <div class="d-flex flex-column align-items-center justify-content-center">
-                                <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Posicao</span>
-                                <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.posicao}</strong>
-                            </div>
-
-                        </div>
-
-                        <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
-                            <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="max-width: 100%; max-height: 100%;">
-                        </div>
-                        
+        <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
+            <div class="card-body d-flex flex-row align-items-center justify-content-start p-0" style="height: 100%; gap: 0.5cm;">
+                
+                <div class="d-flex flex-row align-items-center" style="gap: 0.5cm;">
+                    
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Rua</span>
+                        <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.rua}</strong>
                     </div>
+
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Quadra</span>
+                        <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.quadra}</strong>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Posicao</span>
+                        <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.posicao}</strong>
+                    </div>
+
                 </div>
-            `;
+
+                <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
+                    <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="max-width: 100%; max-height: 100%;">
+                </div>
+                
+            </div>
+        </div>
+    `;
         
         $('#container-cards').append(cardHTML);
     });
