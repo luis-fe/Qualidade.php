@@ -212,10 +212,10 @@ async function imprimirSelecionados() {
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%;">
                     
                     <div class="d-flex flex-column justify-content-center h-100" style="padding-left: 10px; width: calc(100% - 75px);">
-                        <strong style="font-size: 2.4rem; color: #000; line-height: 1.2;">${item.endereco}</strong>
+                        <strong style="font-size: 4.4rem; color: #000; line-height: 1.5;">${item.endereco}</strong>
                     </div>
 
-                    <div class="d-flex justify-content-center align-items-center" style="width: 80px; height: 80px;">
+                    <div class="d-flex  align-items-center" style="width: 100px; height: 100px;">
                         <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="max-width: 100%; max-height: 100%;">
                     </div>
                     
