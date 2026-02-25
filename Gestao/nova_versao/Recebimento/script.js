@@ -280,7 +280,8 @@ async function salvarConfigKit(codID, btnElement) {
 
     itensParaImprimir.forEach(item => {
         const qrData = encodeURIComponent(`${item.codigo}-${item.tamanho}`);
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${qrData}`;
+// Substitua a linha do qrUrl por esta:
+const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
 const cardHTML = `
             <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
