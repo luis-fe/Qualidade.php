@@ -47,11 +47,11 @@ async function Consultar_requisicao() {
                                 
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong class="text-primary" style="font-size: 1.25rem;">${item.codMaterialEdt}</strong>
-                                    <span class="badge bg-secondary" style="font-size: 0.55rem;">${item.localizacao}</span>
+                                    <strong class="badge bg-secondary" style="font-size: 0.55rem;">${item.localizacao}</strong>
                                 </div>
                                 
                                 <div class="text-truncate text-muted fw-bold" style="font-size: 1.25rem; line-height: 1.5; " title="${item.nomeMaterial}">
-                                    ${item.nomeMaterial}
+                                    <strong>${item.nomeMaterial}</strong>
                                 </div>
                                 
                                 <div class="d-flex justify-content-between align-items-end mt-0" style="font-size: 0.95rem;">
@@ -59,7 +59,7 @@ async function Consultar_requisicao() {
                                     
                                     ${tagSeparador}
                                     
-                                    <span>Qtd: <strong class="text-success" style="font-size: 0.95rem;">${item.qtdeRequisitada}</strong></span>
+                                    <span>Qtd: <strong class="text-success" style="font-size: 1.05rem;">${item.qtdeRequisitada}</strong></span>
                                 </div>
                                 
                             </div>
