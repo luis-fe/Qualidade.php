@@ -288,12 +288,12 @@ const cardHTML = `
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 2cm !important; padding-right: 0.1cm !important;">
                     
                     <div class="d-flex flex-column justify-content-center" style="width: 6cm; overflow: hidden; font-family: Arial, sans-serif;">
-                        <strong style="font-size: 31px; color: #000; line-height: 1.1;">${item.codigo}</strong>
+                        <strong style="font-size: 30px; color: #000; line-height: 1.1;">${item.codigo}</strong>
                         <span style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</span>
                         <span style="font-size: 16px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
                         
                         <div class="d-flex justify-content-between align-items-end" style="margin-top: 2px;">
-                            <strong style="font-size: 31px; color: #000; line-height: 1.1;">Tam: ${item.tamanho} ${item.unidade}</strong>
+                            <strong style="font-size: 30px; color: #000; line-height: 1.1;">Tam: ${item.tamanho} ${item.unidade}</strong>
                             <strong style="font-size: 14px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
                         </div>
                     </div>
