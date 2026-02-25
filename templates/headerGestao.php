@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
   <style>
     /* Sidebar Styles */
-    
     #sidebar {
       height: 100vh;
       width: 280px;
@@ -518,18 +517,26 @@
               <i class="bi bi-circle-fill"></i> Almoxarifado Aviamentos <i class="bi bi-chevron-down ms-auto"></i> 
             </a>
 
-            <div class="collapse" id="submenuAlmoxarifado">
-              <ul class="nav flex-column ms-4"> <li class="nav-item">
-                  <a href="../AlmoxarifadoAviamentos" class="nav-link">
-                    <i class="bi bi-dot"></i> Gestão Requisição
-                  </a>
-                </li>
-                
                 <li class="nav-item">
                   <a href="../GestaoEnderecos" class="nav-link">
                     <i class="bi bi-dot"></i> Gestão Endereço
                   </a>
                 </li>
+            
+                <li class="nav-item">
+                  <a href="../Recebimento" class="nav-link">
+                    <i class="bi bi-dot"></i> Recebimento
+                  </a>
+                </li>
+
+                            <div class="collapse" id="submenuAlmoxarifado">
+              <ul class="nav flex-column ms-4"> <li class="nav-item">
+                  <a href="../AlmoxarifadoAviamentos" class="nav-link">
+                    <i class="bi bi-dot"></i> Gestão Separação
+                  </a>
+                </li>
+
+
 
               </ul>
             </div>
