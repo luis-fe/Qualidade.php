@@ -289,9 +289,9 @@ const cardHTML = `
                     
                     <div class="d-flex flex-column justify-content-center" style="width: 6.5cm; overflow: hidden; font-family: Arial, sans-serif;">
                         
-                        <strong style="font-size: 24px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
+                        <strong style="font-size: 25px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
                         
-                        <span style="font-size: 14px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</span>
+                        <strong style="font-size: 14px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
                         <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
                         
                         <div class="d-flex justify-content-between align-items-end" style="margin-top: 2px;">
