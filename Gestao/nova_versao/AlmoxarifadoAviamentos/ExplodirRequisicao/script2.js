@@ -54,7 +54,7 @@ const cardHTML = `
                     </div>
                 </div>
                 
-                <div style="height: 0.5cm;"></div>
+                <div style="height: 0.25cm;"></div>
 
                 <div class="d-flex justify-content-between align-items-center" style="font-size: 0.95rem; flex: 1;">
                     <strong>OP: <strong>${item.numOPConfec}</strong></strong>
