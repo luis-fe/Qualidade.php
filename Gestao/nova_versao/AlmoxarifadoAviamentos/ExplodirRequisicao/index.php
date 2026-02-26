@@ -62,9 +62,9 @@ include_once('../../../../templates/headerGestao.php');
         }
 
         #container-cards {
-            position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
+            /*position: absolute !important;*/
+            /*left: 0 !important;*/
+            /*top: 0 !important;*/
             width: 10.0cm !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -72,15 +72,16 @@ include_once('../../../../templates/headerGestao.php');
         }
 
         .card-etiqueta {
-            width: 10.0cm !important;
-            height: 3.0cm !important;
-            border: none !important; 
-            margin: 0 !important;
-            padding: 0 !important;
-            box-sizing: border-box !important;
-            page-break-after: always !important;
-            display: block !important;
-            box-shadow: none !important;
+        /* Use 9.9cm ou 9.95cm para evitar que o arredondamento 
+                do navegador (pixels para cm) cause quebra */
+                width: 10.0cm !important; 
+                height: 3.0cm !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                break-after: page !important;
+                display: block !important;
+                border: none !important;
+                box-shadow: none !important;
         }
 
         .card-body-custom {
