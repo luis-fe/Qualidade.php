@@ -218,53 +218,28 @@ include_once('../../../../templates/headerGestao.php');
     }
 
 @media print {
-    /* Esconde elementos que não devem ir pro papel */
-    .no-print { display: none !important; }
-
-    body * { visibility: hidden; }
-    #container-cards, #container-cards * { visibility: visible; }
-    
+    /* Garante que o container de impressão não tenha margens internas do Bootstrap */
     #container-cards {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 10.1cm; 
-        margin: 0 !important;
+        display: block !important;
+        width: 10.1cm !important;
         padding: 0 !important;
+        margin: 0 !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+    }
+
+    /* Remove qualquer padding do body que o template possa ter inserido */
+    body {
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
     .card-etiqueta {
-        width: 10.1cm;
-        height: 2.6cm;
-        page-break-after: always;
         border: none !important;
-        box-shadow: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* ZERA A MARGEM DO NAVEGADOR */
-    @page {
-        size: 10.6cm 2.6cm;
-        margin: 0 !important; 
-    }
-    
-    body {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    /* Garante que imagens sempre sejam impressas e no tamanho certo */
-    img {
-        visibility: visible !important;
-        display: block !important;
-        opacity: 1 !important;
-    }
-
-    /* Força o tamanho do QR Code no papel */
-    .img-qrcode {
-        width: 100px !important;
-        height: 100px !important;
+        width: 10.1cm !important;
+        height: 2.6cm !important;
+        page-break-after: always;
     }
 }
 

@@ -40,37 +40,35 @@ async function Consultar_requisicao() {
                     : ``;
 
                 const cardHTML = `
-                    <div class="card shadow-sm" style="width: 10.1cm; height: 2.4cm; overflow: hidden; border: 1px solid #adb5bd; background-color: #fff;">
-                        <div class="card-body d-flex flex-row align-items-center p-1" style="height: 100%;">
-                            
-                            <div class="d-flex flex-column justify-content-between h-100" style="width: calc(100% - 65px); padding-right: 5px; min-width: 0;">
-                                
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <strong class="text-primary" style="font-size: 1.25rem;">${item.codMaterialEdt}</strong>
-                                    <strong class="badge bg-secondary" style="font-size: 0.55rem;">${item.localizacao}</strong>
-                                </div>
-                                
-                                <div class="text-truncate text-muted fw-bold" style="font-size: 1.25rem; line-height: 1.5; " title="${item.nomeMaterial}">
-                                    <strong>${item.nomeMaterial}</strong>
-                                </div>
-                                
-                                <div class="d-flex justify-content-between align-items-end mt-0" style="font-size: 0.95rem;">
-                                    <span>OP: <strong>${item.numOPConfec}</strong></span>
-                                    
-                                    ${tagSeparador}
-                                    
-                                    <span>Qtd: <strong class="text-success" style="font-size: 1.05rem;">${item.qtdeRequisitada}</strong></span>
-                                </div>
-                                
-                            </div>
+    <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; overflow: hidden; border: 1px solid #adb5bd; background-color: #fff; margin-bottom: 5px;">
+        <div class="card-body d-flex flex-row align-items-center p-2" style="height: 100%;">
+            
+            <div class="d-flex flex-column justify-content-between h-100" style="flex-grow: 1; padding-right: 10px; min-width: 0;">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong class="text-primary" style="font-size: 1.4rem; line-height: 1;">${item.codMaterialEdt}</strong>
+                    <span class="badge bg-secondary" style="font-size: 0.7rem;">${item.localizacao}</span>
+                </div>
+                
+                <div class="text-truncate text-dark fw-bold" style="font-size: 1.1rem; margin: 2px 0;" title="${item.nomeMaterial}">
+                    ${item.nomeMaterial}
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.9rem;">
+                    <span>OP: <strong>${item.numOPConfec}</strong></span>
+                    ${tagSeparador}
+                    <span>Qtd: <strong class="text-success" style="font-size: 1.2rem;">${item.qtdeRequisitada}</strong></span>
+                </div>
+                
+            </div>
 
-                            <div class="d-flex justify-content-center align-items-center" style="width: 65px; min-width: 65px; height: 65px;">
-                                <img src="${qrUrl}" alt="QR Code ${item.codMaterialEdt}" style="max-width: 100%; max-height: 100%; mix-blend-mode: multiply;">
-                            </div>
-                            
-                        </div>
-                    </div>
-                `;
+            <div class="d-flex justify-content-center align-items-center" style="width: 80px; min-width: 80px;">
+                <img src="${qrUrl}" alt="QR" style="width: 75px; height: 75px; mix-blend-mode: multiply;">
+            </div>
+            
+        </div>
+    </div>
+`;
                 
                 $('#container-cards').append(cardHTML);
             });
