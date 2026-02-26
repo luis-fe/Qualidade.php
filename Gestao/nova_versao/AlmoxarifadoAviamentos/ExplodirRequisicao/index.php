@@ -217,33 +217,54 @@ include_once('../../../../templates/headerGestao.php');
         overflow: hidden;
     }
 
-    @media print {
-    /* Esconde tudo, menos o container de cards */
-    body * {
-        visibility: hidden;
-    }
-    #container-cards, #container-cards * {
-        visibility: visible;
-    }
+@media print {
+    /* Esconde elementos que não devem ir pro papel */
+    .no-print { display: none !important; }
+
+    body * { visibility: hidden; }
+    #container-cards, #container-cards * { visibility: visible; }
+    
     #container-cards {
         position: absolute;
         left: 0;
         top: 0;
-        width: 10.1cm; /* Largura exata da etiqueta */
+        width: 10.1cm; 
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* Força cada card a começar em uma nova página (etiqueta) */
-    .card {
+    .card-etiqueta {
+        width: 10.1cm;
+        height: 2.6cm;
         page-break-after: always;
         border: none !important;
         box-shadow: none !important;
         margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* Remove margens chatas do navegador */
+    /* ZERA A MARGEM DO NAVEGADOR */
     @page {
         size: 10.6cm 2.6cm;
-        margin: 0;
+        margin: 0 !important; 
+    }
+    
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Garante que imagens sempre sejam impressas e no tamanho certo */
+    img {
+        visibility: visible !important;
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    /* Força o tamanho do QR Code no papel */
+    .img-qrcode {
+        width: 100px !important;
+        height: 100px !important;
     }
 }
 
