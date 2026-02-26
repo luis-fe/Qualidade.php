@@ -32,7 +32,7 @@ async function Consultar_requisicao() {
             
             response.forEach(item => {
                 const qrData = encodeURIComponent(item.codMaterialEdt);
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}`;
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=${qrData}`;
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
                 const tagSeparador = primeiroNomeSeparador 
@@ -68,7 +68,7 @@ const cardHTML = `
                 </div>
 
                 <div style="margin-top: auto;">
-                    <img src="${qrUrl}" style="width: 60px; height: 60px; mix-blend-mode: multiply;">
+                    <img src="${qrUrl}" style="width: 70px; height: 70px; mix-blend-mode: multiply;">
                 </div>
                 
             </div>
