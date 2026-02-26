@@ -41,21 +41,21 @@ async function Consultar_requisicao() {
 
 const cardHTML = `
     <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden;">
-        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding-top: 0.2cm;">
+        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding-top: 0.1cm;">
             
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-width: 0; padding-right: 5px;">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-width: 0; padding-right: 4px;">
                 
                 <div>
-                    <strong style="font-size: 1.2rem; line-height: 1.2; color: #000; display: block;">
+                    <strong style="font-size: 1.6rem; line-height: 1.2; color: #000; display: block;">
                         ${item.codMaterialEdt}
                     </strong>
-                    <div style="font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
+                    <div style="font-size: 1.2rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
                         ${item.nomeMaterial}
                     </div>
                 </div>
                 
                 <div class="d-flex justify-content-between align-items-end" style="font-size: 0.95rem; width: 100%; padding-bottom: 0.1cm;">
-                    <span>OP: <strong>${item.numOPConfec}</strong></span>
+                    <strong>OP: <strong>${item.numOPConfec}</strong></strong>
                     ${tagSeparador}
                     <span>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></span>
                 </div>
