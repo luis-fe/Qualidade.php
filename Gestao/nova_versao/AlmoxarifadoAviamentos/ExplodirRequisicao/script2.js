@@ -40,13 +40,13 @@ async function Consultar_requisicao() {
                     : ``;
 
 const cardHTML = `
-    <div class="card card-etiqueta" style="background-color: #fff; border: none;">
-        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%;">
+    <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden;">
+        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding-top: 0.2cm;">
             
             <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-width: 0; padding-right: 5px;">
                 
                 <div>
-                    <strong style="font-size: 1.2rem; line-height: 1; color: #000; display: block;">
+                    <strong style="font-size: 1.2rem; line-height: 1.2; color: #000; display: block;">
                         ${item.codMaterialEdt}
                     </strong>
                     <div style="font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
@@ -54,7 +54,7 @@ const cardHTML = `
                     </div>
                 </div>
                 
-                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.95rem; width: 100%;">
+                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.95rem; width: 100%; padding-bottom: 0.1cm;">
                     <span>OP: <strong>${item.numOPConfec}</strong></span>
                     ${tagSeparador}
                     <span>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></span>
@@ -63,11 +63,11 @@ const cardHTML = `
 
             <div style="width: 95px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
                 
-                <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 0px 0px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap; margin-top: 0.5cm; margin-bottom: 5px;">
+                <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 2px 6px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap; line-height: 1.2;">
                     ${item.localizacao}
                 </div>
 
-                <div style="margin-top: auto;">
+                <div style="margin-top: auto; padding-bottom: 0.1cm;">
                     <img src="${qrUrl}" style="width: 70px; height: 70px; mix-blend-mode: multiply;">
                 </div>
                 
