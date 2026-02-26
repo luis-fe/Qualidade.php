@@ -220,7 +220,7 @@ include_once('../../../../templates/headerGestao.php');
 @media print {
     /* FORÇA O MODO PAISAGEM E DEFINE O TAMANHO REAL DA ETIQUETA */
     @page {
-        size: 10.1cm 2.6cm landscape; /* O segredo está no 'landscape' aqui */
+        size: 10.1cm 2.6cm; /* O segredo está no 'landscape' aqui */
         margin: 0 !important; 
     }
 
