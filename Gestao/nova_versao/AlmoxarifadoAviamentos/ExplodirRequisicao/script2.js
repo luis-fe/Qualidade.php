@@ -61,14 +61,14 @@ const cardHTML = `
                 </div>
             </div>
 
-            <div style="width: 95px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
+            <div style="width: 85px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%;">
                 
                 <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 2px 6px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap; line-height: 1.2;">
                     ${item.localizacao}
                 </div>
 
-                <div style="margin-top: auto; padding-bottom: 0.05cm;">
-                    <img src="${qrUrl}" style="width: 70px; height: 70px; mix-blend-mode: multiply;">
+                <div style="margin-top: 5px; padding-bottom: 0.05cm;">
+                    <img src="${qrUrl}" style="width: 80px; height: 80px; mix-blend-mode: multiply; display: block;">
                 </div>
                 
             </div>
