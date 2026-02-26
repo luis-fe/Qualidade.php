@@ -74,7 +74,7 @@ include_once('../../../../templates/headerGestao.php');
         .card-etiqueta {
         /* Use 9.9cm ou 9.95cm para evitar que o arredondamento 
                 do navegador (pixels para cm) cause quebra */
-                width: 10.0cm !important; 
+                width: 20.0cm !important; 
                 height: 3.0cm !important;
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
