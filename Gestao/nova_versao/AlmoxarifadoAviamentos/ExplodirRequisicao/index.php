@@ -218,53 +218,40 @@ include_once('../../../../templates/headerGestao.php');
     }
 
 @media print {
-    /* 1. Esconde TUDO da página primeiro */
-    body * {
-        visibility: hidden;
+    @page {
+        size: 10.1cm 2.6cm landscape;
+        margin: 0 !important;
     }
 
-    /* 2. Mostra APENAS o container dos cards e o que está dentro dele */
-    #container-cards, 
-    #container-cards * {
-        visibility: visible;
-    }
-
-    /* 3. Posiciona o container no topo real da folha */
-    #container-cards {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
+    html, body {
         width: 10.1cm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #container-cards {
+        width: 10.1cm !important;
+        max-width: 10.1cm !important;
+        min-width: 10.1cm !important; /* Força a largura mínima */
         margin: 0 !important;
         padding: 0 !important;
         display: block !important;
-        visibility: visible !important;
     }
 
-    /* 4. Configura o tamanho da etiqueta e remove bordas do navegador */
-    @page {
-        size: 10.1cm 2.6cm;
-        margin: 0 !important;
-    }
-
-    /* 5. Regras para cada etiqueta individual */
     .card-etiqueta {
-        display: flex !important; /* Mantém o layout horizontal */
-        width: 10.1cm !important;
+        width: 10.1cm !important; 
+        min-width: 10.1cm !important; /* Não deixa o card encolher */
         height: 2.6cm !important;
-        border: 1px solid #000 !important; /* Borda para teste, pode mudar para none */
+        box-sizing: border-box !important;
         margin: 0 !important;
         padding: 0 !important;
-        page-break-after: always !important; /* Força a próxima etiqueta a ir para outra página */
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        box-sizing: border-box !important;
+        page-break-after: always !important;
+        border: 1px solid #000 !important; /* Mantenha para ver os limites na primeira impressão */
     }
 
-    /* Remove qualquer espaçamento que o Bootstrap tente colocar no container */
-    .gap-2, .mt-3, .p-2 {
-        gap: 0 !important;
-        margin: 0 !important;
+    /* Remove qualquer limitação de largura do Bootstrap que possa estar no container */
+    .container, .container-fluid {
+        max-width: none !important;
         padding: 0 !important;
     }
 }
