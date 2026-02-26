@@ -63,7 +63,7 @@ const cardHTML = `
 
             <div style="width: 95px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
                 
-                <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 2px 8px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap; margin-top: 0.5cm; margin-bottom: 5px;">
+                <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 0px 8px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap; margin-top: 0.5cm; margin-bottom: 5px;">
                     ${item.localizacao}
                 </div>
 
