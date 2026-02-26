@@ -40,35 +40,39 @@ async function Consultar_requisicao() {
                     : ``;
 
 const cardHTML = `
-    <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden;">
-        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding-top: 0.1cm;">
+    <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden; width: 10.0cm; height: 3.0cm;">
+        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding: 0.2cm 0.3cm 0.2cm 1.0cm; box-sizing: border-box;">
             
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-width: 0; padding-right: 4px;">
+            <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0;">
                 
-                <div>
-                    <strong style="font-size: 2.0rem; line-height: 1.0; color: #000; display: block;">
+                <div style="height: 1.6cm; display: flex; flex-direction: column; justify-content: flex-start;">
+                    <strong style="font-size: 1.8rem; line-height: 1; color: #000; display: block; margin: 0;">
                         ${item.codMaterialEdt}
                     </strong>
-                    <div style="font-size: 1.4rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
+                    <div style="font-size: 1.2rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
                         ${item.nomeMaterial}
                     </div>
                 </div>
                 
-                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.95rem; width: 100%; padding-bottom: 0.1cm;">
+                <div style="height: 0.5cm;"></div>
+
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 0.95rem; flex: 1;">
                     <strong>OP: <strong>${item.numOPConfec}</strong></strong>
                     <strong>${tagSeparador}</strong>
                     <strong>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></strong>
                 </div>
             </div>
 
-            <div style="width: 85px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%;">
+            <div style="width: 80px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
                 
-                <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 2px 6px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap; line-height: 1.2;">
+                <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.85rem; padding: 2px 6px; border-radius: 3px; text-align: center; white-space: nowrap; line-height: 1.2;">
                     ${item.localizacao}
                 </div>
 
-                <div style="margin-top: 5px; padding-bottom: 0.05cm;">
-                    <img src="${qrUrl}" style="width: 80px; height: 80px; mix-blend-mode: multiply; display: block;">
+                <div style="height: 0.5cm;"></div>
+
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <img src="${qrUrl}" style="width: 70px; height: 70px; mix-blend-mode: multiply; display: block;">
                 </div>
                 
             </div>
