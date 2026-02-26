@@ -28,7 +28,7 @@ include_once('../../../../templates/headerGestao.php');
         #container-cards, #container-cards * { visibility: visible !important; }
 
         @page {
-            size: 10.1cm 2.6cm landscape;
+            size: 10.1cm 2.6cm;
             margin: 0 !important;
         }
 
