@@ -243,7 +243,7 @@ include_once('../../../../templates/headerGestao.php');
 
     /* 4. Configura o tamanho da etiqueta e remove bordas do navegador */
     @page {
-        size: 10.1cm 2.6cm landscape;
+        size: 10.1cm 2.6cm;
         margin: 0 !important;
     }
 
