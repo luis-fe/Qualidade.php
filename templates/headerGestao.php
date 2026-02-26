@@ -4,15 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grupo Mpl</title>
+  <title>Grupo Mpl - WMS Industrial</title>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
   <style>
-    /* Sidebar Styles */
+    body {
+      background-color: #f8f9fa;
+      overflow-x: hidden;
+    }
+
+    /* --- NAVBAR --- */
+    .navbar {
+      background-color: #10045a;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      z-index: 1000; /* Abaixo da lateral */
+      position: sticky;
+      top: 0;
+    }
+
+    #btn-menu, #btn-user {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .titulo-plataforma {
+      color: white;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    /* --- SIDEBAR (CAMADA ACIMA) --- */
     #sidebar {
       height: 100vh;
       width: 280px;
@@ -21,555 +49,150 @@
       left: 0;
       background-color: #10045a;
       color: #fff;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease-in-out;
       transform: translateX(-100%);
-      overflow: hidden;
-      padding: 5px 15px;
-      border-radius: 10px;
-      box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+      padding: 15px;
+      z-index: 2050; /* CAMADA MÁXIMA */
+      box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
     }
 
     #sidebar.ativo {
       transform: translateX(0);
     }
 
+    /* Links do Menu */
     #sidebar .nav-link {
       color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 4px;
+      font-weight: 500;
+      margin-bottom: 5px;
       border-radius: 7px;
-      padding: 10px 0px;
-      padding-left: 10px;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      transition: background 0.2s;
     }
 
     #sidebar .nav-link:hover {
-      background-color: rgba(93, 77, 199, 0.5);
+      background-color: rgba(255, 255, 255, 0.15);
     }
 
-    .menu-item.active {
-      background-color: rgba(93, 77, 199, 0.5);
+    .icon-main {
+      margin-right: 12px;
+      font-size: 0.85rem;
+      color: #00d4ff;
     }
 
+    /* --- SUBMENU --- */
+    .submenu-list {
+      list-style: none;
+      padding-left: 30px;
+      margin-bottom: 10px;
+    }
 
-    .fa-chevron-down {
-      margin-right: 15px;
-      margin-top: 8px !important;
+    .submenu-list .nav-link {
       font-size: 0.9rem !important;
+      opacity: 0.85;
+    }
+
+    .rotate-icon {
       transition: transform 0.3s ease;
     }
 
-    .fa-chevron-down.rotate {
+    [aria-expanded="true"] .rotate-icon {
       transform: rotate(180deg);
     }
 
-    .submenu {
+    /* --- OVERLAY --- */
+    .sidebar-overlay {
       display: none;
-      margin-left: 20px;
-    }
-
-    .submenu.show {
-      display: block;
-    }
-
-    .submenu ul.show {
-      display: block;
-    }
-
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .content {
-      margin-left: 0;
-      display: block;
-      flex-wrap: nowrap;
-      min-width: 100%;
-    }
-
-    .content.open {
-      margin-left: 280px;
-    }
-
-    .content>* {
-      flex: 0 0 auto;
-    }
-
-    .navbar {
-      z-index: 999;
-      position: sticky;
+      position: fixed;
       top: 0;
-      background-color: #10045a;
-      border-bottom: 1px solid rgb(238, 233, 233);
-      border-radius: 0 0 15px 15px;
-      padding: 8px 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000; /* Abaixo da sidebar, acima do conteúdo */
+      backdrop-filter: blur(3px);
     }
 
-    .navbar .navbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: white;
-      font-size: 1.5rem;
-    }
-
-    .navbar .navbar-brand i {
-      font-size: 2rem;
-    }
-
-    body {
-      overflow-x: hidden;
-    }
-
-    #btn-menu,
-    #btn-user {
-      cursor: pointer;
-      font-size: 1.9rem;
-      color: white;
-      margin-right: 50px;
-    }
-
-    .icon-menu {
-      font-size: 1.2rem;
-      margin-right: 10px;
-    }
-
-    .fa-chevron-down {
-      position: absolute;
-      right: 10px;
-      font-size: 1.2rem;
-      color: white;
-    }
-
-    .submenu-item i {
-      margin-right: 8px;
-      color: white;
-      font-size: 0.4rem;
-      vertical-align: middle;
-    }
-
-
-    .titulo-tela {
-      min-width: 100%;
-      width: 100%;
-      border-bottom: 1px solid lightgray;
-      padding: 10px;
-      background-color: white;
-      margin-top: -40px;
-    }
-
-    .span-icone {
-      background-color: #10045a;
-      color: white;
-      padding: 8px;
-      border-radius: 40%
-    }
-
-    .menu-rotina {
-      display: flex;
-      justify-content: start;
-      padding: 0px 10px;
-      border-bottom: 1px solid lightgray;
-      margin-top: 15px;
-      min-width: 100%;
-    }
-
-    .corpo {
-      padding: 0px 10px;
-    }
-
-    /* BOTÕES */
-
-    .btn-menu {
-      border: 1px solid white;
-      background-color: lightgray;
-      padding: 10px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 5px;
-      text-wrap: nowrap;
-    }
-
-    .btn-menu i {
-      margin-right: 8px;
-      color: #10045a;
-    }
-
-    .btn-menu:hover i {
-      margin-right: 8px;
-      color: white;
-    }
-
-    .btn-menu:hover {
-      border-color: #10045a;
-      background-color: #10045a;
-      color: white;
-    }
-
-    .btn-menu-clicado {
-      background-color: #10045a;
-      color: white;
-    }
-
-    .btn-menu-clicado i {
-      margin-right: 8px;
-      color: white;
-    }
-
-    .btn-geral {
-      border: 1px solid lightgray;
-      border-radius: 30px;
-      width: 180px;
-      margin-bottom: 10px;
-      margin-right: 8px;
-    }
-
-    .btn-geral:hover {
-      background-color: #10045a;
-      border: 1px solid #10045a;
-      color: white;
-    }
-
-    .btn-salvar {
-      border: 1px solid #0056b3;
-      border-radius: 30px;
-      background-color: #0056b3;
-      color: white;
-      margin-bottom: 10px;
-      margin-right: 8px;
-    }
-
-    .btn-salvar:hover {
-      background-color: rgb(50, 120, 211);
-      border: 1px solid rgb(50, 120, 211);
-      color: white;
-    }
-
-    .btn-table {
-      border-radius: 10px;
-      font-size: 15px;
-      color: white;
-      padding: 5px 10px;
-    }
-
-
-    .btn-close-custom {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background-color: darkred;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      border: 1px solid black;
-      border-radius: 5px;
-    }
-
-    .btn-close-custom::before,
-    .btn-close-custom::after {
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 70%;
-      background-color: white;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-
-    .btn-close-custom::after {
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
-
-    .btn-close-custom {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background-color: darkred;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      border: 1px solid black;
-      border-radius: 5px;
-    }
-
-    .btn-close-custom::before,
-    .btn-close-custom::after {
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 70%;
-      background-color: white;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-
-    .btn-close-custom::after {
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
-
-    /* SELECT 2 */
-
-    .select2-container .select2-selection--single {
-      height: 40px !important;
-      padding: 5px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid lightgray;
-      background-color: white;
-      transition: all 0.3s ease-in-out;
-
-    }
-
-    .select2-container--default .select2-results__option {
-      padding: 5px 10px;
-      font-size: 1rem;
-      color: #495057;
-      border-bottom: 1px solid #e1e1e1;
-      background-color: #fff;
-      transition: all 0.3s ease;
-    }
-
-    .select2-container--default .select2-results__option:hover {
-      background-color: #10045a;
-      color: white;
-      cursor: pointer;
-    }
-
-    .select2-container .select2-selection__arrow {
-      height: 35px;
-      top: 50%;
-      margin-top: 7px;
-      right: 10px;
-    }
-
-    .select2-container--default .select2-selection__placeholder {
-      color: black !important;
-    }
-
-    /* DATATABLES */
-
-    .search-input {
-      border-radius: 10px;
-      outline: none;
-      font-size: 1rem;
-      padding: 0px 5px;
-      height: 30px;
-      border: 2px solid lightgray
-    }
-
-
-    .table {
-      min-width: 100%;
-    }
-
-    .table th {
-      background-color: white;
-      color: black;
-      text-align: center;
-      font-size: 1rem;
-      position: relative;
-      border-top: 1px solid lightgray;
-      white-space: nowrap;
-    }
-
-    .table td {
-      font-size: 1rem;
-      white-space: nowrap;
-    }
-
-    .dataTables_wrapper {
+    .sidebar-overlay.ativo {
       display: block;
     }
 
-    .custom-pagination-container {
-      justify-content: space-between;
-      align-items: center;
-      background-color: lightgray;
-      padding: 0px 5px;
-      padding-bottom: 5px;
-      padding-top: 5px;
-      border-radius: 8px;
-    }
-
-    .dataTables_paginate {
-      display: flex;
-      gap: 5px;
-    }
-
-    .dataTables_info {
-      font-size: 0.8rem;
-    }
-
-    .paginate_button {
-      border: 1px solid #10045a;
-      background-color: #10045a;
-      color: white;
-      border-radius: 5px;
-      padding: 0px 10px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .table th input {
-      margin-top: 5px;
-      width: 100%;
-      padding: 5px;
-      box-sizing: border-box;
-    }
-
-    .input-itens {
-      border: 1px solid black;
-      border-radius: 8px;
-      width: 30px;
-      text-align: center;
-      padding: 1px;
-    }
-
-    .btn-tabelas {
-      padding: 4px 10px !important;
-      border: 1px solid black !important;
-      background-color: white !important;
-      margin-left: 5px !important;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      border-radius: 30px !important;
-    }
-
-    .btn-tabelas:hover {
-      transform: scale(1.05);
-    }
-
-    .dataTables_filter {
-      display: none;
+    /* Conteúdo Principal */
+    .content-area {
+      padding: 20px;
+      position: relative;
+      z-index: 1; /* Camada base */
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <div class="navbar-brand">
-        <i class="fa-solid fa-bars" id="btn-menu"></i>
-      </div>
-  <div class="navbar-text text-white fw-bold mx-auto">
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <nav class="navbar d-flex align-items-center">
+    <i class="fa-solid fa-bars" id="btn-menu"></i>
+    <div class="titulo-plataforma d-none d-sm-block">
       PLATAFORMA DE GESTÃO INDUSTRIAL
-    </div>      
-    <div class="ms-auto">
-        <i class="bi bi-person-circle" id="btn-user"></i>
-      </div>
     </div>
+    <i class="bi bi-person-circle" id="btn-user"></i>
   </nav>
 
-  <!-- Sidebar -->
   <div id="sidebar">
-    <div class="w-100" style="padding: 0; justify-content: center; align-items: center; text-align: center">
-      <img src="../../../templates/logo-grupompl.png" alt="" style="width: 60%; margin-top: 80px; margin-bottom: 20px">
+    <div class="text-center mb-5">
+      <img src="../../../templates/logo-grupompl.png" alt="Logo" style="width: 70%; margin-top: 20px;">
     </div>
+
     <ul class="nav flex-column">
-          <a href="../FilaDeFases" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Fila de Fases <!-- PCP -->
-          </a>
-          <a href="../GestaoDeOps" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Gestão de Op's <!-- PCP -->
-          </a>
-          <a href="../LeadTime" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Lead Time <!-- PCP -->
-          </a>
-          <a href="../Metas" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Metas <!-- PCP -->
-          </a>
-          <a href="../Orcamento" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Orçamentos <!-- PCP -->
-          </a>
-          <a href="../ControlePilotos" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Controle Pilotos <!-- PCP -->
-          </a>
-          <a href="../Procedimentos Industriais" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Procedimentos Industriais <!-- PCP -->
-          </a>
-                    <a href="../Controle Automacao" class="nav-link submenu-item">
-            <i class="bi bi-circle-fill"></i> Controle Automacao <!-- PCP -->
-          </a>
-          <li class="nav-item">
-            <a href="#submenuAlmoxarifado" data-bs-toggle="collapse" class="nav-link submenu-item" aria-expanded="false">
-              <i class="bi bi-circle-fill"></i> Almoxarifado Aviamentos <i class="bi bi-chevron-down ms-auto"></i> 
-            </a>
+      <li><a href="../FilaDeFases" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Fila de Fases</a></li>
+      <li><a href="../GestaoDeOps" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Gestão de Op's</a></li>
+      <li><a href="../LeadTime" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Lead Time</a></li>
+      <li><a href="../Metas" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Metas</a></li>
+      <li><a href="../Orcamento" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Orçamentos</a></li>
+      <li><a href="../ControlePilotos" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Controle Pilotos</a></li>
+      <li><a href="../Procedimentos" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Procedimentos</a></li>
+      <li><a href="../Automacao" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Controle Automação</a></li>
 
-                <li class="nav-item">
-                  <a href="../GestaoEnderecos" class="nav-link">
-                    <i class="bi bi-dot"></i> Gestão Endereço
-                  </a>
-                </li>
-            
-                <li class="nav-item">
-                  <a href="../Recebimento" class="nav-link">
-                    <i class="bi bi-dot"></i> Recebimento
-                  </a>
-                </li>
-
-                            <div class="collapse" id="submenuAlmoxarifado">
-              <ul class="nav flex-column ms-4"> <li class="nav-item">
-                  <a href="../AlmoxarifadoAviamentos" class="nav-link">
-                    <i class="bi bi-dot"></i> Gestão Separação
-                  </a>
-                </li>
-
-
-
-              </ul>
-            </div>
-          </li>
+      <li class="nav-item">
+        <a href="#submenuAlmoxarifado" data-bs-toggle="collapse" class="nav-link justify-content-between" aria-expanded="false">
+          <span><i class="bi bi-caret-right-fill icon-main"></i> Almoxarifado Aviamentos</span>
+          <i class="bi bi-chevron-down rotate-icon"></i>
+        </a>
+        
+        <div class="collapse" id="submenuAlmoxarifado">
+          <ul class="submenu-list">
+            <li><a href="../GestaoEnderecos" class="nav-link"><i class="bi bi-caret-right me-2"></i> Gestão Endereço</a></li>
+            <li><a href="../Recebimento" class="nav-link"><i class="bi bi-caret-right me-2"></i> Recebimento</a></li>
+            <li><a href="../AlmoxarifadoAviamentos" class="nav-link"><i class="bi bi-caret-right me-2"></i> Gestão Separação</a></li>
+          </ul>
+        </div>
+      </li>
     </ul>
   </div>
 
-  <!-- Content -->
-  <div class="container mt-5 content">
 
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      $(document).ready(function () {
-        // Sidebar Toggle
-        $('#btn-menu').on('click', function () {
-          $('#sidebar').toggleClass('ativo');
-          $('.content').toggleClass('open');
-        });
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
-        // Menu item click
-        $('.menu-item').on('click', function () {
-          $(this).toggleClass('active');
-          $(this).next('.submenu').toggleClass('show');
-          $(this).find('.fa-chevron-down').toggleClass('rotate');
-          // Close other open items
-          $('.menu-item').not(this).each(function () {
-            $(this).removeClass('active');
-            $(this).next('.submenu').removeClass('show');
-            $(this).find('.fa-chevron-down').removeClass('rotate');
-          });
-        });
+  <script>
+    $(document).ready(function () {
+      // Abrir menu
+      $('#btn-menu').on('click', function () {
+        $('#sidebar').addClass('ativo');
+        $('#overlay').addClass('ativo');
       });
-    </script>
+
+      // Fechar menu ao clicar fora ou no overlay
+      $('#overlay').on('click', function () {
+        $('#sidebar').removeClass('ativo');
+        $(this).removeClass('ativo');
+      });
+    });
+  </script>
+</body>
+
+</html>
