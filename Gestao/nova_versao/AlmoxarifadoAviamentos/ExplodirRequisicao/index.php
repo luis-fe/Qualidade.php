@@ -23,9 +23,9 @@ include_once('../../../../templates/headerGestao.php');
     /* ESTILO DO CARD NA TELA (Simulando a etiqueta real) */
     .card-etiqueta {
         width: 10.1cm !important;
-        height: 2.6cm !important;
+        height: 2.8cm !important;
         min-width: 10.1cm;
-        min-height: 2.6cm;
+        min-height: 2.8cm;
         background-color: white;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         border: 1px solid #ddd; /* Borda leve apenas para visualização na tela */
@@ -73,7 +73,7 @@ include_once('../../../../templates/headerGestao.php');
 
         .card-etiqueta {
             width: 10.1cm !important;
-            height: 2.6cm !important;
+            height: 2.8cm !important;
             border: none !important; 
             margin: 0 !important;
             padding: 0 !important;
@@ -88,7 +88,7 @@ include_once('../../../../templates/headerGestao.php');
             flex-direction: row !important;
             width: 100% !important;
             height: 100% !important;
-            padding: 0.1cm 0.3cm 0.1cm 1cm !important; 
+            padding: 0.1cm 0.03cm 0.1cm 1cm !important; 
             box-sizing: border-box !important;
         }
     }
