@@ -39,35 +39,43 @@ async function Consultar_requisicao() {
                     ? `<span title="${separadorCompleto}">Sep: <strong>${primeiroNomeSeparador}</strong></span>` 
                     : ``;
 
-const cardHTML = `
-    <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; border: 1px solid #000;">
-        <div class="card-body d-flex flex-row align-items-center" style="width: 100%; padding-left: 1cm;">
-            
-            <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; height: 90%; min-width: 0;">
-                
-                <div class="d-flex justify-content-between align-items-center">
-                    <strong style="font-size: 2.2rem; line-height: 1;">${item.codMaterialEdt}</strong>
-                    <span class="badge bg-secondary" style="font-size: 0.9rem;">${item.localizacao}</span>
-                </div>
-                
-                <div style="font-size: 1.2rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    ${item.nomeMaterial}
-                </div>
-                
-                <div class="d-flex justify-content-between align-items-end" style="font-size: 1rem;">
-                    <span>OP: <strong>${item.numOPConfec}</strong></span>
-                    ${tagSeparador}
-                    <span>Qtd: <strong style="font-size: 1.4rem;">${item.qtdeRequisitada}</strong></span>
-                </div>
-            </div>
+            const cardHTML = `
+                <div class="card card-etiqueta" style="background-color: #fff;">
+                    <div class="card-body-custom d-flex flex-row align-items-center">
+                        
+                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-width: 0; padding-right: 5px;">
+                            
+                            <div>
+                                <strong style="font-size: 2.2rem; line-height: 1; color: #000; display: block;">
+                                    ${item.codMaterialEdt}
+                                </strong>
+                                <div style="font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
+                                    ${item.nomeMaterial}
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-end" style="font-size: 0.95rem; width: 100%;">
+                                <span>OP: <strong>${item.numOPConfec}</strong></span>
+                                ${tagSeparador}
+                                <span>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></span>
+                            </div>
+                        </div>
 
-            <div style="width: 90px; display: flex; justify-content: flex-end;">
-                <img src="${qrUrl}" style="width: 80px; height: 80px; mix-blend-mode: multiply;">
-            </div>
-            
-        </div>
-    </div>
-`;
+                        <div style="width: 90px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; height: 100%;">
+                            
+                            <div style="background-color: #000; color: #fff; font-weight: bold; font-size: 0.9rem; padding: 2px 8px; border-radius: 3px; text-align: center; width: auto; white-space: nowrap;">
+                                ${item.localizacao}
+                            </div>
+
+                            <div style="margin-top: auto;">
+                                <img src="${qrUrl}" style="width: 65px; height: 65px; mix-blend-mode: multiply;">
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            `;
                 
                 $('#container-cards').append(cardHTML);
             });
