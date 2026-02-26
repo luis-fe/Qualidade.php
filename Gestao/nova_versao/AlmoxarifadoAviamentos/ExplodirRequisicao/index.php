@@ -218,28 +218,36 @@ include_once('../../../../templates/headerGestao.php');
     }
 
 @media print {
-    /* Garante que o container de impressão não tenha margens internas do Bootstrap */
+    /* FORÇA O MODO PAISAGEM E DEFINE O TAMANHO REAL DA ETIQUETA */
+    @page {
+        size: 10.1cm 2.6cm landscape; /* O segredo está no 'landscape' aqui */
+        margin: 0 !important; 
+    }
+
+    html, body {
+        width: 10.1cm !important;
+        height: 2.6cm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+    }
+
     #container-cards {
         display: block !important;
         width: 10.1cm !important;
-        padding: 0 !important;
         margin: 0 !important;
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
-    }
-
-    /* Remove qualquer padding do body que o template possa ter inserido */
-    body {
         padding: 0 !important;
-        margin: 0 !important;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 
     .card-etiqueta {
-        border: none !important;
         width: 10.1cm !important;
         height: 2.6cm !important;
         page-break-after: always;
+        border: none !important;
+        display: flex !important; /* Garante que o flexbox funcione na impressão */
     }
 }
 
