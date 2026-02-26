@@ -46,10 +46,10 @@ const cardHTML = `
             <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0;">
                 
                 <div style="height: 1.6cm; display: flex; flex-direction: column; justify-content: flex-start;">
-                    <strong style="font-size: 1.8rem; line-height: 1; color: #000; display: block; margin: 0;">
+                    <strong style="font-size: 1.75rem; line-height: 1; color: #000; display: block; margin: 0;">
                         ${item.codMaterialEdt}
                     </strong>
-                    <div style="font-size: 1.2rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
+                    <div style="font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
                         ${item.nomeMaterial}
                     </div>
                 </div>
