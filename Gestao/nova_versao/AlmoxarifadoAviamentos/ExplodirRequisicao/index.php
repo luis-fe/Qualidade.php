@@ -22,7 +22,7 @@ include_once('../../../../templates/headerGestao.php');
 
     /* ESTILO DO CARD NA TELA (Simulando a etiqueta real) */
     .card-etiqueta {
-        width: 30.0cm !important;
+        width: 20.0cm !important;
         height: 3.0cm !important;
         min-width: 10.0cm;
         min-height: 3.0cm;
