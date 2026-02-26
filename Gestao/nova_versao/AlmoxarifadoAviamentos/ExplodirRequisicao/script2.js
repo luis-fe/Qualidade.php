@@ -59,7 +59,7 @@ const cardHTML = `
                 <div class="d-flex justify-content-between align-items-center" style="font-size: 0.95rem; flex: 1;">
                     <strong>OP: <strong>${item.numOPConfec}</strong></strong>
                     <strong>${tagSeparador}</strong>
-                    <strong>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></strong>
+                    <strong>Qtd: <strong style="font-size: 1.5rem;">${item.qtdeRequisitada}</strong></strong>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@ const cardHTML = `
                     ${item.localizacao}
                 </div>
 
-                <div style="height: 0.5cm;"></div>
+                <div style="height: 0.25cm;"></div>
 
                 <div style="display: flex; align-items: center; justify-content: center;">
                     <img src="${qrUrl}" style="width: 70px; height: 70px; mix-blend-mode: multiply; display: block;">
