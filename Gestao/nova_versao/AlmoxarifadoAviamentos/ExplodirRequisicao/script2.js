@@ -32,7 +32,7 @@ async function Consultar_requisicao() {
             
             response.forEach(item => {
                 const qrData = encodeURIComponent(item.codMaterialEdt);
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=65x65&data=${qrData}`;
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}`;
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
                 const tagSeparador = primeiroNomeSeparador 
@@ -43,10 +43,10 @@ async function Consultar_requisicao() {
     <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; overflow: hidden; border: 1px solid #adb5bd; background-color: #fff; margin-bottom: 5px;">
         <div class="card-body d-flex flex-row align-items-center p-2" style="height: 100%;">
             
-            <div class="d-flex flex-column justify-content-between h-100" style="flex-grow: 1; padding-right: 10px; min-width: 0;">
+            <div class="d-flex flex-column justify-content-between h-100" style="flex-grow: 1; padding-right: 5px; min-width: 0;">
                 
                 <div class="d-flex justify-content-between align-items-center">
-                    <strong class="text-primary" style="font-size: 1.4rem; line-height: 1;">${item.codMaterialEdt}</strong>
+                    <strong class="text-primary" style="font-size: 2.0rem; line-height: 1;">${item.codMaterialEdt}</strong>
                     <span class="badge bg-secondary" style="font-size: 0.7rem;">${item.localizacao}</span>
                 </div>
                 

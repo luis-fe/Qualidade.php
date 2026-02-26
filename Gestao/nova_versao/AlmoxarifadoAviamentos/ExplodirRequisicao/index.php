@@ -243,7 +243,7 @@ include_once('../../../../templates/headerGestao.php');
 
     /* 4. Configuração da página e quebra automática */
     @page {
-        size: 6.1cm 2.6cm ;
+        size: 10.1cm 2.6cm ;
         margin: 0 !important;
     }
 
