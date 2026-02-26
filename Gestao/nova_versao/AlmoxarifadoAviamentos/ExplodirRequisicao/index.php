@@ -6,30 +6,32 @@ include_once('../../../../templates/headerGestao.php');
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
 <style>
-    /* Seus estilos de tela (Mantidos) */
+    /* --- SEUS ESTILOS DE TELA (MANTIDOS IGUAIS) --- */
     .menus { display: flex; justify-content: start; padding: 0px 10px; margin-top: 15px; }
     .dataTables_wrapper { display: block; }
-    /* ... (restante dos seus estilos de tela) ... */
+    .custom-pagination-container { justify-content: space-between; align-items: center; background-color: lightgray; padding: 5px; border-radius: 8px; }
+    /* ... (Mantenha o restante dos seus estilos de botões e tabelas aqui) ... */
 
-    /* NOVO BLOCO DE IMPRESSÃO CORRIGIDO */
+    /* --- AJUSTE DO CONTAINER NA TELA (PARA NÃO FICAR DESCONFIGURADO) --- */
+    #container-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px;
+        justify-content: center;
+    }
+
+    /* --- BLOCO DE IMPRESSÃO (O SEGREDO ESTÁ AQUI) --- */
     @media print {
-        /* 1. Esconde absolutamente tudo, incluindo o header do PHP */
-        body * {
-            visibility: hidden !important;
-        }
+        /* Esconde tudo do sistema */
+        body * { visibility: hidden !important; }
+        #container-cards, #container-cards * { visibility: visible !important; }
 
-        /* 2. Mostra apenas o que interessa */
-        #container-cards, #container-cards * {
-            visibility: visible !important;
-        }
-
-        /* 3. Configuração da Página */
         @page {
-            size: 10.1cm 2.6cm ;
+            size: 10.1cm 2.6cm landscape;
             margin: 0 !important;
         }
 
-        /* 4. O Container: Removido o fixed para permitir várias páginas */
         #container-cards {
             position: absolute !important;
             left: 0 !important;
@@ -40,40 +42,43 @@ include_once('../../../../templates/headerGestao.php');
             margin: 0 !important;
         }
 
-        /* 5. O Card: Forçando a largura máxima de 10.1cm */
         .card-etiqueta {
+            /* 144% de escala equivale a aumentar as medidas reais. 
+               Ajustamos aqui para que o navegador preencha o papel */
+            width: 10.1cm !important;
+            height: 2.6cm !important;
+            
             display: flex !important;
             flex-direction: row !important;
-            width: 10.1cm !important;
-            min-width: 10.1cm !important;
-            max-width: 10.1cm !important;
-            height: 2.6cm !important;
             border: 1px solid #000 !important;
             margin: 0 !important;
             padding: 0 !important;
             box-sizing: border-box !important;
             page-break-after: always !important;
-            background-color: white !important;
+            
+            /* Remove sombras e efeitos que atrasam a impressão */
+            box-shadow: none !important;
+            transform: scale(1); 
+            transform-origin: top left;
         }
 
-        /* 6. Ajuste interno para a margem de 1cm na esquerda */
-        /* Note o seletor específico para não quebrar outros componentes */
+        /* Força o preenchimento interno */
         .card-etiqueta .card-body {
-            visibility: visible !important;
             display: flex !important;
             flex-direction: row !important;
             width: 100% !important;
             height: 100% !important;
-            /* Margem esquerda de 1cm conforme solicitado */
-            padding: 0.1cm 0.3cm 0.1cm 1cm !important; 
-            box-sizing: border-box !important;
+            padding: 0 0.2cm 0 1cm !important; /* Margem de 1cm na esquerda */
             margin: 0 !important;
+            box-sizing: border-box !important;
+            align-items: center !important;
         }
 
-        /* Força imagens (QR Code) a aparecerem */
-        img {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+        /* Esconde o cabeçalho que voltou a aparecer */
+        .no-print, header, .titulo-tela, .navbar {
+            display: none !important;
+            height: 0 !important;
+            margin: 0 !important;
         }
     }
 </style>

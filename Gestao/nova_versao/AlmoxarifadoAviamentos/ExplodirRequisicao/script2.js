@@ -40,27 +40,34 @@ async function Consultar_requisicao() {
                     : ``;
 
 const cardHTML = `
-    <div class="card card-etiqueta">
-        <div class="card-body">
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-width: 0;">
+    <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; border: 1px solid #000;">
+        <div class="card-body d-flex flex-row align-items-center" style="width: 100%; padding-left: 1cm;">
+            
+            <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; height: 90%; min-width: 0;">
+                
                 <div class="d-flex justify-content-between align-items-center">
-                    <strong style="font-size: 2.0rem; line-height: 1;">${item.codMaterialEdt}</strong>
-                    <span class="badge bg-secondary" style="font-size: 0.8rem;">${item.localizacao}</span>
+                    <strong style="font-size: 2.2rem; line-height: 1;">${item.codMaterialEdt}</strong>
+                    <span class="badge bg-secondary" style="font-size: 0.9rem;">${item.localizacao}</span>
                 </div>
-                <div style="font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                
+                <div style="font-size: 1.2rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     ${item.nomeMaterial}
                 </div>
-                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.9rem;">
+                
+                <div class="d-flex justify-content-between align-items-end" style="font-size: 1rem;">
                     <span>OP: <strong>${item.numOPConfec}</strong></span>
                     ${tagSeparador}
-                    <span>Qtd: <strong class="text-success" style="font-size: 1.2rem;">${item.qtdeRequisitada}</strong></span>
+                    <span>Qtd: <strong style="font-size: 1.4rem;">${item.qtdeRequisitada}</strong></span>
                 </div>
             </div>
-            <div style="width: 85px; min-width: 85px; display: flex; justify-content: flex-end; align-items: center;">
-                <img src="${qrUrl}" style="width: 75px; height: 75px;">
+
+            <div style="width: 90px; display: flex; justify-content: flex-end;">
+                <img src="${qrUrl}" style="width: 80px; height: 80px; mix-blend-mode: multiply;">
             </div>
+            
         </div>
-    </div>`;
+    </div>
+`;
                 
                 $('#container-cards').append(cardHTML);
             });
