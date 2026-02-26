@@ -23,7 +23,7 @@ include_once('../../../../templates/headerGestao.php');
     /* ESTILO DO CARD NA TELA (Simulando a etiqueta real) */
     .card-etiqueta {
         width: 14.0cm !important;
-        height: 4.0cm !important;
+        height: 3.8cm !important;
         min-width: 10.0cm;
         min-height: 3.0cm;
         background-color: white;
@@ -75,7 +75,7 @@ include_once('../../../../templates/headerGestao.php');
         /* Use 9.9cm ou 9.95cm para evitar que o arredondamento 
                 do navegador (pixels para cm) cause quebra */
                 width: 14.0cm !important; 
-                height: 4.0cm !important;
+                height: 3.8cm !important;
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
                 break-after: page !important;
