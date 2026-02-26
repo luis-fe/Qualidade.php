@@ -22,10 +22,10 @@ include_once('../../../../templates/headerGestao.php');
 
     /* ESTILO DO CARD NA TELA (Simulando a etiqueta real) */
     .card-etiqueta {
-        width: 10.9cm !important;
-        height: 2.1cm !important;
-        min-width: 10.9cm;
-        min-height: 2.1cm;
+        width: 10.0cm !important;
+        height: 3.0cm !important;
+        min-width: 10.0cm;
+        min-height: 3.0cm;
         background-color: white;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         border: 1px solid #ddd; /* Borda leve apenas para visualização na tela */
@@ -57,7 +57,7 @@ include_once('../../../../templates/headerGestao.php');
         #container-cards, #container-cards * { visibility: visible; }
 
         @page {
-            size: 9.9cm 2.1cm !important;
+            size: 10.0cm 3.0cm !important;
             margin: 0 !important;
         }
 
@@ -65,15 +65,15 @@ include_once('../../../../templates/headerGestao.php');
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            width: 10.9cm !important;
+            width: 10.0cm !important;
             margin: 0 !important;
             padding: 0 !important;
             display: block !important; /* Na impressão volta a ser bloco para sair uma por página */
         }
 
         .card-etiqueta {
-            width: 10.9cm !important;
-            height: 2.1cm !important;
+            width: 10.0cm !important;
+            height: 3.0cm !important;
             border: none !important; 
             margin: 0 !important;
             padding: 0 !important;
