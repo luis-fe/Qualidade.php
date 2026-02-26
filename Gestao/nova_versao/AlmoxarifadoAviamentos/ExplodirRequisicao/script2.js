@@ -46,7 +46,7 @@ const cardHTML = `
             <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-width: 0; padding-right: 5px;">
                 
                 <div>
-                    <strong style="font-size: 2.0rem; line-height: 1; color: #000; display: block;">
+                    <strong style="font-size: 1.2rem; line-height: 1; color: #000; display: block;">
                         ${item.codMaterialEdt}
                     </strong>
                     <div style="font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
