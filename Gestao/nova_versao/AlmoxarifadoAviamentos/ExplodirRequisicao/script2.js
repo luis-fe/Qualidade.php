@@ -40,7 +40,7 @@ async function Consultar_requisicao() {
                     : ``;
 
                 const cardHTML = `
-    <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; overflow: hidden; border: 1px solid #adb5bd; background-color: #fff; margin-bottom: 5px;">
+    <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; overflow: hidden; border: 1px solid #030303; background-color: #fff; margin-bottom: 5px;">
         <div class="card-body d-flex flex-row align-items-center p-2" style="height: 100%;">
             
             <div class="d-flex flex-column justify-content-between h-100" style="flex-grow: 1; padding-right: 5px; min-width: 0;">
