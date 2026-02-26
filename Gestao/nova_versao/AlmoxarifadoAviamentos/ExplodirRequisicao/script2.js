@@ -39,36 +39,36 @@ async function Consultar_requisicao() {
                     ? `<span title="${separadorCompleto}">Sep: <strong>${primeiroNomeSeparador}</strong></span>` 
                     : ``;
 
-        const cardHTML = `
-            <div class="card card-etiqueta shadow-sm" style="width: 10.1cm; height: 2.5cm; overflow: hidden; border: 1px solid #030303; background-color: #fff; margin-bottom: 5px;">
-                <div class="card-body d-flex flex-row align-items-center" style="height: 100%; padding: 0.1rem 0.2rem 0.1rem 1cm;">
-                    
-                    <div class="d-flex flex-column justify-content-between h-100" style="flex-grow: 1; padding-right: 5px; min-width: 0;">
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                            <strong class="text-primary" style="font-size: 2.0rem; line-height: 1;">${item.codMaterialEdt}</strong>
-                            <strong class="badge bg-secondary" style="font-size: 0.9rem;">${item.localizacao}</strong>
-                        </div>
-                        
-                        <div class="text-truncate text-dark fw-bold" style="font-size: 1.1rem; margin: 2px 0;" title="${item.nomeMaterial}">
-                            ${item.nomeMaterial}
-                        </div>
-                        
-                        <div class="d-flex justify-content-between align-items-end" style="font-size: 0.9rem;">
-                            <span><strong>OP:</strong> <strong>${item.numOPConfec}</strong></span>
-                            ${tagSeparador}
-                            <span><strong>Qtd:</strong> <strong class="text-success" style="font-size: 1.2rem;">${item.qtdeRequisitada}</strong></span>
-                        </div>
-                        
-                    </div>
-
-                    <div class="d-flex justify-content-center align-items-center" style="width: 85px; min-width: 85px;">
-                        <img src="${qrUrl}" alt="QR" style="width: 75px; height: 75px; mix-blend-mode: multiply;">
-                    </div>
-                    
+const cardHTML = `
+    <div class="card card-etiqueta" style="width: 10.1cm; height: 2.6cm; box-sizing: border-box; overflow: hidden; background-color: #fff;">
+        <div class="card-body d-flex flex-row align-items-center" style="height: 100%; padding: 0.1cm 0.2cm 0.1cm 1cm; box-sizing: border-box;">
+            
+            <div class="d-flex flex-column justify-content-between h-100" style="flex: 1; min-width: 0; overflow: hidden;">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong style="font-size: 1.8rem; line-height: 1; color: #000;">${item.codMaterialEdt}</strong>
+                    <span style="font-size: 0.8rem; border: 1px solid #666; padding: 2px 5px; border-radius: 4px;">${item.localizacao}</span>
                 </div>
+                
+                <div style="font-size: 1.0rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${item.nomeMaterial}
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-end" style="font-size: 0.85rem;">
+                    <span>OP: <strong>${item.numOPConfec}</strong></span>
+                    ${tagSeparador}
+                    <span>Qtd: <strong style="font-size: 1.1rem;">${item.qtdeRequisitada}</strong></span>
+                </div>
+                
             </div>
-        `;
+
+            <div style="width: 75px; min-width: 75px; text-align: right;">
+                <img src="${qrUrl}" alt="QR" style="width: 70px; height: 70px; mix-blend-mode: multiply;">
+            </div>
+            
+        </div>
+    </div>
+`;
                 
                 $('#container-cards').append(cardHTML);
             });

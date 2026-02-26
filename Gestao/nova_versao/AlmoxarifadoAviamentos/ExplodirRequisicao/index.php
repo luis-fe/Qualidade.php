@@ -218,49 +218,47 @@ include_once('../../../../templates/headerGestao.php');
     }
 
 @media print {
-    /* 1. Esconde tudo que não é etiqueta */
-    body * {
-        visibility: hidden;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
-    /* 2. Garante que apenas o container de cards e seus filhos sejam visíveis */
-    #container-cards, #container-cards * {
-        visibility: visible;
-    }
-
-    /* 3. Reseta o posicionamento para permitir múltiplas páginas */
-    #container-cards {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 10.1cm !important;
-        display: block !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    /* 4. Configuração da página e quebra automática */
+    /* Força o tamanho da página e remove margens do navegador */
     @page {
-        size: 10.1cm 2.6cm ;
+        size: 10.1cm 2.6cm;
         margin: 0 !important;
+    }
+
+    /* Reseta o ambiente de impressão */
+    html, body {
+        width: 10.1cm !important;
+        height: 2.6cm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+    }
+
+    #container-cards {
+        width: 10.1cm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
     }
 
     .card-etiqueta {
-        width: 10.1cm !important;
+        /* Tamanho exato da etiqueta física */
+        width: 10.1cm !important; 
         height: 2.6cm !important;
-        border: none !important;
+        
+        /* Garante que bordas e paddings não aumentem o tamanho total */
+        box-sizing: border-box !important; 
+        
+        border: 1px solid #000 !important; /* Mantenha se quiser a borda, ou use 'none' */
         margin: 0 !important;
-        padding: 0 !important;
-        display: flex !important; /* Mantém o layout interno do JS */
-        page-break-after: always !important; /* FORÇA A QUEBRA PARA A PRÓXIMA ETIQUETA */
-        page-break-inside: avoid !important;
+        page-break-after: always !important;
+        display: flex !important;
+        position: relative;
     }
 
-    /* Remove espaços extras que o Bootstrap pode colocar */
-    .gap-2 { gap: 0 !important; }
-    .mt-3 { margin-top: 0 !important; }
+    /* Esconde elementos indesejados */
+    .no-print, header, footer, .btn, .titulo-tela {
+        display: none !important;
+    }
 }
 </style>
 
