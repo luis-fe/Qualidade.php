@@ -218,39 +218,50 @@ include_once('../../../../templates/headerGestao.php');
     }
 
 @media print {
-    /* FORÇA O MODO PAISAGEM E DEFINE O TAMANHO REAL DA ETIQUETA */
-    @page {
-        size: 10.1cm 2.6cm; /* O segredo está no 'landscape' aqui */
-        margin: 0 !important; 
+    /* 1. Esconde tudo que não é etiqueta */
+    body * {
+        visibility: hidden;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
-    html, body {
-        width: 10.1cm !important;
-        height: 2.6cm !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden;
+    /* 2. Garante que apenas o container de cards e seus filhos sejam visíveis */
+    #container-cards, #container-cards * {
+        visibility: visible;
     }
 
+    /* 3. Reseta o posicionamento para permitir múltiplas páginas */
     #container-cards {
-        display: block !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
         width: 10.1cm !important;
-        margin: 0 !important;
+        display: block !important;
         padding: 0 !important;
-        position: absolute;
-        left: 0;
-        top: 0;
+        margin: 0 !important;
+    }
+
+    /* 4. Configuração da página e quebra automática */
+    @page {
+        size: 6.1cm 2.6cm ;
+        margin: 0 !important;
     }
 
     .card-etiqueta {
         width: 10.1cm !important;
         height: 2.6cm !important;
-        page-break-after: always;
         border: none !important;
-        display: flex !important; /* Garante que o flexbox funcione na impressão */
+        margin: 0 !important;
+        padding: 0 !important;
+        display: flex !important; /* Mantém o layout interno do JS */
+        page-break-after: always !important; /* FORÇA A QUEBRA PARA A PRÓXIMA ETIQUETA */
+        page-break-inside: avoid !important;
     }
-}
 
+    /* Remove espaços extras que o Bootstrap pode colocar */
+    .gap-2 { gap: 0 !important; }
+    .mt-3 { margin-top: 0 !important; }
+}
 </style>
 
 <?php
