@@ -23,9 +23,9 @@ include_once('../../../../templates/headerGestao.php');
     /* ESTILO DO CARD NA TELA (Simulando a etiqueta real) */
     .card-etiqueta {
         width: 10.1cm !important;
-        height: 2.8cm !important;
+        height: 2.1cm !important;
         min-width: 10.1cm;
-        min-height: 2.8cm;
+        min-height: 2.1cm;
         background-color: white;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         border: 1px solid #ddd; /* Borda leve apenas para visualização na tela */
@@ -73,7 +73,7 @@ include_once('../../../../templates/headerGestao.php');
 
         .card-etiqueta {
             width: 10.1cm !important;
-            height: 2.8cm !important;
+            height: 2.1cm !important;
             border: none !important; 
             margin: 0 !important;
             padding: 0 !important;
