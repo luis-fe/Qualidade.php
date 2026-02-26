@@ -218,46 +218,54 @@ include_once('../../../../templates/headerGestao.php');
     }
 
 @media print {
-    /* Força o tamanho da página e remove margens do navegador */
-    @page {
-        size: 10.1cm 2.6cm;
-        margin: 0 !important;
+    /* 1. Esconde TUDO da página primeiro */
+    body * {
+        visibility: hidden;
     }
 
-    /* Reseta o ambiente de impressão */
-    html, body {
-        width: 10.1cm !important;
-        height: 2.6cm !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden;
+    /* 2. Mostra APENAS o container dos cards e o que está dentro dele */
+    #container-cards, 
+    #container-cards * {
+        visibility: visible;
     }
 
+    /* 3. Posiciona o container no topo real da folha */
     #container-cards {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
         width: 10.1cm !important;
         margin: 0 !important;
         padding: 0 !important;
         display: block !important;
+        visibility: visible !important;
     }
 
-    .card-etiqueta {
-        /* Tamanho exato da etiqueta física */
-        width: 10.1cm !important; 
-        height: 2.6cm !important;
-        
-        /* Garante que bordas e paddings não aumentem o tamanho total */
-        box-sizing: border-box !important; 
-        
-        border: 1px solid #000 !important; /* Mantenha se quiser a borda, ou use 'none' */
+    /* 4. Configura o tamanho da etiqueta e remove bordas do navegador */
+    @page {
+        size: 10.1cm 2.6cm landscape;
         margin: 0 !important;
-        page-break-after: always !important;
-        display: flex !important;
-        position: relative;
     }
 
-    /* Esconde elementos indesejados */
-    .no-print, header, footer, .btn, .titulo-tela {
-        display: none !important;
+    /* 5. Regras para cada etiqueta individual */
+    .card-etiqueta {
+        display: flex !important; /* Mantém o layout horizontal */
+        width: 10.1cm !important;
+        height: 2.6cm !important;
+        border: 1px solid #000 !important; /* Borda para teste, pode mudar para none */
+        margin: 0 !important;
+        padding: 0 !important;
+        page-break-after: always !important; /* Força a próxima etiqueta a ir para outra página */
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Remove qualquer espaçamento que o Bootstrap tente colocar no container */
+    .gap-2, .mt-3, .p-2 {
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
 </style>
