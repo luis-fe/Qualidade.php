@@ -56,8 +56,8 @@ const cardHTML = `
                 
                 <div class="d-flex justify-content-between align-items-end" style="font-size: 0.95rem; width: 100%; padding-bottom: 0.1cm;">
                     <strong>OP: <strong>${item.numOPConfec}</strong></strong>
-                    ${tagSeparador}
-                    <span>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></span>
+                    <strong>${tagSeparador}</strong>
+                    <strong>Qtd: <strong style="font-size: 1.3rem;">${item.qtdeRequisitada}</strong></strong>
                 </div>
             </div>
 
