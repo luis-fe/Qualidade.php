@@ -1,6 +1,8 @@
 $(document).ready(async () => {
     await Consulta_Planos();
-    Consultar_Tipo_Op()
+    Consultar_Tipo_Op();
+
+    // Inicialização do Select2
     $('#select-plano').select2({
         placeholder: "Selecione um plano",
         allowClear: false,
@@ -25,7 +27,10 @@ $(document).ready(async () => {
     document.getElementById('data-inicial').value = hoje;
     document.getElementById('data-final').value = hoje;
 
-
+    // CORREÇÃO CRÍTICA: Ajusta a largura das tabelas quando qualquer modal termina de abrir
+    $('.modal').on('shown.bs.modal', function () {
+        $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+    });
 });
 
 const Consulta_Planos = async () => {
@@ -442,8 +447,10 @@ function TabelaMetas(listaMetas) {
     }
 
     const tabela = $('#table-metas').DataTable({
-        searching: true,
+        searching: false,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
@@ -467,50 +474,17 @@ function TabelaMetas(listaMetas) {
             }
         ],
         columns: [
-            {
-                data: 'apresentacao',
-                visible: false
-            },
-            {
-                data: 'codFase',
-                visible: false
-            },
-            {
-                data: 'nomeFase',
-                render: (data, type, row) => `<span class="faseClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
-            },
-            {
-                data: 'previsao',
-                render: (data, type, row) => `<span class="previsaoClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
-            },
-            {
-                data: 'FaltaProgramar',
-                render: data => parseInt(data).toLocaleString()
-            },
-            {
-                data: 'Carga Atual',
-                render: (data, type, row) => `<span class="cargaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
-            },
-            {
-                data: 'Fila',
-                render: (data, type, row) => `<span class="filaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
-            },
-            {
-                data: 'Falta Produzir',
-                render: (data, type, row) => `<span class="faltaProduzirClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>`
-            },
-            {
-                data: 'dias',
-                render: (data, type, row) => `<span class="diasClicado" data-teste="${row.codFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>`
-            },
-            {
-                data: 'Meta Anterior',
-                visible: true
-            },
-            {
-                data: 'Meta Dia',
-                render: data => parseInt(data).toLocaleString()
-            },
+            { data: 'apresentacao', visible: false },
+            { data: 'codFase', visible: false },
+            { data: 'nomeFase', render: (data, type, row) => `<span class="faseClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>` },
+            { data: 'previsao', render: (data, type, row) => `<span class="previsaoClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>` },
+            { data: 'FaltaProgramar', render: data => parseInt(data).toLocaleString() },
+            { data: 'Carga Atual', render: (data, type, row) => `<span class="cargaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>` },
+            { data: 'Fila', render: (data, type, row) => `<span class="filaClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>` },
+            { data: 'Falta Produzir', render: (data, type, row) => `<span class="faltaProduzirClicado" data-Fase="${row.nomeFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${parseInt(data).toLocaleString()}</span>` },
+            { data: 'dias', render: (data, type, row) => `<span class="diasClicado" data-teste="${row.codFase}" style="text-decoration: underline; color: blue; cursor: pointer;">${data}</span>` },
+            { data: 'Meta Anterior', visible: true },
+            { data: 'Meta Dia', render: data => parseInt(data).toLocaleString() },
             {
                 data: 'Realizado',
                 render: (data, type, row) => {
@@ -546,21 +520,18 @@ function TabelaMetas(listaMetas) {
             }
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
     });
 
-    $('.search-input-metas').on('input', function () {
+    $('.search-input-metas').off('input').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 
-    $('#table-metas').on('click', '.realizadoClicado', function () {
+    $('#table-metas').off('click').on('click', '.realizadoClicado', function () {
         const Fase = $(this).data('fase');
         Consultar_Realizados(Fase);
         $('#titulo-realizado').html(`${Fase}`)
@@ -568,7 +539,6 @@ function TabelaMetas(listaMetas) {
 
     $('#table-metas').on('click', '.diasClicado', function () {
         const Fase = $(this).attr('data-teste')
-        console.log(`${Fase} clicou  em dias`)
         Consultar_Cronograma(Fase);
     });
 
@@ -579,7 +549,6 @@ function TabelaMetas(listaMetas) {
         const Fase = $(this).attr('data-fase'); 
         Consulta_Previsao_Categoria(Fase, Plano);
     });
-
 
     $('#table-metas').on('click', '.faltaProduzirClicado', function () {
         const Plano = $('#select-plano').val()
@@ -592,7 +561,6 @@ function TabelaMetas(listaMetas) {
         event.stopPropagation();
         const Plano = $('#select-plano').val();
         const Fase = $(this).attr('data-fase'); 
-        console.log('cliquei em nomeFase')
         Consulta_Falta_Produzir_Categoria(Fase, Plano);
     });
 
@@ -604,7 +572,6 @@ function TabelaMetas(listaMetas) {
         Consulta_cargaOP_fase(Fase, Plano);
     });
 
-
     $('#table-metas').on('click', '.filaClicado', function (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -612,9 +579,10 @@ function TabelaMetas(listaMetas) {
         const Fase = $(this).attr('data-fase'); 
         Consulta_fila_fase(Fase, Plano);
         ConsultaFilaResumoCategoria(Fase, Plano);
-
     });
     
+    // Força o ajuste de colunas
+    tabela.columns.adjust().draw();
 }
 
 function TabelaRealizado(listaRealizado, fase) {
@@ -627,6 +595,8 @@ function TabelaRealizado(listaRealizado, fase) {
     const tabela = $('#table-realizado').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
@@ -646,52 +616,38 @@ function TabelaRealizado(listaRealizado, fase) {
                                     ${parseInt(data).toLocaleString()}
                                 </span>`;
                     }
-                    // Para ordenação e filtro, retorna o valor puro
                     return parseInt(data);
             }}
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
-
             function somaColuna(index) {
-                return api
-                    .column(index, { page: 'current' })
-                    .data()
+                return api.column(index, { page: 'current' }).data()
                     .reduce((total, valor) => total + (Number(valor) || 0), 0);
             }
-
-            // Só somar a coluna 'Realizado' (índice 2)
             const totalRealizado = somaColuna(2);
             $(api.column(2).footer()).html(totalRealizado.toLocaleString());
-
-            // Limpa outras colunas do rodapé
-            [0, 1].forEach(i => {
-                $(api.column(i).footer()).html('');
-            });
+            [0, 1].forEach(i => { $(api.column(i).footer()).html(''); });
         }
     });
 
-    
-    $('#table-realizado').on('click', '.realizadoDiaClicado', function () {
+    $('#table-realizado').off('click').on('click', '.realizadoDiaClicado', function () {
         const Fase = $(this).data('fase');
         const dataIni = $(this).data('dataini');
         const partes = dataIni.split('/');
         const dataAmericana = `${partes[2]}-${partes[1]}-${partes[0]}`;
-        console.log(`minha data inicial ${dataAmericana}`)
         Consultar_RealizadosDia(Fase, dataAmericana);
         $('#titulo-realizadoDia').html(`Produzido ${Fase} :${dataIni}`)
     });
-}
 
+    tabela.columns.adjust().draw();
+}
 
 function TabelaRealizadoDia(listaRealizado) {
     if ($.fn.DataTable.isDataTable('#table-realizadoDia')) {
@@ -703,6 +659,8 @@ function TabelaRealizadoDia(listaRealizado) {
     const tabela = $('#table-realizadoDia').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
@@ -719,41 +677,30 @@ function TabelaRealizadoDia(listaRealizado) {
                     if (type === 'display') {
                         return parseInt(data).toLocaleString();
                     }
-                    return Number(data) || 0; // para ordenação
+                    return Number(data) || 0; 
                 }
             }
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
-
             function somaColuna(index) {
-                return api
-                    .column(index, { page: 'current' })
-                    .data()
+                return api.column(index, { page: 'current' }).data()
                     .reduce((total, valor) => total + (Number(valor) || 0), 0);
             }
-
-            // Só somar a coluna 'Realizado' (índice 2)
             const totalRealizado = somaColuna(5);
             $(api.column(5).footer()).html(totalRealizado.toLocaleString());
-
-            // Limpa outras colunas do rodapé
-            [0, 1, 2, 3 , 4].forEach(i => {
-                $(api.column(i).footer()).html('-');
-            });
+            [0, 1, 2, 3 , 4].forEach(i => { $(api.column(i).footer()).html('-'); });
         }
     });
+    
+    tabela.columns.adjust().draw();
 }
-
 
 function TabelaPrevisaoCategorias(listaPrevisao) {
     if ($.fn.DataTable.isDataTable('#table-previsao-categorias')) {
@@ -762,29 +709,25 @@ function TabelaPrevisaoCategorias(listaPrevisao) {
     const tabela = $('#table-previsao-categorias').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
         data: listaPrevisao,
         columns: [
-            {
-                data: 'categoria',
-            },
-            {
-                data: 'previsao',
-                render: data => parseInt(data).toLocaleString()
-            },
+            { data: 'categoria' },
+            { data: 'previsao', render: data => parseInt(data).toLocaleString() },
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
     });
+
+    tabela.columns.adjust().draw();
 }
 
 // Adiciona suporte ao tipo de dado 'num-formatted' no DataTables
@@ -804,48 +747,23 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
     const tabela = $('#table-falta-produzir-categorias').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
         data: listaFaltaProduzir,
         columns: [
             { data: 'categoria' },
-            { 
-                data: 'Carga',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { 
-                data: 'Fila',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { 
-                data: 'FaltaProgramar',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { 
-                data: 'faltaProduzir',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { 
-                data: 'dias',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { 
-                data: 'metaDiaria',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            }
+            { data: 'Carga', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'Fila', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'FaltaProgramar', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'faltaProduzir', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'dias', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'metaDiaria', type: 'num-formatted', render: data => parseInt(data).toLocaleString() }
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
@@ -854,12 +772,8 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
             const api = this.api();
         
             function somaColuna(index) {
-                return api
-                    .column(index)
-                    .data()
-                    .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
+                return api.column(index).data().reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
-        
             function mediaColuna(index) {
                 const data = api.column(index).data();
                 const total = data.reduce((total, valor) => total + (parseInt(valor) || 0), 0);
@@ -867,25 +781,16 @@ function TabelaFaltaProduzirCategorias(listaFaltaProduzir) {
                 return count ? Math.round(total / count) : 0;
             }
         
-            // Índices das colunas numéricas (começam do 1)
             const colunas = [1, 2, 3, 4, 5, 6];
             colunas.forEach(i => {
-                let valor;
-                if (i === 5) { // coluna "dias"
-                    valor = mediaColuna(i);
-                } else {
-                    valor = somaColuna(i);
-                }
+                let valor = (i === 5) ? mediaColuna(i) : somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
         }
-        
-        
     });
 
+    tabela.columns.adjust().draw();
 }
-
-
 
 function Tabela_cargaOP_fase(dadosFiltrados) {
     if ($.fn.DataTable.isDataTable('#table-cargaOP_fase')) {
@@ -895,41 +800,23 @@ function Tabela_cargaOP_fase(dadosFiltrados) {
     const tabela = $('#table-cargaOP_fase').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
         data: dadosFiltrados,
         columns: [
-            { data: 'COLECAO' },
-            { data: 'numeroOP' },
-            { data: 'categoria' },
-            { data: 'codProduto' },
-            { data: 'descricao' },
-            { data: 'prioridade' },
-            { 
-                data: 'Carga',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { data: 'EntFase' },
-            { 
-                data: 'DiasFase',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            },
-            { data: 'dataStartOP' },
-            { 
-                data: 'Lead Time Geral',
-                type: 'num-formatted',
-                render: data => parseInt(data).toLocaleString()
-            }
-
+            { data: 'COLECAO' }, { data: 'numeroOP' }, { data: 'categoria' }, { data: 'codProduto' },
+            { data: 'descricao' }, { data: 'prioridade' }, 
+            { data: 'Carga', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'EntFase' }, 
+            { data: 'DiasFase', type: 'num-formatted', render: data => parseInt(data).toLocaleString() },
+            { data: 'dataStartOP' }, 
+            { data: 'Lead Time Geral', type: 'num-formatted', render: data => parseInt(data).toLocaleString() }
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
@@ -937,15 +824,10 @@ function Tabela_cargaOP_fase(dadosFiltrados) {
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
 
-            // Função para calcular a soma dos valores de uma coluna
             function somaColuna(index) {
-                return api
-                    .column(index, { page: 'current' }) // Garantir que estamos pegando apenas os dados da página atual
-                    .data()
+                return api.column(index, { page: 'current' }).data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
-
-            // Função para calcular a média dos valores de uma coluna
             function mediaColuna(index) {
                 const dadosVisiveis = api.column(index, { page: 'current' }).data();
                 const total = dadosVisiveis.reduce((soma, valor) => soma + (parseFloat(valor) || 0), 0);
@@ -953,31 +835,29 @@ function Tabela_cargaOP_fase(dadosFiltrados) {
                 return quantidade > 0 ? (total / quantidade).toFixed(2) : "0.00";
             }
 
-            // Exibir a soma das colunas que devem ser somadas (exemplo: Carga)
-            const colunasSoma = [6];  // Coluna de Carga
+            const colunasSoma = [6];
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            // Exibir a média para a coluna DiasFase
-            const colunasMedia = [];  // Coluna DiasFase
+            const colunasMedia = [];
             colunasMedia.forEach(i => {
                 const valor = mediaColuna(i);
                 $(api.column(i).footer()).html(valor.toLocaleString());
             });
 
-            // Preencher as outras colunas com "-"
-            [0, 1, 2, 3, 4, 5, 7, 8,  9, 10 ].forEach(i => {
+            [0, 1, 2, 3, 4, 5, 7, 8, 9, 10].forEach(i => {
                 $(api.column(i).footer()).html('');
             });
         }
     });
 
-    // Filtro por coluna
-    $('.search-input-table-cargaOP_fase').on('input', function () {
+    $('.search-input-table-cargaOP_fase').off('input').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
+
+    tabela.columns.adjust().draw();
 }
 
 function Tabela_fila_fase(dadosFiltrados) {
@@ -988,6 +868,8 @@ function Tabela_fila_fase(dadosFiltrados) {
     const tabela = $('#table-resumo-fila').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
@@ -1003,29 +885,22 @@ function Tabela_fila_fase(dadosFiltrados) {
                                     ${parseInt(data).toLocaleString()}
                                 </span>`;
                     }
-                    // Para ordenação e filtro, retorna o valor puro
                     return parseInt(data);
                 }
             }
-            
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
-
             function somaColuna(index) {
                 return api.column(index, { page: 'current' }).data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
-
             const colunasSoma = [1];
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
@@ -1033,7 +908,8 @@ function Tabela_fila_fase(dadosFiltrados) {
             });
         }
     });
-    $('#table-resumo-fila').on('click', '.cargaClicado', function (event) {
+
+    $('#table-resumo-fila').off('click').on('click', '.cargaClicado', function (event) {
         event.preventDefault();
         event.stopPropagation();
         const Plano = $('#select-plano').val();
@@ -1041,20 +917,15 @@ function Tabela_fila_fase(dadosFiltrados) {
         Consulta_cargaOP_fase(Fase, Plano);
     });
 
-    $('#btn-fase').on('click', function () {
+    $('#btn-fase').off('click').on('click', function () {
         $('#table-resumo-fila').show();
         $('#table-resumo-categoria').hide();
         $('#titulo-fila').text('Resumo da Fila por Fase');
-    });
-    
-    $('#btn-categoria').on('click', function () {
-        $('#table-resumo-fila').hide();
-        $('#table-resumo-categoria').show();
-        $('#titulo-fila').text('Resumo da Fila por Categoria');
+        tabela.columns.adjust().draw(); // Garante que ajusta ao trocar as abas
     });
 
+    tabela.columns.adjust().draw();
 }
-
 
 function Tabela_fila_faseCategoria(dadosFiltrados) {
     if ($.fn.DataTable.isDataTable('#table-resumo-filacategoria')) {
@@ -1064,6 +935,8 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
     const tabela = $('#table-resumo-filacategoria').DataTable({
         searching: true,
         paging: false,
+        autoWidth: false, // 🔹 Ajuste crítico
+        width: '100%',
         lengthChange: false,
         info: false,
         pageLength: 10,
@@ -1080,29 +953,22 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
                                     ${parseInt(data).toLocaleString()}
                                 </span>`;
                     }
-                    // Para ordenação e filtro, retorna o valor puro
                     return parseInt(data);
                 }
             }
-            
         ],
         language: {
-            paginate: {
-                previous: '<i class="fa-solid fa-backward-step"></i>',
-                next: '<i class="fa-solid fa-forward-step"></i>'
-            },
+            paginate: { previous: '<i class="fa-solid fa-backward-step"></i>', next: '<i class="fa-solid fa-forward-step"></i>' },
             info: "Página _PAGE_ de _PAGES_",
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
         footerCallback: function (row, data, start, end, display) {
             const api = this.api();
-
             function somaColuna(index) {
                 return api.column(index, { page: 'current' }).data()
                     .reduce((total, valor) => total + (parseInt(valor) || 0), 0);
             }
-
             const colunasSoma = [2];
             colunasSoma.forEach(i => {
                 const valor = somaColuna(i);
@@ -1111,12 +977,11 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
         }
     });
 
-        $('.search-input-resumo-fila').on('input', function () {
+    $('.search-input-resumo-fila').off('input').on('input', function () {
         tabela.column($(this).closest('th').index()).search($(this).val()).draw();
     });
 
-
-    $('#table-resumo-filacategoria').on('click', '.cargaClicado', function (event) {
+    $('#table-resumo-filacategoria').off('click').on('click', '.cargaClicado', function (event) {
         event.preventDefault();
         event.stopPropagation();
         const Plano = $('#select-plano').val();
@@ -1124,20 +989,12 @@ function Tabela_fila_faseCategoria(dadosFiltrados) {
         Consulta_cargaOP_fase(Fase, Plano);
     });
 
-    $('#btn-fase').on('click', function () {
-        $('#table-resumo-fila').show();
-        $('#table-resumo-filacategoria').hide();
-        $('#titulo-fila').text('Resumo da Fila por Fase');
-    });
-    
-    $('#btn-categoria').on('click', function () {
+    $('#btn-categoria').off('click').on('click', function () {
         $('#table-resumo-fila').hide();
         $('#table-resumo-filacategoria').show();
         $('#titulo-fila').text('Resumo da Fila por Categoria');
+        tabela.columns.adjust().draw(); // Garante que ajusta ao trocar de aba
     });
 
+    tabela.columns.adjust().draw();
 }
-
-
-  
-
