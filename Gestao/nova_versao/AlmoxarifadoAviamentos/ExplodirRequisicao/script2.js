@@ -31,7 +31,7 @@ async function Consultar_requisicao() {
         if (response && response.length > 0) {
             
             response.forEach(item => {
-                const qrData = encodeURIComponent(item.codMaterialEdt);
+                const qrData = encodeURIComponent(item.numOPConfec + '||' + item.codMaterialEdt);
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${qrData}`;
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
