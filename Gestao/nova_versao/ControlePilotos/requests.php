@@ -41,6 +41,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                         $data = get_pilotos_em_transito(); 
                         jsonResponse($data);
                     break;
+                case 'fases_destinos':
+                        $data = fases_destinos(); 
+                        jsonResponse($data);
+                    break;
+                case 'get_pilotos_inv_dia':
+                        $data = get_pilotos_inv_dia(); 
+                        jsonResponse($data);
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -61,6 +69,16 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $dadosObjeto = (object) $dados;
                     header('Content-Type: application/json');
                     echo json_encode(TransferirPilotos($dadosObjeto));
+                    break;
+                case 'ReceberPilotos':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(Receber_pilotos($dadosObjeto));
+                    break;
+                case 'inventariar_local_pilotos':
+                    $dadosObjeto = (object) $dados;
+                    header('Content-Type: application/json');
+                    echo json_encode(inventariar_local_pilotos__($dadosObjeto));
                     break;
 
                 default:
@@ -208,6 +226,121 @@ function TransferirPilotos($dados)
 {
     $baseUrl = 'http://10.162.0.53:7070';
     $apiUrl = "{$baseUrl}/pcp/api/transferir_pilotos";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+function Receber_pilotos($dados)
+{
+    $baseUrl = 'http://10.162.0.53:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/receber_pilotos";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+
+function fases_destinos()
+{
+    $baseUrl = 'http://10.162.0.53:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/fases_destinos";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+
+function get_pilotos_inv_dia()
+{
+    $baseUrl = 'http://10.162.0.53:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/get_pilotos_inv_dia";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+
+
+function inventariar_local_pilotos__($dados)
+{
+    $baseUrl = 'http://10.162.0.53:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/inventariar_local_pilotos";
 
     $ch = curl_init($apiUrl);
 

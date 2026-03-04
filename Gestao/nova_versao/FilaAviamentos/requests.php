@@ -13,12 +13,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (isset($_GET["acao"])) {
             $acao = $_GET["acao"];
             switch ($acao) {
-                case 'ConsultarFilaConferencia':
-                    jsonResponse(ConsultarFilaConferencia('1'));
+                case 'ConsultarEnderecos':
+                    jsonResponse(ConsultarEnderecos('1'));
                     break;
-                case 'ConsultarFilaConferencia_itens':
-                    $numeroOP = $_GET['numeroOP'];
-                    jsonResponse(ConsultarFilaConferencia_itens('1', $numeroOP));
+                case 'Consulta_Lotes':
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultarLotes('1', $plano));
                     break;
                 case 'Consultar_Realizados':
                     $Fase = $_GET['Fase'];
@@ -159,32 +159,10 @@ function inserir_endereco_massa($dados)
 
 
 
-function ConsultarFilaConferencia($empresa)
+function ConsultarEnderecos($empresa)
 {
     $baseUrl ='http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/pcp/api/FilaConferencia";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
-
-    $apiResponse = curl_exec($ch);
-
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
-
-function ConsultarFilaConferencia_itens($empresa, $numeroOP)
-{
-    $baseUrl ='http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/pcp/api/ItensConferencia?numeroOP={$numeroOP}";
+    $apiUrl = "{$baseUrl}/pcp/api/get_enderecos";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [

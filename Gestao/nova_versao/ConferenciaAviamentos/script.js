@@ -1,5 +1,74 @@
+// ==========================================
+// CONFIGURAÇÕES GLOBAIS E SONS (LATÊNCIA ZERO)
+// ==========================================
+
+let linhaParaExcluir = null;
+
+// Variáveis para o áudio de alta performance
+let audioCtx = null;
+let bufferErro = null;
+let bufferSucesso = null; // <-- Nova variável para o som de sucesso
+
+// 1. Pré-carrega os áudios diretamente na memória RAM (Zero Delay)
+async function carregarAudioNaMemoria() {
+    try {
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+        
+        // Faz o download e decodifica o som de ERRO
+        const responseErro = await fetch('MenasagemErro.mp3');
+        const arrayBufferErro = await responseErro.arrayBuffer();
+        bufferErro = await audioCtx.decodeAudioData(arrayBufferErro);
+
+        // Faz o download e decodifica o som de SUCESSO
+        const responseSucesso = await fetch('MensagemCorrect.mp3');
+        const arrayBufferSucesso = await responseSucesso.arrayBuffer();
+        bufferSucesso = await audioCtx.decodeAudioData(arrayBufferSucesso);
+        
+    } catch (erro) {
+        console.error("Erro ao pré-carregar áudios de alta performance:", erro);
+    }
+}
+
+// Inicia o carregamento assim que o script é lido
+carregarAudioNaMemoria();
+
+// 2. Função de disparo imediato para ERRO
+function tocarBipeErro() {
+    if (!audioCtx || !bufferErro) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const fonte = audioCtx.createBufferSource();
+    fonte.buffer = bufferErro;
+    fonte.connect(audioCtx.destination);
+    fonte.start(0); 
+}
+
+// 3. Função de disparo imediato para SUCESSO
+function tocarBipeSucesso() {
+    if (!audioCtx || !bufferSucesso) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const fonte = audioCtx.createBufferSource();
+    fonte.buffer = bufferSucesso;
+    fonte.connect(audioCtx.destination);
+    fonte.start(0); 
+}
+
+// ==========================================
+// INICIALIZAÇÃO DA PÁGINA
+// ==========================================
 $(document).ready(async () => {
-    await ConsultarRecebimento();
+    await ConsultarFilaConferencia();
+
+    // 1. Captura a descrição e junta no título do modal
+    $('#table-metas tbody').on('click', 'button.btn-abrir-modal', function() {
+        let numeroOP = $(this).attr('data-op');
+        let descricao = $(this).attr('data-descricao'); 
+        
+        $('#spanNumeroOP').text(`${numeroOP} - ${descricao}`); 
+        ConsultarFilaConferencia_itens(numeroOP); 
+    });
 
     // Fica escutando a troca dos botões radio para esconder/mostrar as seções
     $('input[name="tipoInsercao"]').on('change', function() {
@@ -40,17 +109,17 @@ function converterParaFloat(valor) {
     
     let texto = valor.toString().trim();
     
-    // 1. Remove TODOS os pontos (separadores de milhar no padrão brasileiro)
+    // 1. Remove TODOS os pontos
     texto = texto.replace(/\./g, ''); 
     
-    // 2. Transforma a vírgula (se houver) no ponto decimal que o JS entende
+    // 2. Transforma a vírgula no ponto decimal
     texto = texto.replace(',', '.');  
     
     let numero = parseFloat(texto);
     return isNaN(numero) ? 0 : numero;
 }
 
-// Converte 1000.50 (Número) para "1.000,50" (Texto BR para a tela)
+// Converte 1000.50 para "1.000,50" 
 function formatarParaPtBr(valor) {
     if (isNaN(valor) || valor === null) return "0";
     return valor.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
@@ -66,11 +135,10 @@ function formatarDetalhes(row) {
     let preparadoInicial = granelInicial; 
     let aPrepararInicial = saldoLimpo - preparadoInicial;
 
-    // Proteção contra aspas duplas no banco de dados que quebram o HTML
     let nomeSeguro = (row.nome || '').toString().replace(/"/g, '&quot;');
     let fornecedorSeguro = (row.fornencedorPreferencial || '').toString().replace(/"/g, '&quot;');
     let codEditadoSeguro = (row.codEditado_y || row.CodComponente).toString().replace(/"/g, '&quot;');
-    let unidadeSegura = (row.unidadeMedida || '').toString().replace(/"/g, '&quot;'); // <--- Inserido corretamente aqui
+    let unidadeSegura = (row.unidadeMedida || '').toString().replace(/"/g, '&quot;'); 
 
     return `
         <div class="p-3 border-start border-primary border-4 bg-light">
@@ -280,10 +348,9 @@ async function salvarConfigKit(codID, btnElement) {
 
     itensParaImprimir.forEach(item => {
         const qrData = encodeURIComponent(`${item.codigo}-${item.tamanho}`);
-// Substitua a linha do qrUrl por esta:
-const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
+        const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
-const cardHTML = `
+        const cardHTML = `
             <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
                     
@@ -332,7 +399,6 @@ const cardHTML = `
     }, 150);
 }
 
-// Essa função parece ser de outra etapa do seu WMS, mantive intacta
 async function imprimirSelecionados() {
     let itensParaImprimir = [];
 
@@ -417,23 +483,17 @@ async function imprimirSelecionados() {
     }, 100);
 }
 
-// Função ativada pelo botão "Voltar"
 function voltarParaTabela() {
-    // 1. Esconde e limpa o container de cards (etiquetas)
     $('#container-cards').addClass('d-none').empty();
-    
-    // 2. Mostra a tabela e os filtros novamente
     $('.div-metas').removeClass('d-none');
 
-    // 3. LIMPEZA DE CACHE: Fecha todas as linhas detalhadas que estavam abertas
     if ($.fn.DataTable.isDataTable('#table-metas')) {
         let table = $('#table-metas').DataTable();
         
         table.rows().every(function () {
-            // 'this' refere-se à linha atual no loop
             if (this.child.isShown()) {
-                this.child.hide(); // Esconde e destrói o formulário preenchido
-                $(this.node()).removeClass('shown'); // Tira o fundo cinza da linha principal
+                this.child.hide(); 
+                $(this.node()).removeClass('shown'); 
             }
         });
     }
@@ -497,7 +557,7 @@ async function salvarEnderecos() {
         if (dadosResposta && dadosResposta.status === true) {
             alert(dadosResposta.Mensagem || dadosResposta.mensagem || "Salvo com sucesso!");
             $('#modalInserirEndereco').modal('hide');
-            await ConsultarRecebimento();
+            await ConsultarFilaConferencia();
         } else {
             alert("Atenção: " + (dadosResposta?.Mensagem || dadosResposta?.mensagem || "A API recusou o salvamento."));
         }
@@ -508,14 +568,14 @@ async function salvarEnderecos() {
     }
 }
 
-const ConsultarRecebimento = async () => {
+const ConsultarFilaConferencia = async () => {
     try {
         $('#loadingModal').modal('show');
         const response = await $.ajax({
             type: 'GET',
             url: 'requests.php',
             dataType: 'json',
-            data: { acao: 'ConsultarRecebimento' },
+            data: { acao: 'ConsultarFilaConferencia' },
         });
 
         Tabela(response);
@@ -525,6 +585,80 @@ const ConsultarRecebimento = async () => {
         setTimeout(() => { $('#loadingModal').modal('hide'); }, 500);
     }
 };
+
+const ConsultarFilaConferencia_itens = async (numeroOP) => {
+    try {
+        $('#loadingModal').modal('show');
+        const response = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: { acao: 'ConsultarFilaConferencia_itens', numeroOP: numeroOP },
+        });
+
+        TabelaItens(response); 
+        $('#modalItensOP').modal('show'); 
+        
+    } catch (error) {
+        console.error('Erro ao consultar serviço:', error);
+        alert("Erro ao buscar os itens da OP.");
+    } finally {
+        setTimeout(() => { $('#loadingModal').modal('hide'); }, 500);
+    }
+};
+
+function TabelaItens(dados) {
+    if ($.fn.DataTable.isDataTable('#table-itens-conferencia')) {
+        $('#table-itens-conferencia').DataTable().destroy();
+    }
+
+    $('#table-itens-conferencia').DataTable({
+        data: dados, 
+        searching: true, 
+        paging: false, 
+        info: false,
+        autoWidth: false, 
+        
+        createdRow: function(row, data, dataIndex) {
+            let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
+            let material = data.codMaterialEdt || data.codProduto; 
+            let chave = opAtual + '||' + material;
+            $(row).attr('data-chave', chave);
+        },
+        
+        columnDefs: [
+            { targets: 0, width: "10%", className: "align-middle" }, 
+            { targets: 1, width: "15%", className: "align-middle" }, 
+            { targets: 2, width: "35%", className: "align-middle" }, 
+            { targets: 3, width: "15%", className: "align-middle" }, 
+            { targets: 4, width: "15%", className: "align-middle" }, 
+            { targets: 5, width: "10%", className: "text-center align-middle" }  
+        ],
+        columns: [
+            { data: 'codProduto', defaultContent: '-' }, 
+            { data: 'codMaterialEdt', defaultContent: '-' }, 
+            { data: 'nomeMaterial', defaultContent: 'Sem descrição' }, 
+            { data: 'localizacao', defaultContent: '-' }, 
+            { data: 'separador', defaultContent: '-' }, 
+            { 
+                data: 'qtdeRequisitada', 
+                defaultContent: '0',
+                render: function(data, type, row) {
+                    return `<span class="fw-bold fs-4 text-primary">${data}</span>`;
+                }
+            } 
+        ],
+        language: {
+            emptyTable: "Nenhum item encontrado para esta OP",
+            zeroRecords: "Nenhum registro encontrado",
+            search: "Pesquisar Item:"
+        }
+    });
+
+    let totalLinhas = $('#table-itens-conferencia').DataTable().rows().count();
+    $('#contadorTotal').text(totalLinhas);
+    $('#contadorBipados').text('0'); 
+}
 
 function Tabela(dados) {
     if ($.fn.DataTable.isDataTable('#table-metas')) {
@@ -542,21 +676,24 @@ function Tabela(dados) {
         pageLength: 20,
         dom: '<"top">rt<"bottom"p><"clear">', 
         columns: [
-            { data: 'CodComponente' }, // Col 0
-            { data: 'codEditado_y' }, // Col 1
-            { data: 'nome' },      // Col 2
-            { data: 'fornencedorPreferencial' },   // Col 3
-            { data: 'unidadeMedida' },  // Col 4
-            { data: 'estoqueAtual' },  // Col 5
-            { data: 'categoria' },  // Col 6
-            {                     // Col 7
+            { data: 'numeroOP' }, 
+            { data: 'codProduto' }, 
+            { data: 'descricao' },      
+            { data: 'prioridade' },      
+            { data: 'FaseAtual' },   
+            { data: 'separador' },  
+            {                     
                 data: null,
                 orderable: false,
                 searchable: false,
                 className: 'text-center align-middle',
                 render: function (data, type, row) {
                     return `
-                        <button type="button" class="btn btn-sm btn-outline-primary btn-detalhes">
+                        <button type="button" class="btn btn-sm btn-outline-success btn-abrir-modal" 
+                                data-op="${row.numeroOP}" data-descricao="${row.descricao}">
+                            <i class="bi bi-check2-square"></i> Conferir
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-detalhes ms-1">
                             <i class="bi bi-arrow-bar-down"></i>
                         </button>
                     `;
@@ -573,10 +710,10 @@ function Tabela(dados) {
         }
     });
 
-    $('#filtroCodigo').on('keyup', function () { table.column(1).search(this.value).draw(); });
+    $('#filtroNumeroOP').on('keyup', function () { table.column(0).search(this.value).draw(); });
+    $('#filtroCodigoProduto').on('keyup', function () { table.column(1).search(this.value).draw(); });
     $('#filtroDescricao').on('keyup', function () { table.column(2).search(this.value).draw(); });
-    $('#filtroFornecedor').on('keyup', function () { table.column(3).search(this.value).draw(); });
-    $('#filtroCategoria').on('keyup', function () { table.column(6).search(this.value).draw(); });
+    $('#filtroSeparador').on('keyup', function () { table.column(5).search(this.value).draw(); });
 
     $('#checkAllFiltro').off('change').on('change', function() {
         var isChecked = $(this).is(':checked');
@@ -589,4 +726,150 @@ function Tabela(dados) {
             $('#checkAllFiltro').prop('checked', false);
         }
     });
+}
+
+// ==========================================
+// LÓGICA DE LEITURA DO QR CODE (OP||MATERIAL)
+// ==========================================
+
+$('#modalItensOP').on('shown.bs.modal', function () {
+    $('#inputQrCode').val('').focus();
+});
+
+$('#inputQrCode').on('keypress', function(e) {
+    if(e.which === 13) { 
+        e.preventDefault();
+        processarQrCode($(this).val());
+    }
+});
+
+$('#btnBuscarQrCode').on('click', function() {
+    processarQrCode($('#inputQrCode').val());
+});
+
+function processarQrCode(qrCodeVal) {
+    if (!qrCodeVal) return;
+
+    qrCodeVal = qrCodeVal.replace(/}}/g, '||');
+    let partes = qrCodeVal.split('||');
+    
+if (partes.length !== 2) {
+        tocarBipeErro(); 
+        // Substituído o alert() pelo modal
+        $('#textoErroBipagem').html("Formato inválido! O padrão esperado é: <strong>OP||Material</strong>");
+        $('#modalErroBipagem').modal('show');
+        $('#inputQrCode').val('');
+        return;
+    }
+
+    let opLida = partes[0].trim();
+    let materialLido = partes[1].trim();
+    let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
+    
+    // AQUI ESTÁ A MENSAGEM DA OP DIFERENTE QUE VOCÊ PEDIU:
+    if (opLida !== opAtual) {
+        tocarBipeErro(); 
+        // Substituído o alert() pelo modal, com cores para destacar as OPs
+        $('#textoErroBipagem').html(`Atenção: Você bipou um material da OP <strong class="text-danger">${opLida}</strong>, mas está conferindo a OP <strong class="text-primary">${opAtual}</strong>!`);
+        $('#modalErroBipagem').modal('show');
+        $('#inputQrCode').val('');
+        return;
+    }
+
+    let chaveBuscada = opLida + '||' + materialLido;
+    let linhaEncontrada = $(`#table-itens-conferencia tbody tr[data-chave="${chaveBuscada}"]`);
+
+    if (linhaEncontrada.length > 0) {
+        
+        if (linhaEncontrada.hasClass('ja-conferido')) {
+            tocarBipeErro(); 
+            linhaParaExcluir = linhaEncontrada; 
+            $('#spanMaterialExcluir').text(materialLido); 
+            $('#modalConfirmarExclusao').modal('show'); 
+            $('#inputQrCode').val('');
+            return; 
+        }
+
+        linhaEncontrada.addClass('ja-conferido');
+        linhaEncontrada.find('td').removeClass('bg-light').addClass('bg-success text-white fw-bold');
+        linhaEncontrada.find('.text-primary').removeClass('text-primary').addClass('text-white');
+        linhaEncontrada[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        let totalBipados = parseInt($('#contadorBipados').text()) + 1;
+        $('#contadorBipados').text(totalBipados);
+
+        // Se o operador terminou de bipar todos os itens da tabela
+        let totalGeral = parseInt($('#contadorTotal').text());
+        if (totalBipados === totalGeral) {
+            
+            tocarBipeSucesso(); // <--- CHAMA O SOM DE SUCESSO AQUI!
+            
+            // Abre o modal Bootstrap
+            setTimeout(() => {
+                $('#modalSucesso').modal('show');
+            }, 300);
+        }
+        
+    } else {
+        tocarBipeErro(); 
+        // Substituído o alert() pelo modal
+        $('#textoErroBipagem').html(`O material <strong class="text-danger">${materialLido}</strong> não foi encontrado na lista desta OP!`);
+        $('#modalErroBipagem').modal('show');
+    }
+
+    $('#inputQrCode').val('');
+}
+
+// ==========================================
+// EVENTOS PARA MANTER O FOCO NO BIPADOR
+// ==========================================
+
+// Quando o modal de erro abre, foca no botão de voltar para facilitar o fechamento
+$('#modalErroBipagem').on('shown.bs.modal', function () {
+    $('#btnFecharErroBipagem').focus();
+});
+
+// Quando o modal de erro fecha, o cursor volta direto para o campo do QR Code
+$('#modalErroBipagem').on('hidden.bs.modal', function () {
+    $('#inputQrCode').val('').focus();
+});
+
+
+function excluirBipagem() {
+    if (linhaParaExcluir) {
+        linhaParaExcluir.removeClass('ja-conferido');
+        linhaParaExcluir.find('td').removeClass('bg-success text-white fw-bold').addClass('bg-light');
+        linhaParaExcluir.find('span.text-white').removeClass('text-white').addClass('text-primary');
+
+        let totalBipados = parseInt($('#contadorBipados').text()) - 1;
+        $('#contadorBipados').text(totalBipados);
+        linhaParaExcluir = null;
+    }
+    
+    $('#modalConfirmarExclusao').modal('hide');
+    $('#inputQrCode').val('').focus();
+}
+
+$('#modalConfirmarExclusao').on('shown.bs.modal', function () {
+    $('#btnNaoExcluir').focus();
+});
+
+$('#modalConfirmarExclusao').on('hidden.bs.modal', function () {
+    $('#inputQrCode').val('').focus();
+});
+
+function limparConferencia() {
+    if (confirm("Tem certeza que deseja recomeçar a conferência? Todo o progresso será perdido.")) {
+        let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
+        ConsultarFilaConferencia_itens(opAtual);
+    }
+}
+
+function efetivarConferencia() {
+    let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
+    console.log(`Efetivando conferência da OP: ${opAtual}`);
+    
+    alert("Função de efetivação disparada! Coloque sua requisição AJAX aqui.");
+    $('#modalSucesso').modal('hide');
+    $('#modalItensOP').modal('hide');
 }

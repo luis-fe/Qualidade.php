@@ -1,0 +1,50 @@
+.corpo{
+    margin-top: 15px;
+    width: 100%;
+    color: black;
+    font-weight: 100;
+}
+
+.status-amarelo {
+    background-color: #fff3cd !important;
+}
+
+.status-verde {
+    background-color: #a4e9b1 !important;
+}
+
+.status-cinza {
+    background-color: #767676 !important;
+    color: aliceblue !important;
+}
+
+.btn-movimentar {
+    margin-left: 8px;
+    padding: 0px 6px;
+    font-size: 0.85rem;
+}
+.status-label {
+    font-weight: bold;
+}
+
+#table-abc td:last-child {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+#table-abc {
+    border-collapse: collapse;
+}
+
+#table-abc th,
+#table-abc td {
+    border: 1px solid #dee2e6 !important; /* Bootstrap's default gray border */
+    padding: 8px;
+    vertical-align: middle;
+}
+
+#table-abc thead th {
+    background-color: #f8f9fa; /* cabeçalho com fundo claro */
+    text-align: center;
+}

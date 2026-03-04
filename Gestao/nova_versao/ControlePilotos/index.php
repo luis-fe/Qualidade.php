@@ -54,7 +54,7 @@ include_once('../../../templates/headerGestao.php');
         <div class="card text-center" style="min-width: 100px;">
             <div class="card-body p-1">
                 <h6 class="card-title mb-1">Na Montagem</h6>
-                <h5 class="card-text fw-bold text-primary" id="totalPecas"></h5>
+                <h5 class="card-text fw-bold text-primary" id="totalPecasMontagem"></h5>
             </div>
 
     </div>
@@ -63,7 +63,7 @@ include_once('../../../templates/headerGestao.php');
     <div class="card text-center" style="min-width: 100px;">
             <div class="card-body p-1">
                 <h6 class="card-title mb-1">No EAT</h6>
-                <h5 class="card-text fw-bold text-primary" id="totalPecas"></h5>
+                <h5 class="card-text fw-bold text-primary" id="totalPecasEAT"></h5>
             </div>
 
     </div>
@@ -71,7 +71,16 @@ include_once('../../../templates/headerGestao.php');
         <div class="card text-center" style="min-width: 100px;">
             <div class="card-body p-1">
                 <h6 class="card-title mb-1">Em Transito</h6>
-                <h5 class="card-text fw-bold text-primary" id="totalPecasEmTransito"></h5>
+                <h5 class="card-text fw-bold text-primary" id="totalPecasTransito"></h5>
+            </div>
+
+    </div>
+
+
+    <div class="card text-center" style="min-width: 100px;">
+            <div class="card-body p-1">
+                <h6 class="card-title mb-1">Outros Setores</h6>
+                <h5 class="card-text fw-bold text-primary" id="totalPecasOUTROS"></h5>
             </div>
 
     </div>
@@ -94,9 +103,9 @@ include_once('../../../templates/headerGestao.php');
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
-            <div class="modal-body">
+            <div class="modal-body ">
                 <div class="p-3 mb-4 border rounded">
-                <div class="mb-3">
+                <div class="mb-3 bg-secondary text-white">
     <label for="tipoOperacao" class="form-label">Selecione o Tipo de Operação:</label>
 
                 <select class="form-select" id="tipoOperacao" name="tipoOperacao" aria-label="Seleção de Tipo de Operação">
@@ -126,6 +135,21 @@ include_once('../../../templates/headerGestao.php');
                             <label for="inputTag" class="form-label">Tag</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="inputTag" placeholder="Digite a tag">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="div-informacoesReceb" class="p-3 mb-4 border rounded d-none">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="inputMatriculaReceb" class="form-label">Matrícula</label>
+                            <input type="text" class="form-control" id="inputMatriculaReceb" placeholder="Digite a matrícula">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputTagReceb" class="form-label">Tag</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="inputTagReceb" placeholder="Digite a tag">
                             </div>
                         </div>
                     </div>
@@ -171,7 +195,6 @@ include_once('../../../templates/headerGestao.php');
             
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary">Finalizar Recebimento</button>
             </div>
             
         </div>
@@ -190,10 +213,10 @@ include_once('../../../templates/headerGestao.php');
             
             <div class="modal-body">
                 <div class="p-3 mb-4 border rounded">
-                <div class="mb-3">
-    <label for="tipoOperacao" class="form-label">Selecione o Local:</label>
+                <div class="mb-3 bg-secondary text-white">
+    <label for="tipoLocalInv" class="form-label">Selecione o Local:</label>
 
-                <select class="form-select" id="tipoOperacao" name="tipoOperacao" aria-label="Seleção de Tipo de Operação">
+                <select class="form-select" id="tipoLocalInv" name="tipoLocalInv" aria-label="Seleção de Tipo de Operação">
                     <option selected disabled value="">Escolha uma opção...</option>
                     
                     <option value="local1">Sala EAT</option>
@@ -201,29 +224,30 @@ include_once('../../../templates/headerGestao.php');
                 </select>
             </div>
                 </div>
-                <div id="div-informacoes" class="p-3 mb-4 border rounded d-none">
+                <div id="div-informacoesInvLocal" class="p-3 mb-4 border rounded d-none">
 
                     <div class="row g-3">
+                        <label id="labelLocal" class="form-label">Local</label>
                         <div class="col-md-6">
-                            <label for="inputMatricula" class="form-label">Matrícula</label>
-                            <input type="text" class="form-control" id="inputMatricula" placeholder="Digite a matrícula">
+                            <label for="inputMatriculaInv" class="form-label">Matrícula</label>
+                            <input type="text" class="form-control" id="inputMatriculaInv" placeholder="Digite a matrícula">
                         </div>
                         <div class="col-md-6">
-                            <label for="inputTag" class="form-label">Tag</label>
+                            <label for="inputTagInv" class="form-label">Tag</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="inputTag" placeholder="Digite a tag">
+                                <input type="text" class="form-control" id="inputTagInv" placeholder="Digite a tag">
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div id="div-tabela" class="p-3 border rounded d-none">
-                    <h6>**Tags Inseridas**</h6>
-                    <table class="table table-striped table-hover table-bordered"  id="tabelaTagsInseridas">
+                <div id="div-tabelaInv" class="p-3 border rounded d-none">
+                    <h6>**Tags inventariadas**</h6>
+                    <table class="table table-striped table-hover table-bordered"  id="tabelaTagsInv">
                         <thead>
                             <tr>
-                                <th scope="col">Tag Inserida</th>
-                                <th scope="col">Data/Hora Inclusão</th>
+                                <th scope="col">Cod. Tag</th>
+                                <th scope="col">local</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -251,7 +275,7 @@ include_once('../../../templates/headerGestao.php');
     <div class="modal-dialog modal-xl"> <div class="modal-content">
             
             <div class="modal-header">
-                <h5 class="modal-title" id="modalRecebimentoPilotoLabel"> Retirar Piloto no EAT</h5>
+                <h5 class="modal-title" id="modalRecebimentoPilotoLabel"> Controle sala EAT</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div id="div-informacoes" class="p-3 mb-4 border rounded">
@@ -275,6 +299,14 @@ include_once('../../../templates/headerGestao.php');
                                 <input type="text" class="form-control" id="inputTag" placeholder="Digite a tag">
                             </div>
                         </div>
+                    <div class="col-md-6">
+                        <label for="selectDestino" class="form-label">Destino</label>
+                        <div class="input-group">
+                            <select class="form-select" id="selectDestino">
+
+                                </select>
+                        </div>
+                    </div>
 
                     </div>
                 </div>
@@ -284,8 +316,8 @@ include_once('../../../templates/headerGestao.php');
                     <table class="table table-striped table-hover table-bordered"  id="tabelaTagsInseridas">
                         <thead>
                             <tr>
-                                <th scope="col">Tag Inserida</th>
-                                <th scope="col">Data/Hora Inclusão</th>
+                                <th scope="col">Tag Inv.</th>
+                                <th scope="col">Local</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -314,13 +346,13 @@ include_once('../../../templates/headerGestao.php');
             <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1 tabela-fonte-pequena">
                 <thead>
                     <tr>
-                        <th>Cod<br>Prod.</th>
-                        <th>Descrição<br></th>
+                        <th>Cod Prod.<br><input type="search" class="search-input search-input-pesquisa" style="min-width: 10px;"></th>
+                        <th>Descrição<br><input type="search" class="search-input search-input-pesquisa" style="min-width: 10px;"></th>
                         <th>COR<br></th>
                         <th>TAM.<br></th>
-                        <th>TAG<br></th>
-                        <th>Status<br></th>  
-                        <th>OP Atual<br></th>  
+                        <th>TAG<br><input type="search" class="search-input search-input-pesquisa" style="min-width: 30px;"></th>
+                        <th>Status<br><input type="search" class="search-input search-input-pesquisa" style="min-width: 30px;"></th>  
+                        <th>OP Atual<br><input type="search" class="search-input search-input-pesquisa" style="min-width: 10px;"></th>  
                     </tr>
                 </thead>
                 <tbody>
@@ -350,6 +382,7 @@ include_once('../../../templates/footerGestao.php');
         
         const $selectTipoOperacao = $('#tipoOperacao');
         const $divInformacoes = $('#div-informacoes');
+        const $divDoc = $('#divDocumento');
         const $divTabela = $('#div-tabela');
         const $valorDocumentoLabel = $('#valordocumento'); // <-- CORREÇÃO: Variável da Label
         
@@ -375,11 +408,13 @@ include_once('../../../templates/footerGestao.php');
                 $valorDocumentoLabel.html(`<strong>${doc_}</strong>`);                
                 $divInformacoes.removeClass('d-none');
                 $divTabela.removeClass('d-none');
+                $divDoc.removeClass('d-none');
+
             } else {
                 // Oculta tudo se não for 'transferencia'
                 // O valor é redefinido para 'xxxx' (ou o valor original do HTML)
                 $valorDocumentoLabel.text('--'); 
-                
+                $divDoc.addClass('d-none');
                 $divInformacoes.addClass('d-none');
                 $divTabela.addClass('d-none');
                 //get_pilotos_em_transito();
