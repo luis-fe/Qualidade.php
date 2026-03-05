@@ -60,9 +60,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
-                case 'inserir_endereco':
+                case 'inserir_conferencia_itens_op':
                         header('Content-Type: application/json');
-                        echo json_encode(inserir_endereco($dados));
+                        echo json_encode(inserir_conferencia_itens_op($dados));
                         break;
                 case 'inserir_endereco_massa':
                         jsonResponse(inserir_endereco_massa($dados));
@@ -127,10 +127,10 @@ function inserir_endereco($dados)
     return json_decode($apiResponse, true);
 }
 
-function inserir_endereco_massa($dados)
+function inserir_conferencia_itens_op($dados)
 {
     $baseUrl = 'http://10.162.0.53:9000/pcp';
-    $apiUrl = "{$baseUrl}/api/inserir_endereco_aviamento_em_massa";
+    $apiUrl = "{$baseUrl}/api/conferenciaAviamentos_";
     $ch = curl_init($apiUrl);
 
     $options = [
@@ -156,6 +156,8 @@ function inserir_endereco_massa($dados)
 
     return json_decode($apiResponse, true);
 }
+
+
 
 
 

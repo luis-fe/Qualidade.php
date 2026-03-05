@@ -56,6 +56,31 @@ function tocarBipeSucesso() {
 }
 
 // ==========================================
+// MODO SCANNER: TRAVA DE FOCO
+// ==========================================
+
+// Garante que o input nunca perca o foco enquanto o modal principal estiver aberto
+$('#inputQrCode').on('blur', function() {
+    setTimeout(() => {
+        // Só puxa o foco de volta se o modal da OP estiver visível E os modais de alerta estiverem fechados
+        if ($('#modalItensOP').is(':visible') && 
+            !$('#modalErroBipagem').hasClass('show') && 
+            !$('#modalConfirmarExclusao').hasClass('show') &&
+            !$('#modalSucesso').hasClass('show')) {
+            
+            $('#inputQrCode').focus();
+        }
+    }, 150); // 150ms é o tempo exato para permitir que cliques em botões funcionem antes de roubar o foco
+});
+
+// Mantém o foco na tela inteira (se o cara clicar no fundo cinza da tela, volta pro input)
+$('#modalItensOP').on('click', function(e) {
+    if(e.target.id !== 'inputQrCode') {
+        $('#inputQrCode').focus();
+    }
+});
+
+// ==========================================
 // INICIALIZAÇÃO DA PÁGINA
 // ==========================================
 $(document).ready(async () => {
@@ -753,9 +778,8 @@ function processarQrCode(qrCodeVal) {
     qrCodeVal = qrCodeVal.replace(/}}/g, '||');
     let partes = qrCodeVal.split('||');
     
-if (partes.length !== 2) {
+    if (partes.length !== 2) {
         tocarBipeErro(); 
-        // Substituído o alert() pelo modal
         $('#textoErroBipagem').html("Formato inválido! O padrão esperado é: <strong>OP||Material</strong>");
         $('#modalErroBipagem').modal('show');
         $('#inputQrCode').val('');
@@ -766,10 +790,8 @@ if (partes.length !== 2) {
     let materialLido = partes[1].trim();
     let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
     
-    // AQUI ESTÁ A MENSAGEM DA OP DIFERENTE QUE VOCÊ PEDIU:
     if (opLida !== opAtual) {
         tocarBipeErro(); 
-        // Substituído o alert() pelo modal, com cores para destacar as OPs
         $('#textoErroBipagem').html(`Atenção: Você bipou um material da OP <strong class="text-danger">${opLida}</strong>, mas está conferindo a OP <strong class="text-primary">${opAtual}</strong>!`);
         $('#modalErroBipagem').modal('show');
         $('#inputQrCode').val('');
@@ -790,21 +812,28 @@ if (partes.length !== 2) {
             return; 
         }
 
+        // 1. MARCA A LINHA DE VERDE
         linhaEncontrada.addClass('ja-conferido');
         linhaEncontrada.find('td').removeClass('bg-light').addClass('bg-success text-white fw-bold');
         linhaEncontrada.find('.text-primary').removeClass('text-primary').addClass('text-white');
-        linhaEncontrada[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
         
+        // 2. MOVE A LINHA PARA O FINAL DA TABELA
+        linhaEncontrada.detach().appendTo('#table-itens-conferencia tbody');
+
+        // 3. ROLA A TELA PARA O PRÓXIMO ITEM "A BIPAR"
+        let proximoItem = $('#table-itens-conferencia tbody tr:not(.ja-conferido)').first();
+        if (proximoItem.length > 0) {
+            proximoItem[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // ATUALIZA O CONTADOR
         let totalBipados = parseInt($('#contadorBipados').text()) + 1;
         $('#contadorBipados').text(totalBipados);
 
-        // Se o operador terminou de bipar todos os itens da tabela
+        // Verifica se finalizou
         let totalGeral = parseInt($('#contadorTotal').text());
         if (totalBipados === totalGeral) {
-            
-            tocarBipeSucesso(); // <--- CHAMA O SOM DE SUCESSO AQUI!
-            
-            // Abre o modal Bootstrap
+            tocarBipeSucesso(); 
             setTimeout(() => {
                 $('#modalSucesso').modal('show');
             }, 300);
@@ -812,34 +841,49 @@ if (partes.length !== 2) {
         
     } else {
         tocarBipeErro(); 
-        // Substituído o alert() pelo modal
         $('#textoErroBipagem').html(`O material <strong class="text-danger">${materialLido}</strong> não foi encontrado na lista desta OP!`);
         $('#modalErroBipagem').modal('show');
     }
 
-    $('#inputQrCode').val('');
+    $('#inputQrCode').val('').focus();
 }
 
 // ==========================================
-// EVENTOS PARA MANTER O FOCO NO BIPADOR
+// EVENTOS PARA MANTER O FOCO NO BIPADOR (MODO SCANNER)
 // ==========================================
 
-// Quando o modal de erro abre, foca no botão de voltar para facilitar o fechamento
+// Quando o modal de erro genérico abre/fecha
 $('#modalErroBipagem').on('shown.bs.modal', function () {
     $('#btnFecharErroBipagem').focus();
 });
-
-// Quando o modal de erro fecha, o cursor volta direto para o campo do QR Code
 $('#modalErroBipagem').on('hidden.bs.modal', function () {
     $('#inputQrCode').val('').focus();
 });
 
+// Quando o modal de confirmar exclusão abre/fecha
+$('#modalConfirmarExclusao').on('shown.bs.modal', function () {
+    $('#btnNaoExcluir').focus();
+});
+$('#modalConfirmarExclusao').on('hidden.bs.modal', function () {
+    $('#inputQrCode').val('').focus();
+});
+
+// ==========================================
+// FUNÇÕES DE AÇÕES DOS BOTÕES FINAIS
+// ==========================================
 
 function excluirBipagem() {
     if (linhaParaExcluir) {
+        // 1. Tira as cores verdes
         linhaParaExcluir.removeClass('ja-conferido');
         linhaParaExcluir.find('td').removeClass('bg-success text-white fw-bold').addClass('bg-light');
         linhaParaExcluir.find('span.text-white').removeClass('text-white').addClass('text-primary');
+
+        // 2. MOVE A LINHA DE VOLTA PARA O TOPO DA TABELA
+        linhaParaExcluir.detach().prependTo('#table-itens-conferencia tbody');
+        
+        // 3. Rola a tela de volta para essa linha
+        linhaParaExcluir[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         let totalBipados = parseInt($('#contadorBipados').text()) - 1;
         $('#contadorBipados').text(totalBipados);
@@ -850,18 +894,18 @@ function excluirBipagem() {
     $('#inputQrCode').val('').focus();
 }
 
-$('#modalConfirmarExclusao').on('shown.bs.modal', function () {
-    $('#btnNaoExcluir').focus();
-});
-
-$('#modalConfirmarExclusao').on('hidden.bs.modal', function () {
-    $('#inputQrCode').val('').focus();
-});
-
 function limparConferencia() {
     if (confirm("Tem certeza que deseja recomeçar a conferência? Todo o progresso será perdido.")) {
         let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
         ConsultarFilaConferencia_itens(opAtual);
+        
+        // Espera a tabela recarregar para devolver o foco
+        setTimeout(() => {
+            $('#inputQrCode').val('').focus();
+        }, 600);
+    } else {
+        // Se clicar em Cancelar, devolve o foco na mesma hora
+        $('#inputQrCode').val('').focus();
     }
 }
 
