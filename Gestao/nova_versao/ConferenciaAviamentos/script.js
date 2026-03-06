@@ -637,7 +637,8 @@ function TabelaItens(dados) {
         $('#table-itens-conferencia').DataTable().destroy();
     }
 
-    $('#table-itens-conferencia').DataTable({
+    // 1. Cria a tabela normalmente sem tentar pintar nada ainda
+    let table = $('#table-itens-conferencia').DataTable({
         data: dados, 
         searching: true, 
         paging: false, 
@@ -660,7 +661,7 @@ function TabelaItens(dados) {
             { targets: 5, width: "10%", className: "text-center align-middle" }  
         ],
         columns: [
-            { data: 'codProduto', defaultContent: '-' }, 
+            { data: 'numeroOP', defaultContent: '-' }, 
             { data: 'codMaterialEdt', defaultContent: '-' }, 
             { data: 'nomeMaterial', defaultContent: 'Sem descrição' }, 
             { data: 'localizacao', defaultContent: '-' }, 
@@ -680,9 +681,77 @@ function TabelaItens(dados) {
         }
     });
 
-    let totalLinhas = $('#table-itens-conferencia').DataTable().rows().count();
+    // ==========================================
+    // 2. MÁGICA DO CARREGAMENTO (PÓS-RENDERIZAÇÃO)
+    // ==========================================
+    let qtdJaConferidos = 0;
+    let totalLinhas = table.rows().count();
+
+    // Faz um loop por todas as linhas de forma segura pela API do DataTables
+    table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+        let data = this.data();
+        let tr = $(this.node()); // Pega a linha HTML (TR) real dessa iteração
+
+        // Verifica se a linha existe no HTML e se o status veio como 'Conferido' no JSON
+        if (tr.length > 0 && data.statusConferido && data.statusConferido.toString().trim().toLowerCase() === 'conferido') {
+            
+            // 1. Marca de verde (Mesma lógica do processarQrCode)
+            tr.addClass('ja-conferido');
+            tr.find('td').removeClass('bg-light').addClass('bg-success text-white fw-bold');
+            tr.find('.text-primary').removeClass('text-primary').addClass('text-white');
+            
+            // 2. Joga pro final da fila
+            tr.detach().appendTo('#table-itens-conferencia tbody');
+            
+            qtdJaConferidos++;
+        }
+    });
+
+    // ==========================================
+    // 3. ATUALIZA OS CONTADORES NA TELA
+    // ==========================================
     $('#contadorTotal').text(totalLinhas);
-    $('#contadorBipados').text('0'); 
+    $('#contadorBipados').text(qtdJaConferidos);
+
+    // Bônus: Se a OP abrir já 100% conferida, dispara o modal de sucesso na hora!
+    if (totalLinhas > 0 && qtdJaConferidos === totalLinhas) {
+        setTimeout(() => {
+            $('#modalSucesso').modal('show');
+        }, 500);
+    }
+}
+
+// ==========================================
+// SALVAMENTO ASSÍNCRONO NO BANCO (FIRE AND FORGET)
+// ==========================================
+
+function salvarItemConferidoAsync(numeroOP, codMaterial) {
+    
+    // Empacotando no formato exato que o requests.php espera ler:
+    // "acao" e "dados"
+    let payloadEnvio = {
+        acao: 'inserir_conferencia_itens_op',
+        dados: {
+            numeroOP: numeroOP,
+            codMaterial: codMaterial
+        }
+    };
+
+    $.ajax({
+        url: 'requests.php',
+        type: 'POST',
+        // ESTAS DUAS LINHAS SÃO OBRIGATÓRIAS POR CAUSA DO SEU 'php://input'
+        contentType: 'application/json', 
+        data: JSON.stringify(payloadEnvio), 
+        
+        dataType: 'json',
+        success: function(response) {
+            console.log(`[SUCESSO] Item ${codMaterial} da OP ${numeroOP} salvo!`, response);
+        },
+        error: function(xhr, status, error) {
+            console.error(`[ERRO BANCO] Falha ao salvar o item ${codMaterial}:`, error);
+        }
+    });
 }
 
 function Tabela(dados) {
@@ -801,7 +870,7 @@ function processarQrCode(qrCodeVal) {
     let chaveBuscada = opLida + '||' + materialLido;
     let linhaEncontrada = $(`#table-itens-conferencia tbody tr[data-chave="${chaveBuscada}"]`);
 
-    if (linhaEncontrada.length > 0) {
+if (linhaEncontrada.length > 0) {
         
         if (linhaEncontrada.hasClass('ja-conferido')) {
             tocarBipeErro(); 
@@ -817,6 +886,12 @@ function processarQrCode(qrCodeVal) {
         linhaEncontrada.find('td').removeClass('bg-light').addClass('bg-success text-white fw-bold');
         linhaEncontrada.find('.text-primary').removeClass('text-primary').addClass('text-white');
         
+        // ========================================================
+        // DISPARA O SALVAMENTO NO BANCO EM SEGUNDO PLANO AQUI!
+        // ========================================================
+        salvarItemConferidoAsync(opAtual, materialLido);
+
+
         // 2. MOVE A LINHA PARA O FINAL DA TABELA
         linhaEncontrada.detach().appendTo('#table-itens-conferencia tbody');
 

@@ -66,18 +66,13 @@ include_once('../../../templates/headerGestao.php');
     </div>
 
     <div class="d-flex align-items-center gap-2">
-        <button type="button" class="btn btn-warning btn-sm text-nowrap" onclick="imprimirSelecionados();">
-            <i class="bi bi-printer me-1"></i> Imprimir Etiquetas
-        </button>
-
-        <button type="button" class="btn btn-primary btn-sm text-nowrap" onclick="abrirModalInserirEndereco();">
-            <i class="bi bi-person-plus me-1"></i> Configurar Categorias
+        <button type="button" class="btn btn-primary btn-sm text-nowrap" onclick="$('#modalConfigurarItens').modal('show');">
+            <i class="bi bi-gear me-1"></i> Configurar Itens a Desconsiderar
         </button>
     </div>
 </div>
 
 <div id="container-cards" class="d-none d-flex flex-wrap gap-2 mt-3 p-2"></div>
-
 
 <div class="col-12 div-metas" style="background-color: lightgray; border-radius: 8px; padding: 10px;">
     
@@ -188,87 +183,56 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="modal fade" id="modalInserirEndereco" tabindex="-1" aria-labelledby="modalInserirEnderecoLabel" aria-hidden="true">
+<div class="modal fade" id="modalConfigurarItens" tabindex="-1" aria-labelledby="modalConfigurarItensLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header text-white" style="background-color: #003366;">
-                <h5 class="modal-title" id="modalInserirEnderecoLabel">
-                    <i class="bi bi-geo-alt-fill me-2"></i> Inserir Endereço
+                <h5 class="modal-title" id="modalConfigurarItensLabel">
+                    <i class="bi bi-node-minus-fill me-2"></i> Configurar Itens a Serem Desconsiderados
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
-            <div class="modal-body">
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="btn-group" role="group" aria-label="Tipo de Inserção">
-                        <input type="radio" class="btn-check" name="tipoInsercao" id="radioIndividual" value="individual" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary px-4" for="radioIndividual">Inserir Individual</label>
-
-                        <input type="radio" class="btn-check" name="tipoInsercao" id="radioMassa" value="massa" autocomplete="off">
-                        <label class="btn btn-outline-primary px-4" for="radioMassa">Inserir em Massa</label>
-                    </div>
+            <div class="modal-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-muted mb-0">Lista de materiais ignorados na conferência</h6>
+                    <button type="button" class="btn btn-sm btn-outline-primary shadow-sm" onclick="adicionarLinhaDesconsiderar()">
+                        <i class="bi bi-plus-lg me-1"></i> Adicionar Item
+                    </button>
                 </div>
 
-                <div id="section-individual">
-                    <h6 class="text-muted border-bottom pb-2 mb-3">Dados do Endereço</h6>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="indRua" class="form-label fw-bold">Rua</label>
-                            <input type="text" class="form-control" id="indRua" placeholder="Ex: A">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="indQuadra" class="form-label fw-bold">Quadra</label>
-                            <input type="text" class="form-control" id="indQuadra" placeholder="Ex: 01">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="indPosicao" class="form-label fw-bold">Posição</label>
-                            <input type="text" class="form-control" id="indPosicao" placeholder="Ex: 10">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="section-massa" class="d-none">
-                    <h6 class="text-muted border-bottom pb-2 mb-3">Intervalo de Endereços</h6>
-                    
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="masRuaIni" class="form-label fw-bold text-success">Rua Inicial</label>
-                            <input type="text" class="form-control border-success" id="masRuaIni" placeholder="Ex: A">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="masRuaFim" class="form-label fw-bold text-danger">Rua Final</label>
-                            <input type="text" class="form-control border-danger" id="masRuaFim" placeholder="Ex: D">
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="masQuadraIni" class="form-label fw-bold text-success">Quadra Inicial</label>
-                            <input type="text" class="form-control border-success" id="masQuadraIni" placeholder="Ex: 1">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="masQuadraFim" class="form-label fw-bold text-danger">Quadra Final</label>
-                            <input type="text" class="form-control border-danger" id="masQuadraFim" placeholder="Ex: 5">
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="masPosicaoIni" class="form-label fw-bold text-success">Posição Inicial</label>
-                            <input type="text" class="form-control border-success" id="masPosicaoIni" placeholder="Ex: 1">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="masPosicaoFim" class="form-label fw-bold text-danger">Posição Final</label>
-                            <input type="text" class="form-control border-danger" id="masPosicaoFim" placeholder="Ex: 20">
-                        </div>
-                    </div>
+                <div class="table-responsive shadow-sm" style="max-height: 400px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 6px;">
+                    <table class="table table-bordered table-striped mb-0" id="table-itens-desconsiderados">
+                        <thead style="position: sticky; top: 0; background-color: #e9ecef; z-index: 1;">
+                            <tr>
+                                <th style="width: 35%;" class="text-center">Código do Material</th>
+                                <th style="width: 55%;">Nome do Material</th>
+                                <th style="width: 10%; text-align: center;">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="align-middle p-2">
+                                    <input type="text" class="form-control form-control-sm text-center fw-bold input-cod-desconsiderar" placeholder="Código (Ex: 100100...)">
+                                </td>
+                                <td class="align-middle p-2">
+                                    <span class="text-muted label-nome-desconsiderar fst-italic">Aguardando código...</span>
+                                </td>
+                                <td class="text-center align-middle p-2">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerLinhaDesconsiderar(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success px-4" onclick="salvarEnderecos()">
-                    <i class="bi bi-save me-1"></i> Salvar
+            <div class="modal-footer justify-content-between bg-light">
+                <button type="button" class="btn btn-secondary px-4 shadow-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success px-4 shadow-sm" onclick="salvarItensDesconsiderados()">
+                    <i class="bi bi-save me-1"></i> Salvar Configuração
                 </button>
             </div>
         </div>
@@ -301,7 +265,6 @@ include_once('../../../templates/headerGestao.php');
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="modalConfirmarExclusao" tabindex="-1" aria-labelledby="modalConfirmarExclusaoLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
