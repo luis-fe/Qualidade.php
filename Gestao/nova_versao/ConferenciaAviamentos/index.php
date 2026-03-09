@@ -148,6 +148,12 @@ include_once('../../../templates/headerGestao.php');
                 <h5 class="modal-title" id="modalItensOPLabel">
                     <i class="bi bi-list-check me-2"></i> Conferência de Itens - OP: <span id="spanNumeroOP" class="fw-bold text-warning"></span>
                 </h5>
+
+                <div class="ms-auto me-4 text-end d-none d-sm-block" style="font-size: 0.9rem;">
+                    <i class="bi bi-person-check-fill text-info me-1"></i>
+                    <span id="modalOpNomeUsuario" class="fw-bold text-light"></span> 
+                    <span id="modalOpMatriculaUsuario" class="text-white-50 ms-1 small"></span>
+                </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             

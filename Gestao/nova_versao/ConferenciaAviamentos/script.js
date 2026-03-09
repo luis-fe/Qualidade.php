@@ -194,7 +194,6 @@ $('#inputMatriculaLogin').on('blur keypress', async function(e) {
     }
 });
 
-// Ação final: Quando clicar no botão "Acessar Sistema" (MANTÉM IGUAL)
 // Ação final: Quando clicar no botão "Acessar Sistema"
 $('#btnAcessarSistema').on('click', async function() {
     let matriculaFinal = $('#inputMatriculaLogin').val();
@@ -207,14 +206,19 @@ $('#btnAcessarSistema').on('click', async function() {
     };
 
     // ====================================================
-    // PREENCHE O CABEÇALHO COM OS DADOS DO USUÁRIO LOGADO
+    // PREENCHE O CABEÇALHO PRINCIPAL
     // ====================================================
-    // Pega apenas o primeiro nome para não quebrar o layout da barra superior
     let primeiroNome = nomeFinal.split(' ')[0]; 
     
     $('#header-nome-usuario').text(primeiroNome);
     $('#header-matricula-usuario').text('Mat: ' + matriculaFinal);
-    $('#info-usuario-logado').removeClass('d-none'); // Exibe a informação
+    $('#info-usuario-logado').removeClass('d-none'); 
+
+    // ====================================================
+    // PREENCHE O CABEÇALHO DO MODAL DA OP (NOVO)
+    // ====================================================
+    $('#modalOpNomeUsuario').text(nomeFinal); // Aqui deixei o nome completo
+    $('#modalOpMatriculaUsuario').text('(' + matriculaFinal + ')');
     // ====================================================
 
     // Fecha a trava e carrega os dados da tabela
@@ -1336,11 +1340,57 @@ function limparConferencia() {
     }
 }
 
-function efetivarConferencia() {
+async function efetivarConferencia() {
+    // 1. Pega o número da OP e a matrícula do usuário logado
     let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
-    console.log(`Efetivando conferência da OP: ${opAtual}`);
-    
-    alert("Função de efetivação disparada! Coloque sua requisição AJAX aqui.");
-    $('#modalSucesso').modal('hide');
-    $('#modalItensOP').modal('hide');
+    let matriculaUsuario = window.usuarioAtivo ? window.usuarioAtivo.matricula : '';
+
+    // Trava de segurança caso a matrícula tenha se perdido
+    if (!matriculaUsuario) {
+        alert("Erro: Identificação do usuário não encontrada. Por favor, atualize a página e informe a matrícula novamente.");
+        return;
+    }
+
+    console.log(`Efetivando conferência da OP: ${opAtual} pelo usuário: ${matriculaUsuario}`);
+
+    // 2. Monta o corpo da requisição exatamente como você pediu
+    let payloadEnvio = {
+        acao: 'finalizar_conferencia',
+        dados: {
+            codMatricula: matriculaUsuario,
+            numeroOP: opAtual
+        }
+    };
+
+    // 3. Pega o botão do modal de sucesso para dar feedback visual
+    let btnEfetivar = $('#modalSucesso .btn-success');
+    let textoOriginalBtn = btnEfetivar.html();
+    btnEfetivar.html('<i class="bi bi-hourglass-split me-1"></i> Finalizando...').prop('disabled', true);
+
+    try {
+        // 4. Dispara a requisição POST para o requests.php
+        const response = await $.ajax({
+            url: 'requests.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payloadEnvio),
+            dataType: 'json'
+        });
+
+        // 5. Sucesso!
+        alert("Conferência da OP " + opAtual + " finalizada com sucesso!");
+        
+        // Fecha os modais e volta os botões ao normal
+        btnEfetivar.html(textoOriginalBtn).prop('disabled', false);
+        $('#modalSucesso').modal('hide');
+        $('#modalItensOP').modal('hide');
+
+        // 6. Atualiza a tabela principal de OPs (para a OP recém finalizada sumir da fila ou mudar de fase)
+        await ConsultarFilaConferencia();
+
+    } catch (error) {
+        console.error('Erro ao efetivar conferência:', error);
+        alert('Erro ao comunicar com o servidor. A OP pode não ter sido finalizada no banco de dados.');
+        btnEfetivar.html(textoOriginalBtn).prop('disabled', false);
+    }
 }
