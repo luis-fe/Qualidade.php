@@ -133,12 +133,20 @@
 
   <div class="sidebar-overlay" id="overlay"></div>
 
-  <nav class="navbar d-flex align-items-center">
+<nav class="navbar d-flex align-items-center">
     <i class="fa-solid fa-bars" id="btn-menu"></i>
+    
     <div class="titulo-plataforma d-none d-sm-block">
       PLATAFORMA DE GESTÃO INDUSTRIAL
     </div>
-    <i class="bi bi-person-circle" id="btn-user"></i>
+    
+    <div class="d-flex align-items-center">
+        <div id="info-usuario-logado" class="text-white me-2 text-end d-none" style="font-size: 0.85rem; line-height: 1.1;">
+            <span id="header-nome-usuario" class="fw-bold d-block"></span>
+            <span id="header-matricula-usuario" class="text-white-50" style="font-size: 0.75rem;"></span>
+        </div>
+        <i class="bi bi-person-circle" id="btn-user" style="font-size: 1.8rem; margin-top: -2px;"></i>
+    </div>
   </nav>
 
   <div id="sidebar">

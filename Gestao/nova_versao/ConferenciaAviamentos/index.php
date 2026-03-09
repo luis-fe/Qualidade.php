@@ -1,5 +1,4 @@
 <?php
-include_once('requests.php');
 include_once("../../../templates/LoadingGestao.php");
 include_once('../../../templates/headerGestao.php');
 ?>
@@ -110,6 +109,38 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
+<div class="modal fade" id="modalLoginMatricula" tabindex="-1" aria-labelledby="modalLoginMatriculaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border: 2px solid #003366;">
+            <div class="modal-header text-white" style="background-color: #003366;">
+                <h5 class="modal-title" id="modalLoginMatriculaLabel">
+                    <i class="bi bi-person-badge me-2"></i> Identificação Necessária
+                </h5>
+            </div>
+            
+            <div class="modal-body text-center p-4">
+                <i class="bi bi-shield-lock text-secondary mb-3" style="font-size: 3rem;"></i>
+                <p class="text-muted mb-4">Informe sua matrícula para liberar os recursos do sistema.</p>
+                
+                <div class="form-group mb-4 px-3 text-start">
+                    <label for="inputMatriculaLogin" class="fw-bold mb-1 text-primary">Matrícula:</label>
+                    <input type="text" id="inputMatriculaLogin" class="form-control form-control-lg text-center fw-bold shadow-sm" placeholder="Ex: 12345" autocomplete="off">
+                </div>
+                
+                <div class="text-center mb-2" style="min-height: 30px;">
+                    <span id="labelNomeOperador" class="fs-5 text-muted fst-italic">Aguardando digitação...</span>
+                </div>
+            </div>
+            
+            <div class="modal-footer justify-content-center bg-light">
+                <button type="button" id="btnAcessarSistema" class="btn btn-success btn-lg px-5 shadow-sm" disabled>
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Acessar Sistema
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalItensOP" tabindex="-1" aria-labelledby="modalItensOPLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
@@ -184,7 +215,7 @@ include_once('../../../templates/headerGestao.php');
 </div>
 
 <div class="modal fade" id="modalConfigurarItens" tabindex="-1" aria-labelledby="modalConfigurarItensLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header text-white" style="background-color: #003366;">
                 <h5 class="modal-title" id="modalConfigurarItensLabel">
@@ -202,29 +233,16 @@ include_once('../../../templates/headerGestao.php');
                 </div>
 
                 <div class="table-responsive shadow-sm" style="max-height: 400px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 6px;">
-                    <table class="table table-bordered table-striped mb-0" id="table-itens-desconsiderados">
+                    <table class="table table-bordered table-striped mb-0 text-nowrap" id="table-itens-desconsiderados">
                         <thead style="position: sticky; top: 0; background-color: #e9ecef; z-index: 1;">
                             <tr>
-                                <th style="width: 35%;" class="text-center">Código do Material</th>
-                                <th style="width: 55%;">Nome do Material</th>
-                                <th style="width: 10%; text-align: center;">Ação</th>
+                                <th class="text-center">Código do Material</th>
+                                <th>Nome do Material</th>
+                                <th class="text-center">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="align-middle p-2">
-                                    <input type="text" class="form-control form-control-sm text-center fw-bold input-cod-desconsiderar" placeholder="Código (Ex: 100100...)">
-                                </td>
-                                <td class="align-middle p-2">
-                                    <span class="text-muted label-nome-desconsiderar fst-italic">Aguardando código...</span>
-                                </td>
-                                <td class="text-center align-middle p-2">
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerLinhaDesconsiderar(this)">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>

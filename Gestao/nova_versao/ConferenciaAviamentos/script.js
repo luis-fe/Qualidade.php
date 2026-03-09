@@ -7,7 +7,7 @@ let linhaParaExcluir = null;
 // Variáveis para o áudio de alta performance
 let audioCtx = null;
 let bufferErro = null;
-let bufferSucesso = null; // <-- Nova variável para o som de sucesso
+let bufferSucesso = null; 
 
 // 1. Pré-carrega os áudios diretamente na memória RAM (Zero Delay)
 async function carregarAudioNaMemoria() {
@@ -70,7 +70,7 @@ $('#inputQrCode').on('blur', function() {
             
             $('#inputQrCode').focus();
         }
-    }, 150); // 150ms é o tempo exato para permitir que cliques em botões funcionem antes de roubar o foco
+    }, 150); 
 });
 
 // Mantém o foco na tela inteira (se o cara clicar no fundo cinza da tela, volta pro input)
@@ -81,12 +81,19 @@ $('#modalItensOP').on('click', function(e) {
 });
 
 // ==========================================
-// INICIALIZAÇÃO DA PÁGINA
+// INICIALIZAÇÃO DA PÁGINA E MODAL MATRÍCULA
 // ==========================================
 $(document).ready(async () => {
-    await ConsultarFilaConferencia();
+    
+    // 1. Trava a tela e mostra o modal de matrícula logo que a página carrega
+    $('#modalLoginMatricula').modal('show');
+    
+    // 2. Coloca o foco no input automaticamente para o usuário não precisar clicar
+    setTimeout(() => {
+        $('#inputMatriculaLogin').focus();
+    }, 500);
 
-    // 1. Captura a descrição e junta no título do modal
+    // 3. Captura a descrição e junta no título do modal (Tabela Principal)
     $('#table-metas tbody').on('click', 'button.btn-abrir-modal', function() {
         let numeroOP = $(this).attr('data-op');
         let descricao = $(this).attr('data-descricao'); 
@@ -123,28 +130,114 @@ $(document).ready(async () => {
     });
 }); // <--- O $(document).ready FECHA AQUI
 
+
+// ==========================================
+// LÓGICA DO MODAL DE IDENTIFICAÇÃO (MATRÍCULA)
+// ==========================================
+$('#inputMatriculaLogin').on('blur keypress', async function(e) {
+    // Se for evento de teclado, só faz algo se for a tecla Enter (13)
+    if (e.type === 'keypress' && e.which !== 13) return; 
+    if (e.type === 'keypress') e.preventDefault();
+
+    let matricula = $(this).val().trim();
+    let labelNome = $('#labelNomeOperador');
+    let btnAcessar = $('#btnAcessarSistema');
+
+    if (matricula === '') {
+        labelNome.text('Aguardando digitação...').removeClass('text-dark text-danger fw-bold').addClass('text-muted fst-italic');
+        btnAcessar.prop('disabled', true);
+        return;
+    }
+
+    // Feedback visual de carregamento
+    labelNome.html('<i class="bi bi-hourglass-split"></i> Buscando...').removeClass('text-danger text-muted').addClass('text-primary');
+    btnAcessar.prop('disabled', true);
+
+    try {
+        // 1. Faz a requisição real para a sua API via requests.php
+        const response = await $.ajax({
+            url: 'requests.php',
+            type: 'GET',
+            dataType: 'json',
+            data: { 
+                acao: 'Consultar_Usuarios',
+                codEmpresa: '1' // <--- FALTAVA ISSO AQUI!
+            }
+        });
+        
+        let nomeEncontrado = null;
+
+        // 2. Verifica se a API retornou um Array de usuários válido
+        if (response && Array.isArray(response)) {
+            
+            // 3. Procura na lista o usuário com a matrícula exata
+            // Convertendo ambos para String para garantir que "1" bata com 1
+            const usuario = response.find(u => String(u.codMatricula) === String(matricula));
+            
+            if (usuario) {
+                nomeEncontrado = usuario.nomeUsuario;
+            }
+        }
+
+        // 4. Valida se achou o nome e atualiza a interface
+        if (nomeEncontrado) {
+            labelNome.text(nomeEncontrado).removeClass('text-primary text-muted fst-italic').addClass('text-dark fw-bold');
+            btnAcessar.prop('disabled', false).focus(); // Foca no botão Acessar
+        } else {
+            labelNome.text('Matrícula não encontrada!').removeClass('text-primary text-muted').addClass('text-danger fw-bold');
+            btnAcessar.prop('disabled', true);
+        }
+
+    } catch (error) {
+        console.error("Erro ao validar matrícula:", error);
+        labelNome.text('Erro na conexão com a API.').removeClass('text-primary text-muted').addClass('text-danger fw-bold');
+    }
+});
+
+// Ação final: Quando clicar no botão "Acessar Sistema" (MANTÉM IGUAL)
+// Ação final: Quando clicar no botão "Acessar Sistema"
+$('#btnAcessarSistema').on('click', async function() {
+    let matriculaFinal = $('#inputMatriculaLogin').val();
+    let nomeFinal = $('#labelNomeOperador').text();
+    
+    // Guarda em variável global
+    window.usuarioAtivo = {
+        matricula: matriculaFinal,
+        nome: nomeFinal
+    };
+
+    // ====================================================
+    // PREENCHE O CABEÇALHO COM OS DADOS DO USUÁRIO LOGADO
+    // ====================================================
+    // Pega apenas o primeiro nome para não quebrar o layout da barra superior
+    let primeiroNome = nomeFinal.split(' ')[0]; 
+    
+    $('#header-nome-usuario').text(primeiroNome);
+    $('#header-matricula-usuario').text('Mat: ' + matriculaFinal);
+    $('#info-usuario-logado').removeClass('d-none'); // Exibe a informação
+    // ====================================================
+
+    // Fecha a trava e carrega os dados da tabela
+    $('#modalLoginMatricula').modal('hide');
+    await ConsultarFilaConferencia();
+});
+
 // ==========================================
 // FUNÇÕES DE UTILIDADE E FORMATAÇÃO
 // ==========================================
 
-// Converte "61.644" ou "1.000,50" para número de computador
 function converterParaFloat(valor) {
     if (valor === null || valor === undefined || valor === '') return 0;
     if (typeof valor === 'number') return valor; 
-    
+
     let texto = valor.toString().trim();
-    
-    // 1. Remove TODOS os pontos
     texto = texto.replace(/\./g, ''); 
-    
-    // 2. Transforma a vírgula no ponto decimal
     texto = texto.replace(',', '.');  
-    
+
     let numero = parseFloat(texto);
     return isNaN(numero) ? 0 : numero;
 }
 
-// Converte 1000.50 para "1.000,50" 
 function formatarParaPtBr(valor) {
     if (isNaN(valor) || valor === null) return "0";
     return valor.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
@@ -284,7 +377,7 @@ function calcularSaldoEnderecado(cod) {
     spanAPreparar.text(formatarParaPtBr(aPreparar));
 
     spanAPreparar.removeClass('text-success text-secondary text-danger');
-    
+
     if (aPreparar < 0) {
         spanAPreparar.addClass('text-danger'); 
     } else if (aPreparar === 0) {
@@ -316,7 +409,7 @@ async function salvarConfigKit(codID, btnElement) {
         alert(`Atenção: A quantidade preparada (${formatarParaPtBr(totalPreparado)}) não pode ser maior que o Saldo disponível (${formatarParaPtBr(saldoOriginal)}).`);
         return;
     }
-    
+
     let totalKitsParaImprimir = k1_q + k2_q + k3_q;
     if (totalKitsParaImprimir <= 0) {
         alert("Atenção: Você precisa preencher a quantidade de pelo menos 1 Kit (1, 2 ou 3) para imprimir as etiquetas.");
@@ -327,7 +420,7 @@ async function salvarConfigKit(codID, btnElement) {
     let descricao = $(btnElement).attr('data-nome') || '';
     let fornecedor = $(btnElement).attr('data-forn') || '';
     let unidade = $(btnElement).attr('data-unidade') || ''; 
-    
+
     if (fornecedor.length > 12) {
         fornecedor = fornecedor.substring(0, 12);
     }
@@ -611,6 +704,304 @@ const ConsultarFilaConferencia = async () => {
     }
 };
 
+// ==========================================
+// CARREGAR ITENS DESCONSIDERADOS E LÓGICA DO MODAL
+// ==========================================
+async function carregarItensDesconsiderados() {
+    const tbody = $('#table-itens-desconsiderados tbody');
+
+    // Coloca uma mensagem de "Carregando" na tabela para o usuário saber que está buscando
+    tbody.html('<tr><td colspan="3" class="text-center text-muted p-3"><i class="bi bi-hourglass-split me-2"></i>Carregando itens...</td></tr>');
+
+    try {
+        const response = await $.ajax({
+            url: 'requests.php',
+            type: 'GET',
+            dataType: 'json',
+            data: { acao: 'get_obter_itens_configurados' }
+        });
+
+        tbody.empty(); // Limpa a mensagem de carregando
+
+        // Se a API retornou dados e é um array com itens
+        if (response && Array.isArray(response) && response.length > 0) {
+            
+            response.forEach(item => {
+                let cod = item.codMaterialEdt || item.codMaterial || item.codigo || item.codProduto || '';
+                let nome = item.nomeMaterial || item.descricao || item.nome || 'Sem descrição vinculada';
+
+                const linha = `
+                    <tr>
+                        <td class="align-middle p-2 text-center">
+                            <span class="fw-bold text-primary fs-6 span-codigo">${cod}</span>
+                            <input type="text" class="form-control form-control-sm text-center fw-bold input-cod-desconsiderar d-none" value="${cod}" placeholder="Código (Ex: 100100...)">
+                        </td>
+                        <td class="align-middle p-2">
+                            <span class="text-dark fw-bold label-nome-desconsiderar">${nome}</span>
+                        </td>
+                        <td class="text-center align-middle p-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="editarLinhaDesconsiderar(this)" title="Editar Código">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerLinhaDesconsiderar(this)" title="Excluir">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(linha);
+            });
+            
+        } else {
+            // Se o banco retornar vazio, apenas adiciona a linha padrão em branco
+            adicionarLinhaDesconsiderar();
+        }
+
+    } catch (error) {
+        console.error("Erro ao carregar itens desconsiderados do banco:", error);
+        tbody.html('<tr><td colspan="3" class="text-center text-danger p-3"><i class="bi bi-exclamation-triangle me-2"></i>Erro ao carregar dados.</td></tr>');
+        
+        // Deixa uma linha em branco pro cara tentar usar mesmo com erro
+        setTimeout(() => {
+            tbody.empty();
+            adicionarLinhaDesconsiderar();
+        }, 2000);
+    }
+}
+
+// Dispara o carregamento toda vez que o modal for aberto
+$('#modalConfigurarItens').on('show.bs.modal', function () {
+    carregarItensDesconsiderados();
+});
+
+function adicionarLinhaDesconsiderar() {
+    const novaLinha = `
+        <tr>
+            <td class="align-middle p-2 text-center">
+                <span class="fw-bold text-primary fs-6 span-codigo d-none"></span>
+                <input type="text" class="form-control form-control-sm text-center fw-bold input-cod-desconsiderar border-primary shadow-sm" placeholder="Digite o Código...">
+            </td>
+                <td class="align-middle p-2">
+                    <span class="text-muted label-nome-desconsiderar fst-italic">Aguardando código...</span>
+                </td>
+                <td class="text-center align-middle p-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="editarLinhaDesconsiderar(this)" title="Editar Código">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removerLinhaDesconsiderar(this)" title="Excluir">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        
+        // Insere a nova linha no topo da tabela e já coloca o foco no input
+        $('#table-itens-desconsiderados tbody').prepend(novaLinha);
+        $('#table-itens-desconsiderados tbody tr:first-child .input-cod-desconsiderar').focus();
+}
+
+function editarLinhaDesconsiderar(botao) {
+    let linha = $(botao).closest('tr');
+    let spanCodigo = linha.find('.span-codigo');
+    let inputCodigo = linha.find('.input-cod-desconsiderar');
+    
+    // Esconde a label e mostra o input, focando o cursor nele
+    spanCodigo.addClass('d-none');
+    inputCodigo.removeClass('d-none').addClass('border-primary shadow-sm').focus();
+}
+
+async function removerLinhaDesconsiderar(botao) {
+    let linha = $(botao).closest('tr');
+    let inputCodigo = linha.find('.input-cod-desconsiderar');
+    let codMaterial = inputCodigo.val().trim();
+
+    // 1. Se o input estiver vazio, significa que a linha nem foi salva no banco ainda.
+    if (codMaterial === '') {
+        removerLinhaVisualmente(linha);
+        return;
+    }
+
+    // 2. Confirmação de segurança 
+    if (!confirm(`Deseja realmente remover o material ${codMaterial} da lista de desconsiderados?`)) {
+        return;
+    }
+
+    // 3. Prepara o botão: Guarda o ícone original e coloca um "Carregando..."
+    let iconeOriginal = $(botao).html();
+    $(botao).html('<i class="bi bi-hourglass-split"></i>').prop('disabled', true);
+
+    // 4. Monta o corpo da requisição 
+    let payloadEnvio = {
+        acao: 'remover_item_considerado',
+        dados: {
+            codMaterial: codMaterial
+        }
+    };
+
+    try {
+        // 5. Faz a chamada POST para o requests.php
+        const response = await $.ajax({
+            url: 'requests.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payloadEnvio),
+            dataType: 'json'
+        });
+
+        // 6. Sucesso! A API excluiu, então agora removemos a linha da tela
+        removerLinhaVisualmente(linha);
+
+    } catch (error) {
+        console.error('Erro ao remover item:', error);
+        alert('Erro ao comunicar com o servidor. O item pode não ter sido removido.');
+        // Restaura o botão em caso de erro
+        $(botao).html(iconeOriginal).prop('disabled', false);
+    }
+}
+
+function removerLinhaVisualmente(linha) {
+    // Evita excluir a última linha restante na tabela para o visual não quebrar
+    if ($('#table-itens-desconsiderados tbody tr').length > 1) {
+        linha.remove();
+    } else {
+        // Se for a última linha, apenas limpa os dados
+        linha.find('input').val('');
+        linha.find('span.span-codigo').text('').addClass('d-none');
+        linha.find('input').removeClass('d-none border-primary shadow-sm'); 
+        linha.find('span.label-nome-desconsiderar').text('Aguardando código...').addClass('fst-italic text-muted').removeClass('text-dark fw-bold');
+    }
+}
+
+// Eventos para buscar nome na API ao digitar o código (blur / Enter)
+$('#table-itens-desconsiderados').on('blur', '.input-cod-desconsiderar', async function() {
+    let input = $(this);
+    let span = input.siblings('.span-codigo');
+    let linha = input.closest('tr');
+    let labelNome = linha.find('.label-nome-desconsiderar');
+    let valor = input.val().trim();
+
+    // Só avança se ele tiver digitado algo
+    if (valor !== '') {
+        // 1. Alterna visualmente para texto
+        span.text(valor).removeClass('d-none');
+        input.addClass('d-none').removeClass('border-primary shadow-sm');
+
+        // 2. Coloca o status de "Buscando..."
+        labelNome.removeClass('fst-italic text-muted text-danger')
+                 .addClass('text-dark fw-bold')
+                 .html('<i class="bi bi-hourglass-split me-1 text-primary"></i>Buscando...');
+
+        try {
+            // 3. Faz a requisição na API
+            const response = await $.ajax({
+                url: 'requests.php',
+                type: 'GET',
+                dataType: 'json',
+                data: { 
+                    acao: 'get_obter_nome_material',
+                    codMaterial: valor 
+                }
+            });
+
+            // 4. Lida com a resposta
+            let nomeEncontrado = "Material não encontrado";
+            
+            if (response) {
+                if (Array.isArray(response) && response.length > 0) {
+                    let primeiroItem = response[0];
+                    if (primeiroItem.nomeMaterial) {
+                        nomeEncontrado = primeiroItem.nomeMaterial;
+                    } else if (primeiroItem.descricao) {
+                        nomeEncontrado = primeiroItem.descricao;
+                    }
+                } 
+                else if (!Array.isArray(response) && response.nomeMaterial) {
+                    nomeEncontrado = response.nomeMaterial;
+                } 
+                else if (typeof response === 'string' && response.trim() !== '') {
+                    nomeEncontrado = response;
+                }
+            }
+            
+            // 5. Atualiza a tela com o resultado final
+            if (nomeEncontrado === "Material não encontrado" || nomeEncontrado === "Não encontrado") {
+                labelNome.removeClass('text-dark').addClass('text-danger').text("Material não encontrado");
+            } else {
+                labelNome.removeClass('text-danger').addClass('text-dark').text(nomeEncontrado);
+            }
+
+        } catch (error) {
+            console.error('Erro ao buscar nome do material:', error);
+            labelNome.removeClass('text-dark').addClass('text-danger').html('<i class="bi bi-exclamation-triangle me-1"></i>Erro na busca');
+        }
+    }
+});
+
+$('#table-itens-desconsiderados').on('keypress', '.input-cod-desconsiderar', function(e) {
+    if (e.which === 13) { // 13 é o código da tecla Enter
+        e.preventDefault();
+        $(this).blur(); // Dispara o evento de blur acima
+    }
+});
+
+// ==========================================
+// SALVAR ITENS DESCONSIDERADOS (POST LINHA A LINHA)
+// ==========================================
+async function salvarItensDesconsiderados() {
+    let codigos = [];
+    
+    // 1. Varre todos os inputs da tabela para pegar os códigos preenchidos
+    $('.input-cod-desconsiderar').each(function() {
+        let valor = $(this).val().trim();
+        if(valor !== '') {
+            codigos.push(valor); // Guarda só os inputs que não estão vazios
+        }
+    });
+
+    if (codigos.length === 0) {
+        alert("Atenção: A lista está vazia. Adicione pelo menos um código para salvar.");
+        return;
+    }
+
+    let btnSalvar = $('#modalConfigurarItens .btn-success');
+    let textoOriginal = btnSalvar.html();
+
+    try {
+        // 2. Muda o texto do botão para dar um feedback visual e trava ele
+        btnSalvar.html('<i class="bi bi-hourglass-split me-1"></i> Salvando...').prop('disabled', true);
+
+        // 3. Loop: Dispara uma requisição POST separada para CADA código encontrado
+        for (let codigo of codigos) {
+            
+            let payloadEnvio = {
+                acao: 'inserir_material_desconsiderar_conf', 
+                dados: {
+                    codMaterial: codigo
+                }
+            };
+
+            // Espera salvar a linha atual antes de passar para a próxima
+            await $.ajax({
+                url: 'requests.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payloadEnvio),
+                dataType: 'json'
+            });
+        }
+
+        // 4. Se o loop terminou sem cair no catch, tudo deu certo
+        btnSalvar.html(textoOriginal).prop('disabled', false);
+        alert("Itens desconsiderados salvos com sucesso!");
+        $('#modalConfigurarItens').modal('hide');
+
+    } catch (error) {
+        console.error('Erro ao salvar itens desconsiderados:', error);
+        alert('Erro ao comunicar com o servidor. Alguns itens podem não ter sido salvos.');
+        btnSalvar.html(textoOriginal).prop('disabled', false);
+    }
+}
+
 const ConsultarFilaConferencia_itens = async (numeroOP) => {
     try {
         $('#loadingModal').modal('show');
@@ -637,7 +1028,6 @@ function TabelaItens(dados) {
         $('#table-itens-conferencia').DataTable().destroy();
     }
 
-    // 1. Cria a tabela normalmente sem tentar pintar nada ainda
     let table = $('#table-itens-conferencia').DataTable({
         data: dados, 
         searching: true, 
@@ -681,39 +1071,30 @@ function TabelaItens(dados) {
         }
     });
 
-    // ==========================================
-    // 2. MÁGICA DO CARREGAMENTO (PÓS-RENDERIZAÇÃO)
-    // ==========================================
+    // MÁGICA DO CARREGAMENTO (PÓS-RENDERIZAÇÃO)
     let qtdJaConferidos = 0;
     let totalLinhas = table.rows().count();
 
-    // Faz um loop por todas as linhas de forma segura pela API do DataTables
     table.rows().every(function (rowIdx, tableLoop, rowLoop) {
         let data = this.data();
-        let tr = $(this.node()); // Pega a linha HTML (TR) real dessa iteração
+        let tr = $(this.node()); 
 
-        // Verifica se a linha existe no HTML e se o status veio como 'Conferido' no JSON
         if (tr.length > 0 && data.statusConferido && data.statusConferido.toString().trim().toLowerCase() === 'conferido') {
             
-            // 1. Marca de verde (Mesma lógica do processarQrCode)
             tr.addClass('ja-conferido');
             tr.find('td').removeClass('bg-light').addClass('bg-success text-white fw-bold');
             tr.find('.text-primary').removeClass('text-primary').addClass('text-white');
             
-            // 2. Joga pro final da fila
             tr.detach().appendTo('#table-itens-conferencia tbody');
             
             qtdJaConferidos++;
         }
     });
 
-    // ==========================================
-    // 3. ATUALIZA OS CONTADORES NA TELA
-    // ==========================================
+    // ATUALIZA OS CONTADORES NA TELA
     $('#contadorTotal').text(totalLinhas);
     $('#contadorBipados').text(qtdJaConferidos);
 
-    // Bônus: Se a OP abrir já 100% conferida, dispara o modal de sucesso na hora!
     if (totalLinhas > 0 && qtdJaConferidos === totalLinhas) {
         setTimeout(() => {
             $('#modalSucesso').modal('show');
@@ -726,9 +1107,6 @@ function TabelaItens(dados) {
 // ==========================================
 
 function salvarItemConferidoAsync(numeroOP, codMaterial) {
-    
-    // Empacotando no formato exato que o requests.php espera ler:
-    // "acao" e "dados"
     let payloadEnvio = {
         acao: 'inserir_conferencia_itens_op',
         dados: {
@@ -740,10 +1118,8 @@ function salvarItemConferidoAsync(numeroOP, codMaterial) {
     $.ajax({
         url: 'requests.php',
         type: 'POST',
-        // ESTAS DUAS LINHAS SÃO OBRIGATÓRIAS POR CAUSA DO SEU 'php://input'
         contentType: 'application/json', 
         data: JSON.stringify(payloadEnvio), 
-        
         dataType: 'json',
         success: function(response) {
             console.log(`[SUCESSO] Item ${codMaterial} da OP ${numeroOP} salvo!`, response);
@@ -776,7 +1152,7 @@ function Tabela(dados) {
             { data: 'prioridade' },      
             { data: 'FaseAtual' },   
             { data: 'separador' },  
-            {                     
+            {                    
                 data: null,
                 orderable: false,
                 searchable: false,
@@ -870,7 +1246,7 @@ function processarQrCode(qrCodeVal) {
     let chaveBuscada = opLida + '||' + materialLido;
     let linhaEncontrada = $(`#table-itens-conferencia tbody tr[data-chave="${chaveBuscada}"]`);
 
-if (linhaEncontrada.length > 0) {
+    if (linhaEncontrada.length > 0) {
         
         if (linhaEncontrada.hasClass('ja-conferido')) {
             tocarBipeErro(); 
@@ -881,31 +1257,22 @@ if (linhaEncontrada.length > 0) {
             return; 
         }
 
-        // 1. MARCA A LINHA DE VERDE
         linhaEncontrada.addClass('ja-conferido');
         linhaEncontrada.find('td').removeClass('bg-light').addClass('bg-success text-white fw-bold');
         linhaEncontrada.find('.text-primary').removeClass('text-primary').addClass('text-white');
         
-        // ========================================================
-        // DISPARA O SALVAMENTO NO BANCO EM SEGUNDO PLANO AQUI!
-        // ========================================================
         salvarItemConferidoAsync(opAtual, materialLido);
 
-
-        // 2. MOVE A LINHA PARA O FINAL DA TABELA
         linhaEncontrada.detach().appendTo('#table-itens-conferencia tbody');
 
-        // 3. ROLA A TELA PARA O PRÓXIMO ITEM "A BIPAR"
         let proximoItem = $('#table-itens-conferencia tbody tr:not(.ja-conferido)').first();
         if (proximoItem.length > 0) {
             proximoItem[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         
-        // ATUALIZA O CONTADOR
         let totalBipados = parseInt($('#contadorBipados').text()) + 1;
         $('#contadorBipados').text(totalBipados);
 
-        // Verifica se finalizou
         let totalGeral = parseInt($('#contadorTotal').text());
         if (totalBipados === totalGeral) {
             tocarBipeSucesso(); 
@@ -923,11 +1290,6 @@ if (linhaEncontrada.length > 0) {
     $('#inputQrCode').val('').focus();
 }
 
-// ==========================================
-// EVENTOS PARA MANTER O FOCO NO BIPADOR (MODO SCANNER)
-// ==========================================
-
-// Quando o modal de erro genérico abre/fecha
 $('#modalErroBipagem').on('shown.bs.modal', function () {
     $('#btnFecharErroBipagem').focus();
 });
@@ -935,7 +1297,6 @@ $('#modalErroBipagem').on('hidden.bs.modal', function () {
     $('#inputQrCode').val('').focus();
 });
 
-// Quando o modal de confirmar exclusão abre/fecha
 $('#modalConfirmarExclusao').on('shown.bs.modal', function () {
     $('#btnNaoExcluir').focus();
 });
@@ -943,21 +1304,14 @@ $('#modalConfirmarExclusao').on('hidden.bs.modal', function () {
     $('#inputQrCode').val('').focus();
 });
 
-// ==========================================
-// FUNÇÕES DE AÇÕES DOS BOTÕES FINAIS
-// ==========================================
-
 function excluirBipagem() {
     if (linhaParaExcluir) {
-        // 1. Tira as cores verdes
         linhaParaExcluir.removeClass('ja-conferido');
         linhaParaExcluir.find('td').removeClass('bg-success text-white fw-bold').addClass('bg-light');
         linhaParaExcluir.find('span.text-white').removeClass('text-white').addClass('text-primary');
 
-        // 2. MOVE A LINHA DE VOLTA PARA O TOPO DA TABELA
         linhaParaExcluir.detach().prependTo('#table-itens-conferencia tbody');
         
-        // 3. Rola a tela de volta para essa linha
         linhaParaExcluir[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         let totalBipados = parseInt($('#contadorBipados').text()) - 1;
@@ -974,12 +1328,10 @@ function limparConferencia() {
         let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
         ConsultarFilaConferencia_itens(opAtual);
         
-        // Espera a tabela recarregar para devolver o foco
         setTimeout(() => {
             $('#inputQrCode').val('').focus();
         }, 600);
     } else {
-        // Se clicar em Cancelar, devolve o foco na mesma hora
         $('#inputQrCode').val('').focus();
     }
 }
