@@ -1,15 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Elementos da interface
+    // ================= ELEMENTOS DA INTERFACE =================
     const step1 = document.getElementById('step-1');
     const step2Kit = document.getElementById('step-2-kit');
+    const step2Unidade = document.getElementById('step-2-unidade');
+    const mainCard = document.getElementById('main-card');
+    
     const inputEndereco = document.getElementById('endereco');
     const displayEndereco = document.getElementById('display-endereco');
+    const displayEnderecoUnidade = document.getElementById('display-endereco-unidade');
+    
     const inputCodigoKit = document.getElementById('codigo-kit');
     const listaKitsEl = document.getElementById('lista-kits');
     const contadorKitsEl = document.getElementById('contador-kits');
+    
+    const inputCodigoUnidade = document.getElementById('codigo-unidade');
+    const inputQtdeUnidade = document.getElementById('qtde-unidade');
+    
     const readerDiv = document.getElementById('reader');
     
-    let html5QrCode;
+    let html5QrCode = null;
     let targetInputId = ''; // Descobre qual input a câmera deve preencher
     let kitsLidos = [];     // Array que guarda os kits bipados
 
@@ -27,21 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
         html5QrCode.stop().then(() => {
             readerDiv.classList.add('hidden');
             html5QrCode.clear();
-        });
+            html5QrCode = null;
+        }).catch(err => console.error("Erro ao parar câmera:", err));
     };
 
-    // Aplica o evento de abrir a câmera para todos os botões com a classe .btn-camera
+    // Aplica o evento de abrir a câmera para todos os botões
     document.querySelectorAll('.btn-camera').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            // Pega o botão clicado (mesmo se clicar no SVG dentro dele)
             const button = e.target.closest('button');
             targetInputId = button.getAttribute('data-target');
 
+            // Se a câmera já estiver aberta, fecha
             if (!readerDiv.classList.contains('hidden')) {
                 if (html5QrCode) {
                     html5QrCode.stop().then(() => {
                         readerDiv.classList.add('hidden');
                         html5QrCode.clear();
+                        html5QrCode = null;
                     });
                 }
                 return;
@@ -56,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 onScanSuccess,
                 () => {} // Ignora erros de frame vazio
             ).catch(err => {
-                alert("Erro ao acessar a câmera. Verifique as permissões.");
+                alert("Erro ao acessar a câmera. Verifique as permissões do navegador.");
                 readerDiv.classList.add('hidden');
             });
         });
@@ -72,22 +83,38 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        step1.classList.add('hidden');
+
         if (tipoReposicao === 'kit') {
             displayEndereco.textContent = endereco;
-            step1.classList.add('hidden');
             step2Kit.classList.remove('hidden');
-            // Foca automaticamente no input do kit para quem usa leitor laser
             inputCodigoKit.focus(); 
-        } else {
-            alert('A tela de Unidade está em desenvolvimento.');
+        } else if (tipoReposicao === 'unidade') {
+            displayEnderecoUnidade.textContent = endereco;
+            step2Unidade.classList.remove('hidden');
+            
+            // Muda o fundo do card para um marrom claro
+            mainCard.classList.remove('bg-white');
+            mainCard.classList.add('bg-[#fef3c7]', 'border-orange-200');
+            
+            inputCodigoUnidade.focus();
         }
     });
 
+    // Voltar do Kit
     document.getElementById('btn-voltar-kit').addEventListener('click', () => {
         step2Kit.classList.add('hidden');
         step1.classList.remove('hidden');
-        // Opcional: Limpar a lista de kits ao voltar
-        // kitsLidos = []; renderizarLista();
+    });
+
+    // Voltar da Unidade
+    document.getElementById('btn-voltar-unidade').addEventListener('click', () => {
+        step2Unidade.classList.add('hidden');
+        step1.classList.remove('hidden');
+        
+        // Remove a cor marrom claro e volta para o fundo branco
+        mainCard.classList.remove('bg-[#fef3c7]', 'border-orange-200');
+        mainCard.classList.add('bg-white');
     });
 
     // ================= LÓGICA DO KIT =================
@@ -107,13 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
         inputCodigoKit.focus();
     };
 
-    // Ouve o Enter ou o botão de "+"
+    // Adiciona o kit ao apertar o botão de "+" ou a tecla "Enter"
     document.getElementById('btn-add-kit').addEventListener('click', adicionarKit);
     inputCodigoKit.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') adicionarKit();
     });
 
-    // Renderiza a lista no HTML
+    // Renderiza a lista de kits no HTML
     const renderizarLista = () => {
         listaKitsEl.innerHTML = '';
         contadorKitsEl.textContent = kitsLidos.length;
@@ -130,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             listaKitsEl.appendChild(li);
         });
 
-        // Eventos para remover item
+        // Eventos para remover item da lista
         document.querySelectorAll('.btn-remover').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const index = e.target.closest('button').getAttribute('data-index');
@@ -140,22 +167,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // ================= FINALIZAR =================
+    // Salvar Lote de Kits
     document.getElementById('btn-finalizar-kit').addEventListener('click', () => {
         if (kitsLidos.length === 0) {
             alert('Bipe ao menos um Kit antes de salvar.');
             return;
         }
 
-        const enderecoFinal = inputEndereco.value;
         const payload = {
-            endereco: enderecoFinal,
+            endereco: inputEndereco.value.trim(),
             tipo: 'kit',
             kits: kitsLidos
         };
 
-        console.log("Pronto para enviar ao banco:", payload);
-        alert('Lote finalizado! (Abra o console para ver o Payload)');
+        console.log("Pronto para enviar ao banco (Kit):", payload);
+        alert('Lote de kits finalizado! (Abra o console para ver os dados)');
+        
         // AQUI VOCÊ COLOCA O FETCH PARA O SEU requests.php
+    });
+
+    // ================= LÓGICA DA UNIDADE =================
+    // Pula para a quantidade ao dar 'Enter' no produto
+    inputCodigoUnidade.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && inputCodigoUnidade.value.trim() !== '') {
+            inputQtdeUnidade.focus();
+        }
+    });
+
+    // Salvar Reposição de Unidade
+    document.getElementById('btn-finalizar-unidade').addEventListener('click', () => {
+        const produto = inputCodigoUnidade.value.trim();
+        const quantidade = inputQtdeUnidade.value.trim();
+        const enderecoFinal = inputEndereco.value.trim();
+
+        if (!produto || !quantidade || quantidade <= 0) {
+            alert('Por favor, informe o produto e uma quantidade válida.');
+            return;
+        }
+
+        const payload = {
+            endereco: enderecoFinal,
+            tipo: 'unidade',
+            produto: produto,
+            quantidade: quantidade
+        };
+
+        console.log("Pronto para enviar ao banco (Unidade):", payload);
+        alert('Reposição de unidade finalizada! (Abra o console para ver os dados)');
+        
+        // AQUI VOCÊ COLOCA O FETCH PARA O SEU requests.php
+        
+        // Limpa os campos após salvar para permitir nova leitura
+        inputCodigoUnidade.value = '';
+        inputQtdeUnidade.value = '';
+        inputCodigoUnidade.focus();
     });
 });

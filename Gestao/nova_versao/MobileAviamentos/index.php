@@ -17,7 +17,8 @@ include_once('../../../templates/headerGestao.php');
 </style>
 
 <main class="w-full p-4 flex flex-col items-center justify-start min-h-[80vh]">
-    <div class="w-full max-w-md bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+
+    <div id="main-card" class="w-full max-w-md bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-colors duration-300">
         
         <div id="reader" class="mb-4 border-2 border-dashed border-gray-300 hidden"></div>
 
@@ -87,7 +88,35 @@ include_once('../../../templates/headerGestao.php');
             <button type="button" id="btn-finalizar-kit" class="w-full bg-blue-600 text-white font-bold text-lg py-3 px-4 rounded-lg shadow hover:bg-blue-700 transition mt-2">Salvar Lote</button>
         </div>
 
-    </div>
-</main>
+        <div id="step-2-unidade" class="hidden">
+            <div class="flex items-center mb-6 border-b border-orange-200 pb-4">
+                <button type="button" id="btn-voltar-unidade" class="text-gray-500 hover:text-orange-700 mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                </button>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">Repor Unidade</h2>
+                    <p class="text-sm text-gray-600">Endereço: <span id="display-endereco-unidade" class="font-bold text-orange-700"></span></p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="codigo-unidade" class="block text-sm font-medium text-gray-700 mb-2">QR Code do Produto</label>
+                <div class="flex space-x-2">
+                    <input type="text" id="codigo-unidade" placeholder="Bipe o produto" class="flex-1 block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-lg px-4 py-3 border bg-white">
+                    <button type="button" class="btn-camera inline-flex items-center p-3 rounded-lg text-white bg-orange-600 hover:bg-orange-700 transition" data-target="codigo-unidade">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="qtde-unidade" class="block text-sm font-medium text-gray-700 mb-2">Informe a Quantidade</label>
+                <input type="number" id="qtde-unidade" placeholder="Ex: 10" min="1" class="block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-2xl px-4 py-3 border font-bold text-center bg-white">
+            </div>
+
+            <button type="button" id="btn-finalizar-unidade" class="w-full bg-orange-600 text-white font-bold text-lg py-3 px-4 rounded-lg shadow hover:bg-orange-700 transition mt-2">Salvar Reposição</button>
+        </div>
+
+    </div> </main>
 
 <script src="app.js"></script>
