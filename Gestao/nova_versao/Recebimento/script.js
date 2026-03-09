@@ -205,6 +205,14 @@ function calcularSaldoEnderecado(cod) {
 // FUNÇÕES DE IMPRESSÃO E MODAIS
 // ==========================================
 
+// ==========================================
+// FUNÇÕES DE IMPRESSÃO E MODAIS
+// ==========================================
+
+// ==========================================
+// FUNÇÕES DE IMPRESSÃO E MODAIS
+// ==========================================
+
 async function salvarConfigKit(codID, btnElement) {
     let spanSaldo = $(`#saldo_original_${codID}`);
     let saldoOriginal = converterParaFloat(spanSaldo.attr('data-saldo'));
@@ -267,51 +275,94 @@ async function salvarConfigKit(codID, btnElement) {
     }
 
     $('#loadingModal').modal('show');
-    $('.div-metas').addClass('d-none');
+
+    // =========================================================================
+    // 1. BUSCA A ÚLTIMA SEQUÊNCIA NA API ANTES DE GERAR AS ETIQUETAS
+    // =========================================================================
+    let ultimaSequencia = 0;
+    try {
+        const seqResponse = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'devolver_ultima_sequencia_item',
+                empresa: '1',
+                codMaterial: codEditado
+            }
+        });
+
+        // Verifica se a API retornou o array com o objeto e pega a sequência
+        if (seqResponse && seqResponse.length > 0 && seqResponse[0].sequencia !== undefined) {
+            ultimaSequencia = parseInt(seqResponse[0].sequencia) || 0;
+        }
+    } catch (e) {
+        console.error("Erro ao buscar a sequência na API, iniciando do zero.", e);
+        // Em caso de falha na rede, mantém em zero para não travar o WMS
+        ultimaSequencia = 0;
+    }
+
+    // Prepara a tela de impressão
+    $('.div-metas').addClass('d-none'); 
     $('#container-cards').removeClass('d-none').empty();
 
     $('#container-cards').append(`
-        <div class="w-100 mb-3 no-print text-start">
-            <button type="button" class="btn btn-secondary shadow-sm" onclick="voltarParaTabela()">
-                <i class="bi bi-arrow-left me-1"></i> Voltar para a Tabela
+        <div class="w-100 mb-3 p-3 bg-light border rounded shadow-sm d-flex justify-content-between no-print text-start">
+            <button type="button" class="btn btn-secondary" onclick="voltarParaTabela()">
+                <i class="bi bi-arrow-left me-1"></i> Voltar para Tabela
             </button>
+            <div>
+                <span class="me-3 fw-bold text-primary" id="status-geracao">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Gerando QRCodes...
+                </span>
+                <button type="button" class="btn btn-primary disabled" id="btn-forcar-impressao" onclick="window.print()">
+                    <i class="bi bi-printer me-1"></i> Imprimir Etiquetas
+                </button>
+            </div>
         </div>
+        <div id="area-etiquetas" class="d-block" style="background-color: #f8f9fa; padding: 10px;"></div>
     `);
 
-    itensParaImprimir.forEach(item => {
-        const qrData = encodeURIComponent(`${item.codigo}-${item.tamanho}`);
-// Substitua a linha do qrUrl por esta:
-const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
+    // =========================================================================
+    // 2. MONTA OS CARDS E INCREMENTA A SEQUÊNCIA PARA CADA ETIQUETA
+    // =========================================================================
+    itensParaImprimir.forEach((item, index) => {
+        
+        // A mágica acontece aqui: Soma +1 na última sequência encontrada
+        ultimaSequencia++; 
+        
+        // Novo formato do QR Code: codMaterial + "-" + qtd + "-" + sequencia
+        const stringQrCode = `${item.codigo}-${item.tamanho}-${ultimaSequencia}`;
+        const qrData = encodeURIComponent(stringQrCode);
+        const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
-const cardHTML = `
-            <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
+        const cardHTML = `
+            <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
                     
                     <div class="d-flex flex-column justify-content-center" style="width: 6.5cm; overflow: hidden; font-family: Arial, sans-serif;">
-                        
                         <strong style="font-size: 25px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
-                        
                         <strong style="font-size: 14px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
                         <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
                         
                         <div class="d-flex justify-content-between align-items-end" style="margin-top: 2px;">
-                            <strong style="font-size: 24px; color: #000; line-height: 1.1; white-space: nowrap;">Qtd.: ${item.tamanho} ${item.unidade}</strong>
+                            <strong style="font-size: 24px; color: #000; line-height: 1.1; white-space: nowrap;">Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}</strong>
                             <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; min-width: 80px; flex-shrink: 0;">
-                        <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 80px; height: 80px; display: block;">
+                        <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 80px; height: 80px; display: block;" id="qr-img-${index}">
                     </div>
-                    
                 </div>
             </div>
         `;
-        $('#container-cards').append(cardHTML);
+        $('#area-etiquetas').append(cardHTML);
     });
 
-    const imagens = $('#container-cards img.img-qrcode');
+    // SISTEMA DE ESPERA (PROMISES) SEGURO
     const promessasDeCarregamento = [];
+    const imagens = $('#area-etiquetas img.img-qrcode');
 
     imagens.each(function() {
         const img = this;
@@ -326,119 +377,32 @@ const cardHTML = `
 
     await Promise.all(promessasDeCarregamento);
 
+    // Esconde a tela de loading
     $('#loadingModal').modal('hide');
+    
+    // Atualiza os botões visuais
+    $('#status-geracao').text('✓ Prontos para imprimir').removeClass('text-primary').addClass('text-success');
+    $('#btn-forcar-impressao').removeClass('disabled');
+
+    // Abre a tela de impressão do Windows
     setTimeout(() => {
         window.print();
-    }, 150);
+    }, 400);
 }
 
-// Essa função parece ser de outra etapa do seu WMS, mantive intacta
-async function imprimirSelecionados() {
-    let itensParaImprimir = [];
-
-    $('#table-metas').DataTable().$('input.check-imprimir:checked').each(function() {
-        let dadosItem = JSON.parse(decodeURIComponent($(this).attr('data-item')));
-        itensParaImprimir.push(dadosItem);
-    });
-
-    if (itensParaImprimir.length === 0) {
-        alert("Atenção: Nenhum endereço foi selecionado para impressão.");
-        return;
-    }
-
-    $('#loadingModal').modal('show');
-    $('.div-metas').addClass('d-none');
-    $('#container-cards').removeClass('d-none').empty();
-
-    $('#container-cards').append(`
-        <div class="w-100 mb-3 no-print text-start">
-            <button type="button" class="btn btn-secondary shadow-sm" onclick="voltarParaTabela()">
-                <i class="bi bi-arrow-left me-1"></i> Voltar para a Tabela
-            </button>
-        </div>
-    `);
-
-    itensParaImprimir.forEach(item => {
-        const qrData = encodeURIComponent(item.endereco);
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}`;
-
-        const cardHTML = `
-            <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0;">
-                <div class="card-body d-flex flex-row align-items-center justify-content-start p-1" style="height: 100%; gap: 0.5cm; padding-left: 0.6cm !important;">
-                    
-                    <div class="d-flex flex-row align-items-center" style="gap: 0.5cm;">
-                        
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Rua</span>
-                            <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.rua}</strong>
-                        </div>
-
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Quadra</span>
-                            <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.quadra}</strong>
-                        </div>
-
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <span style="font-size: 2.5rem; color: #000; font-weight: bold;">Posicao</span>
-                            <strong style="font-size: 3.4rem; color: #000; line-height: 0.6;">${item.posicao}</strong>
-                        </div>
-
-                    </div>
-
-                    <div class="d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; min-width: 100px; flex-shrink: 0;">
-                        <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 100px; height: 100px; display: block;">
-                    </div>
-                    
-                </div>
-            </div>
-        `;
-        $('#container-cards').append(cardHTML);
-    });
-
-    const imagens = $('#container-cards img.img-qrcode');
-    const promessasDeCarregamento = [];
-
-    imagens.each(function() {
-        const img = this;
-        if (!img.complete) {
-            const promessa = new Promise((resolve) => {
-                img.onload = resolve;
-                img.onerror = resolve; 
-            });
-            promessasDeCarregamento.push(promessa);
-        }
-    });
-
-    await Promise.all(promessasDeCarregamento);
-
-    $('#loadingModal').modal('hide');
-    setTimeout(() => {
-        window.print();
-    }, 100);
-}
-
-// Função ativada pelo botão "Voltar"
+// Função de Limpeza ao clicar em Voltar
 function voltarParaTabela() {
-    // 1. Esconde e limpa o container de cards (etiquetas)
+    // 1. Esconde a área de impressão
     $('#container-cards').addClass('d-none').empty();
     
-    // 2. Mostra a tabela e os filtros novamente
+    // 2. Mostra a tabela de novo
     $('.div-metas').removeClass('d-none');
 
-    // 3. LIMPEZA DE CACHE: Fecha todas as linhas detalhadas que estavam abertas
+    // 3. LIMPEZA DE CACHE: Opcionalmente, recalcula a paginação do DataTable
     if ($.fn.DataTable.isDataTable('#table-metas')) {
-        let table = $('#table-metas').DataTable();
-        
-        table.rows().every(function () {
-            // 'this' refere-se à linha atual no loop
-            if (this.child.isShown()) {
-                this.child.hide(); // Esconde e destrói o formulário preenchido
-                $(this.node()).removeClass('shown'); // Tira o fundo cinza da linha principal
-            }
-        });
+        $('#table-metas').DataTable().columns.adjust().draw(false);
     }
 }
-
 function abrirModalInserirEndereco() {
     $('#radioIndividual').prop('checked', true).trigger('change');
     $('#modalInserirEndereco input[type="text"]').val('');

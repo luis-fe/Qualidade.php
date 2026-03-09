@@ -30,8 +30,40 @@ async function Consultar_requisicao() {
 
         if (response && response.length > 0) {
             
-            response.forEach(item => {
-                const qrData = encodeURIComponent(item.codMaterialEdt);
+            // SUBSTITUIÇÃO AQUI: Usando for...of para permitir o uso correto do 'await' dentro do loop
+            for (const item of response) {
+                
+                let ultimaSequencia = 0;
+
+                // Nova requisição para buscar a sequência do item específico
+                try {
+                    const seqResponse = await $.ajax({
+                        type: 'GET',
+                        url: 'requests.php', // Ajuste caso sua API esteja em outro arquivo/rota
+                        dataType: 'json',
+                        data: {
+                            acao: 'devolver_ultima_sequencia_item',
+                            empresa: '1',
+                            codMaterial: item.codMaterialEdt
+                        }
+                    });
+
+                    // Captura o valor da sequência. 
+                    // Ajuste isso dependendo de como sua API devolve os dados. 
+                    // Ex: se vier { "sequencia": 5 }, usamos seqResponse.sequencia
+                    ultimaSequencia = parseInt(seqResponse.sequencia || seqResponse || 0);
+                    
+                } catch (seqError) {
+                    console.error(`Erro ao buscar sequência para o material ${item.codMaterialEdt}:`, seqError);
+                    // Se der erro na api de sequência, ultimaSequencia continuará sendo 0 para não quebrar a impressão.
+                }
+
+                // Soma +1 à última sequência encontrada
+                const novaSequencia = ultimaSequencia + 1;
+
+                // Monta o dado do QR Code: codMaterial + "-" + quantidade + "sequencia"
+                const stringQrCode = `${item.codMaterialEdt}-${item.qtdeRequisitada}${novaSequencia}`;
+                const qrData = encodeURIComponent(stringQrCode);
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=65x65&data=${qrData}`;
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
@@ -73,14 +105,14 @@ async function Consultar_requisicao() {
                 `;
                 
                 $('#container-cards').append(cardHTML);
-            });
+            } // Fim do loop for...of
 
         } else {
             $('#container-cards').html('<div class="alert alert-warning w-100">Nenhum material encontrado para esta requisição.</div>');
         }
 
     } catch (error) {
-        console.error('Erro na requisição AJAX:', error);
+        console.error('Erro na requisição AJAX principal:', error);
         alert('Erro ao comunicar com o servidor.');
     } finally {
         $('#loadingModal').modal('hide');

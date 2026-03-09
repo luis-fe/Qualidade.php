@@ -20,6 +20,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultarLotes('1', $plano));
                     break;
+                case 'devolver_ultima_sequencia_item':
+                    $empresa = $_GET['empresa'];
+                    $codMaterial = $_GET['codMaterial'];
+                    jsonResponse(devolver_ultima_sequencia_item($empresa, $codMaterial));
+                    break;
                 case 'Consultar_Realizados':
                     $Fase = $_GET['Fase'];
                     $dataInicial = $_GET['dataInicial'];
@@ -163,6 +168,28 @@ function ConsultarRecebimento($empresa)
 {
     $baseUrl ='http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/Fila_recebimento_Aviamentos";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function devolver_ultima_sequencia_item($empresa, $codMaterial)
+{
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/devolver_ultima_sequencia_item?codMaterial={$codMaterial}&codEmpresa={$empresa}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
