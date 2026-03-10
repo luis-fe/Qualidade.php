@@ -66,6 +66,16 @@ include_once('../../../templates/headerGestao.php');
                 </div>
             </div>
 
+            <div class="flex space-x-3 mb-6">
+                <div class="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-3 text-center shadow-sm">
+                    <span class="block text-xs font-bold text-blue-700 uppercase tracking-wide">Total de Kits</span>
+                    <span id="total-kits-sessao" class="block text-2xl font-black text-gray-800">0</span>
+                </div>
+                <div class="flex-1 bg-orange-50 border border-orange-200 rounded-lg p-3 text-center shadow-sm">
+                    <span class="block text-xs font-bold text-orange-700 uppercase tracking-wide">Total Unidades</span>
+                    <span id="total-unidades-sessao" class="block text-2xl font-black text-gray-800">0</span>
+                </div>
+            </div>
             <div class="mb-4">
                 <label for="codigo-kit" class="block text-sm font-medium text-gray-700 mb-2">QR Code do Kit</label>
                 <div class="flex space-x-2">
@@ -82,10 +92,10 @@ include_once('../../../templates/headerGestao.php');
             <div class="mb-4">
                 <h3 class="text-sm font-medium text-gray-700 mb-2">Kits Lidos (<span id="contador-kits">0</span>)</h3>
                 <ul id="lista-kits" class="max-h-48 overflow-y-auto space-y-2">
-                    </ul>
+                </ul>
             </div>
 
-            <button type="button" id="btn-finalizar-kit" class="w-full bg-blue-600 text-white font-bold text-lg py-3 px-4 rounded-lg shadow hover:bg-blue-700 transition mt-2">Salvar Lote</button>
+            <button type="button" id="btn-finalizar-kit" class="w-full bg-blue-600 text-white font-bold text-lg py-3 px-4 rounded-lg shadow hover:bg-blue-700 transition mt-2">Concluir Reposição</button>
         </div>
 
         <div id="step-2-unidade" class="hidden">
@@ -117,6 +127,7 @@ include_once('../../../templates/headerGestao.php');
             <button type="button" id="btn-finalizar-unidade" class="w-full bg-orange-600 text-white font-bold text-lg py-3 px-4 rounded-lg shadow hover:bg-orange-700 transition mt-2">Salvar Reposição</button>
         </div>
 
-    </div> </main>
+    </div> 
+</main>
 
 <script src="app.js"></script>
