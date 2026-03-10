@@ -7,56 +7,50 @@ include_once('../../../templates/headerGestao.php');
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <link rel="stylesheet" href="style.css">
 <style>
-@media print {
-    /* Esconde elementos que não devem ir pro papel */
-    .no-print { display: none !important; }
+    @media print {
+        /* Esconde elementos de interface */
+        .no-print, header, footer, .btn, .titulo-tela, #loadingModal, .span-icone { display: none !important; }
+        
+        body { margin: 0 !important; padding: 0 !important; background-color: white !important; }
+        body * { visibility: hidden; }
+        #container-cards, #container-cards * { visibility: visible; }
 
-    body * { visibility: hidden; }
-    #container-cards, #container-cards * { visibility: visible; }
-    
-    #container-cards {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 19.1cm; 
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+        @page {
+            /* Aumentei aqui para 15cm para comportar o card maior */
+            size: 15.0cm 4.0cm !important; 
+            margin: 0 !important;
+        }
 
-    .card-etiqueta {
-        width: 19.1cm;
-        height: 2.6cm;
-        page-break-after: always;
-        border: none !important;
-        box-shadow: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+        #container-cards {
+            /* Definindo a largura do container para bater com a página */
+            width: 15.0cm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+        }
 
-    /* ZERA A MARGEM DO NAVEGADOR */
-    @page {
-        size: 10.6cm 2.6cm;
-        margin: 0 !important; 
-    }
-    
-    body {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+        .card-etiqueta {
+            /* Aumentei a largura para 15cm e a altura para 4cm para dar mais respiro */
+            width: 15.0cm !important; 
+            height: 4.0cm !important;
+            page-break-after: always !important;
+            page-break-inside: avoid !important;
+            break-after: page !important;
+            display: block !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
 
-    /* Garante que imagens sempre sejam impressas e no tamanho certo */
-    img {
-        visibility: visible !important;
-        display: block !important;
-        opacity: 1 !important;
+        .card-body-custom {
+            display: flex !important;
+            flex-direction: row !important;
+            width: 100% !important;
+            height: 100% !important;
+            /* Ajuste o padding conforme necessário para centralizar o conteúdo no novo tamanho */
+            padding: 0.1cm 0.5cm !important; 
+            box-sizing: border-box !important;
+        }
     }
-
-    /* Força o tamanho do QR Code no papel */
-    .img-qrcode {
-        width: 100px !important;
-        height: 100px !important;
-    }
-}
 </style>
 
 <div class="titulo-tela d-flex justify-content-between align-items-center mb-3">

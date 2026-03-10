@@ -335,28 +335,28 @@ async function salvarConfigKit(codID, btnElement) {
         const qrData = encodeURIComponent(stringQrCode);
         const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
-        const cardHTML = `
-            <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
-                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
-                    
-                    <div class="d-flex flex-column justify-content-center" style="width: 6.5cm; overflow: hidden; font-family: Arial, sans-serif;">
-                        <strong style="font-size: 25px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
-                        <strong style="font-size: 14px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
-                        <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
-                        
-                        <div class="d-flex justify-content-between align-items-end" style="margin-top: 2px;">
-                            <strong style="font-size: 24px; color: #000; line-height: 1.1; white-space: nowrap;">Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}</strong>
-                            <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; min-width: 80px; flex-shrink: 0;">
-                        <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 80px; height: 80px; display: block;" id="qr-img-${index}">
-                                                <strong style="font-size: 12px; color: #000; line-height: 1.1;">Versao:1.0</strong>
-                        </div>
+const cardHTML = `
+    <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.0cm; page-break-after: always; box-sizing: border-box;">
+        <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.5cm; padding-left: 1cm !important; padding-right: 0.5cm !important;">
+            
+            <div class="d-flex flex-column justify-content-center" style="width: 9.5cm; overflow: hidden; font-family: Arial, sans-serif;">
+                <strong style="font-size: 28px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
+                <strong style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
+                <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
+                
+                <div class="d-flex justify-content-between align-items-end" style="margin-top: 4px;">
+                    <strong style="font-size: 26px; color: #000; line-height: 1.1; white-space: nowrap;">Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}</strong>
+                    <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
                 </div>
             </div>
-        `;
+
+            <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100px; flex-shrink: 0;">
+                <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 90px; height: 90px; display: block;" id="qr-img-${index}">
+                <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">seq.: ${index + 1}</strong>
+            </div>
+        </div>
+    </div>
+`;
         $('#area-etiquetas').append(cardHTML);
     });
 
