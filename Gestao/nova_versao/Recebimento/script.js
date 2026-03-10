@@ -352,7 +352,7 @@ const cardHTML = `
 
             <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100px; flex-shrink: 0;">
                 <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 90px; height: 90px; display: block;" id="qr-img-${index}">
-                <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">seq.: ${item.sequencia}</strong>
+                <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">seq.: ${ultimaSequencia}</strong>
             </div>
         </div>
     </div>
