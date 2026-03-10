@@ -26,7 +26,7 @@ function Consultar_Usuarios($empresa)
 
 // Se o usuário já estiver logado, redireciona para a Reposição
 if (isset($_SESSION['matricula']) && !empty($_SESSION['matricula'])) {
-    header("Location: modulos/reposicao/index.php");
+    header("Location: Modulos/Reposicao/index.php");
     exit;
 }
 
