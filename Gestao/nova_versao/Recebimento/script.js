@@ -336,15 +336,15 @@ async function salvarConfigKit(codID, btnElement) {
         const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
 const cardHTML = `
-    <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.0cm; page-break-after: always; box-sizing: border-box;">
-        <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.5cm; padding-left: 1cm !important; padding-right: 0.5cm !important;">
+    <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; page-break-after: always; box-sizing: border-box;">
+        <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.4cm; padding-left: 0.8cm !important; padding-right: 0.4cm !important;">
             
             <div class="d-flex flex-column justify-content-center" style="width: 9.5cm; overflow: hidden; font-family: Arial, sans-serif;">
                 <strong style="font-size: 28px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
                 <strong style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
                 <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
                 
-                <div class="d-flex justify-content-between align-items-end" style="margin-top: 4px;">
+                <div class="d-flex justify-content-between align-items-end" style="margin-top: 5px;">
                     <strong style="font-size: 26px; color: #000; line-height: 1.1; white-space: nowrap;">Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}</strong>
                     <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
                 </div>
@@ -352,7 +352,7 @@ const cardHTML = `
 
             <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100px; flex-shrink: 0;">
                 <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 90px; height: 90px; display: block;" id="qr-img-${index}">
-                <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">seq.: ${index + 1}</strong>
+                <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">seq.: ${item.sequencia}</strong>
             </div>
         </div>
     </div>
