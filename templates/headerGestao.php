@@ -176,9 +176,12 @@
             <li><a href="../Recebimento" class="nav-link"><i class="bi bi-caret-right me-2"></i> Recebimento</a></li>
             <li><a href="../AlmoxarifadoAviamentos" class="nav-link"><i class="bi bi-caret-right me-2"></i> Gestão Separação</a></li>
             <li><a href="../ConferenciaAviamentos" class="nav-link"><i class="bi bi-caret-right me-2"></i> Conferência Aviamentos</a></li>
+            <li><a href="../Dashboard" class="nav-link"><i class="bi bi-caret-right me-2"></i> Dashboard</a></li>
           </ul>
         </div>
       </li>
+            <li><a href="../MobileAviamentos" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Mobile Aviamentos</a></li>
+
     </ul>
   </div>
 
