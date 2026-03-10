@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['matricula'])) {
         $_SESSION['nomeUsuario'] = $nomeOperador;
         
         // Redireciona para o sistema principal de reposição
-        header("Location: modulos/reposicao/index.php");
+        header("Location: Modulos/Reposicao/index.php");
         exit;
     } else {
         $erro_login = "Matrícula não autorizada ou não encontrada.";
