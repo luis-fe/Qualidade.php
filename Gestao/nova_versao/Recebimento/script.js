@@ -352,7 +352,8 @@ async function salvarConfigKit(codID, btnElement) {
 
                     <div class="d-flex justify-content-center align-items-center" style="width: 80px; height: 80px; min-width: 80px; flex-shrink: 0;">
                         <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 80px; height: 80px; display: block;" id="qr-img-${index}">
-                    </div>
+                                                <strong style="font-size: 12px; color: #000; line-height: 1.1;">Versao:1.0</strong>
+                        </div>
                 </div>
             </div>
         `;

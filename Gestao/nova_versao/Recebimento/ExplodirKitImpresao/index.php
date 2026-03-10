@@ -226,10 +226,14 @@ include_once('../../../../templates/headerGestao.php');
         visibility: visible;
     }
     #container-cards {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 10.1cm; /* Largura exata da etiqueta */
+                        width: 14.0cm !important; 
+                height: 3.8cm !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                break-after: page !important;
+                display: block !important;
+                border: none !important;
+                box-shadow: none !important;
     }
 
     /* Força cada card a começar em uma nova página (etiqueta) */
