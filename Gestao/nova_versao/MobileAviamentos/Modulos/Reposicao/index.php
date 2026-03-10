@@ -1,15 +1,15 @@
 <?php
 session_start();
 
-// Proteção da rota: se não tiver matrícula na sessão, chuta pro login
+// Proteção da rota: volta duas pastas para achar o login na raiz
 if (!isset($_SESSION['matricula']) || empty($_SESSION['matricula'])) {
-    header("Location: login_mobile.php");
+    header("Location: ../../login_mobile.php");
     exit;
 }
 
 include_once('requests.php');
-include_once("../../../templates/LoadingGestao.php");
-include_once('../../../templates/headerGestao.php');
+include_once("../../../../../templates/LoadingGestao.php");
+include_once('../../../../../templates/headerGestao.php');
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -32,11 +32,13 @@ include_once('../../../templates/headerGestao.php');
             <div class="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Reposição</h2>
-                    <p class="text-xs text-gray-500 mt-1" id="info-operador" data-matricula="<?= htmlspecialchars($_SESSION['matricula']) ?>">
-                        Operador: <span class="font-bold text-blue-600"><?= htmlspecialchars($_SESSION['nomeUsuario']) ?></span>
-                    </p>
+                        <p class="text-xs text-gray-500 mt-1" id="info-operador" 
+                        data-matricula="<?= htmlspecialchars($_SESSION['matricula']) ?>" 
+                        data-usuario="<?= htmlspecialchars($_SESSION['nomeUsuario']) ?>">
+                            Operador: <span class="font-bold text-blue-600"><?= htmlspecialchars($_SESSION['nomeUsuario']) ?></span>
+                        </p>
                 </div>
-                <a href="logout_mobile.php" class="text-sm text-red-500 hover:text-red-700 font-bold px-2 py-1 rounded bg-red-50">Sair</a>
+                <a href="../../logout_mobile.php" class="text-sm text-red-500 hover:text-red-700 font-bold px-2 py-1 rounded bg-red-50">Sair</a>
             </div>
 
             <div class="mb-5">

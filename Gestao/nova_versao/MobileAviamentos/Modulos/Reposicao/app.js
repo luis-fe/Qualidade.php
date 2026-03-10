@@ -1,11 +1,51 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // ================= ÁUDIOS =================
+    const somErro = new Audio('MenasagemErro.mp3'); 
+    const somSucesso = new Audio('MensagemCorrect.mp3');
+
+    // ================= FUNÇÃO DE AVISO =================
+    const mostrarAviso = (mensagem, tipo = 'erro') => {
+        if (tipo === 'erro') {
+            somErro.currentTime = 0; 
+            somErro.play().catch(e => console.log("Áudio bloqueado:", e));
+        } else {
+            somSucesso.currentTime = 0;
+            somSucesso.play().catch(e => console.log("Áudio bloqueado:", e));
+        }
+
+        const toast = document.createElement('div');
+        const corFundo = tipo === 'erro' ? 'bg-red-600' : 'bg-green-600';
+        const icone = tipo === 'erro' 
+            ? `<svg class="w-5 h-5 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+            : `<svg class="w-5 h-5 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+
+        toast.className = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] max-w-sm px-3 py-2 rounded-lg shadow-2xl flex items-center justify-center text-white text-sm font-bold z-[100] transition-all duration-300 opacity-0 scale-90 ${corFundo}`;
+        toast.innerHTML = `${icone} <span class="text-center">${mensagem}</span>`;
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.remove('opacity-0', 'scale-90');
+            toast.classList.add('opacity-100', 'scale-100');
+        });
+
+        setTimeout(() => {
+            toast.classList.remove('opacity-100', 'scale-100');
+            toast.classList.add('opacity-0', 'scale-90');
+            setTimeout(() => toast.remove(), 300); 
+        }, 2500);
+    };
+
     // ================= ELEMENTOS DA INTERFACE =================
     const step1 = document.getElementById('step-1');
     const step2Kit = document.getElementById('step-2-kit');
     const step2Unidade = document.getElementById('step-2-unidade');
     const mainCard = document.getElementById('main-card');
     
-    // Elementos dos Totalizadores
+    const infoOperadorEl = document.getElementById('info-operador');
+    const matriculaOperador = infoOperadorEl ? infoOperadorEl.getAttribute('data-matricula') : '';
+    const nomeOperador = infoOperadorEl ? infoOperadorEl.getAttribute('data-usuario') : ''; // Captura nome
+    
     const totalKitsSessaoEl = document.getElementById('total-kits-sessao');
     const totalUnidadesSessaoEl = document.getElementById('total-unidades-sessao');
     
@@ -22,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const readerDiv = document.getElementById('reader');
     
-    // Variáveis de Estado
     let html5QrCode = null;
     let targetInputId = ''; 
     let kitsLidos = [];     
@@ -35,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tipoReposicao = document.querySelector('input[name="tipo_reposicao"]:checked').value;
 
         if (!endereco) {
-            alert('Por favor, informe o endereço de destino.');
+            mostrarAviso('Por favor, informe o endereço de destino.', 'erro');
             return;
         }
 
@@ -48,10 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (tipoReposicao === 'unidade') {
             displayEnderecoUnidade.textContent = endereco;
             step2Unidade.classList.remove('hidden');
-            
             mainCard.classList.remove('bg-white');
             mainCard.classList.add('bg-[#fef3c7]', 'border-orange-200');
-            
             inputCodigoUnidade.focus();
         }
     };
@@ -66,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             html5QrCode.clear();
             html5QrCode = null;
 
-            // Avança ou adiciona automaticamente após bipar com a câmera
             if (targetInputId === 'endereco') {
                 avancarParaProximaTela();
             } else if (targetInputId === 'codigo-kit') {
@@ -100,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 onScanSuccess,
                 () => {} 
             ).catch(err => {
-                alert("Erro ao acessar a câmera. Verifique as permissões do navegador.");
+                mostrarAviso("Erro ao acessar a câmera. Verifique as permissões.", "erro");
                 readerDiv.classList.add('hidden');
             });
         });
@@ -125,22 +161,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-voltar-unidade').addEventListener('click', () => {
         step2Unidade.classList.add('hidden');
         step1.classList.remove('hidden');
-        
         mainCard.classList.remove('bg-[#fef3c7]', 'border-orange-200');
         mainCard.classList.add('bg-white');
         inputEndereco.focus();
     });
 
     // ================= LÓGICA DO KIT =================
-    const adicionarKit = () => {
+const adicionarKit = () => {
         const kitRaw = inputCodigoKit.value.trim();
         if (!kitRaw) return;
         
-        // Separa o formato ITEM-QTD-SEQUENCIA
         const partes = kitRaw.split('-');
-        
         if (partes.length !== 3) {
-            alert('Formato inválido! O QR Code deve ser no formato: ITEM-QTD-SEQUENCIA.');
+            mostrarAviso('Formato inválido! O QR Code deve ser: ITEM-QTD-SEQUENCIA.', 'erro');
             inputCodigoKit.value = '';
             inputCodigoKit.focus();
             return;
@@ -151,60 +184,76 @@ document.addEventListener('DOMContentLoaded', () => {
         const sequencia = partes[2];
         const enderecoFinal = inputEndereco.value.trim();
 
-        // Evita bipar o mesmo código exato (mesma sequência)
+        // Validação de duplicidade na lista local
         if (kitsLidos.some(k => k.raw === kitRaw)) {
-            alert('Esta etiqueta (sequência) já foi bipada nesta sessão!');
+            mostrarAviso('Esta etiqueta já foi bipada nesta sessão!', 'erro');
             inputCodigoKit.value = '';
             inputCodigoKit.focus();
             return;
         }
 
-        const payload = {
-            codMaterial: codMaterial,
-            qtdReposto: qtdReposto,
-            sequencia: sequencia,
-            Endereco: enderecoFinal,
-            codEmpresa: "1" 
-        };
-
         inputCodigoKit.disabled = true;
 
+        // MONTAGEM DO PAYLOAD 
+        // Encapsulamos em 'dados' para alinhar com o seu requests.php
+        const payload = {
+            acao: 'inserir_endereco_item_reposto_kit',
+            dados: {
+                codMaterial: codMaterial,
+                qtdReposto: qtdReposto,
+                sequencia: sequencia,
+                Endereco: enderecoFinal,
+                matricula: matriculaOperador, // Valor desmembrado vindo do atributo data-matricula
+                usuario: nomeOperador,        // Valor desmembrado vindo do atributo data-usuario
+                codEmpresa: "1" 
+            }
+        };
+
+        // FETCH ENVIANDO JSON
         fetch('requests.php?acao=inserir_endereco_item_reposto_kit', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(payload)
         })
         .then(response => {
-            if (!response.ok) throw new Error('Erro na resposta do servidor');
-            return response.text(); 
+            // Se o PHP der erro de servidor, capturamos aqui
+            if (!response.ok) throw new Error('Erro na rede ou servidor (Status: ' + response.status + ')');
+            return response.json(); 
         })
-        .then(textData => {
-            console.log("Salvo no banco:", textData);
-            
-            kitsLidos.push({ 
-                raw: kitRaw, 
-                item: codMaterial, 
-                qtd: qtdReposto,
-                seq: sequencia 
-            });
-            
-            renderizarLista();
+        .then(data => {
+            // O seu requests.php retorna o json_decode da API interna
+            console.log("Retorno do Servidor:", data);
 
-            // ==========================================
-            // CORREÇÃO: SOMA NO TOTALIZADOR DE KITS E UNIDADES
-            // ==========================================
-            totalKitsGlobal++;
-            totalUnidadesGlobal += parseInt(qtdReposto, 10); // Adiciona a QTD extraída do QR Code
-            
-            totalKitsSessaoEl.textContent = totalKitsGlobal;
-            totalUnidadesSessaoEl.textContent = totalUnidadesGlobal; // Atualiza a tela
-            // ==========================================
+            // Verificamos se a API interna retornou sucesso (ajuste conforme o retorno da sua API)
+            // Geralmente APIs retornam true/false ou 200 OK
+            if (data) {
+                kitsLidos.push({ 
+                    raw: kitRaw, 
+                    item: codMaterial, 
+                    qtd: qtdReposto,
+                    seq: sequencia 
+                });
+                
+                renderizarLista();
+                
+                // Atualização dos totais na tela
+                totalKitsGlobal++;
+                totalUnidadesGlobal += parseInt(qtdReposto, 10); 
+                
+                totalKitsSessaoEl.textContent = totalKitsGlobal;
+                totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
+
+                mostrarAviso(`Kit ${codMaterial} adicionado!`, 'sucesso');
+            } else {
+                throw new Error('A API recusou a gravação dos dados.');
+            }
         })
         .catch(error => {
-            console.error("Erro no Fetch:", error);
-            alert("Erro ao salvar o Kit no banco de dados. Verifique sua conexão.");
+            console.error("Erro detalhado:", error);
+            mostrarAviso("Erro ao salvar: " + error.message, "erro");
         })
         .finally(() => {
             inputCodigoKit.disabled = false;
@@ -227,8 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         kitsLidos.forEach((kitObj) => {
             const li = document.createElement('li');
-            li.className = 'flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200';
-            
+            li.className = 'flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200 animate-fade-in';
             li.innerHTML = `
                 <div class="flex flex-col">
                     <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Item</span>
@@ -248,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('btn-finalizar-kit').addEventListener('click', () => {
-        // Limpa a lista atual e volta para a tela inicial
+        if (kitsLidos.length > 0) mostrarAviso('Sessão finalizada!', 'sucesso');
         kitsLidos = [];
         renderizarLista();
         step2Kit.classList.add('hidden');
@@ -258,41 +306,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ================= LÓGICA DA UNIDADE =================
-    inputCodigoUnidade.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && inputCodigoUnidade.value.trim() !== '') {
-            e.preventDefault();
-            inputQtdeUnidade.focus();
-        }
-    });
-
     document.getElementById('btn-finalizar-unidade').addEventListener('click', () => {
         const produto = inputCodigoUnidade.value.trim();
         const quantidade = inputQtdeUnidade.value.trim();
         const enderecoFinal = inputEndereco.value.trim();
 
         if (!produto || !quantidade || quantidade <= 0) {
-            alert('Por favor, informe o produto e uma quantidade válida.');
+            mostrarAviso('Informe dados válidos.', 'erro');
             return;
         }
 
-        const payload = {
+        const payloadUnidade = {
             endereco: enderecoFinal,
-            tipo: 'unidade',
             produto: produto,
-            quantidade: quantidade
+            quantidade: quantidade,
+            matricula: matriculaOperador,
+            usuario: nomeOperador,
+            tipo: 'unidade'
         };
 
-        console.log("Pronto para enviar ao banco (Unidade):", payload);
-        alert('Reposição de unidade finalizada! (Abra o console para ver os dados)');
-        
-        // SOMA NO TOTALIZADOR DE UNIDADES (Caso ele use a tela de unidades também)
-        totalUnidadesGlobal += parseInt(quantidade, 10);
-        totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
-        
-        // AQUI VOCÊ PODE ADICIONAR O SEU FETCH PARA requests.php PARA SALVAR A UNIDADE NO BANCO
-        
-        inputCodigoUnidade.value = '';
-        inputQtdeUnidade.value = '';
-        inputCodigoUnidade.focus();
+        fetch('requests.php?acao=inserir_endereco', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payloadUnidade)
+        })
+        .then(response => response.json())
+        .then(data => {
+            mostrarAviso('Unidade salva!', 'sucesso');
+            totalUnidadesGlobal += parseInt(quantidade, 10);
+            totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
+            inputCodigoUnidade.value = '';
+            inputQtdeUnidade.value = '';
+            inputCodigoUnidade.focus();
+        })
+        .catch(() => mostrarAviso('Erro ao salvar unidade.', 'erro'));
     });
 });

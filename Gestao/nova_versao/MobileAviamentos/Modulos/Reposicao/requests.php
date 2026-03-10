@@ -19,10 +19,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultarLotes('1', $plano));
                     break;
-                case 'consultar_usuarios':
-                    $plano = $_GET['plano'];
-                    jsonResponse(Consultar_Usuarios('1'));
-                    break;
                 case 'Consultar_Realizados':
                     $Fase = $_GET['Fase'];
                     $dataInicial = $_GET['dataInicial'];
@@ -174,24 +170,3 @@ function inserir_endereco_item_reposto_kit($dados)
 }
 
 // ... Coloque aqui embaixo as outras funções que você chamou no Switch (ConsultarEnderecos, etc) caso eu não tenha listado todas
-function Consultar_Usuarios($empresa)
-{
-    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:9000' : 'http://192.168.0.183:8000';
-    $apiUrl = "{$baseUrl}/pcp/api/UsuarioHabilitadoAviamento?codEmpresa={$empresa}";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
-
-    $apiResponse = curl_exec($ch);
-
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
-    }
-
-    curl_close($ch);
-
-    return json_decode($apiResponse, true);
-}
