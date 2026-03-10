@@ -1,12 +1,16 @@
 <?php
 
-
 function jsonResponse($data)
 {
     header('Content-Type: application/json');
     echo json_encode($data);
     exit;
 }
+
+// Captura o corpo da requisição JSON para métodos POST/PUT logo no início
+$inputRaw = file_get_contents('php://input');
+$requestData = json_decode($inputRaw, true) ?? [];
+
 switch ($_SERVER["REQUEST_METHOD"]) {
 
     case "GET":
@@ -17,37 +21,37 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     jsonResponse(ConsultarRecebimento('1'));
                     break;
                 case 'Consulta_Lotes':
-                    $plano = $_GET['plano'];
+                    $plano = $_GET['plano'] ?? '';
                     jsonResponse(ConsultarLotes('1', $plano));
                     break;
                 case 'devolver_ultima_sequencia_item':
-                    $empresa = $_GET['empresa'];
-                    $codMaterial = $_GET['codMaterial'];
+                    $empresa = $_GET['empresa'] ?? '1';
+                    $codMaterial = $_GET['codMaterial'] ?? '';
                     jsonResponse(devolver_ultima_sequencia_item($empresa, $codMaterial));
                     break;
                 case 'Consultar_Realizados':
-                    $Fase = $_GET['Fase'];
-                    $dataInicial = $_GET['dataInicial'];
-                    $dataFinal = $_GET['dataFinal'];
+                    $Fase = $_GET['Fase'] ?? '';
+                    $dataInicial = $_GET['dataInicial'] ?? '';
+                    $dataFinal = $_GET['dataFinal'] ?? '';
                     jsonResponse(ConsultarRealizados('1', $Fase, $dataInicial, $dataFinal));
                     break;
                 case 'Consultar_RealizadosDia':
-                        $Fase = $_GET['Fase'];
-                        $dataInicial = $_GET['dataInicial'];
-                        jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial));
-                        break;
+                    $Fase = $_GET['Fase'] ?? '';
+                    $dataInicial = $_GET['dataInicial'] ?? '';
+                    jsonResponse(ConsultarRealizadosDia('1', $Fase, $dataInicial));
+                    break;
                 case 'Consultar_Cronograma':
-                    $plano = $_GET['plano'];
-                    $fase = $_GET['fase'];
+                    $plano = $_GET['plano'] ?? '';
+                    $fase = $_GET['fase'] ?? '';
                     jsonResponse(ConsultarCronograma('1', $plano, $fase));
                     break;
                 case 'Consultar_Tipo_Op':
                     jsonResponse(ConsultarTipoOp('1'));
                     break;
-               
                 case 'ConsultaFaltaProduzirCategoria_Fase':
-                    header('Content-Type: application/json');
-                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
+                    // Declarado um array vazio para $dados para evitar erro de variável indefinida no GET
+                    $dados = [];
+                    jsonResponse(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Acao GET não reconhecida.']);
@@ -55,52 +59,61 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             }
         }
         break;
+
     case "POST":
-        $requestData = json_decode(file_get_contents('php://input'), true);
         $acao = $requestData['acao'] ?? null;
-        $dados = $requestData['dados'] ?? null;
+        
+        // CORREÇÃO PRINCIPAL: Se 'dados' não existir, pega o $requestData inteiro 
+        // para não enviar nulo para o Python
+        $dados = $requestData['dados'] ?? $requestData; 
+
         if ($acao) {
             switch ($acao) {
                 case 'Consulta_Falta_Produzir_Categoria':
-                    header('Content-Type: application/json');
-                    echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
+                    jsonResponse(ConsultaFaltaProduzirCategoria_Fase($dados));
                     break;
                 case 'inserir_endereco':
-                        header('Content-Type: application/json');
-                        echo json_encode(inserir_endereco($dados));
-                        break;
+                    jsonResponse(inserir_endereco($dados));
+                    break;
                 case 'inserir_endereco_massa':
-                        jsonResponse(inserir_endereco_massa($dados));
-                        break;
+                    jsonResponse(inserir_endereco_massa($dados));
+                    break;
+                case 'inserir_atualizar_sequencia_codMaterial':
+                    jsonResponse(inserir_atualizar_sequencia_codMaterial($dados));
+                    break;
                 case 'Consulta_fila_fase':
-                        jsonResponse(ConsultaFilaResumo($dados));
-                        break;
+                    jsonResponse(ConsultaFilaResumo($dados));
+                    break;
                 case 'ConsultaFilaResumoCategoria':
-                        jsonResponse(ConsultaFilaResumoCategoria($dados));
-                        break;
+                    jsonResponse(ConsultaFilaResumoCategoria($dados));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
                     break;
             }
         }
         break;
+
     case "PUT":
-        $requestData = json_decode(file_get_contents('php://input'), true);
         $acao = $requestData['acao'] ?? null;
         $dados = $requestData['dados'] ?? null;
         if ($acao) {
             switch ($acao) {
                 default:
-                    jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
+                    jsonResponse(['status' => false, 'message' => 'Ação PUT não reconhecida.']);
                     break;
             }
         }
         break;
+
     default:
         jsonResponse(['status' => false, 'message' => 'Método de requisição não suportado.']);
         break;
 }
 
+// ==========================================
+// FUNÇÕES DE INTEGRAÇÃO COM A API FLASK
+// ==========================================
 
 function inserir_endereco($dados)
 {
@@ -119,8 +132,6 @@ function inserir_endereco($dados)
     ];
 
     curl_setopt_array($ch, $options);
-
-
     $apiResponse = curl_exec($ch);
 
     if (!$apiResponse) {
@@ -128,7 +139,6 @@ function inserir_endereco($dados)
     }
 
     curl_close($ch);
-
     return json_decode($apiResponse, true);
 }
 
@@ -149,8 +159,6 @@ function inserir_endereco_massa($dados)
     ];
 
     curl_setopt_array($ch, $options);
-
-
     $apiResponse = curl_exec($ch);
 
     if (!$apiResponse) {
@@ -158,11 +166,35 @@ function inserir_endereco_massa($dados)
     }
 
     curl_close($ch);
-
     return json_decode($apiResponse, true);
 }
 
+function inserir_atualizar_sequencia_codMaterial($dados)
+{
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
+    $apiUrl = "{$baseUrl}/api/inserir_atualizar_sequencia_codMaterial";
+    $ch = curl_init($apiUrl);
 
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+    return json_decode($apiResponse, true);
+}
 
 function ConsultarRecebimento($empresa)
 {
@@ -182,7 +214,6 @@ function ConsultarRecebimento($empresa)
     }
 
     curl_close($ch);
-
     return json_decode($apiResponse, true);
 }
 
@@ -204,7 +235,5 @@ function devolver_ultima_sequencia_item($empresa, $codMaterial)
     }
 
     curl_close($ch);
-
     return json_decode($apiResponse, true);
 }
-

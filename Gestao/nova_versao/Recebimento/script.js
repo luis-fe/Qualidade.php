@@ -213,6 +213,10 @@ function calcularSaldoEnderecado(cod) {
 // FUNÇÕES DE IMPRESSÃO E MODAIS
 // ==========================================
 
+// ==========================================
+// FUNÇÕES DE IMPRESSÃO E MODAIS
+// ==========================================
+
 async function salvarConfigKit(codID, btnElement) {
     let spanSaldo = $(`#saldo_original_${codID}`);
     let saldoOriginal = converterParaFloat(spanSaldo.attr('data-saldo'));
@@ -292,13 +296,11 @@ async function salvarConfigKit(codID, btnElement) {
             }
         });
 
-        // Verifica se a API retornou o array com o objeto e pega a sequência
         if (seqResponse && seqResponse.length > 0 && seqResponse[0].sequencia !== undefined) {
             ultimaSequencia = parseInt(seqResponse[0].sequencia) || 0;
         }
     } catch (e) {
         console.error("Erro ao buscar a sequência na API, iniciando do zero.", e);
-        // Em caso de falha na rede, mantém em zero para não travar o WMS
         ultimaSequencia = 0;
     }
 
@@ -327,11 +329,8 @@ async function salvarConfigKit(codID, btnElement) {
     // 2. MONTA OS CARDS E INCREMENTA A SEQUÊNCIA PARA CADA ETIQUETA
     // =========================================================================
     itensParaImprimir.forEach((item, index) => {
-        
-        // A mágica acontece aqui: Soma +1 na última sequência encontrada
         ultimaSequencia++; 
         
-        // Novo formato do QR Code: codMaterial + "-" + qtd + "-" + sequencia
         const stringQrCode = `${item.codigo}-${item.tamanho}-${ultimaSequencia}`;
         const qrData = encodeURIComponent(stringQrCode);
         const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
@@ -360,7 +359,7 @@ async function salvarConfigKit(codID, btnElement) {
         $('#area-etiquetas').append(cardHTML);
     });
 
-    // SISTEMA DE ESPERA (PROMISES) SEGURO
+    // Aguarda o carregamento visual das imagens
     const promessasDeCarregamento = [];
     const imagens = $('#area-etiquetas img.img-qrcode');
 
@@ -376,6 +375,27 @@ async function salvarConfigKit(codID, btnElement) {
     });
 
     await Promise.all(promessasDeCarregamento);
+
+    // =========================================================================
+    // 3. ATUALIZA A NOVA SEQUÊNCIA NO BANCO DE DADOS
+    // =========================================================================
+    try {
+        await $.ajax({
+            url: 'requests.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                acao: 'inserir_atualizar_sequencia_codMaterial',
+                sequencia: ultimaSequencia.toString(),
+                codMaterial: codEditado
+            }),
+            dataType: 'json'
+        });
+        console.log(`Sequência do material ${codEditado} atualizada para ${ultimaSequencia} no banco de dados.`);
+    } catch (error) {
+        console.error('Erro ao atualizar a sequência final no banco:', error);
+        // Opcional: alert('Atenção: As etiquetas foram geradas, mas houve um erro ao salvar a sequência no banco de dados.');
+    }
 
     // Esconde a tela de loading
     $('#loadingModal').modal('hide');
