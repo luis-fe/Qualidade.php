@@ -1,15 +1,20 @@
 $(document).ready(function () {
-    // Carrega os dados ao abrir a página
+    // 1. Carrega os dados imediatamente ao abrir a página
     buscarDados();
 
-    // Evento de clique no botão filtrar
+    // 2. Configura a atualização automática a cada 3 minutos (180.000 ms)
+    setInterval(function() {
+        console.log("Atualização automática disparada...");
+        buscarDados();
+    }, 180000); 
+
+    // 3. Evento de clique no botão filtrar (caso o utilizador queira atualizar manualmente)
     $('#btnFiltrar').on('click', function() {
         buscarDados();
     });
 });
 
 function buscarDados() {
-    // 1. Garantir que estamos pegando os valores dos IDs corretos
     const dInicio = $('#dataInicio').val();
     const dFim = $('#dataFim').val();
 
@@ -17,40 +22,36 @@ function buscarDados() {
         url: 'requests.php',
         type: 'GET',
         data: {
-            // AJUSTE: O case deve ser idêntico ao 'case' do switch no PHP
-            acao: 'Produtividade_Aviamentos', 
+            acao: 'produtividade_aviamentos', // Certifique-se que está minúsculo como no novo requests.php
             dataInicio: dInicio,
             dataFim: dFim
         },
         dataType: 'json',
         beforeSend: function() {
-            $('#table-metas tbody').html('<tr><td colspan="3" class="text-center"><div class="spinner-border spinner-border-sm" role="status"></div> Processando...</td></tr>');
+            // Opcional: mostrar um pequeno indicador de que está a atualizar
+            // Mas sem apagar a tabela toda para não "piscar" de forma agressiva
+            console.log("A consultar dados...");
         },
         success: function (data) {
             let linhas = '';
 
-            // 2. Validar se o retorno é um array e se tem itens
             if (Array.isArray(data) && data.length > 0) {
                 data.forEach(item => {
-                    // 3. Uso de colchetes para chaves com pontos ou espaços
                     linhas += `
                         <tr>
-                            <td>${item.usuario || 'N/A'}</td>
-                            <td>${item["qtd.Kit Reposto"] ?? 0}</td>
-                            <td>${item["qtd Enderecos"] ?? 0}</td>
+                            <td>${item.usuario}</td>
+                            <td>${item["qtd.Kit Reposto"]}</td>
+                            <td>${item["qtd Enderecos"]}</td>
                         </tr>`;
                 });
             } else {
-                // Caso a API retorne um erro dentro do JSON ou array vazio
-                const msg = data.message ? data.message : 'Nenhum registro para este período.';
-                linhas = `<tr><td colspan="3" class="text-center">${msg}</td></tr>`;
+                linhas = '<tr><td colspan="3" class="text-center">Nenhum registro encontrado.</td></tr>';
             }
 
             $('#table-metas tbody').html(linhas);
         },
-        error: function (xhr, status, error) {
-            console.error("Erro detalhado:", xhr.responseText);
-            $('#table-metas tbody').html('<tr><td colspan="3" class="text-center text-danger">Erro ao consultar API: ' + error + '</td></tr>');
+        error: function (xhr) {
+            console.error("Erro na atualização:", xhr.responseText);
         }
     });
 }
