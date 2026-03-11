@@ -17,31 +17,52 @@ $dataHoje = date('Y-m-d');
         </div>
     </div>
 
-    <div class="card mb-3 p-3 shadow-sm">
-        <div class="row align-items-end">
-            <div class="col-md-3">
-                <label for="dataInicio" class="form-label">Data Início</label>
-                <input type="date" id="dataInicio" class="form-control" value="<?php echo $dataHoje; ?>">
+<div class="card mb-3 p-2 shadow-sm">
+        <div class="row align-items-center justify-content-start">
+            
+            <div class="col-auto d-flex align-items-center gap-2">
+                <label for="dataInicio" class="mb-0 fw-bold text-nowrap">Data Início:</label>
+                <input type="date" id="dataInicio" class="form-control form-control-sm" value="<?php echo $dataHoje; ?>">
             </div>
-            <div class="col-md-3">
-                <label for="dataFim" class="form-label">Data Fim</label>
-                <input type="date" id="dataFim" class="form-control" value="<?php echo $dataHoje; ?>">
+            
+            <div class="col-auto d-flex align-items-center gap-2 mt-2 mt-sm-0">
+                <label for="dataFim" class="mb-0 fw-bold text-nowrap">Data Fim:</label>
+                <input type="date" id="dataFim" class="form-control form-control-sm" value="<?php echo $dataHoje; ?>">
             </div>
-            <div class="col-md-2">
-                <button type="button" id="btnFiltrar" class="btn btn-primary w-100">
+            
+            <div class="col-auto mt-2 mt-sm-0">
+                <button type="button" id="btnFiltrar" class="btn btn-primary btn-sm px-4">
                     <i class="bi bi-search"></i> Filtrar
                 </button>
             </div>
+
         </div>
     </div>
 
-    <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 70vh; border-radius: 8px;">
-        <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
+    <h5 class="mt-4 mb-2" style="color: #003366;"><strong>RANKING REPOSIÇÃO</strong></h5>
+    <div class="div-tabela mb-4" style="max-width: 100%; overflow: auto; max-height: 40vh; border-radius: 8px;">
+        <table class="table table-bordered table-striped" id="table-reposicao" style="width: 100%;">
             <thead style="position: sticky; top: 0; background-color: #003366; color: white; z-index: 10;">
                 <tr>
+                    <th style="width: 80px; text-align: center;">Posição</th>
                     <th>Repositor</th>
-                    <th>qtd. Kit <br>Reposto</th>
-                    <th>qtd <br>Endereços</th>
+                    <th style="text-align: center;">qtd. Kit <br>Reposto</th>
+                    <th style="text-align: center;">qtd <br>Endereços</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+
+    <h5 class="mt-4 mb-2" style="color: #003366;"><strong>RANKING CONFERÊNCIA</strong></h5>
+    <div class="div-tabela mb-4" style="max-width: 100%; overflow: auto; max-height: 40vh; border-radius: 8px;">
+        <table class="table table-bordered table-striped" id="table-conferencia" style="width: 100%;">
+            <thead style="position: sticky; top: 0; background-color: #003366; color: white; z-index: 10;">
+                <tr>
+                    <th style="width: 80px; text-align: center;">Posição</th>
+                    <th>Conferente</th>
+                    <th style="text-align: center;">Ops <br>Conferidas</th>
                 </tr>
             </thead>
             <tbody>
