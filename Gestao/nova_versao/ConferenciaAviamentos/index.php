@@ -226,6 +226,33 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
+<div class="modal fade" id="modalConfirmarPendencia" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-warning">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-question-circle-fill me-2"></i> Confirmar Finalização
+                </h5>
+            </div>
+            
+            <div class="modal-body text-center p-4">
+                <i class="bi bi-exclamation-octagon text-warning mb-3" style="font-size: 3.5rem;"></i>
+                <h5 class="fw-bold">Deseja finalizar com pendência?</h5>
+                <p class="text-muted">Esta ação encerrará a conferência da OP mesmo com itens faltando.</p>
+            </div>
+            
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i> Não
+                </button>
+                <button type="button" class="btn btn-warning px-4 fw-bold text-dark" onclick="efetivarFinalizacaoPendencia()">
+                    <i class="bi bi-check-lg me-1"></i> Sim, Finalizar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalPendenciaSucesso" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-warning shadow-lg">

@@ -8,6 +8,7 @@ let linhaParaExcluir = null;
 let audioCtx = null;
 let bufferErro = null;
 let bufferSucesso = null; 
+let bufferAlerta = null; // Nova variável para o áudio de alerta
 
 // 1. Pré-carrega os áudios diretamente na memória RAM (Zero Delay)
 async function carregarAudioNaMemoria() {
@@ -25,9 +26,24 @@ async function carregarAudioNaMemoria() {
         const arrayBufferSucesso = await responseSucesso.arrayBuffer();
         bufferSucesso = await audioCtx.decodeAudioData(arrayBufferSucesso);
         
+        // Novo: Carregar som de ALERTA
+        const responseAlerta = await fetch('MensagemAlerta.mp3');
+        const arrayBufferAlerta = await responseAlerta.arrayBuffer();
+        bufferAlerta = await audioCtx.decodeAudioData(arrayBufferAlerta);
+        
     } catch (erro) {
-        console.error("Erro ao pré-carregar áudios de alta performance:", erro);
+        console.error("Erro ao pré-carregar áudios:", erro);
     }
+}
+
+// Nova função de disparo
+function tocarBipeAlerta() {
+    if (!audioCtx || !bufferAlerta) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const fonte = audioCtx.createBufferSource();
+    fonte.buffer = bufferAlerta;
+    fonte.connect(audioCtx.destination);
+    fonte.start(0); 
 }
 
 // Inicia o carregamento assim que o script é lido
@@ -1340,89 +1356,27 @@ function limparConferencia() {
     }
 }
 
-async function efetivarConferencia() {
-    // 1. Pega o número da OP e a matrícula do usuário logado
-    let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
-    let matriculaUsuario = window.usuarioAtivo ? window.usuarioAtivo.matricula : '';
-
-    // Trava de segurança caso a matrícula tenha se perdido
-    if (!matriculaUsuario) {
-        alert("Erro: Identificação do usuário não encontrada. Por favor, atualize a página e informe a matrícula novamente.");
-        return;
-    }
-
-    console.log(`Efetivando conferência da OP: ${opAtual} pelo usuário: ${matriculaUsuario}`);
-
-    // 2. Monta o corpo da requisição exatamente como você pediu
-    let payloadEnvio = {
-        acao: 'finalizar_conferencia',
-        dados: {
-            codMatricula: matriculaUsuario,
-            numeroOP: opAtual
-        }
-    };
-
-    // 3. Pega o botão do modal de sucesso para dar feedback visual
-    let btnEfetivar = $('#modalSucesso .btn-success');
-    let textoOriginalBtn = btnEfetivar.html();
-    btnEfetivar.html('<i class="bi bi-hourglass-split me-1"></i> Finalizando...').prop('disabled', true);
-
-    try {
-        // 4. Dispara a requisição POST para o requests.php
-        const response = await $.ajax({
-            url: 'requests.php',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(payloadEnvio),
-            dataType: 'json'
-        });
-
-        // 5. Sucesso!
-        alert("Conferência da OP " + opAtual + " finalizada com sucesso!");
-        
-        // Fecha os modais e volta os botões ao normal
-        btnEfetivar.html(textoOriginalBtn).prop('disabled', false);
-        $('#modalSucesso').modal('hide');
-        $('#modalItensOP').modal('hide');
-
-        // 6. Atualiza a tabela principal de OPs (para a OP recém finalizada sumir da fila ou mudar de fase)
-        await ConsultarFilaConferencia();
-
-    } catch (error) {
-        console.error('Erro ao efetivar conferência:', error);
-        alert('Erro ao comunicar com o servidor. A OP pode não ter sido finalizada no banco de dados.');
-        btnEfetivar.html(textoOriginalBtn).prop('disabled', false);
-    }
+// Passo 1: Abre o modal de confirmação e toca o som
+function finalizarComPendencia() {
+    tocarBipeAlerta();
+    $('#modalConfirmarPendencia').modal('show');
 }
 
-// ==========================================
-// FUNÇÃO: FINALIZAR COM PENDÊNCIA
-// ==========================================
-async function finalizarComPendencia() {
+// Passo 2: Executa a finalização real (chamado pelo botão "Sim" do modal)
+async function efetivarFinalizacaoPendencia() {
     let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
     let matriculaUsuario = window.usuarioAtivo ? window.usuarioAtivo.matricula : '';
 
-    if (!matriculaUsuario) {
-        alert("Erro: Usuário não identificado.");
-        return;
-    }
-
-    if (!confirm(`Deseja finalizar a OP ${opAtual} registrando a pendência atual?`)) {
-        return;
-    }
+    $('#modalConfirmarPendencia').modal('hide');
+    $('#loadingModal').modal('show');
 
     let payloadEnvio = {
         acao: 'finalizar_conferencia_comPendencia',
-        dados: {
-            codMatricula: matriculaUsuario,
-            numeroOP: opAtual
-        }
+        dados: { codMatricula: matriculaUsuario, numeroOP: opAtual }
     };
 
-    $('#loadingModal').modal('show');
-
     try {
-        const response = await $.ajax({
+        await $.ajax({
             url: 'requests.php',
             type: 'POST',
             contentType: 'application/json',
@@ -1430,23 +1384,18 @@ async function finalizarComPendencia() {
             dataType: 'json'
         });
 
-        // 1. DISPARA O SOM DE SUCESSO
         tocarBipeSucesso();
-
-        // 2. Fecha o modal de conferência
         $('#modalItensOP').modal('hide');
 
-        // 3. Abre o modal amarelo de pendência
         setTimeout(() => {
-            $('#modalPendenciaSucesso').modal('show');
+            $('#modalPendenciaSucesso').modal('show'); // Aquele modal amarelo de sucesso que criamos antes
         }, 400);
 
-        // 4. Atualiza a tabela principal ao fundo
         await ConsultarFilaConferencia();
 
     } catch (error) {
-        console.error('Erro ao processar pendência:', error);
-        tocarBipeErro(); // Toca erro se a API falhar
+        console.error('Erro:', error);
+        tocarBipeErro();
         alert('Erro ao comunicar com o servidor.');
     } finally {
         $('#loadingModal').modal('hide');
