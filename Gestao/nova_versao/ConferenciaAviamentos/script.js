@@ -1394,3 +1394,59 @@ async function efetivarConferencia() {
         btnEfetivar.html(textoOriginalBtn).prop('disabled', false);
     }
 }
+
+// ==========================================
+// FUNÇÃO: FINALIZAR COM PENDÊNCIA
+// ==========================================
+async function finalizarComPendencia() {
+    // 1. Pega o número da OP e a matrícula
+    let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
+    let matriculaUsuario = window.usuarioAtivo ? window.usuarioAtivo.matricula : '';
+
+    if (!matriculaUsuario) {
+        alert("Erro: Identificação do usuário não encontrada. Por favor, reinicie o processo.");
+        return;
+    }
+
+    // 2. Confirmação
+    if (!confirm(`Deseja finalizar a OP ${opAtual} MESMO COM PENDÊNCIA?`)) {
+        return;
+    }
+
+    // 3. Payload para a API
+    let payloadEnvio = {
+        acao: 'finalizar_conferencia_comPendencia',
+        dados: {
+            codMatricula: matriculaUsuario,
+            numeroOP: opAtual
+        }
+    };
+
+    // 4. Bloqueia a tela e envia
+    $('#loadingModal').modal('show');
+
+    try {
+        const response = await $.ajax({
+            url: 'requests.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payloadEnvio),
+            dataType: 'json'
+        });
+
+        alert("Conferência da OP " + opAtual + " finalizada com PENDÊNCIA!");
+        
+        $('#modalItensOP').modal('hide');
+        $('#modalSucesso').modal('hide');
+
+        // Atualiza a fila principal
+        await ConsultarFilaConferencia();
+
+    } catch (error) {
+        console.error('Erro ao finalizar com pendência:', error);
+        alert('Erro ao comunicar com o servidor.');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+

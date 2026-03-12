@@ -185,9 +185,15 @@ include_once('../../../templates/headerGestao.php');
                                 <strong class="fs-3">
                                     <span id="contadorBipados">0</span> / <span id="contadorTotal">0</span>
                                 </strong>
-                                <button type="button" class="btn btn-sm btn-outline-light mt-2 w-100 fw-bold" onclick="limparConferencia()">
-                                    <i class="bi bi-arrow-counterclockwise"></i> Limpar
-                                </button>
+                                
+                                <div class="d-flex gap-1 mt-2">
+                                    <button type="button" class="btn btn-sm btn-outline-light flex-fill fw-bold" onclick="limparConferencia()">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Limpar
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-warning flex-fill fw-bold text-dark" onclick="finalizarComPendencia()">
+                                        <i class="bi bi-exclamation-triangle-fill"></i> Pendência
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -215,6 +221,33 @@ include_once('../../../templates/headerGestao.php');
             
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalSucessoLabel">
+                    <i class="bi bi-check-circle-fill me-2"></i>Conferência Concluída
+                </h5>
+            </div>
+            
+            <div class="modal-body text-center p-4">
+                <i class="bi bi-award text-success mb-3" style="font-size: 4rem;"></i>
+                <h4 class="mb-3">Conferência finalizada com sucesso!</h4>
+                <p class="text-muted">Todos os itens desta OP foram bipados corretamente. Deseja efetivar a conferência no sistema?</p>
+            </div>
+            
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Sair
+                </button>
+                <button type="button" class="btn btn-success px-3 fw-bold" onclick="efetivarConferencia()">
+                    <i class="bi bi-check-lg me-1"></i> Efetivar Total
+                </button>
             </div>
         </div>
     </div>
@@ -263,33 +296,6 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
-<div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-success">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="modalSucessoLabel">
-                    <i class="bi bi-check-circle-fill me-2"></i>Conferência Concluída
-                </h5>
-            </div>
-            
-            <div class="modal-body text-center p-4">
-                <i class="bi bi-award text-success mb-3" style="font-size: 4rem;"></i>
-                <h4 class="mb-3">Conferência finalizada com sucesso!</h4>
-                <p class="text-muted">Todos os itens desta OP foram bipados corretamente. Deseja efetivar a conferência no sistema?</p>
-            </div>
-            
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle me-1"></i> Cancelar
-                </button>
-                <button type="button" class="btn btn-success px-4" onclick="efetivarConferencia()">
-                    <i class="bi bi-check-lg me-1"></i> Efetivar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modalConfirmarExclusao" tabindex="-1" aria-labelledby="modalConfirmarExclusaoLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-danger">
@@ -298,13 +304,11 @@ include_once('../../../templates/headerGestao.php');
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>Atenção
                 </h5>
             </div>
-            
             <div class="modal-body text-center p-4">
                 <h5 class="mb-3">Item já bipado!</h5>
                 <p>O material <strong id="spanMaterialExcluir" class="text-danger"></strong> já foi conferido.</p>
                 <p class="text-muted mb-0">Deseja excluir a conferência deste item e voltar a contagem?</p>
             </div>
-            
             <div class="modal-footer justify-content-center">
                 <button type="button" id="btnNaoExcluir" class="btn btn-secondary px-4" data-bs-dismiss="modal">
                     <i class="bi bi-x-circle me-1"></i> Não
@@ -325,12 +329,10 @@ include_once('../../../templates/headerGestao.php');
                     <i class="bi bi-x-octagon-fill me-2"></i>Erro de Leitura
                 </h5>
             </div>
-            
             <div class="modal-body text-center p-4">
                 <i class="bi bi-exclamation-circle text-danger mb-3" style="font-size: 4rem;"></i>
                 <h5 class="mb-3" id="textoErroBipagem"></h5>
             </div>
-            
             <div class="modal-footer justify-content-center">
                 <button type="button" id="btnFecharErroBipagem" class="btn btn-secondary px-4" data-bs-dismiss="modal">
                     <i class="bi bi-arrow-return-left me-1"></i> Voltar

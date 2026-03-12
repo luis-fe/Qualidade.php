@@ -71,6 +71,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'finalizar_conferencia':
                     jsonResponse(finalizar_conferencia($dados));
                     break;
+                case 'finalizar_conferencia_comPendencia':
+                    jsonResponse(finalizar_conferencia_comPendencia($dados));
+                    break;
                 case 'inserir_conferencia_itens_op':
                     jsonResponse(inserir_conferencia_itens_op($dados));
                     break;
@@ -232,6 +235,34 @@ function finalizar_conferencia($dados)
     curl_close($ch);
     return json_decode($apiResponse, true);
 }
+
+function finalizar_conferencia_comPendencia($dados)
+{
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
+    $apiUrl = "{$baseUrl}/api/finalizar_conferencia_comPendencia";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+    return json_decode($apiResponse, true);
+}
+
 
 
 function remover_item_considerado($dados)
