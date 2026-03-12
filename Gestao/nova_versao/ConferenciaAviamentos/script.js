@@ -1399,21 +1399,18 @@ async function efetivarConferencia() {
 // FUNÇÃO: FINALIZAR COM PENDÊNCIA
 // ==========================================
 async function finalizarComPendencia() {
-    // 1. Pega o número da OP e a matrícula
     let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
     let matriculaUsuario = window.usuarioAtivo ? window.usuarioAtivo.matricula : '';
 
     if (!matriculaUsuario) {
-        alert("Erro: Identificação do usuário não encontrada. Por favor, reinicie o processo.");
+        alert("Erro: Usuário não identificado.");
         return;
     }
 
-    // 2. Confirmação
-    if (!confirm(`Deseja finalizar a OP ${opAtual} MESMO COM PENDÊNCIA?`)) {
+    if (!confirm(`Deseja finalizar a OP ${opAtual} registrando a pendência atual?`)) {
         return;
     }
 
-    // 3. Payload para a API
     let payloadEnvio = {
         acao: 'finalizar_conferencia_comPendencia',
         dados: {
@@ -1422,7 +1419,6 @@ async function finalizarComPendencia() {
         }
     };
 
-    // 4. Bloqueia a tela e envia
     $('#loadingModal').modal('show');
 
     try {
@@ -1434,19 +1430,25 @@ async function finalizarComPendencia() {
             dataType: 'json'
         });
 
-        alert("Conferência da OP " + opAtual + " finalizada com PENDÊNCIA!");
-        
-        $('#modalItensOP').modal('hide');
-        $('#modalSucesso').modal('hide');
+        // 1. DISPARA O SOM DE SUCESSO
+        tocarBipeSucesso();
 
-        // Atualiza a fila principal
+        // 2. Fecha o modal de conferência
+        $('#modalItensOP').modal('hide');
+
+        // 3. Abre o modal amarelo de pendência
+        setTimeout(() => {
+            $('#modalPendenciaSucesso').modal('show');
+        }, 400);
+
+        // 4. Atualiza a tabela principal ao fundo
         await ConsultarFilaConferencia();
 
     } catch (error) {
-        console.error('Erro ao finalizar com pendência:', error);
+        console.error('Erro ao processar pendência:', error);
+        tocarBipeErro(); // Toca erro se a API falhar
         alert('Erro ao comunicar com o servidor.');
     } finally {
         $('#loadingModal').modal('hide');
     }
 }
-
