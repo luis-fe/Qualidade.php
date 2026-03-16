@@ -9,7 +9,7 @@ if (!isset($_SESSION['matricula']) || empty($_SESSION['matricula'])) {
 
 include_once('requests.php');
 include_once("../../../../../templates/LoadingGestao.php");
-include_once('../../../../../templates/headerGestao.php');
+include_once('../../../../../templates/headerGestaoMobile.php');
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
