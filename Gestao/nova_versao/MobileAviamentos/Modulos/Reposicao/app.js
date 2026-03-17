@@ -166,101 +166,108 @@ document.addEventListener('DOMContentLoaded', () => {
         inputEndereco.focus();
     });
 
-    // ================= LÓGICA DO KIT =================
+// ================= LÓGICA DO KIT =================
 const adicionarKit = () => {
-        const kitRaw = inputCodigoKit.value.trim();
-        if (!kitRaw) return;
-        
-        const partes = kitRaw.split('-');
-        if (partes.length !== 3) {
-            mostrarAviso('Formato inválido! O QR Code deve ser: ITEM-QTD-SEQUENCIA.', 'erro');
-            inputCodigoKit.value = '';
-            inputCodigoKit.focus();
-            return;
+    const kitRaw = inputCodigoKit.value.trim();
+    if (!kitRaw) return;
+    
+    const partes = kitRaw.split('-');
+    if (partes.length !== 3) {
+        mostrarAviso('Formato inválido! O QR Code deve ser: ITEM-QTD-SEQUENCIA.', 'erro');
+        inputCodigoKit.value = '';
+        inputCodigoKit.focus();
+        return;
+    }
+
+    const codMaterial = partes[0];
+    const qtdReposto = partes[1];
+    const sequencia = partes[2];
+    const enderecoFinal = inputEndereco.value.trim();
+
+    // Validação de duplicidade na lista local
+    if (kitsLidos.some(k => k.raw === kitRaw)) {
+        mostrarAviso('Esta etiqueta já foi bipada nesta sessão!', 'erro');
+        inputCodigoKit.value = '';
+        inputCodigoKit.focus();
+        return;
+    }
+
+    inputCodigoKit.disabled = true;
+
+    // MONTAGEM DO PAYLOAD 
+    // Encapsulamos em 'dados' para alinhar com o seu requests.php
+    const payload = {
+        acao: 'inserir_endereco_item_reposto_kit',
+        dados: {
+            codMaterial: codMaterial,
+            qtdReposto: qtdReposto,
+            sequencia: sequencia,
+            Endereco: enderecoFinal,
+            matricula: matriculaOperador, // Valor desmembrado vindo do atributo data-matricula
+            usuario: nomeOperador,        // Valor desmembrado vindo do atributo data-usuario
+            codEmpresa: "1" 
         }
-
-        const codMaterial = partes[0];
-        const qtdReposto = partes[1];
-        const sequencia = partes[2];
-        const enderecoFinal = inputEndereco.value.trim();
-
-        // Validação de duplicidade na lista local
-        if (kitsLidos.some(k => k.raw === kitRaw)) {
-            mostrarAviso('Esta etiqueta já foi bipada nesta sessão!', 'erro');
-            inputCodigoKit.value = '';
-            inputCodigoKit.focus();
-            return;
-        }
-
-        inputCodigoKit.disabled = true;
-
-        // MONTAGEM DO PAYLOAD 
-        // Encapsulamos em 'dados' para alinhar com o seu requests.php
-        const payload = {
-            acao: 'inserir_endereco_item_reposto_kit',
-            dados: {
-                codMaterial: codMaterial,
-                qtdReposto: qtdReposto,
-                sequencia: sequencia,
-                Endereco: enderecoFinal,
-                matricula: matriculaOperador, // Valor desmembrado vindo do atributo data-matricula
-                usuario: nomeOperador,        // Valor desmembrado vindo do atributo data-usuario
-                codEmpresa: "1" 
-            }
-        };
-
-        // FETCH ENVIANDO JSON
-        fetch('requests.php?acao=inserir_endereco_item_reposto_kit', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            // Se o PHP der erro de servidor, capturamos aqui
-            if (!response.ok) throw new Error('Erro na rede ou servidor (Status: ' + response.status + ')');
-            return response.json(); 
-        })
-        .then(data => {
-            // O seu requests.php retorna o json_decode da API interna
-            console.log("Retorno do Servidor:", data);
-
-            // Verificamos se a API interna retornou sucesso (ajuste conforme o retorno da sua API)
-            // Geralmente APIs retornam true/false ou 200 OK
-            if (data) {
-                kitsLidos.push({ 
-                    raw: kitRaw, 
-                    item: codMaterial, 
-                    qtd: qtdReposto,
-                    seq: sequencia 
-                });
-                
-                renderizarLista();
-                
-                // Atualização dos totais na tela
-                totalKitsGlobal++;
-                totalUnidadesGlobal += parseInt(qtdReposto, 10); 
-                
-                totalKitsSessaoEl.textContent = totalKitsGlobal;
-                totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
-
-                mostrarAviso(`Kit ${codMaterial} adicionado!`, 'sucesso');
-            } else {
-                throw new Error('A API recusou a gravação dos dados.');
-            }
-        })
-        .catch(error => {
-            console.error("Erro detalhado:", error);
-            mostrarAviso("Erro ao salvar: " + error.message, "erro");
-        })
-        .finally(() => {
-            inputCodigoKit.disabled = false;
-            inputCodigoKit.value = ''; 
-            inputCodigoKit.focus();
-        });
     };
+
+    // FETCH ENVIANDO JSON
+    fetch('requests.php?acao=inserir_endereco_item_reposto_kit', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        // Se o PHP der erro de servidor, capturamos aqui
+        if (!response.ok) throw new Error('Erro na rede ou servidor (Status: ' + response.status + ')');
+        return response.json(); 
+    })
+    .then(data => {
+        console.log("Retorno do Servidor:", data);
+
+        // =================================================================
+        // NOVA VALIDAÇÃO: Verifica se a API retornou o erro customizado
+        // Formato esperado do erro: [{"Mensagem":"...","status":false}]
+        // =================================================================
+        if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
+            mostrarAviso(data[0].Mensagem, 'erro');
+            return; // Interrompe a execução aqui para não computar o sucesso
+        }
+
+        // Verificamos se a API interna retornou sucesso
+        if (data) {
+            kitsLidos.push({ 
+                raw: kitRaw, 
+                item: codMaterial, 
+                qtd: qtdReposto,
+                seq: sequencia 
+            });
+            
+            renderizarLista();
+            
+            // Atualização dos totais na tela
+            totalKitsGlobal++;
+            totalUnidadesGlobal += parseInt(qtdReposto, 10); 
+            
+            totalKitsSessaoEl.textContent = totalKitsGlobal;
+            totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
+
+            mostrarAviso(`Kit ${codMaterial} adicionado!`, 'sucesso');
+        } else {
+            throw new Error('A API recusou a gravação dos dados.');
+        }
+    })
+    .catch(error => {
+        console.error("Erro detalhado:", error);
+        mostrarAviso("Erro ao salvar: " + error.message, "erro");
+    })
+    .finally(() => {
+        inputCodigoKit.disabled = false;
+        inputCodigoKit.value = ''; 
+        inputCodigoKit.focus();
+    });
+};
 
     document.getElementById('btn-add-kit').addEventListener('click', adicionarKit);
     inputCodigoKit.addEventListener('keypress', (e) => {
@@ -280,15 +287,15 @@ const adicionarKit = () => {
             li.innerHTML = `
                 <div class="flex flex-col">
                     <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Item</span>
-                    <span class="font-bold text-gray-800 text-lg">${kitObj.item}</span>
+                    <span class="font-bold text-gray-500 text-lg">${kitObj.item}</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Seq</span>
-                    <span class="text-gray-600 font-medium">${kitObj.seq}</span>
+                    <span class="text-gray-400 font-medium">${kitObj.seq}</span>
                 </div>
                 <div class="flex flex-col items-end">
                     <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Qtd</span>
-                    <span class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-md text-lg">${kitObj.qtd}</span>
+                    <span class="bg-blue-100 text-blue-700 font-bold px-3 py-1 rounded-md text-lg">${kitObj.qtd}</span>
                 </div>
             `;
             listaKitsEl.appendChild(li);
