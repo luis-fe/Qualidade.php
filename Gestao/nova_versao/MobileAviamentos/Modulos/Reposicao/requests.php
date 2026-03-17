@@ -19,6 +19,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $plano = $_GET['plano'];
                     jsonResponse(ConsultarLotes('1', $plano));
                     break;
+                case 'get_consultar_endereco':
+                    $endereco = $_GET['endereco'];
+                    jsonResponse(get_consultar_endereco($endereco));
+                    break;
                 case 'Consultar_Realizados':
                     $Fase = $_GET['Fase'];
                     $dataInicial = $_GET['dataInicial'];
@@ -168,5 +172,30 @@ function inserir_endereco_item_reposto_kit($dados)
 
     return json_decode($apiResponse, true);
 }
+
+
+function get_consultar_endereco($endereco)
+{
+    $baseUrl ='http://10.162.0.53:9000';
+    // Use o urlencode para garantir que espaços e traços não quebrem a requisição interna
+$enderecoCodificado = urlencode($endereco);
+$apiUrl = "{$baseUrl}/pcp/api/get_consultar_endereco?endereco={$enderecoCodificado}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+    return json_decode($apiResponse, true);
+}
+
 
 // ... Coloque aqui embaixo as outras funções que você chamou no Switch (ConsultarEnderecos, etc) caso eu não tenha listado todas

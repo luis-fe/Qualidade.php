@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalKitsGlobal = 0;
     let totalUnidadesGlobal = 0;
 
-    // ================= FUNÇÃO DE AVANÇAR TELA =================
+// ================= FUNÇÃO DE AVANÇAR TELA =================
     const avancarParaProximaTela = () => {
         const endereco = inputEndereco.value.trim();
         const tipoReposicao = document.querySelector('input[name="tipo_reposicao"]:checked').value;
@@ -83,6 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tipoReposicao === 'kit') {
             displayEndereco.textContent = endereco;
             step2Kit.classList.remove('hidden');
+            
+            // 1. Zera os dados na tela antes de carregar o novo endereço
+            kitsLidos = [];
+            totalKitsGlobal = 0;
+            totalUnidadesGlobal = 0;
+            totalKitsSessaoEl.textContent = "0";
+            totalUnidadesSessaoEl.textContent = "0";
+            renderizarLista();
+
+            // 2. Dispara a consulta para buscar os itens já repostos neste endereço
+            consultarEndereco(endereco);
+
             inputCodigoKit.focus(); 
         } else if (tipoReposicao === 'unidade') {
             displayEnderecoUnidade.textContent = endereco;
@@ -91,6 +103,61 @@ document.addEventListener('DOMContentLoaded', () => {
             mainCard.classList.add('bg-[#fef3c7]', 'border-orange-200');
             inputCodigoUnidade.focus();
         }
+    };
+
+// ================= CONSULTA ITENS NO ENDEREÇO =================
+    const consultarEndereco = (endereco) => {
+        // Monta a URL passando a ação e o endereço via Query String (GET)
+        // O encodeURIComponent garante que espaços e caracteres especiais no endereço não quebrem a URL
+        const url = `requests.php?acao=get_consultar_endereco&endereco=${encodeURIComponent(endereco)}`;
+
+        fetch(url, {
+            method: 'GET',
+            headers: { 
+                'Accept': 'application/json'
+            }
+            // Em requisições GET, NÃO usamos a propriedade 'body'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na rede ao consultar endereço.');
+            return response.json();
+        })
+        .then(data => {
+            // Verifica se a resposta não é vazia e é um array
+            if (Array.isArray(data) && data.length > 0) {
+                
+                data.forEach(item => {
+                    // Proteção extra: ignora itens que não tenham os campos mínimos necessários
+                    if(!item.codItem || !item.qtd) return; 
+
+                    const codItem = item.codItem;
+                    const qtd = item.qtd;
+                    const seq = item.codItem_seq || '0'; 
+                    
+                    // Recria o formato do QR Code (ITEM-QTD-SEQ)
+                    const rawString = `${codItem}-${qtd}-${seq}`;
+
+                    kitsLidos.push({
+                        raw: rawString,
+                        item: codItem,
+                        qtd: qtd,
+                        seq: seq
+                    });
+
+                    // Atualiza contadores globais
+                    totalKitsGlobal++;
+                    totalUnidadesGlobal += parseInt(qtd, 10);
+                });
+
+                // Atualiza a tela com os totais e a lista renderizada
+                totalKitsSessaoEl.textContent = totalKitsGlobal;
+                totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
+                renderizarLista();
+            }
+        })
+        .catch(error => {
+            console.error("Erro detalhado na consulta do endereço:", error);
+        });
     };
 
     // ================= CONTROLE DA CÂMERA =================
