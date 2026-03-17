@@ -29,10 +29,10 @@ include_once('../../../../../templates/headerGestaoMobile.php');
         <div id="reader" class="mb-4 border-2 border-dashed border-gray-300 hidden"></div>
 
         <div id="step-1">
-            <div class="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+            <div class="flex items-center justify-between mb-0 border-b border-gray-100 pb-0">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">Reposição</h2>
-                        <p class="text-xs text-gray-500 mt-1" id="info-operador" 
+                        <p class="text-xs text-gray-500 mt-0" id="info-operador" 
                         data-matricula="<?= htmlspecialchars($_SESSION['matricula']) ?>" 
                         data-usuario="<?= htmlspecialchars($_SESSION['nomeUsuario']) ?>">
                             Operador: <span class="font-bold text-blue-600"><?= htmlspecialchars($_SESSION['nomeUsuario']) ?></span>
@@ -41,8 +41,8 @@ include_once('../../../../../templates/headerGestaoMobile.php');
                 <a href="../../logout_mobile.php" class="text-sm text-red-500 hover:text-red-700 font-bold px-2 py-1 rounded bg-red-50">Sair</a>
             </div>
 
-            <div class="mb-5">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Reposição</label>
+            <div class="mb-2">
+                <label class="block text-sm font-medium text-gray-700 mb-0">Tipo de Reposição</label>
                 <div class="flex bg-gray-100 p-1 rounded-lg">
                     <label class="flex-1 text-center cursor-pointer">
                         <input type="radio" name="tipo_reposicao" value="kit" class="peer sr-only" checked>
@@ -55,10 +55,10 @@ include_once('../../../../../templates/headerGestaoMobile.php');
                 </div>
             </div>
             
-            <div class="mb-4">
+            <div class="mb-2">
                 <label for="endereco" class="block text-sm font-medium text-gray-700 mb-2">Endereço de Destino</label>
                 <div class="flex space-x-2">
-                    <input type="text" id="endereco" placeholder="Ex: A-10-05" autofocus class="flex-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg px-4 py-3 border">
+                    <input type="text" id="endereco" placeholder="Ex: A-10-05" autofocus class="flex-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg px-3 py-2 border">
                     <button type="button" class="btn-camera inline-flex items-center p-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition" data-target="endereco">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </button>
