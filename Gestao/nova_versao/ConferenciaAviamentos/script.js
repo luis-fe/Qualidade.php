@@ -1317,6 +1317,10 @@ $('#modalErroBipagem').on('hidden.bs.modal', function () {
     $('#inputQrCode').val('').focus();
 });
 
+$('#modalSucesso').on('show.bs.modal', function () {
+    tocarBipeSucesso();
+});
+
 $('#modalConfirmarExclusao').on('shown.bs.modal', function () {
     $('#btnNaoExcluir').focus();
 });
@@ -1395,6 +1399,52 @@ async function efetivarFinalizacaoPendencia() {
 
     } catch (error) {
         console.error('Erro:', error);
+        tocarBipeErro();
+        alert('Erro ao comunicar com o servidor.');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+}
+
+
+// ==========================================
+// FINALIZAR CONFERÊNCIA COM SUCESSO (100% BIPADO)
+// ==========================================
+async function efetivarConferencia() {
+    let opAtual = $('#spanNumeroOP').text().split(' - ')[0].trim();
+    let matriculaUsuario = window.usuarioAtivo ? window.usuarioAtivo.matricula : '';
+
+    // Esconde o modal de confirmação e mostra o loading
+    $('#modalSucesso').modal('hide'); 
+    $('#loadingModal').modal('show');
+
+    let payloadEnvio = {
+        // ATENÇÃO: Verifique se o nome dessa ação é esse mesmo no seu requests.php
+        acao: 'finalizar_conferencia', 
+        dados: { codMatricula: matriculaUsuario, numeroOP: opAtual }
+    };
+
+    try {
+        await $.ajax({
+            url: 'requests.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payloadEnvio),
+            dataType: 'json'
+        });
+
+        tocarBipeSucesso();
+        
+        // Fecha o modal da OP e atualiza a fila
+        $('#modalItensOP').modal('hide');
+        
+        // Se você tiver um alerta final ou toast de sucesso global, pode colocar aqui.
+        alert('OP finalizada com sucesso!'); 
+
+        await ConsultarFilaConferencia();
+
+    } catch (error) {
+        console.error('Erro ao efetivar conferência:', error);
         tocarBipeErro();
         alert('Erro ao comunicar com o servidor.');
     } finally {
