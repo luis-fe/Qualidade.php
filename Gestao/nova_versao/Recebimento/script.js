@@ -70,7 +70,7 @@ function formatarDetalhes(row) {
     let nomeSeguro = (row.nome || '').toString().replace(/"/g, '&quot;');
     let fornecedorSeguro = (row.fornencedorPreferencial || '').toString().replace(/"/g, '&quot;');
     let codEditadoSeguro = (row.codEditado_y || row.CodComponente).toString().replace(/"/g, '&quot;');
-    let unidadeSegura = (row.unidadeMedida || '').toString().replace(/"/g, '&quot;'); // <--- Inserido corretamente aqui
+    let unidadeSegura = (row.unidadeMedida || '').toString().replace(/"/g, '&quot;'); 
 
     return `
         <div class="p-3 border-start border-primary border-4 bg-light">
@@ -160,7 +160,7 @@ function formatarDetalhes(row) {
                             data-unidade="${unidadeSegura}"
                             onclick="salvarConfigKit('${row.CodComponente}', this)" 
                             style="height: 31px;">
-                        <i class="bi bi-printer-fill me-1"></i> Imprimir Kits
+                        <i class="bi bi-printer-fill me-1"></i> Imprimir Etiquetas
                     </button>
                 </div>
 
@@ -205,18 +205,6 @@ function calcularSaldoEnderecado(cod) {
 // FUNÇÕES DE IMPRESSÃO E MODAIS
 // ==========================================
 
-// ==========================================
-// FUNÇÕES DE IMPRESSÃO E MODAIS
-// ==========================================
-
-// ==========================================
-// FUNÇÕES DE IMPRESSÃO E MODAIS
-// ==========================================
-
-// ==========================================
-// FUNÇÕES DE IMPRESSÃO E MODAIS
-// ==========================================
-
 async function salvarConfigKit(codID, btnElement) {
     let spanSaldo = $(`#saldo_original_${codID}`);
     let saldoOriginal = converterParaFloat(spanSaldo.attr('data-saldo'));
@@ -237,8 +225,9 @@ async function salvarConfigKit(codID, btnElement) {
     }
     
     let totalKitsParaImprimir = k1_q + k2_q + k3_q;
-    if (totalKitsParaImprimir <= 0) {
-        alert("Atenção: Você precisa preencher a quantidade de pelo menos 1 Kit (1, 2 ou 3) para imprimir as etiquetas.");
+    
+    if (totalKitsParaImprimir <= 0 && granel <= 0) {
+        alert("Atenção: Você precisa preencher a quantidade de pelo menos 1 Kit ou do Granel para imprimir as etiquetas.");
         return;
     }
 
@@ -255,10 +244,12 @@ async function salvarConfigKit(codID, btnElement) {
 
     let itensParaImprimir = [];
 
+    // Função interna para jogar os kits na fila
     function adicionarAoPrint(qtdKits, tamanhoDoKit) {
         if (qtdKits > 0 && tamanhoDoKit > 0) {
             for (let i = 0; i < qtdKits; i++) {
                 itensParaImprimir.push({
+                    tipo: 'kit', 
                     codigo: codEditado,
                     descricao: descricao,
                     fornecedor: fornecedor,
@@ -273,17 +264,28 @@ async function salvarConfigKit(codID, btnElement) {
     adicionarAoPrint(k2_q, k2_t);
     adicionarAoPrint(k3_q, k3_t);
 
+    // ADICIONA O GRANEL
+    if (granel > 0) {
+        itensParaImprimir.push({
+            tipo: 'granel', 
+            codigo: codEditado,
+            descricao: descricao,
+            fornecedor: fornecedor
+        });
+    }
+
     if (itensParaImprimir.length === 0) {
-        alert("Nenhum kit válido para impressão. Verifique se preencheu o Tamanho e a Quantidade.");
+        alert("Nenhum item válido para impressão. Verifique se preencheu o Tamanho/Quantidade ou Granel.");
         return;
     }
 
     $('#loadingModal').modal('show');
 
     // =========================================================================
-    // 1. BUSCA A ÚLTIMA SEQUÊNCIA NA API ANTES DE GERAR AS ETIQUETAS
+    // 1. BUSCA A ÚLTIMA SEQUÊNCIA NA API (AGORA SEMPRE BUSCA)
     // =========================================================================
     let ultimaSequencia = 0;
+    
     try {
         const seqResponse = await $.ajax({
             type: 'GET',
@@ -315,7 +317,7 @@ async function salvarConfigKit(codID, btnElement) {
             </button>
             <div>
                 <span class="me-3 fw-bold text-primary" id="status-geracao">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Gerando QRCodes...
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Gerando Etiquetas...
                 </span>
                 <button type="button" class="btn btn-primary disabled" id="btn-forcar-impressao" onclick="window.print()">
                     <i class="bi bi-printer me-1"></i> Imprimir Etiquetas
@@ -326,41 +328,56 @@ async function salvarConfigKit(codID, btnElement) {
     `);
 
     // =========================================================================
-    // 2. MONTA OS CARDS E INCREMENTA A SEQUÊNCIA PARA CADA ETIQUETA
+    // 2. MONTA OS CARDS (DIFERENCIA KIT vs GRANEL) E INCREMENTA SEQUÊNCIA
     // =========================================================================
     itensParaImprimir.forEach((item, index) => {
+        let stringQrCode;
+        let infoQtdHTML;
+        let infoSeqHTML;
+
+        // A sequência deve ser incrementada para TODO E QUALQUER item gerado (Kit ou Granel)
         ultimaSequencia++; 
-        
-        const stringQrCode = `${item.codigo}-${item.tamanho}-${ultimaSequencia}`;
+
+        if (item.tipo === 'kit') {
+            stringQrCode = `${item.codigo}-${item.tamanho}-${ultimaSequencia}`;
+            infoQtdHTML = `Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}`;
+            infoSeqHTML = `seq.: ${ultimaSequencia}`;
+        } else {
+            // Lógica Exclusiva para A GRANEL / CONTROLE UNITÁRIO
+            stringQrCode = `${item.codigo}-${ultimaSequencia}CONTROLE UNITARIO`; 
+            infoQtdHTML = `CONTROLE UNITARIO`; 
+            infoSeqHTML = `seq.: ${ultimaSequencia}`; // Sequência exibida na etiqueta
+        }
+
         const qrData = encodeURIComponent(stringQrCode);
         const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
-const cardHTML = `
-    <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; page-break-after: always; box-sizing: border-box;">
-        <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.4cm; padding-left: 0.8cm !important; padding-right: 0.4cm !important;">
-            
-            <div class="d-flex flex-column justify-content-center" style="width: 9.5cm; overflow: hidden; font-family: Arial, sans-serif;">
-                <strong style="font-size: 28px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
-                <strong style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
-                <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
-                
-                <div class="d-flex justify-content-between align-items-end" style="margin-top: 5px;">
-                    <strong style="font-size: 26px; color: #000; line-height: 1.1; white-space: nowrap;">Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}</strong>
-                    <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
+        const cardHTML = `
+            <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; page-break-after: always; box-sizing: border-box;">
+                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.4cm; padding-left: 0.8cm !important; padding-right: 0.4cm !important;">
+                    
+                    <div class="d-flex flex-column justify-content-center" style="width: 9.5cm; overflow: hidden; font-family: Arial, sans-serif;">
+                        <strong style="font-size: 28px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
+                        <strong style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
+                        <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
+                        
+                        <div class="d-flex justify-content-between align-items-end" style="margin-top: 5px;">
+                            <strong style="font-size: 26px; color: #000; line-height: 1.1; white-space: nowrap;">${infoQtdHTML}</strong>
+                            <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100px; flex-shrink: 0;">
+                        <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 90px; height: 90px; display: block;" id="qr-img-${index}">
+                        <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">${infoSeqHTML}</strong>
+                    </div>
                 </div>
             </div>
-
-            <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100px; flex-shrink: 0;">
-                <img class="img-qrcode" src="${qrUrl}" alt="QR Code" style="width: 90px; height: 90px; display: block;" id="qr-img-${index}">
-                <strong style="font-size: 12px; color: #000; line-height: 1.5; margin-top: 2px;">seq.: ${ultimaSequencia}</strong>
-            </div>
-        </div>
-    </div>
-`;
+        `;
         $('#area-etiquetas').append(cardHTML);
     });
 
-    // Aguarda o carregamento visual das imagens
+    // Aguarda o carregamento visual das imagens QR Codes
     const promessasDeCarregamento = [];
     const imagens = $('#area-etiquetas img.img-qrcode');
 
@@ -378,7 +395,7 @@ const cardHTML = `
     await Promise.all(promessasDeCarregamento);
 
     // =========================================================================
-    // 3. ATUALIZA A NOVA SEQUÊNCIA NO BANCO DE DADOS
+    // 3. ATUALIZA A NOVA SEQUÊNCIA NO BANCO DE DADOS (SEMPRE ATUALIZA)
     // =========================================================================
     try {
         await $.ajax({
@@ -395,7 +412,6 @@ const cardHTML = `
         console.log(`Sequência do material ${codEditado} atualizada para ${ultimaSequencia} no banco de dados.`);
     } catch (error) {
         console.error('Erro ao atualizar a sequência final no banco:', error);
-        // Opcional: alert('Atenção: As etiquetas foram geradas, mas houve um erro ao salvar a sequência no banco de dados.');
     }
 
     // Esconde a tela de loading
