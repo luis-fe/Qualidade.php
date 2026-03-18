@@ -346,7 +346,7 @@ async function salvarConfigKit(codID, btnElement) {
             estiloBorda = `border: 1px solid #ccc;`; // Borda sutil para o kit
         } else {
             // Lógica Exclusiva para A GRANEL / CONTROLE UNITÁRIO
-            stringQrCode = `${item.codigo}-${ultimaSequencia}CONTROLE UNITARIO`; 
+            stringQrCode = `${item.codigo}-${ultimaSequencia}-CONTROLE UNITARIO`; 
             // PREENCHIMENTO PRETO E FONTE BRANCA AQUI:
             infoQtdHTML = `<span style="background-color: #000; color: #fff; padding: 2px 8px; border-radius: 4px;">CONTROLE UNITARIO</span>`; 
             infoSeqHTML = `seq.: ${ultimaSequencia}`; 
