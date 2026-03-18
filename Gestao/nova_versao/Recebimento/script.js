@@ -334,6 +334,7 @@ async function salvarConfigKit(codID, btnElement) {
         let stringQrCode;
         let infoQtdHTML;
         let infoSeqHTML;
+        let estiloBorda; 
 
         // A sequência deve ser incrementada para TODO E QUALQUER item gerado (Kit ou Granel)
         ultimaSequencia++; 
@@ -342,18 +343,21 @@ async function salvarConfigKit(codID, btnElement) {
             stringQrCode = `${item.codigo}-${item.tamanho}-${ultimaSequencia}`;
             infoQtdHTML = `Qtd.: ${formatarParaPtBr(item.tamanho)} ${item.unidade}`;
             infoSeqHTML = `seq.: ${ultimaSequencia}`;
+            estiloBorda = `border: 1px solid #ccc;`; // Borda sutil para o kit
         } else {
             // Lógica Exclusiva para A GRANEL / CONTROLE UNITÁRIO
             stringQrCode = `${item.codigo}-${ultimaSequencia}CONTROLE UNITARIO`; 
-            infoQtdHTML = `CONTROLE UNITARIO`; 
-            infoSeqHTML = `seq.: ${ultimaSequencia}`; // Sequência exibida na etiqueta
+            // PREENCHIMENTO PRETO E FONTE BRANCA AQUI:
+            infoQtdHTML = `<span style="background-color: #000; color: #fff; padding: 2px 8px; border-radius: 4px;">CONTROLE UNITARIO</span>`; 
+            infoSeqHTML = `seq.: ${ultimaSequencia}`; 
+            estiloBorda = `border: 4px solid #000;`; // Borda grossa e preta para destaque
         }
 
         const qrData = encodeURIComponent(stringQrCode);
         const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
         const cardHTML = `
-            <div class="card card-etiqueta shadow-sm mb-4" style="border: 1px solid #ccc; background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; page-break-after: always; box-sizing: border-box;">
+            <div class="card card-etiqueta shadow-sm mb-4" style="${estiloBorda} background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; page-break-after: always; box-sizing: border-box;">
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.4cm; padding-left: 0.8cm !important; padding-right: 0.4cm !important;">
                     
                     <div class="d-flex flex-column justify-content-center" style="width: 9.5cm; overflow: hidden; font-family: Arial, sans-serif;">
@@ -361,7 +365,7 @@ async function salvarConfigKit(codID, btnElement) {
                         <strong style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
                         <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
                         
-                        <div class="d-flex justify-content-between align-items-end" style="margin-top: 5px;">
+                        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
                             <strong style="font-size: 26px; color: #000; line-height: 1.1; white-space: nowrap;">${infoQtdHTML}</strong>
                             <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
                         </div>
