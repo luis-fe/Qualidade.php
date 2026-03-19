@@ -93,6 +93,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
 
+            // ---> NOVA VALIDAÇÃO DO ENDEREÇO AQUI <---
+            if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
+                alert(data[0].Mensagem); // Exibe "Endereco nao existe"
+                inputEndereco.value = "";
+                inputEndereco.focus();
+                return; // Interrompe a função e não muda de tela
+            }
+            // -----------------------------------------
+
             if (!Array.isArray(data)) {
                 alert("Erro ao interpretar os dados do endereço.");
                 return;
@@ -109,15 +118,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-function renderizarResultados(endereco, itens) {
+    function renderizarResultados(endereco, itens) {
         displayEndereco.innerText = endereco;
         conteudoResultado.innerHTML = ""; // Limpa os resultados anteriores
 
         let qtdTotal = 0;
         let qtdKits = 0;
 
+        // Se a API retornar um array vazio (o que significa que o endereço existe, mas não tem nada dentro)
         if (itens.length === 0) {
-            conteudoResultado.innerHTML = `<p class="text-center text-gray-500 py-4">O endereço está vazio ou não existe.</p>`;
+            conteudoResultado.innerHTML = `<p class="text-center text-gray-500 py-4">O endereço está vazio no momento.</p>`;
             indicadorTotal.innerText = 0;
             indicadorKits.innerText = 0;
             
