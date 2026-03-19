@@ -184,4 +184,4 @@ document.addEventListener("DOMContentLoaded", () => {
         stepConsulta.classList.add("hidden");
         stepResultado.classList.remove("hidden");
     }
-});
+}); 
