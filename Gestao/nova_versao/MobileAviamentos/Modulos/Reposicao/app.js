@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const infoOperadorEl = document.getElementById('info-operador');
     const matriculaOperador = infoOperadorEl ? infoOperadorEl.getAttribute('data-matricula') : '';
-    const nomeOperador = infoOperadorEl ? infoOperadorEl.getAttribute('data-usuario') : ''; // Captura nome
+    const nomeOperador = infoOperadorEl ? infoOperadorEl.getAttribute('data-usuario') : ''; 
     
     const totalKitsSessaoEl = document.getElementById('total-kits-sessao');
     const totalUnidadesSessaoEl = document.getElementById('total-unidades-sessao');
@@ -67,8 +67,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let kitsLidos = [];     
     let totalKitsGlobal = 0;
     let totalUnidadesGlobal = 0;
+    
+    // Variável para armazenar temporariamente a sequência lida da Unidade
+    let sequenciaLidaUnidade = ''; 
 
-// ================= FUNÇÃO DE AVANÇAR TELA =================
+    // ================= ALTERAÇÃO DINÂMICA DE COR (OPÇÕES) =================
+    const radiosTipo = document.querySelectorAll('input[name="tipo_reposicao"]');
+
+    radiosTipo.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            mainCard.classList.add('transition-colors', 'duration-300');
+            
+            if (e.target.value === 'unidade') {
+                mainCard.classList.remove('bg-white');
+                mainCard.classList.add('bg-[#fef3c7]', 'border-orange-200');
+            } else {
+                mainCard.classList.remove('bg-[#fef3c7]', 'border-orange-200');
+                mainCard.classList.add('bg-white');
+            }
+        });
+    });
+
+    // ================= FUNÇÃO DE AVANÇAR TELA =================
     const avancarParaProximaTela = () => {
         const endereco = inputEndereco.value.trim();
         const tipoReposicao = document.querySelector('input[name="tipo_reposicao"]:checked').value;
@@ -84,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             displayEndereco.textContent = endereco;
             step2Kit.classList.remove('hidden');
             
-            // 1. Zera os dados na tela antes de carregar o novo endereço
             kitsLidos = [];
             totalKitsGlobal = 0;
             totalUnidadesGlobal = 0;
@@ -92,23 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
             totalUnidadesSessaoEl.textContent = "0";
             renderizarLista();
 
-            // 2. Dispara a consulta para buscar os itens já repostos neste endereço
             consultarEndereco(endereco);
 
             inputCodigoKit.focus(); 
         } else if (tipoReposicao === 'unidade') {
             displayEnderecoUnidade.textContent = endereco;
             step2Unidade.classList.remove('hidden');
-            mainCard.classList.remove('bg-white');
-            mainCard.classList.add('bg-[#fef3c7]', 'border-orange-200');
             inputCodigoUnidade.focus();
         }
     };
 
-// ================= CONSULTA ITENS NO ENDEREÇO =================
+    // ================= CONSULTA ITENS NO ENDEREÇO =================
     const consultarEndereco = (endereco) => {
-        // Monta a URL passando a ação e o endereço via Query String (GET)
-        // O encodeURIComponent garante que espaços e caracteres especiais no endereço não quebrem a URL
         const url = `requests.php?acao=get_consultar_endereco&endereco=${encodeURIComponent(endereco)}`;
 
         fetch(url, {
@@ -116,25 +130,21 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { 
                 'Accept': 'application/json'
             }
-            // Em requisições GET, NÃO usamos a propriedade 'body'
         })
         .then(response => {
             if (!response.ok) throw new Error('Erro na rede ao consultar endereço.');
             return response.json();
         })
         .then(data => {
-            // Verifica se a resposta não é vazia e é um array
             if (Array.isArray(data) && data.length > 0) {
                 
                 data.forEach(item => {
-                    // Proteção extra: ignora itens que não tenham os campos mínimos necessários
                     if(!item.codItem || !item.qtd) return; 
 
                     const codItem = item.codItem;
                     const qtd = item.qtd;
                     const seq = item.codItem_seq || '0'; 
                     
-                    // Recria o formato do QR Code (ITEM-QTD-SEQ)
                     const rawString = `${codItem}-${qtd}-${seq}`;
 
                     kitsLidos.push({
@@ -144,12 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         seq: seq
                     });
 
-                    // Atualiza contadores globais
                     totalKitsGlobal++;
                     totalUnidadesGlobal += parseInt(qtd, 10);
                 });
 
-                // Atualiza a tela com os totais e a lista renderizada
                 totalKitsSessaoEl.textContent = totalKitsGlobal;
                 totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
                 renderizarLista();
@@ -228,113 +236,123 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-voltar-unidade').addEventListener('click', () => {
         step2Unidade.classList.add('hidden');
         step1.classList.remove('hidden');
-        mainCard.classList.remove('bg-[#fef3c7]', 'border-orange-200');
-        mainCard.classList.add('bg-white');
+        
+        const tipoReposicao = document.querySelector('input[name="tipo_reposicao"]:checked');
+        if (tipoReposicao && tipoReposicao.value !== 'unidade') {
+            mainCard.classList.remove('bg-[#fef3c7]', 'border-orange-200');
+            mainCard.classList.add('bg-white');
+        }
+        
+        // Se desistir da unidade, descongela e limpa os campos para a próxima vez
+        inputCodigoUnidade.disabled = false;
+        inputCodigoUnidade.value = '';
+        inputQtdeUnidade.value = '';
+        sequenciaLidaUnidade = ''; // Reseta a sequência
+        
         inputEndereco.focus();
     });
 
-// ================= LÓGICA DO KIT =================
-const adicionarKit = () => {
-    const kitRaw = inputCodigoKit.value.trim();
-    if (!kitRaw) return;
-    
-    const partes = kitRaw.split('-');
-    if (partes.length !== 3) {
-        mostrarAviso('Formato inválido! O QR Code deve ser: ITEM-QTD-SEQUENCIA.', 'erro');
-        inputCodigoKit.value = '';
-        inputCodigoKit.focus();
-        return;
-    }
-
-    const codMaterial = partes[0];
-    const qtdReposto = partes[1];
-    const sequencia = partes[2];
-    const enderecoFinal = inputEndereco.value.trim();
-
-    // Validação de duplicidade na lista local
-    if (kitsLidos.some(k => k.raw === kitRaw)) {
-        mostrarAviso('Esta etiqueta já foi bipada nesta sessão!', 'erro');
-        inputCodigoKit.value = '';
-        inputCodigoKit.focus();
-        return;
-    }
-
-    inputCodigoKit.disabled = true;
-
-    // MONTAGEM DO PAYLOAD 
-    // Encapsulamos em 'dados' para alinhar com o seu requests.php
-    const payload = {
-        acao: 'inserir_endereco_item_reposto_kit',
-        dados: {
-            codMaterial: codMaterial,
-            qtdReposto: qtdReposto,
-            sequencia: sequencia,
-            Endereco: enderecoFinal,
-            matricula: matriculaOperador, // Valor desmembrado vindo do atributo data-matricula
-            usuario: nomeOperador,        // Valor desmembrado vindo do atributo data-usuario
-            codEmpresa: "1" 
+    // ================= LÓGICA DO KIT =================
+    const adicionarKit = () => {
+        const kitRaw = inputCodigoKit.value.trim();
+        if (!kitRaw) return;
+        
+        const partes = kitRaw.split('-');
+        if (partes.length !== 3) {
+            mostrarAviso('Formato inválido! O QR Code deve ser: ITEM-QTD-SEQUENCIA.', 'erro');
+            inputCodigoKit.value = '';
+            inputCodigoKit.focus();
+            return;
         }
+
+        const codMaterial = partes[0];
+
+        // --- NOVA VALIDAÇÃO DO CÓDIGO DO MATERIAL ---
+        if (codMaterial.length < 5 || !/^[0-9]/.test(codMaterial)) {
+            mostrarAviso('Item inválido! O código deve ter pelo menos 5 caracteres e começar com número.', 'erro');
+            inputCodigoKit.value = '';
+            inputCodigoKit.focus();
+            return;
+        }
+        // --------------------------------------------
+
+        const qtdReposto = partes[1];
+        const sequencia = partes[2];
+        const enderecoFinal = inputEndereco.value.trim();
+
+        if (kitsLidos.some(k => k.raw === kitRaw)) {
+            mostrarAviso('Esta etiqueta já foi bipada nesta sessão!', 'erro');
+            inputCodigoKit.value = '';
+            inputCodigoKit.focus();
+            return;
+        }
+
+        inputCodigoKit.disabled = true;
+
+        const payload = {
+            acao: 'inserir_endereco_item_reposto_kit',
+            dados: {
+                codMaterial: codMaterial,
+                qtdReposto: qtdReposto,
+                sequencia: sequencia,
+                Endereco: enderecoFinal,
+                matricula: matriculaOperador,
+                usuario: nomeOperador,
+                codEmpresa: "1" 
+            }
+        };
+
+        fetch('requests.php?acao=inserir_endereco_item_reposto_kit', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na rede ou servidor (Status: ' + response.status + ')');
+            return response.json(); 
+        })
+        .then(data => {
+            console.log("Retorno do Servidor:", data);
+
+            if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
+                mostrarAviso(data[0].Mensagem, 'erro');
+                return; 
+            }
+
+            if (data) {
+                kitsLidos.push({ 
+                    raw: kitRaw, 
+                    item: codMaterial, 
+                    qtd: qtdReposto,
+                    seq: sequencia 
+                });
+                
+                renderizarLista();
+                
+                totalKitsGlobal++;
+                totalUnidadesGlobal += parseInt(qtdReposto, 10); 
+                
+                totalKitsSessaoEl.textContent = totalKitsGlobal;
+                totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
+
+                mostrarAviso(`Kit ${codMaterial} adicionado!`, 'sucesso');
+            } else {
+                throw new Error('A API recusou a gravação dos dados.');
+            }
+        })
+        .catch(error => {
+            console.error("Erro detalhado:", error);
+            mostrarAviso("Erro ao salvar: " + error.message, "erro");
+        })
+        .finally(() => {
+            inputCodigoKit.disabled = false;
+            inputCodigoKit.value = ''; 
+            inputCodigoKit.focus();
+        });
     };
-
-    // FETCH ENVIANDO JSON
-    fetch('requests.php?acao=inserir_endereco_item_reposto_kit', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => {
-        // Se o PHP der erro de servidor, capturamos aqui
-        if (!response.ok) throw new Error('Erro na rede ou servidor (Status: ' + response.status + ')');
-        return response.json(); 
-    })
-    .then(data => {
-        console.log("Retorno do Servidor:", data);
-
-        // =================================================================
-        // NOVA VALIDAÇÃO: Verifica se a API retornou o erro customizado
-        // Formato esperado do erro: [{"Mensagem":"...","status":false}]
-        // =================================================================
-        if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
-            mostrarAviso(data[0].Mensagem, 'erro');
-            return; // Interrompe a execução aqui para não computar o sucesso
-        }
-
-        // Verificamos se a API interna retornou sucesso
-        if (data) {
-            kitsLidos.push({ 
-                raw: kitRaw, 
-                item: codMaterial, 
-                qtd: qtdReposto,
-                seq: sequencia 
-            });
-            
-            renderizarLista();
-            
-            // Atualização dos totais na tela
-            totalKitsGlobal++;
-            totalUnidadesGlobal += parseInt(qtdReposto, 10); 
-            
-            totalKitsSessaoEl.textContent = totalKitsGlobal;
-            totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
-
-            mostrarAviso(`Kit ${codMaterial} adicionado!`, 'sucesso');
-        } else {
-            throw new Error('A API recusou a gravação dos dados.');
-        }
-    })
-    .catch(error => {
-        console.error("Erro detalhado:", error);
-        mostrarAviso("Erro ao salvar: " + error.message, "erro");
-    })
-    .finally(() => {
-        inputCodigoKit.disabled = false;
-        inputCodigoKit.value = ''; 
-        inputCodigoKit.focus();
-    });
-};
 
     document.getElementById('btn-add-kit').addEventListener('click', adicionarKit);
     inputCodigoKit.addEventListener('keypress', (e) => {
@@ -380,6 +398,70 @@ const adicionarKit = () => {
     });
 
     // ================= LÓGICA DA UNIDADE =================
+
+    // Validação ao bipar (pressionar Enter) no campo de código da unidade
+    inputCodigoUnidade.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            
+            const qrCodeLido = inputCodigoUnidade.value.trim();
+            
+            if (!qrCodeLido) return;
+
+            // Valida se o QR Code termina com 'CONTROLE UNITARIO'
+            if (!qrCodeLido.endsWith('CONTROLE UNITARIO')) {
+                mostrarAviso('Etiqueta fora do padrão para Controle Unitário!', 'erro');
+                inputCodigoUnidade.value = ''; 
+                inputCodigoUnidade.focus();    
+                return;
+            }
+
+            const partes = qrCodeLido.split('-');
+            
+            if (partes.length >= 2) {
+                const codMaterial = partes[0];
+
+                // --- NOVA VALIDAÇÃO DO CÓDIGO DO MATERIAL ---
+                if (codMaterial.length < 5 || !/^[0-9]/.test(codMaterial)) {
+                    mostrarAviso('Item inválido! O código deve ter pelo menos 5 caracteres e começar com número.', 'erro');
+                    inputCodigoUnidade.value = '';
+                    inputCodigoUnidade.focus();
+                    return;
+                }
+                // --------------------------------------------
+                
+                // Extrai a sequência da segunda parte (ex: "45CONTROLE UNITARIO" -> "45")
+                sequenciaLidaUnidade = partes[1].replace('CONTROLE UNITARIO', '').trim();
+                
+                inputCodigoUnidade.value = codMaterial;
+                
+                // CONGELA O CAMPO
+                inputCodigoUnidade.disabled = true;
+                
+                mostrarAviso('Etiqueta Válida!', 'sucesso');
+                
+                // Salta o cursor automaticamente para o campo de quantidade
+                inputQtdeUnidade.focus();
+            } else {
+                mostrarAviso('Formato de etiqueta não reconhecido.', 'erro');
+                inputCodigoUnidade.value = '';
+            }
+        }
+    });
+
+    // Evento para o NOVO BOTÃO DE LIMPAR a unidade
+    const btnLimparUnidade = document.getElementById('btn-limpar-unidade');
+    if (btnLimparUnidade) {
+        btnLimparUnidade.addEventListener('click', () => {
+            inputCodigoUnidade.disabled = false; // Descongela
+            inputCodigoUnidade.value = '';
+            inputQtdeUnidade.value = '';
+            sequenciaLidaUnidade = ''; // Reseta a sequência
+            inputCodigoUnidade.focus();
+        });
+    }
+
+    // Lógica para salvar a unidade quando clica no botão finalizar
     document.getElementById('btn-finalizar-unidade').addEventListener('click', () => {
         const produto = inputCodigoUnidade.value.trim();
         const quantidade = inputQtdeUnidade.value.trim();
@@ -390,29 +472,50 @@ const adicionarKit = () => {
             return;
         }
 
+        // NOVO PAYLOAD conforme exigido pela sua API
         const payloadUnidade = {
-            endereco: enderecoFinal,
-            produto: produto,
-            quantidade: quantidade,
-            matricula: matriculaOperador,
-            usuario: nomeOperador,
-            tipo: 'unidade'
+            acao: 'inserir_endereco_item_reposto_unitario',
+            dados: {
+                codMaterial: produto,
+                qtdReposto: quantidade,
+                Endereco: enderecoFinal,
+                sequencia: sequenciaLidaUnidade,
+                usuario: nomeOperador,
+                matricula: matriculaOperador
+            }
         };
 
-        fetch('requests.php?acao=inserir_endereco', {
+        fetch('requests.php?acao=inserir_endereco_item_reposto_unitario', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' 
+            },
             body: JSON.stringify(payloadUnidade)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Erro de comunicação com o servidor');
+            return response.json();
+        })
         .then(data => {
+            // Tratamento caso a API devolva um array com status false
+            if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
+                mostrarAviso(data[0].Mensagem || 'Erro ao processar a unidade.', 'erro');
+                return;
+            }
+
             mostrarAviso('Unidade salva!', 'sucesso');
             totalUnidadesGlobal += parseInt(quantidade, 10);
             totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
+            
+            // DESCONGELA e limpa os campos para o próximo bip
+            inputCodigoUnidade.disabled = false;
             inputCodigoUnidade.value = '';
             inputQtdeUnidade.value = '';
+            sequenciaLidaUnidade = ''; // Reseta a sequência após salvar
             inputCodigoUnidade.focus();
         })
-        .catch(() => mostrarAviso('Erro ao salvar unidade.', 'erro'));
+        .catch((error) => mostrarAviso('Erro ao salvar unidade: ' + error.message, 'erro'));
     });
+
 });
