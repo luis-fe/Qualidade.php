@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ================= FUNÇÃO DE AVANÇAR TELA =================
+    // ================= FUNÇÃO DE AVANÇAR TELA (AGORA COM A CONSULTA INTEGRADA) =================
     const avancarParaProximaTela = () => {
         const endereco = inputEndereco.value.trim();
         const tipoReposicao = document.querySelector('input[name="tipo_reposicao"]:checked').value;
@@ -98,73 +98,76 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        step1.classList.add('hidden');
-
-        if (tipoReposicao === 'kit') {
-            displayEndereco.textContent = endereco;
-            step2Kit.classList.remove('hidden');
-            
-            kitsLidos = [];
-            totalKitsGlobal = 0;
-            totalUnidadesGlobal = 0;
-            totalKitsSessaoEl.textContent = "0";
-            totalUnidadesSessaoEl.textContent = "0";
-            renderizarLista();
-
-            consultarEndereco(endereco);
-
-            inputCodigoKit.focus(); 
-        } else if (tipoReposicao === 'unidade') {
-            displayEnderecoUnidade.textContent = endereco;
-            step2Unidade.classList.remove('hidden');
-            inputCodigoUnidade.focus();
-        }
-    };
-
-    // ================= CONSULTA ITENS NO ENDEREÇO =================
-    const consultarEndereco = (endereco) => {
+        // Fazer a consulta na API antes de mudar de tela
         const url = `requests.php?acao=get_consultar_endereco&endereco=${encodeURIComponent(endereco)}`;
 
         fetch(url, {
             method: 'GET',
-            headers: { 
-                'Accept': 'application/json'
-            }
+            headers: { 'Accept': 'application/json' }
         })
         .then(response => {
             if (!response.ok) throw new Error('Erro na rede ao consultar endereço.');
             return response.json();
         })
         .then(data => {
-            if (Array.isArray(data) && data.length > 0) {
+            // ---> NOVA VALIDAÇÃO DO ENDEREÇO AQUI <---
+            if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
+                mostrarAviso(data[0].Mensagem, 'erro'); // Mostra "Endereco nao existe"
+                inputEndereco.value = '';
+                inputEndereco.focus();
+                return; // Interrompe o avanço
+            }
+
+            // --- SE O ENDEREÇO FOR VÁLIDO, AVANÇA DE TELA ---
+            step1.classList.add('hidden');
+
+            if (tipoReposicao === 'kit') {
+                displayEndereco.textContent = endereco;
+                step2Kit.classList.remove('hidden');
                 
-                data.forEach(item => {
-                    if(!item.codItem || !item.qtd) return; 
+                kitsLidos = [];
+                totalKitsGlobal = 0;
+                totalUnidadesGlobal = 0;
+                totalKitsSessaoEl.textContent = "0";
+                totalUnidadesSessaoEl.textContent = "0";
 
-                    const codItem = item.codItem;
-                    const qtd = item.qtd;
-                    const seq = item.codItem_seq || '0'; 
-                    
-                    const rawString = `${codItem}-${qtd}-${seq}`;
+                // Se a API retornou itens válidos para esse endereço, popula a lista
+                if (Array.isArray(data) && data.length > 0 && data[0].codItem) {
+                    data.forEach(item => {
+                        if(!item.codItem || !item.qtd) return; 
 
-                    kitsLidos.push({
-                        raw: rawString,
-                        item: codItem,
-                        qtd: qtd,
-                        seq: seq
+                        const codItem = item.codItem;
+                        const qtd = item.qtd;
+                        const seq = item.codItem_seq || '0'; 
+                        
+                        const rawString = `${codItem}-${qtd}-${seq}`;
+
+                        kitsLidos.push({
+                            raw: rawString,
+                            item: codItem,
+                            qtd: qtd,
+                            seq: seq
+                        });
+
+                        totalKitsGlobal++;
+                        totalUnidadesGlobal += parseInt(qtd, 10);
                     });
-
-                    totalKitsGlobal++;
-                    totalUnidadesGlobal += parseInt(qtd, 10);
-                });
+                }
 
                 totalKitsSessaoEl.textContent = totalKitsGlobal;
                 totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
                 renderizarLista();
+
+                inputCodigoKit.focus(); 
+            } else if (tipoReposicao === 'unidade') {
+                displayEnderecoUnidade.textContent = endereco;
+                step2Unidade.classList.remove('hidden');
+                inputCodigoUnidade.focus();
             }
         })
         .catch(error => {
             console.error("Erro detalhado na consulta do endereço:", error);
+            mostrarAviso('Erro de comunicação ao validar o endereço.', 'erro');
         });
     };
 
@@ -267,14 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const codMaterial = partes[0];
 
-        // --- NOVA VALIDAÇÃO DO CÓDIGO DO MATERIAL ---
         if (codMaterial.length < 5 || !/^[0-9]/.test(codMaterial)) {
             mostrarAviso('Item inválido! O código deve ter pelo menos 5 caracteres e começar com número.', 'erro');
             inputCodigoKit.value = '';
             inputCodigoKit.focus();
             return;
         }
-        // --------------------------------------------
 
         const qtdReposto = partes[1];
         const sequencia = partes[2];
@@ -399,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ================= LÓGICA DA UNIDADE =================
 
-    // Validação ao bipar (pressionar Enter) no campo de código da unidade
     inputCodigoUnidade.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -408,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!qrCodeLido) return;
 
-            // Valida se o QR Code termina com 'CONTROLE UNITARIO'
             if (!qrCodeLido.endsWith('CONTROLE UNITARIO')) {
                 mostrarAviso('Etiqueta fora do padrão para Controle Unitário!', 'erro');
                 inputCodigoUnidade.value = ''; 
@@ -421,26 +420,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (partes.length >= 2) {
                 const codMaterial = partes[0];
 
-                // --- NOVA VALIDAÇÃO DO CÓDIGO DO MATERIAL ---
                 if (codMaterial.length < 5 || !/^[0-9]/.test(codMaterial)) {
                     mostrarAviso('Item inválido! O código deve ter pelo menos 5 caracteres e começar com número.', 'erro');
                     inputCodigoUnidade.value = '';
                     inputCodigoUnidade.focus();
                     return;
                 }
-                // --------------------------------------------
                 
-                // Extrai a sequência da segunda parte (ex: "45CONTROLE UNITARIO" -> "45")
                 sequenciaLidaUnidade = partes[1].replace('CONTROLE UNITARIO', '').trim();
                 
                 inputCodigoUnidade.value = codMaterial;
-                
-                // CONGELA O CAMPO
                 inputCodigoUnidade.disabled = true;
-                
                 mostrarAviso('Etiqueta Válida!', 'sucesso');
-                
-                // Salta o cursor automaticamente para o campo de quantidade
                 inputQtdeUnidade.focus();
             } else {
                 mostrarAviso('Formato de etiqueta não reconhecido.', 'erro');
@@ -449,19 +440,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Evento para o NOVO BOTÃO DE LIMPAR a unidade
     const btnLimparUnidade = document.getElementById('btn-limpar-unidade');
     if (btnLimparUnidade) {
         btnLimparUnidade.addEventListener('click', () => {
-            inputCodigoUnidade.disabled = false; // Descongela
+            inputCodigoUnidade.disabled = false; 
             inputCodigoUnidade.value = '';
             inputQtdeUnidade.value = '';
-            sequenciaLidaUnidade = ''; // Reseta a sequência
+            sequenciaLidaUnidade = ''; 
             inputCodigoUnidade.focus();
         });
     }
 
-    // Lógica para salvar a unidade quando clica no botão finalizar
     document.getElementById('btn-finalizar-unidade').addEventListener('click', () => {
         const produto = inputCodigoUnidade.value.trim();
         const quantidade = inputQtdeUnidade.value.trim();
@@ -472,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // NOVO PAYLOAD conforme exigido pela sua API
         const payloadUnidade = {
             acao: 'inserir_endereco_item_reposto_unitario',
             dados: {
@@ -498,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // Tratamento caso a API devolva um array com status false
             if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
                 mostrarAviso(data[0].Mensagem || 'Erro ao processar a unidade.', 'erro');
                 return;
@@ -508,11 +495,10 @@ document.addEventListener('DOMContentLoaded', () => {
             totalUnidadesGlobal += parseInt(quantidade, 10);
             totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
             
-            // DESCONGELA e limpa os campos para o próximo bip
             inputCodigoUnidade.disabled = false;
             inputCodigoUnidade.value = '';
             inputQtdeUnidade.value = '';
-            sequenciaLidaUnidade = ''; // Reseta a sequência após salvar
+            sequenciaLidaUnidade = ''; 
             inputCodigoUnidade.focus();
         })
         .catch((error) => mostrarAviso('Erro ao salvar unidade: ' + error.message, 'erro'));
