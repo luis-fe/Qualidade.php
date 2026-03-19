@@ -68,8 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalKitsGlobal = 0;
     let totalUnidadesGlobal = 0;
     
-    // Variável para armazenar temporariamente a sequência lida da Unidade
+    // Variável para armazenar a sequência lida da Unidade
     let sequenciaLidaUnidade = ''; 
+
+    // Armazena todo o estoque atual do endereço em memória
+    let estoqueLocal = [];
 
     // ================= ALTERAÇÃO DINÂMICA DE COR (OPÇÕES) =================
     const radiosTipo = document.querySelectorAll('input[name="tipo_reposicao"]');
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ================= FUNÇÃO DE AVANÇAR TELA (AGORA COM A CONSULTA INTEGRADA) =================
+    // ================= FUNÇÃO DE AVANÇAR TELA =================
     const avancarParaProximaTela = () => {
         const endereco = inputEndereco.value.trim();
         const tipoReposicao = document.querySelector('input[name="tipo_reposicao"]:checked').value;
@@ -98,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Fazer a consulta na API antes de mudar de tela
         const url = `requests.php?acao=get_consultar_endereco&endereco=${encodeURIComponent(endereco)}`;
 
         fetch(url, {
@@ -110,15 +112,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // ---> NOVA VALIDAÇÃO DO ENDEREÇO AQUI <---
             if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
-                mostrarAviso(data[0].Mensagem, 'erro'); // Mostra "Endereco nao existe"
+                mostrarAviso(data[0].Mensagem, 'erro'); 
                 inputEndereco.value = '';
                 inputEndereco.focus();
-                return; // Interrompe o avanço
+                return; 
             }
 
-            // --- SE O ENDEREÇO FOR VÁLIDO, AVANÇA DE TELA ---
+            // Limpa e armazena o estoque que veio da API na memória
+            estoqueLocal = [];
+            if (Array.isArray(data)) {
+                estoqueLocal = data;
+            }
+
             step1.classList.add('hidden');
 
             if (tipoReposicao === 'kit') {
@@ -131,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalKitsSessaoEl.textContent = "0";
                 totalUnidadesSessaoEl.textContent = "0";
 
-                // Se a API retornou itens válidos para esse endereço, popula a lista
                 if (Array.isArray(data) && data.length > 0 && data[0].codItem) {
                     data.forEach(item => {
                         if(!item.codItem || !item.qtd) return; 
@@ -159,9 +164,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderizarLista();
 
                 inputCodigoKit.focus(); 
+
             } else if (tipoReposicao === 'unidade') {
                 displayEnderecoUnidade.textContent = endereco;
                 step2Unidade.classList.remove('hidden');
+
+                let qtdAtualEnd = 0;
+                let codItemAtualEnd = 'Nenhum';
+
+                if (Array.isArray(data) && data.length > 0) {
+                    const itemValido = data.find(i => i.codItem && i.codItem !== 'null');
+                    if (itemValido) {
+                        codItemAtualEnd = itemValido.codItem;
+                        qtdAtualEnd = data.reduce((soma, item) => soma + (parseInt(item.qtd) || 0), 0);
+                    }
+                }
+
+                const cardQtd = document.getElementById('qtd-atual-unidade');
+                const cardCod = document.getElementById('coditem-atual-unidade');
+                
+                if (cardQtd) cardQtd.textContent = qtdAtualEnd;
+                if (cardCod) cardCod.textContent = codItemAtualEnd;
+
                 inputCodigoUnidade.focus();
             }
         })
@@ -246,11 +270,15 @@ document.addEventListener('DOMContentLoaded', () => {
             mainCard.classList.add('bg-white');
         }
         
-        // Se desistir da unidade, descongela e limpa os campos para a próxima vez
         inputCodigoUnidade.disabled = false;
         inputCodigoUnidade.value = '';
         inputQtdeUnidade.value = '';
-        sequenciaLidaUnidade = ''; // Reseta a sequência
+        sequenciaLidaUnidade = ''; 
+        
+        const cardQtd = document.getElementById('qtd-atual-unidade');
+        const cardCod = document.getElementById('coditem-atual-unidade');
+        if (cardQtd) cardQtd.textContent = '0';
+        if (cardCod) cardCod.textContent = 'Nenhum';
         
         inputEndereco.focus();
     });
@@ -316,8 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json(); 
         })
         .then(data => {
-            console.log("Retorno do Servidor:", data);
-
             if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
                 mostrarAviso(data[0].Mensagem, 'erro');
                 return; 
@@ -429,10 +455,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 sequenciaLidaUnidade = partes[1].replace('CONTROLE UNITARIO', '').trim();
                 
-                inputCodigoUnidade.value = codMaterial;
-                inputCodigoUnidade.disabled = true;
-                mostrarAviso('Etiqueta Válida!', 'sucesso');
-                inputQtdeUnidade.focus();
+                // ---> VERIFICA SE O ITEM JÁ EXISTE NO ENDEREÇO <---
+                const itemExistente = estoqueLocal.find(i => 
+                    String(i.codItem) === String(codMaterial) && 
+                    String(i.codItem_seq) === String(sequenciaLidaUnidade)
+                );
+
+                if (itemExistente) {
+                    // O item já existe: Prepara e abre o modal de Atualização
+                    document.getElementById('modal-update-item').textContent = codMaterial;
+                    document.getElementById('qtde-adicional').value = '';
+                    document.getElementById('modal-update-unidade').classList.remove('hidden');
+                    
+                    // Foca no input do modal de adicionar após pequena pausa para renderizar a tela
+                    setTimeout(() => { document.getElementById('qtde-adicional').focus(); }, 100);
+                    
+                } else {
+                    // Item novo no endereço: Fluxo padrão de inserção
+                    inputCodigoUnidade.value = codMaterial;
+                    inputCodigoUnidade.disabled = true;
+                    mostrarAviso('Etiqueta Válida! Produto novo neste endereço.', 'sucesso');
+                    inputQtdeUnidade.focus();
+                }
+
             } else {
                 mostrarAviso('Formato de etiqueta não reconhecido.', 'erro');
                 inputCodigoUnidade.value = '';
@@ -451,6 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- SALVAR ITEM NOVO (Fluxo Padrão) ---
     document.getElementById('btn-finalizar-unidade').addEventListener('click', () => {
         const produto = inputCodigoUnidade.value.trim();
         const quantidade = inputQtdeUnidade.value.trim();
@@ -475,10 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fetch('requests.php?acao=inserir_endereco_item_reposto_unitario', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json' 
-            },
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(payloadUnidade)
         })
         .then(response => {
@@ -495,6 +538,25 @@ document.addEventListener('DOMContentLoaded', () => {
             totalUnidadesGlobal += parseInt(quantidade, 10);
             totalUnidadesSessaoEl.textContent = totalUnidadesGlobal;
             
+            // Atualiza o Card Visual e o Estoque Local em memória
+            const cardQtd = document.getElementById('qtd-atual-unidade');
+            const cardCod = document.getElementById('coditem-atual-unidade');
+
+            if (cardQtd) {
+                let qtdAntiga = parseInt(cardQtd.textContent) || 0;
+                cardQtd.textContent = qtdAntiga + parseInt(quantidade, 10);
+            }
+            if (cardCod && (cardCod.textContent === 'Nenhum' || cardCod.textContent === '')) {
+                cardCod.textContent = produto;
+            }
+
+            // Adiciona o item novo no Array para ser reconhecido se biparem ele de novo na mesma tela
+            estoqueLocal.push({
+                codItem: produto,
+                codItem_seq: sequenciaLidaUnidade,
+                qtd: quantidade
+            });
+
             inputCodigoUnidade.disabled = false;
             inputCodigoUnidade.value = '';
             inputQtdeUnidade.value = '';
@@ -502,6 +564,101 @@ document.addEventListener('DOMContentLoaded', () => {
             inputCodigoUnidade.focus();
         })
         .catch((error) => mostrarAviso('Erro ao salvar unidade: ' + error.message, 'erro'));
+    });
+
+    // ================= NOVA LÓGICA DO MODAL DE UPDATE =================
+    
+    // Botão de Cancelar o Update
+    document.getElementById('btn-fechar-modal-update').addEventListener('click', () => {
+        document.getElementById('modal-update-unidade').classList.add('hidden');
+        inputCodigoUnidade.value = '';
+        inputCodigoUnidade.disabled = false;
+        sequenciaLidaUnidade = '';
+        inputCodigoUnidade.focus();
+    });
+
+    // Botão de Confirmar o Update
+    document.getElementById('btn-confirmar-update').addEventListener('click', () => {
+        const qtdAdicional = document.getElementById('qtde-adicional').value.trim();
+        const codMaterial = document.getElementById('modal-update-item').textContent;
+        const enderecoFinal = inputEndereco.value.trim();
+
+        if (!qtdAdicional || parseInt(qtdAdicional) <= 0) {
+            mostrarAviso('Por favor, informe uma quantidade válida para adicionar.', 'erro');
+            return;
+        }
+
+        const payloadUpdate = {
+            acao: 'update_endereco_item_reposto_unitario',
+            dados: {
+                codMaterial: codMaterial,
+                qtdReposto: qtdAdicional,
+                Endereco: enderecoFinal,
+                sequencia: sequenciaLidaUnidade, 
+                usuario: nomeOperador,
+                matricula: matriculaOperador
+            }
+        };
+
+        fetch('requests.php?acao=update_endereco_item_reposto_unitario', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payloadUpdate)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro de comunicação com o servidor');
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0 && data[0].status === false) {
+                mostrarAviso(data[0].Mensagem || 'Erro ao atualizar a quantidade.', 'erro');
+                return;
+            }
+
+            mostrarAviso('Quantidade adicionada com sucesso!', 'sucesso');
+            
+            // Fecha o Modal e volta para a Tela 1
+            document.getElementById('modal-update-unidade').classList.add('hidden');
+            step2Unidade.classList.add('hidden');
+            step1.classList.remove('hidden');
+
+            // --- INÍCIO DA LIMPEZA DE CACHE ---
+            estoqueLocal = [];
+            totalUnidadesGlobal = 0;
+            totalKitsGlobal = 0;
+            kitsLidos = [];
+            sequenciaLidaUnidade = '';
+            
+            // Limpa os inputs da Unidade
+            inputCodigoUnidade.disabled = false;
+            inputCodigoUnidade.value = '';
+            document.getElementById('qtde-adicional').value = '';
+            inputQtdeUnidade.value = '';
+            
+            // Zera contadores visuais
+            totalUnidadesSessaoEl.textContent = '0';
+            totalKitsSessaoEl.textContent = '0';
+            
+            const cardQtd = document.getElementById('qtd-atual-unidade');
+            const cardCod = document.getElementById('coditem-atual-unidade');
+            if (cardQtd) cardQtd.textContent = '0';
+            if (cardCod) cardCod.textContent = 'Nenhum';
+            
+            // Retorna o visual e a opção pro padrão "Por Kit"
+            const radioKit = document.querySelector('input[name="tipo_reposicao"][value="kit"]');
+            if (radioKit) {
+                radioKit.checked = true;
+                // Dispara o evento para voltar a cor do card para branco
+                radioKit.dispatchEvent(new Event('change'));
+            }
+
+            // Limpa o endereço e deixa o cursor pronto para a próxima leitura
+            inputEndereco.value = '';
+            inputEndereco.focus();
+            // --- FIM DA LIMPEZA DE CACHE ---
+
+        })
+        .catch((error) => mostrarAviso('Erro ao atualizar unidade: ' + error.message, 'erro'));
     });
 
 });

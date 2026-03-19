@@ -24,7 +24,7 @@ include_once('../../../../../templates/headerGestaoMobile.php');
 
 <main class="w-full p-4 flex flex-col items-center justify-start min-h-[80vh]">
 
-    <div id="main-card" class="w-full max-w-md bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-colors duration-300">
+    <div id="main-card" class="w-full max-w-md bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-colors duration-300 relative">
         
         <div id="reader" class="mb-4 border-2 border-dashed border-gray-300 hidden"></div>
 
@@ -113,7 +113,7 @@ include_once('../../../../../templates/headerGestaoMobile.php');
         </div>
 
         <div id="step-2-unidade" class="hidden">
-            <div class="flex items-center mb-6 border-b border-orange-200 pb-4">
+            <div class="flex items-center mb-0 border-b border-orange-200 pb-2">
                 <button type="button" id="btn-voltar-unidade" class="text-gray-500 hover:text-orange-700 mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                 </button>
@@ -123,25 +123,61 @@ include_once('../../../../../templates/headerGestaoMobile.php');
                 </div>
             </div>
 
-            <div class="mb-4">
-                <label for="codigo-unidade" class="block text-sm font-medium text-gray-700 mb-2">QR Code do Produto</label>
+            <div class="mb-1 bg-orange-50 border border-orange-200 rounded-lg p-1 flex justify-between items-center shadow-sm">
+                <div class="flex-1 overflow-hidden pr-2">
+                    <span class="block text-[10px] font-bold text-orange-700 uppercase tracking-wide">Item no Endereço</span>
+                    <span id="coditem-atual-unidade" class="block text-sm font-bold text-gray-800 truncate">Nenhum</span>
+                </div>
+                <div class="text-right pl-3 border-l border-orange-300">
+                    <span class="block text-[10px] font-bold text-orange-700 uppercase tracking-wide">Qtd Atual</span>
+                    <span id="qtd-atual-unidade" class="block text-3xl font-black text-gray-800 leading-none mt-1">0</span>
+                </div>
+            </div>
+            <div class="mb-1">
+                <div class="flex justify-between items-end mb-1">
+                    <label for="codigo-unidade" class="block text-sm font-medium text-gray-700">QR Code do Produto</label>
+                    <button type="button" id="btn-limpar-unidade" class="text-xs font-bold text-orange-600 hover:text-orange-800 underline">Limpar campo</button>
+                </div>
                 <div class="flex space-x-2">
-                    <input type="text" id="codigo-unidade" placeholder="Bipe o produto" class="flex-1 block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-lg px-4 py-3 border bg-white">
+                    <input type="text" id="codigo-unidade" placeholder="Bipe o produto" class="flex-1 block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-lg px-2 py-1 border bg-white">
                     <button type="button" class="btn-camera inline-flex items-center p-3 rounded-lg text-white bg-orange-600 hover:bg-orange-700 transition" data-target="codigo-unidade">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /></svg>
                     </button>
                 </div>
             </div>
 
-            <div class="mb-6">
-                <label for="qtde-unidade" class="block text-sm font-medium text-gray-700 mb-2">Informe a Quantidade</label>
-                <input type="number" id="qtde-unidade" placeholder="Ex: 10" min="1" class="block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-2xl px-4 py-3 border font-bold text-center bg-white">
+            <div class="mb-2">
+                <label for="qtde-unidade" class="block text-sm font-medium text-gray-700 mb-1">Informe a Quantidade</label>
+                <input type="number" id="qtde-unidade" placeholder="Ex: 10" min="1" class="block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-2xl px-2 py- border font-bold text-center bg-white">
             </div>
 
-            <button type="button" id="btn-finalizar-unidade" class="w-full bg-orange-600 text-white font-bold text-lg py-3 px-4 rounded-lg shadow hover:bg-orange-700 transition mt-2">Salvar Reposição</button>
+            <button type="button" id="btn-finalizar-unidade" class="w-full bg-orange-600 text-white font-bold text-lg py-1 px-2 rounded-lg shadow hover:bg-orange-700 transition mt-2">Salvar Reposição</button>
         </div>
 
     </div> 
+
+<div id="modal-update-unidade" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-start justify-center pt-12 z-[110] px-2 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-sm rounded-xl p-6 shadow-2xl transform transition-all">
+            <div class="flex items-center justify-center mb-3">
+                <div class="bg-orange-100 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                </div>
+            </div>
+            <h3 class="text-xl font-black text-gray-800 text-center mb-1">Item já está no Endereço</h3>
+            <p class="text-sm text-gray-600 text-center mb-5">O item <span id="modal-update-item" class="font-bold text-orange-600"></span> já possui estoque aqui.</p>
+            
+            <div class="mb-2">
+                <label class="block text-sm font-bold text-gray-700 mb-2 text-center uppercase tracking-wide">Quantidade a ADICIONAR:</label>
+                <input type="number" id="qtde-adicional" placeholder="Ex: 5" min="1" class="block w-full rounded-lg border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-4xl px-2 py-1 border font-black text-center bg-orange-50 text-orange-700">
+            </div>
+            
+            <div class="flex space-x-3 mt-2">
+                <button type="button" id="btn-fechar-modal-update" class="flex-1 bg-gray-200 text-gray-700 font-bold py-3 rounded-lg hover:bg-gray-300 transition">Cancelar</button>
+                <button type="button" id="btn-confirmar-update" class="flex-1 bg-orange-600 text-white font-bold py-3 rounded-lg hover:bg-orange-700 shadow-md transition">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <script src="app.js"></script>

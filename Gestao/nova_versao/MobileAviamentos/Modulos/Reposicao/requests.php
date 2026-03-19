@@ -74,6 +74,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     // Padronizando para usar o jsonResponse
                     jsonResponse(inserir_endereco_item_reposto_unitario($dados));
                     break;
+                case 'update_endereco_item_reposto_unitario':
+                    // Padronizando para usar o jsonResponse
+                    jsonResponse(update_endereco_item_reposto_unitario($dados));
+                    break;
                 case 'inserir_endereco':
                     jsonResponse(inserir_endereco($dados));
                     break;
@@ -208,6 +212,36 @@ function inserir_endereco_item_reposto_unitario($dados)
     return json_decode($apiResponse, true);
 }
 
+
+function update_endereco_item_reposto_unitario($dados)
+{
+    $baseUrl = 'http://10.162.0.53:9000/pcp';
+    $apiUrl = "{$baseUrl}/api/update_endereco_item_reposto_unitario";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados), // Agora converte corretamente o payload limpo que enviamos
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+        return ['status' => false, 'message' => 'Falha de comunicação com a API interna.'];
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
 
 
 function get_consultar_endereco($endereco)
