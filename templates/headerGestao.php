@@ -177,6 +177,8 @@
             <li><a href="../AlmoxarifadoAviamentos" class="nav-link"><i class="bi bi-caret-right me-2"></i> Gestão Separação</a></li>
             <li><a href="../ConferenciaAviamentos" class="nav-link"><i class="bi bi-caret-right me-2"></i> Conferência Aviamentos</a></li>
             <li><a href="../Dashboard" class="nav-link"><i class="bi bi-caret-right me-2"></i> Dashboard</a></li>
+            <li><a href="../DesdobroEtiquetas" class="nav-link"><i class="bi bi-caret-right me-2"></i> DesdobroEtiquetas</a></li>
+
           </ul>
         </div>
       </li>
