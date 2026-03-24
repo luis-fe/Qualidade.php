@@ -41,7 +41,7 @@ async function Consultar_requisicao() {
 
 const cardHTML = `
     <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden; width: 10.0cm; height: 3.0cm;">
-        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding: 0.1cm 0.1cm 0.1cm 0.5cm; box-sizing: border-box;">
+        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding: 1.0cm 0.1cm 0.1cm 0.5cm; box-sizing: border-box;">
             
             <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0;">
                 
@@ -64,14 +64,10 @@ const cardHTML = `
             </div>
 
             <div style="width: 80px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
-                
-
-
                 <div style="height: 0.0cm;"></div>
-
                 <div style="display: flex; align-items: center; justify-content: center;">
-<img src="${qrUrl}" style="width: 90px; height: 90px; mix-blend-mode: multiply; display: block; margin-top: 10px;">                </div>
-                
+                    <img src="${qrUrl}" style="width: 90px; height: 90px; mix-blend-mode: multiply; display: block;">
+                </div>
             </div>
             
         </div>
