@@ -43,7 +43,7 @@ const cardHTML = `
             <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
             
-                    <div class="d-flex flex-column justify-content-center" style="width: 7.5cm; overflow: hidden; font-family: Arial, sans-serif;">
+                <div class="d-flex flex-column justify-content-center" style="width: 7.5cm; overflow: hidden; font-family: Arial, sans-serif;">
                 
                 <div style="height: 1.6cm; display: flex; flex-direction: column; justify-content: flex-start;">
                     <strong style="font-size: 1.75rem; line-height: 1; color: #000; display: block; margin: 0;">
@@ -64,7 +64,7 @@ const cardHTML = `
             </div>
 
             <div style="width: 80px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
-                <div style="height: 0.0cm;"></div>
+                <div style="height: 1.0cm;"></div>
                 <div style="display: flex; align-items: center; justify-content: center;">
                     <img src="${qrUrl}" style="width: 90px; height: 90px; mix-blend-mode: multiply; display: block;">
                 </div>
