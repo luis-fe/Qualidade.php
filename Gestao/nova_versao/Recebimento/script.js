@@ -357,8 +357,7 @@ async function salvarConfigKit(codID, btnElement) {
         const qrUrl = `https://quickchart.io/qr?text=${qrData}&size=100&margin=0`;
 
         const cardHTML = `
-            <div class="card card-etiqueta shadow-sm mb-4" style="${estiloBorda} background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; page-break-after: always; box-sizing: border-box;">
-                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.4cm; padding-left: 0.8cm !important; padding-right: 0.4cm !important;">
+                <div class="card card-etiqueta shadow-sm" style="${estiloBorda} background-color: #fff; border-radius: 4px; width: 14.0cm; height: 3.5cm; box-sizing: border-box;">                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.4cm; padding-left: 0.8cm !important; padding-right: 0.4cm !important;">
                     
                     <div class="d-flex flex-column justify-content-center" style="width: 9.5cm; overflow: hidden; font-family: Arial, sans-serif;">
                         <strong style="font-size: 28px; color: #000; line-height: 1.1; white-space: nowrap; overflow: hidden;">${item.codigo}</strong>
