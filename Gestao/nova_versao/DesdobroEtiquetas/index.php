@@ -56,16 +56,18 @@ include_once('../../../templates/headerGestao.php');
         }
 
         .card-etiqueta {
-            width: 15.0cm;
-            height: 4.0cm;
-            page-break-after: always;
+            /* Aumentei a largura para 15cm e a altura para 4cm para dar mais respiro */
+            width: 15.0cm !important; 
+            height: 4.0cm !important;
+            page-break-after: always !important;
+            page-break-inside: avoid !important;
+            break-after: page !important;
+            display: block !important;
             border: none !important;
             box-shadow: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background-color: transparent !important;
         }
 
+        
         @page {
             size: 10.0cm 3.8cm !important; 
             margin: 0 !important;
