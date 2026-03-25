@@ -43,7 +43,7 @@ const cardHTML = `
             <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
                 <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
             
-            <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0;">
+                    <div class="d-flex flex-column justify-content-center" style="width: 6.5cm; overflow: hidden; font-family: Arial, sans-serif;">
                 
                 <div style="height: 1.6cm; display: flex; flex-direction: column; justify-content: flex-start;">
                     <strong style="font-size: 1.75rem; line-height: 1; color: #000; display: block; margin: 0;">
@@ -54,7 +54,6 @@ const cardHTML = `
                     </div>
                 </div>
                 
-                <div style="height: 0.25cm;"></div>
 
                 <div class="d-flex justify-content-between align-items-center" style="font-size: 1.0rem; flex: 1;">
                     <strong>OP: <strong>${item.numOPConfec}</strong></strong>
