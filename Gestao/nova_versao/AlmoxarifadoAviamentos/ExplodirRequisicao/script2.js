@@ -32,7 +32,7 @@ async function Consultar_requisicao() {
             
             response.forEach(item => {
                 const qrData = encodeURIComponent(item.numOPConfec + '||' + item.codMaterialEdt);
-                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${qrData}`;
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${qrData}`;
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
                 const tagSeparador = primeiroNomeSeparador 
@@ -40,10 +40,10 @@ async function Consultar_requisicao() {
                     : ``;
 
 const cardHTML = `
-            <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
-                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
+    <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden; width: 10.0cm; height: 3.0cm;">
+        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding: 1.0cm 0.5cm 0.5cm 0.5cm; box-sizing: border-box;">
             
-                <div class="d-flex flex-column justify-content-center" style="width: 7.5cm; overflow: hidden; font-family: Arial, sans-serif;">
+            <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0;">
                 
                 <div style="height: 1.6cm; display: flex; flex-direction: column; justify-content: flex-start;">
                     <strong style="font-size: 1.75rem; line-height: 1; color: #000; display: block; margin: 0;">
@@ -64,9 +64,9 @@ const cardHTML = `
             </div>
 
             <div style="width: 80px; display: flex; flex-direction: column; align-items: flex-end; height: 100%;">
-                <div style="height: 1.0cm;"></div>
+                <div style="height: 0.7cm;"></div>
                 <div style="display: flex; align-items: center; justify-content: center;">
-                    <img src="${qrUrl}" style="width: 90px; height: 90px; mix-blend-mode: multiply; display: block;">
+                    <img src="${qrUrl}" style="width: 100px; height: 100px; mix-blend-mode: multiply; display: block;">
                 </div>
             </div>
             
