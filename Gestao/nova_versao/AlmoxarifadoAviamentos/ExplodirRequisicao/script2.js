@@ -40,8 +40,8 @@ async function Consultar_requisicao() {
                     : ``;
 
 const cardHTML = `
-    <div class="card card-etiqueta" style="background-color: #fff; border: none; overflow: hidden; width: 10.0cm; height: 3.0cm;">
-        <div class="card-body-custom d-flex flex-row align-items-start" style="height: 100%; padding: 1.0cm 0.5cm 0.5cm 0.5cm; box-sizing: border-box;">
+            <div class="card card-etiqueta" style="border: none; background-color: #fff; margin: 0; padding: 0; border-radius: 0; width: 10.9cm; height: 2.8cm; page-break-after: always; box-sizing: border-box;">
+                <div class="card-body d-flex flex-row align-items-center justify-content-between p-1" style="height: 100%; gap: 0.2cm; padding-left: 1cm !important; padding-right: 0.1cm !important;">
             
             <div style="flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0;">
                 
