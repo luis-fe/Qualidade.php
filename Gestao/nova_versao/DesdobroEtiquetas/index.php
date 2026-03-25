@@ -57,8 +57,8 @@ include_once('../../../templates/headerGestao.php');
         }
 
         .card-etiqueta {
-            width: 10.1cm;
-            height: 2.6cm;
+            width: 15.0cm;
+            height: 4.0cm;
             page-break-after: always;
             border: none !important;
             box-shadow: none !important;
