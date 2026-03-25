@@ -615,9 +615,9 @@ include_once('../../../templates/headerGestao.php');
                         <strong style="font-size: 16px; color: #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;">${item.descricao}</strong>
                         <span style="font-size: 14px; color: #000; line-height: 1.2;">Forn: ${item.fornecedor}</span>
                                 
-                                <div class="d-flex justify-content-between align-items-end" style="margin-top: 2px;">
-                                    ${htmlQuantidade}
-                                    <strong style="font-size: 11px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
+                            <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+                                <strong style="font-size: 26px; color: #000; line-height: 1.1; white-space: nowrap;">${htmlQuantidade}</strong>
+                            <strong style="font-size: 12px; color: #000; line-height: 1.1;">Imp: ${dataAtual}</strong>
                                 </div>
                             </div>
 
