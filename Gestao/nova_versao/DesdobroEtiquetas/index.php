@@ -48,12 +48,11 @@ include_once('../../../templates/headerGestao.php');
         #container-cards, #container-cards * { visibility: visible; }
         
         #container-cards {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 10.1cm; 
+            /* Definindo a largura do container para bater com a página */
+            width: 15.0cm !important;
             margin: 0 !important;
             padding: 0 !important;
+            display: block !important;
         }
 
         .card-etiqueta {
@@ -68,8 +67,8 @@ include_once('../../../templates/headerGestao.php');
         }
 
         @page {
-            size: 10.6cm 2.6cm;
-            margin: 0 !important; 
+            size: 10.0cm 3.8cm !important; 
+            margin: 0 !important;
         }
         
         body { margin: 0 !important; padding: 0 !important; background-color: white !important; }
