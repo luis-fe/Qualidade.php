@@ -36,7 +36,7 @@ async function Consultar_requisicao() {
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
                 const tagSeparador = primeiroNomeSeparador 
-                    ? `<span title="${separadorCompleto}">Sep: <strong>${primeiroNomeSeparador}</strong></span>` 
+                    ? `<span title="${separadorCompleto}">  Sep: <strong>${primeiroNomeSeparador}</strong></span>` 
                     : ``;
 
 const cardHTML = `
