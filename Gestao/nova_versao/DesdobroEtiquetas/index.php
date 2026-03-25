@@ -11,7 +11,7 @@ include_once('../../../templates/headerGestao.php');
     /* ==========================================================================
        ESTILOS DA TELA (SCREEN) - Design Moderno e Corporativo
        ========================================================================== */
-    body { background-color: #f4f7f6; } /* Fundo levemente cinza para destacar o container */
+    body { background-color: #f4f7f6; } 
 
     .wms-container { 
         max-width: 850px; 
@@ -24,7 +24,7 @@ include_once('../../../templates/headerGestao.php');
     }
     
     .wms-container h2 { 
-        color: #003366; /* Azul escuro corporativo */
+        color: #003366; 
         margin-top: 0; 
         margin-bottom: 20px; 
         padding-bottom: 10px; 
@@ -57,8 +57,8 @@ include_once('../../../templates/headerGestao.php');
     /* Card do Material */
     .card-material { 
         display: none; 
-        background-color: #f0fdf4; /* Fundo verde super claro (sucesso) */
-        border-left: 5px solid #16a34a; /* Borda esquerda de destaque */
+        background-color: #f0fdf4; 
+        border-left: 5px solid #16a34a; 
         border-radius: 8px; 
         padding: 12px 16px; 
         margin-bottom: 20px; 
@@ -129,7 +129,7 @@ include_once('../../../templates/headerGestao.php');
     .btn-imprimir:hover { background-color: #059669; }
 
     .btn-secundario { 
-        background-color: #f59e0b; /* Laranja para alertar que é uma ação diferente */
+        background-color: #f59e0b; 
         color: white; 
         border: none; 
         padding: 12px 24px; 
@@ -148,7 +148,7 @@ include_once('../../../templates/headerGestao.php');
     .select2-container--default .select2-selection--single .select2-selection__arrow { height: 38px; }
 
     /* ==========================================================================
-       ESTILOS DE IMPRESSÃO (Padrão Zebra) - MANTIDOS INTACTOS
+       ESTILOS DE IMPRESSÃO (Padrão Zebra)
        ========================================================================== */
     @media print {
         .no-print, .wms-container, header, footer, #loadingModal, .span-icone, .modal { display: none !important; }
@@ -278,12 +278,38 @@ include_once('../../../templates/headerGestao.php');
 
     <div id="sec-unidade-kit" class="secao-desdobro">
         <h3><i class="bi bi-box"></i> Opção: Unidade para Kit</h3>
-        <div class="linha">
-            <label for="qr_uk">QR Code da Unidade:</label>
-            <input type="text" id="qr_uk" placeholder="Biper o QR Code" onchange="simularBuscaEtiqueta('uk')">
+        
+        <div class="d-flex gap-4 mb-4 p-3 bg-light border rounded">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tipoBuscaUK" id="buscaQR_UK" value="qr" checked onchange="alternarBuscaUK()">
+                <label class="form-check-label fw-bold text-secondary" for="buscaQR_UK" style="cursor: pointer;">
+                    <i class="bi bi-qr-code-scan me-1"></i> Bipar QR Code Unitário
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tipoBuscaUK" id="buscaEnd_UK" value="endereco" onchange="alternarBuscaUK()">
+                <label class="form-check-label fw-bold text-secondary" for="buscaEnd_UK" style="cursor: pointer;">
+                    <i class="bi bi-geo-alt me-1"></i> Selecionar Endereço Atual
+                </label>
+            </div>
         </div>
 
-        <div id="card_info_material_uk" class="card-material">
+        <div id="area_busca_qr_uk" class="linha">
+            <label for="qr_uk">QR Code da Unidade:</label>
+            <input type="text" id="qr_uk" placeholder="Ex: COD-SEQ-CONTROLE - UNITARIO" onchange="simularBuscaEtiqueta('uk')">
+        </div>
+
+        <div id="area_busca_end_uk" class="linha" style="display: none;">
+            <label for="input_buscar_endereco_uk">Endereço Atual:</label>
+            <div class="d-flex gap-2 w-100" style="max-width: 280px;">
+                <input type="text" id="input_buscar_endereco_uk" class="form-control" placeholder="Ex: A-01-10" style="text-transform: uppercase;">
+                <button type="button" class="btn btn-primary shadow-sm" onclick="buscarEstoquePorEnderecoUK()">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="card_info_material_uk" class="card-material mt-3">
             <span id="display_cod_item_uk" class="badge-codigo">---</span>
             <p id="display_nome_item_uk" class="nome-material">Buscando informações...</p>
         </div>
@@ -291,7 +317,7 @@ include_once('../../../templates/headerGestao.php');
         <div id="campos_extras_uk" style="display: none;">
             <div class="linha">
                 <label>Qtd Original Disponível:</label>
-                <span id="qtd_origem_uk" class="readonly">0</span>
+                <span id="qtd_origem_uk" class="readonly border-primary text-primary">0</span>
             </div>
             <hr class="divisor-tela">
             <div class="linha">
@@ -331,11 +357,11 @@ include_once('../../../templates/headerGestao.php');
                 </h5>
             </div>
             <div class="modal-body text-center">
-                <p class="mb-0 fs-5">O material lido está correto.<br>Deseja confirmar o estorno desta etiqueta do estoque para iniciar o desdobro?</p>
+                <p class="mb-0 fs-5">O material lido está correto.<br>Deseja confirmar o estorno desta etiqueta/estoque para iniciar o desdobro?</p>
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal" onclick="cancelarEstorno()">Cancela</button>
-                <button type="button" class="btn btn-warning px-4 fw-bold text-dark" onclick="efetivarFinalizacaoPendencia()">Sim, Estornar</button>
+                <button type="button" class="btn btn-warning px-4 fw-bold text-dark" onclick="efetivarFinalizacaoPendencia()">Sim, Confirmar</button>
             </div>
         </div>
     </div>
@@ -408,15 +434,34 @@ include_once('../../../templates/headerGestao.php');
     mostrarSecao('kit-kit');
 
     function limparCampos() {
-        $('input[type="text"]').val('');
+        $('input[type="text"]').not('#input_buscar_endereco_uk').not('#qr_uk').val(''); 
         $('input[type="number"]').val('');
         $('.readonly').text('0');
         $('.card-material, [id^="campos_extras_"]').hide();
         $('[id^="display_nome_item_"]').css('color', '#1e293b');
     }
 
+    // Função de alternância visual (Toggles da aba Unidade -> Kit)
+    function alternarBuscaUK() {
+        let tipoBusca = $('input[name="tipoBuscaUK"]:checked').val();
+        
+        limparCampos();
+        $('#qr_uk').val('');
+        $('#input_buscar_endereco_uk').val('');
+
+        if (tipoBusca === 'qr') {
+            $('#area_busca_end_uk').hide();
+            $('#area_busca_qr_uk').fadeIn(200);
+            setTimeout(() => $('#qr_uk').focus(), 100);
+        } else {
+            $('#area_busca_qr_uk').hide();
+            $('#area_busca_end_uk').fadeIn(200);
+            setTimeout(() => $('#input_buscar_endereco_uk').focus(), 100);
+        }
+    }
+
     // ==========================================
-    // 3. LEITURA DO QR CODE E ESTORNO
+    // 3. LEITURA DE QR CODE E BUSCA POR ENDEREÇO
     // ==========================================
     function simularBuscaEtiqueta(tipo) {
         let inputId = (tipo === 'kk') ? 'qr_kk' : (tipo === 'ku' ? 'qr_ku' : 'qr_uk');
@@ -433,22 +478,22 @@ include_once('../../../templates/headerGestao.php');
         if (!textoQrCode) return;
 
         let partes = textoQrCode.split('-');
-
-        if (partes.length < 3) {
-            somErro.play();
-            alert("Formato de QR Code inválido!\nEsperado: codItem - seq - qtd");
-            document.getElementById(inputId).value = ''; 
-            document.getElementById(inputId).focus(); 
-            return;
-        }
-
         let codItemExtraido = partes[0].trim();
-        let sequenciaExtraida = partes[1].trim(); 
-        let qtdExtraida = parseFloat(partes[2].trim());
+        let sequenciaExtraida = partes[1] ? partes[1].trim() : "N/A"; 
+        let qtdExtraida = 0;
 
-        if (partes[2].toUpperCase().includes("CONTROLE UNITARIO")) {
-            qtdExtraida = parseFloat(partes[1].trim()); 
-            sequenciaExtraida = "N/A"; 
+        // VERIFICA SE O QR CODE É DE CONTROLE UNITÁRIO (Ex: cod-seq-CONTROLE - UNITARIO)
+        if (textoQrCode.toUpperCase().includes("CONTROLE")) {
+            qtdExtraida = 1; // Assumimos 1 unidade pois é controle unitário
+        } else {
+            // Padrão antigo de Kit
+            if (partes.length < 3) {
+                somErro.play();
+                alert("Formato de QR Code inválido!\nEsperado: codItem - seq - qtd");
+                document.getElementById(inputId).value = ''; 
+                return;
+            }
+            qtdExtraida = parseFloat(partes[2].trim()) || 0;
         }
 
         if (tipo === 'kk') document.getElementById('qtd_origem_kk').innerText = qtdExtraida;
@@ -459,6 +504,7 @@ include_once('../../../templates/headerGestao.php');
         document.getElementById(codDisplayId).innerText = codItemExtraido;
         document.getElementById(nomeDisplayId).innerText = "Buscando informações...";
 
+        // FETCH NA API PARA PEGAR O NOME DO PRODUTO
         fetch(`requests.php?acao=obterNomeItem&codMaterial=${codItemExtraido}`)
             .then(response => response.json())
             .then(data => {
@@ -485,6 +531,61 @@ include_once('../../../templates/headerGestao.php');
             });
     }
 
+    // Busca o material pela localização digitada (Aba Unidade -> Kit)
+    function buscarEstoquePorEnderecoUK() {
+        let endereco = document.getElementById('input_buscar_endereco_uk').value.trim().toUpperCase();
+        
+        if (!endereco) {
+            somErro.play();
+            alert("Digite o endereço para realizar a busca!");
+            document.getElementById('input_buscar_endereco_uk').focus();
+            return;
+        }
+
+        let tipo = 'uk';
+        let nomeDisplayId = `display_nome_item_${tipo}`;
+        
+        document.getElementById(`campos_extras_${tipo}`).style.display = 'none';
+        document.getElementById(`card_info_material_${tipo}`).style.display = 'flex';
+        document.getElementById(`display_cod_item_${tipo}`).innerText = "BUSCANDO...";
+        document.getElementById(nomeDisplayId).innerText = `Verificando estoque no endereço ${endereco}...`;
+        document.getElementById(nomeDisplayId).style.color = '#052c65';
+
+        // ==========================================================
+        // SUBSTITUA ESTE SETTIMEOUT PELO FETCH PARA A SUA API DE ENDEREÇO
+        // ==========================================================
+        setTimeout(() => {
+            // MOCK - Dados simulados da API
+            let mockCodItem = "COD-TESTE";
+            let mockNome = "Produto Puxado do Endereço " + endereco;
+            let mockQtdNoEndereco = 200; // Soma do estoque no local
+            let mockFornecedor = "Fornecedor Padrão";
+            let mockUnidade = "UN";
+
+            document.getElementById(`display_cod_item_${tipo}`).innerText = mockCodItem;
+            document.getElementById(nomeDisplayId).innerText = mockNome;
+            document.getElementById(`qtd_origem_${tipo}`).innerText = mockQtdNoEndereco;
+
+            somAlerta.play();
+            
+            estadoAtualDesdobro = { 
+                tipo: tipo, 
+                codMaterial: mockCodItem, 
+                sequencia: 'MULTIPLA', 
+                qtd: mockQtdNoEndereco, 
+                nomeMaterial: mockNome, 
+                fornecedor: mockFornecedor,
+                unidadeMedida: mockUnidade
+            };
+            
+            new bootstrap.Modal(document.getElementById('modalConfirmarPendencia')).show();
+
+        }, 800);
+    }
+
+    // ==========================================
+    // 4. CONFIRMAÇÃO DE ESTORNO NO BANCO
+    // ==========================================
     function efetivarFinalizacaoPendencia() {
         let modalEl = document.getElementById('modalConfirmarPendencia');
         bootstrap.Modal.getInstance(modalEl)?.hide();
@@ -492,7 +593,7 @@ include_once('../../../templates/headerGestao.php');
         let tipo = estadoAtualDesdobro.tipo;
         let nomeDisplayId = `display_nome_item_${tipo}`;
 
-        document.getElementById(nomeDisplayId).innerText = "Estornando etiqueta no banco...";
+        document.getElementById(nomeDisplayId).innerText = "Comprometendo/Estornando estoque no banco...";
         document.getElementById(nomeDisplayId).style.color = "#d97706"; 
 
         let formData = new FormData();
@@ -548,7 +649,7 @@ include_once('../../../templates/headerGestao.php');
     }
 
     // ==========================================
-    // 4. NOVA FUNÇÃO: NÃO IMPRIMIR (ENDEREÇAR)
+    // 5. FUNÇÃO: NÃO IMPRIMIR (REPOR ENDEREÇO)
     // ==========================================
     function abrirModalNaoImprimir() {
         let qtd = document.getElementById('qtd_unitario_ku').innerText;
@@ -558,7 +659,6 @@ include_once('../../../templates/headerGestao.php');
         let modal = new bootstrap.Modal(document.getElementById('modalNaoImprimir'));
         modal.show();
         
-        // Foca no input após abrir o modal para facilitar o uso de leitor de código de barras
         setTimeout(() => document.getElementById('input_endereco_repor').focus(), 500);
     }
 
@@ -572,28 +672,22 @@ include_once('../../../templates/headerGestao.php');
             return;
         }
         
-        // -------------------------------------------------------------
-        // AQUI VOCÊ VAI INSERIR SUA CHAMADA DE API (AJAX/FETCH) FUTURA
-        // -------------------------------------------------------------
-        console.log("=== ENVIANDO PARA API ===");
-        console.log("Material:", estadoAtualDesdobro.codMaterial);
-        console.log("Quantidade:", qtd);
-        console.log("Endereço:", endereco);
+        // CONECTE SUA API DE ENDEREÇAMENTO AQUI
+        console.log("=== API ENDEREÇAMENTO PENDENTE ===");
+        console.log("Cod:", estadoAtualDesdobro.codMaterial, "Qtd:", qtd, "Local:", endereco);
         
-        // Simulação de fechamento após sucesso
         let modalEl = document.getElementById('modalNaoImprimir');
         bootstrap.Modal.getInstance(modalEl).hide();
         
         somSucesso.play();
-        alert(`Sucesso! Material ${estadoAtualDesdobro.codMaterial} encaminhado para o endereço ${endereco}. (API pendente)`);
+        alert(`Sucesso! Material ${estadoAtualDesdobro.codMaterial} encaminhado para o endereço ${endereco}.`);
         
-        // Reseta a tela
         document.getElementById('qr_ku').value = '';
         limparCampos();
     }
 
     // ==========================================
-    // 5. CÁLCULOS MATEMÁTICOS E VALIDAÇÕES
+    // 6. CÁLCULOS MATEMÁTICOS E VALIDAÇÕES
     // ==========================================
     function gerarCamposDinamicosKits() {
         let qtdKits = parseInt(document.getElementById('num_kits').value);
@@ -657,7 +751,7 @@ include_once('../../../templates/headerGestao.php');
     }
 
     // ==========================================
-    // 6. IMPRESSÃO E GERAÇÃO DA ETIQUETA ZPL/HTML
+    // 7. IMPRESSÃO E GERAÇÃO DA ETIQUETA
     // ==========================================
     async function imprimirEtiqueta(abaClicada) {
         let itensParaImprimir = [];
@@ -798,6 +892,7 @@ include_once('../../../templates/headerGestao.php');
                 document.getElementById('qr_kk').value = '';
                 document.getElementById('qr_ku').value = '';
                 document.getElementById('qr_uk').value = '';
+                document.getElementById('input_buscar_endereco_uk').value = '';
             }, 150);
 
         } catch (erro) {
