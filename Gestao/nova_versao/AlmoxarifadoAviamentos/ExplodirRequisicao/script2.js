@@ -36,7 +36,7 @@ async function Consultar_requisicao() {
 
                 // Se houver separador na URL, monta a tag dele, senão deixa vazio
                 const tagSeparador = primeiroNomeSeparador 
-                    ? `<span title="${separadorCompleto}">  Sep: <strong>${primeiroNomeSeparador}</strong></span>` 
+                    ? `<span title="${separadorCompleto}">Sep: <strong>${primeiroNomeSeparador}</strong></span>` 
                     : ``;
 
 const cardHTML = `
@@ -56,10 +56,10 @@ const cardHTML = `
                 
                 <div style="height: 0.25cm;"></div>
 
-                <div class="d-flex align-items-center" style="font-size: 1.0rem; flex: 1; gap: 0;">
-                        <strong>OP: <strong style="font-size: 1.2rem;">${item.numOPConfec}</strong></strong>
-                        <strong>${tagSeparador}</strong>
-                        <strong>Qtd: <strong style="font-size: 1.5rem;">${item.qtdeRequisitada}</strong></strong>
+                <div class="d-flex align-items-center" style="font-size: 1.0rem; flex: 1; gap: 0.5cm;">
+                    <span><strong>OP:</strong> ${item.numOPConfec}</span>
+                    <span>${tagSeparador}</span>
+                    <span><strong>Qtd:</strong> <strong style="font-size: 1.5rem;">${item.qtdeRequisitada}</strong></span>
                 </div>
             </div>
 
