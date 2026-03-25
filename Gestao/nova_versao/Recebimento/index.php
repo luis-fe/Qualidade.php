@@ -41,6 +41,12 @@ include_once('../../../templates/headerGestao.php');
             box-shadow: none !important;
         }
 
+        /* NOVA REGRA PARA EVITAR A ETIQUETA EM BRANCO NO FINAL */
+        .card-etiqueta:last-child {
+            page-break-after: auto !important;
+            break-after: auto !important;
+        }
+
         .card-body-custom {
             display: flex !important;
             flex-direction: row !important;
