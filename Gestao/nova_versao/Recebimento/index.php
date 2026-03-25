@@ -17,7 +17,7 @@ include_once('../../../templates/headerGestao.php');
 
         @page {
             /* Aumentei aqui para 15cm para comportar o card maior */
-            size: 10.0cm 3.0cm !important; 
+            size: 10.0cm 3.8cm !important; 
             margin: 0 !important;
         }
 
