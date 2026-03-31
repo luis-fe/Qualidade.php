@@ -219,10 +219,10 @@ async function salvarConfigKit(codID, btnElement) {
 
     let totalPreparado = (k1_t * k1_q) + (k2_t * k2_q) + (k3_t * k3_q) + granel;
 
-    if (totalPreparado > saldoOriginal) {
-        alert(`Atenção: A quantidade preparada (${formatarParaPtBr(totalPreparado)}) não pode ser maior que o Saldo disponível (${formatarParaPtBr(saldoOriginal)}).`);
-        return;
-    }
+    //if (totalPreparado > saldoOriginal) {
+      //  alert(`Atenção: A quantidade preparada (${formatarParaPtBr(totalPreparado)}) não pode ser maior que o Saldo disponível (${formatarParaPtBr(saldoOriginal)}).`);
+        //return;
+   // }
     
     let totalKitsParaImprimir = k1_q + k2_q + k3_q;
     
