@@ -140,6 +140,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/VerificaTag" class="sidebar-link">Verificar Tag</a>
                             </li>
+                            <li class="sidebar-item sidebar-item-2">
+                                <a href="../../../Wms/src/ConfigurarDesagrupamentoClientes" class="sidebar-link">Configuracao Agrupamento</a>
+                            </li>
                         </ul>
 
         <ul>
