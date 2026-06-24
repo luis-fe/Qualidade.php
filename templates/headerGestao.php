@@ -151,7 +151,7 @@
 
   <div id="sidebar">
     <div class="text-center mb-5">
-      <img src="../../../templates/logo-grupompl.png" alt="Logo" style="width: 70%; margin-top: 20px;">
+      <img src="../../../templates/Logo-Mpl.png" alt="Logo" style="width: 70%; margin-top: 20px;">
     </div>
 
     <ul class="nav flex-column">
