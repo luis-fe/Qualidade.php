@@ -1,9 +1,4 @@
 <?php
-// Caso o token e a empresa venham da sessão, certifique-se de iniciar a sessão
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 include_once("requests.php");
 include_once("../../../templates/heads.php");
 include("../../../templates/Loading.php");
@@ -31,6 +26,14 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
         max-height: 60vh; 
         overflow-y: auto;
     }
+
+    /* Ajuste para deixar as linhas bem finas e visuais */
+    .tabela-compacta td, .tabela-compacta th {
+        padding: 0.25rem 0.5rem !important; /* Reduz drasticamente o espaço em branco (padding) */
+        font-size: 13px; /* Deixa a fonte um pouco menor */
+        vertical-align: middle; /* Garante que o texto fique bem centralizado na linha fina */
+        line-height: 1.2; /* Aproxima as linhas de texto, se houver quebra */
+    }
 </style>
 
 <div class="container-fluid" id="form-container">
@@ -54,7 +57,7 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
         </div>
 
         <div class="table-responsive table-container mt-2">
-            <table class="table table-bordered table-hover" id="TableClientes">
+            <table class="table table-bordered table-hover table-sm tabela-compacta" id="TableClientes">
                 <thead class="fixed-header">
                     <tr>
                         <th scope="col" class="text-center">Descrição do Cliente</th>
@@ -69,7 +72,7 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
                             $descricao = htmlspecialchars($cliente['descricao_cliente'] ?? '');
                             
                             echo "<tr>";
-                            echo "  <td class='text-center align-middle'>{$descricao}</td>";
+                            echo "  <td class='text-center'>{$descricao}</td>";
                             echo "</tr>";
                         }
                     } else {
