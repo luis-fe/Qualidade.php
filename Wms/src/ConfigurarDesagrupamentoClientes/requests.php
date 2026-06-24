@@ -130,6 +130,90 @@ function consultarClientesDesagrupados($empresa, $token) {
     return json_decode($apiResponse, true);
 }
 
+function listarClientesAtuaisPedidos($empresa, $token) {
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
+    $apiUrl = "{$baseUrl}/api/listar_clientes_atuais_pedidos";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: {$token}",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch));
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function inserirClienteDesagrupado($empresa, $token, $dados) {
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
+    $apiUrl = "{$baseUrl}/api/InserirClientedesagruparPedido";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: {$token}",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function excluirClienteDesagrupado($empresa, $token, $dados) {
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
+    $apiUrl = "{$baseUrl}/api/ExcluirClientedesagruparPedido";
+
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "DELETE",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: {$token}",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        $error = curl_error($ch);
+        error_log("Erro na solicitação cURL: {$error}");
+        return false;
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
 function atribuirPedidos($empresa, $token, $dados) {
     $baseUrl = ($empresa == "1") ? 'http://10.162.0.190:5000' : 'http://10.162.0.191:5000';
     $apiUrl = "{$baseUrl}/api/AtribuirPedidos";
@@ -236,6 +320,9 @@ function LimparSeparacao($empresa, $token, $dados)
     return json_decode($apiResponse, true);
 }
 
+
+// =================== ROTAS (MÉTODOS HTTP) ===================
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["acao"])) {
         $acao = $_GET["acao"];
@@ -256,12 +343,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 echo json_encode($usuarios);
             } 
         } elseif ($acao == 'Recarregar_Pedidos') {
-                $Pedidos = RecarregarPedidos($empresa, $token);
-                if ($Pedidos !== false) {
-                    header('Content-Type: application/json');
-                    echo json_encode($Pedidos);
-                }
-                else {
+            $Pedidos = RecarregarPedidos($empresa, $token);
+            if ($Pedidos !== false) {
+                header('Content-Type: application/json');
+                echo json_encode($Pedidos);
+            } else {
                 header('Content-Type: application/json');
                 echo json_encode(['error' => 'Erro ao consultar usuários']);
             }
@@ -275,12 +361,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 header('Content-Type: application/json');
                 echo json_encode(['error' => 'Erro ao consultar peças faltantes']);
             }
+            
+        // ROTA GET ADICIONADA: Listar Clientes Atuais Pedidos
+        } elseif ($acao == 'Listar_Clientes_Atuais') {
+            $clientesAtuais = listarClientesAtuaisPedidos($empresa, $token);
+            if ($clientesAtuais !== false) {
+                header('Content-Type: application/json');
+                echo json_encode($clientesAtuais);
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Erro ao listar clientes atuais']);
+            }
         }
     }
+
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     $requestData = json_decode(file_get_contents('php://input'), true);
     $acao = $requestData['acao'] ?? null;
     $dados = $requestData['dados'] ?? null;
+    
     if ($acao) {
         if ($acao == 'Atribuir_Pedidos') {
             $dadosObjeto = (object)$dados;
@@ -292,15 +391,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 header('Content-Type: application/json');
                 echo json_encode(['error' => 'Erro ao atribuir pedidos']);
             }
+            
+        } elseif ($acao == 'Inserir_Cliente') {
+            $dadosObjeto = (object)$dados;
+            $insercao = inserirClienteDesagrupado($empresa, $token, $dadosObjeto);
+            if ($insercao !== false) {
+                header('Content-Type: application/json');
+                echo json_encode($insercao);
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Erro ao inserir cliente para desagrupamento']);
+            }
         } else {
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Ação não reconhecida.']);
         }
     }
+
 } elseif ($_SERVER["REQUEST_METHOD"] == "PUT") {
     $requestData = json_decode(file_get_contents('php://input'), true);
     $acao = $requestData['acao'] ?? null;
     $dados = $requestData['dados'] ?? null;
+    
     if ($acao == 'Alterar_Prioridade') {
         $dadosObjeto = (object)$dados;
         $prioridade = alterarPrioridade($empresa, $token, $dadosObjeto);
@@ -319,9 +431,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Content-Type: application/json');
         echo json_encode(['error' => 'Ação não reconhecida.']);
     }
+
+} elseif ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $acao = $requestData['acao'] ?? null;
+    $dados = $requestData['dados'] ?? null;
+
+    if ($acao == 'Excluir_Cliente') {
+        $dadosObjeto = (object)$dados;
+        $exclusao = excluirClienteDesagrupado($empresa, $token, $dadosObjeto);
+        if ($exclusao !== false) {
+            header('Content-Type: application/json');
+            echo json_encode($exclusao);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Erro ao excluir cliente do desagrupamento']);
+        }
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Ação não reconhecida no DELETE.']);
+    }
+
 } else {
     error_log("Método de ação não especificado no método POST");
     header('Content-Type: application/json');
     echo json_encode(['error' => 'Erro: Método de requisição não suportado.']);
 }
-
