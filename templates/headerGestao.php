@@ -163,6 +163,7 @@
       <li><a href="../ControlePilotos" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Controle Pilotos</a></li>
       <li><a href="../Procedimentos" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Procedimentos</a></li>
       <li><a href="../Automacao" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Controle Automação</a></li>
+      <li><a href="../GestaoQualidade" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i>Gestao da Qualidade</a></li>
 
       <li class="nav-item">
         <a href="#submenuAlmoxarifado" data-bs-toggle="collapse" class="nav-link justify-content-between" aria-expanded="false">
