@@ -64,6 +64,7 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
                 <thead class="fixed-header">
                     <tr>
                         <th scope="col" class="text-center">Descrição do Cliente</th>
+                        <th scope="col" class="text-center" style="width: 100px;">Ações</th>
                     </tr>
                 </thead>
                 <tbody id="tbodyClientes">
@@ -71,16 +72,22 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
                     // Verifica se a API retornou dados válidos
                     if ($clientesDesagrupados && is_array($clientesDesagrupados) && count($clientesDesagrupados) > 0) {
                         foreach ($clientesDesagrupados as $cliente) {
-                            $descricao = htmlspecialchars($cliente['descricao_cliente'] ?? '');
+                            // Adicionado ENT_QUOTES para evitar quebra no Javascript se o nome tiver aspas
+                            $descricao = htmlspecialchars($cliente['descricao_cliente'] ?? '', ENT_QUOTES, 'UTF-8');
                             
                             echo "<tr>";
                             echo "  <td class='text-center'>{$descricao}</td>";
+                            echo "  <td class='text-center'>";
+                            echo "      <button type='button' class='btn btn-danger btn-sm' onclick='excluirCliente(\"{$descricao}\")' title='Excluir'>";
+                            echo "          <i class='fa-solid fa-trash'></i>";
+                            echo "      </button>";
+                            echo "  </td>";
                             echo "</tr>";
                         }
                     } else {
                         // Caso a API retorne vazio ou falso
                         echo "<tr>";
-                        echo "  <td class='text-center text-muted p-4'>Nenhum cliente configurado para desagrupamento no momento.</td>";
+                        echo "  <td class='text-center text-muted p-4' colspan='2'>Nenhum cliente configurado para desagrupamento no momento.</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -113,9 +120,44 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
     </div>
   </div>
 </div>
+
 <?php include_once("../../../templates/footer.php"); ?>
 
 <script>
+    // --- Nova Função: Excluir Cliente ---
+    function excluirCliente(descricaoCliente) {
+        // Confirmação para evitar exclusão acidental
+        if (confirm(`Tem certeza que deseja remover o cliente "${descricaoCliente}" do desagrupamento?`)) {
+            const payload = {
+                acao: 'Excluir_Cliente',
+                dados: {
+                    descricao_cliente: descricaoCliente
+                }
+            };
+
+            fetch('requests.php', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) {
+                    alert("Erro ao excluir: " + data.error);
+                } else {
+                    alert("Cliente removido do desagrupamento com sucesso!");
+                    location.reload(); // Recarrega a página para atualizar a tabela
+                }
+            })
+            .catch(error => {
+                console.error("Erro na exclusão:", error);
+                alert("Ocorreu um erro ao comunicar com o servidor.");
+            });
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         // --- Lógica do Filtro da Tabela Principal ---
         const searchInput = document.getElementById("searchCliente");
@@ -153,7 +195,6 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
                     
                     if(data && !data.error && Array.isArray(data)) {
                         data.forEach(cliente => {
-                            // Tenta pegar a descrição do cliente baseada nas chaves que podem retornar
                             let nomeCliente = cliente.descricao_cliente || cliente.cliente || cliente.desc_cliente || Object.values(cliente)[0];
                             
                             let option = document.createElement('option');
@@ -204,7 +245,6 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
                     alert("Erro ao inserir: " + data.error);
                 } else {
                     alert("Cliente adicionado ao desagrupamento com sucesso!");
-                    // Recarrega a página para atualizar a tabela na tela de fundo
                     location.reload(); 
                 }
             })
@@ -213,7 +253,6 @@ $clientesDesagrupados = consultarClientesDesagrupados($empresa, $token);
                 alert("Ocorreu um erro ao comunicar com o servidor.");
             })
             .finally(() => {
-                // Restaura o botão caso a tela não recarregue imediatamente
                 btnSalvar.disabled = false;
                 btnSalvar.textContent = "Inserir";
             });
