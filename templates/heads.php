@@ -78,7 +78,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#Configuracoes" aria-expanded="false" aria-controls="Configuracoes">
                             <i class="fa-solid fa-gears pe-3"></i>
-                            Configurações
+                            Configurações Gerais
                         </a>
                         <ul id="Configuracoes" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item sidebar-item-2">
@@ -86,6 +86,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             </li>
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Usuarios" class="sidebar-link">Usuários</a>
+                            </li>
+                                                        <li class="sidebar-item sidebar-item-2">
+                                <a href="../../../Wms/src/ConfigurarDesagrupamentoClientes" class="sidebar-link">Configuracao Agrupamento</a>
                             </li>
 
                         </ul>
@@ -140,9 +143,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/VerificaTag" class="sidebar-link">Verificar Tag</a>
                             </li>
-                            <li class="sidebar-item sidebar-item-2">
-                                <a href="../../../Wms/src/ConfigurarDesagrupamentoClientes" class="sidebar-link">Configuracao Agrupamento</a>
-                            </li>
+
                         </ul>
 
         <ul>
