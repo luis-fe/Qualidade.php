@@ -1,7 +1,7 @@
 <?php
 include_once('requests.php');
-include_once("../../templates/Loading.php");
-include_once('../../templates/headerGestao.php');
+include_once("../../../templates/LoadingGestao.php");
+include_once('../../../templates/headerGestao.php');
 ?>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
