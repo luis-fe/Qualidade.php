@@ -87,7 +87,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['empresa'])) {
                             <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/Usuarios" class="sidebar-link">Usuários</a>
                             </li>
-                                                        <li class="sidebar-item sidebar-item-2">
+                            <li class="sidebar-item sidebar-item-2">
                                 <a href="../../../Wms/src/ConfigurarDesagrupamentoClientes" class="sidebar-link">Configuracao Agrupamento</a>
                             </li>
 
