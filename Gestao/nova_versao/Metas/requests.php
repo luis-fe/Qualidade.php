@@ -39,7 +39,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'Consultar_Tipo_Op':
                     jsonResponse(ConsultarTipoOp('1'));
                     break;
-               
+                case 'Consultar_CronogramaFasesPlano':
+                    $plano = $_GET['plano'];
+                    jsonResponse(ConsultarCronogramaFasesPlano('1', $plano));
+                    break;
+
                 case 'ConsultaFaltaProduzirCategoria_Fase':
                     header('Content-Type: application/json');
                     echo json_encode(ConsultaFaltaProduzirCategoria_Fase($dados));
@@ -76,6 +80,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                         break;
                 case 'ConsultaFilaResumoCategoria':
                         jsonResponse(ConsultaFilaResumoCategoria($dados));
+                        break;
+                case 'Salvar_CronogramaFasesPlano':
+                        jsonResponse(SalvarCronogramaFasesPlano($dados));
+                        break;
+                case 'Atualizar_CronogramaFasesPlano':
+                        jsonResponse(AtualizarCronogramaFasesPlano($dados));
                         break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação POST não reconhecida.']);
@@ -258,6 +268,86 @@ function ConsultarCronograma($empresa, $codPlano, $codFase)
         'Content-Type: application/json',
         "Authorization: a44pcp22",
     ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function ConsultarCronogramaFasesPlano($empresa, $plano)
+{
+    $baseUrl = ($empresa == "1") ? 'http://10.162.0.53:7070' : 'http://192.168.0.183:8000';
+    $apiUrl = "{$baseUrl}/pcp/api/CronogramaFasesPlano?codigoPlano={$plano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function SalvarCronogramaFasesPlano($dados)
+{
+    $baseUrl = 'http://10.162.0.53:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/CronogramaFasesPlano";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
+}
+
+function AtualizarCronogramaFasesPlano($dados)
+{
+    $baseUrl = 'http://10.162.0.53:7070';
+    $apiUrl = "{$baseUrl}/pcp/api/CronogramaFasesPlano";
+    $ch = curl_init($apiUrl);
+
+    $options = [
+        CURLOPT_CUSTOMREQUEST => "PUT",
+        CURLOPT_POSTFIELDS => json_encode($dados),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ],
+    ];
+
+    curl_setopt_array($ch, $options);
 
     $apiResponse = curl_exec($ch);
 
