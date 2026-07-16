@@ -314,6 +314,7 @@ const Consulta_Lotes = async () => {
     }
 };
 
+let UltimaListaMetas = [];
 let TiposOpsSelecionados = [];
 async function Consulta_Metas(congelado) {
     TiposOpsSelecionados = [];
@@ -435,6 +436,146 @@ const Consultar_Cronograma = async (Fase) => {
 };
 
 
+const AbrirEditorCronograma = async () => {
+    const Plano = $('#select-plano').val();
+    if (!Plano) {
+        Mensagem_Canto('Selecione um plano antes de editar o cronograma', 'warning');
+        return;
+    }
+
+    $('#loadingModal').modal('show');
+    try {
+        const cronogramaExistente = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: {
+                acao: 'Consultar_CronogramaFasesPlano',
+                plano: Plano
+            }
+        });
+
+        RenderizarCronogramaEditavel(cronogramaExistente || []);
+        $('#modal-cronograma-editar').modal('show');
+    } catch (error) {
+        console.error('Erro ao carregar cronograma:', error);
+        Mensagem_Canto('Erro ao carregar cronograma das fases', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+};
+
+function RenderizarCronogramaEditavel(cronogramaExistente) {
+    const tbody = $('#table-cronograma-editar tbody');
+    tbody.empty();
+
+    // Monta a lista única de fases a partir da última consulta de metas exibida na tela
+    const fasesUnicas = [];
+    const codigosVistos = new Set();
+    UltimaListaMetas.forEach(item => {
+        const cod = String(item.codFase);
+        if (!codigosVistos.has(cod)) {
+            codigosVistos.add(cod);
+            fasesUnicas.push({ codFase: cod, nomeFase: item.nomeFase });
+        }
+    });
+
+    fasesUnicas.forEach(fase => {
+        const existente = cronogramaExistente.find(c => String(c.codFase) === fase.codFase);
+        const dataInicio = existente && existente.dataInicio ? existente.dataInicio.substring(0, 10) : '';
+        const dataFim = existente && existente.dataFim ? existente.dataFim.substring(0, 10) : '';
+
+        tbody.append(`
+            <tr data-codfase="${fase.codFase}" data-existe="${existente ? '1' : '0'}">
+                <td>${fase.codFase}</td>
+                <td>${fase.nomeFase}</td>
+                <td><input type="date" class="form-control form-control-sm input-cronograma-inicio" value="${dataInicio}"></td>
+                <td><input type="date" class="form-control form-control-sm input-cronograma-fim" value="${dataFim}"></td>
+            </tr>
+        `);
+    });
+}
+
+$(document).on('click', '#btn-salvar-cronograma-editar', async function () {
+    const Plano = $('#select-plano').val();
+    const paraInserir = [];
+    const paraAtualizar = [];
+
+    $('#table-cronograma-editar tbody tr').each(function () {
+        const codFase = $(this).attr('data-codfase');
+        const jaExiste = $(this).attr('data-existe') === '1';
+        const dataInicio = $(this).find('.input-cronograma-inicio').val();
+        const dataFim = $(this).find('.input-cronograma-fim').val();
+
+        if (!dataInicio || !dataFim) {
+            return; // linha sem alteração, ignora
+        }
+
+        const item = { codFase, dataInicio, dataFim };
+        if (jaExiste) {
+            paraAtualizar.push(item);
+        } else {
+            paraInserir.push(item);
+        }
+    });
+
+    if (paraInserir.length === 0 && paraAtualizar.length === 0) {
+        Mensagem_Canto('Informe ao menos uma data de início e fim', 'warning');
+        return;
+    }
+
+    $('#loadingModal').modal('show');
+    try {
+        const chamadas = [];
+
+        paraInserir.forEach(item => {
+            chamadas.push($.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    acao: 'Salvar_CronogramaFasesPlano',
+                    dados: {
+                        codigoPlano: Plano,
+                        arrayDeFases: [item.codFase],
+                        dataInicio: item.dataInicio,
+                        dataFinal: item.dataFim
+                    }
+                })
+            }));
+        });
+
+        paraAtualizar.forEach(item => {
+            chamadas.push($.ajax({
+                type: 'POST',
+                url: 'requests.php',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    acao: 'Atualizar_CronogramaFasesPlano',
+                    dados: {
+                        codigoPlano: Plano,
+                        arrayDeFases: [item.codFase],
+                        dataInicio: item.dataInicio,
+                        dataFinal: item.dataFim
+                    }
+                })
+            }));
+        });
+
+        await Promise.all(chamadas);
+
+        Mensagem_Canto('Cronograma salvo com sucesso', 'success');
+        $('#modal-cronograma-editar').modal('hide');
+    } catch (error) {
+        console.error('Erro ao salvar cronograma:', error);
+        Mensagem_Canto('Erro ao salvar cronograma das fases', 'error');
+    } finally {
+        $('#loadingModal').modal('hide');
+    }
+});
+
 function FormatarData(dataBR) {
     const partes = dataBR.split('/'); // Divide "DD/MM/YYYY" em [DD, MM, YYYY]
     return `${partes[2]}-${partes[1]}-${partes[0]}`; // Retorna "YYYY-MM-DD"
@@ -442,6 +583,8 @@ function FormatarData(dataBR) {
 
 
 function TabelaMetas(listaMetas) {
+    UltimaListaMetas = listaMetas;
+
     if ($.fn.DataTable.isDataTable('#table-metas')) {
         $('#table-metas').DataTable().destroy();
     }
@@ -465,6 +608,21 @@ function TabelaMetas(listaMetas) {
                 },
                 attr: {
                     title: 'Filtros'
+                },
+                init: function (api, node, config) {
+                    $(node).css({
+                        'border-radius': '10px',
+                    });
+                }
+            },
+            {
+                text: '<i class="bi bi-calendar-week"></i>',
+                className: 'button-cronograma',
+                action: function (e, dt, node, config) {
+                    AbrirEditorCronograma();
+                },
+                attr: {
+                    title: 'Editar Cronograma das Fases'
                 },
                 init: function (api, node, config) {
                     $(node).css({

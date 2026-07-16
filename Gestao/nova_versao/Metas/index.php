@@ -389,6 +389,36 @@ include_once('../../../templates/headerGestao.php');
     </div>
 </div>
 
+<div class="modal fade" id="modal-cronograma-editar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title text-dark"><i class="bi bi-calendar-week"></i> Cronograma das Fases</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0" style="max-height: 70vh; overflow: auto">
+                <table class="table table-bordered table-striped m-0" id="table-cronograma-editar" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Cód.</th>
+                            <th>Fase</th>
+                            <th>Data Início</th>
+                            <th>Data Fim</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-salvar-cronograma-editar">
+                    <i class="bi bi-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 include_once('../../../templates/footerGestao.php');
 ?>
