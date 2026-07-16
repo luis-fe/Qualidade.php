@@ -568,6 +568,9 @@ $(document).on('click', '#btn-salvar-cronograma-editar', async function () {
 
         Mensagem_Canto('Cronograma salvo com sucesso', 'success');
         $('#modal-cronograma-editar').modal('hide');
+
+        // Recalcula as metas (sem usar o csv congelado) para refletir o novo cronograma
+        await Consulta_Metas(false);
     } catch (error) {
         console.error('Erro ao salvar cronograma:', error);
         Mensagem_Canto('Erro ao salvar cronograma das fases', 'error');
