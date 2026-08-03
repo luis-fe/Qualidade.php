@@ -304,7 +304,6 @@ async function atualizar(){
 
     // Nova consulta = novo conjunto de dados: os cruzamentos anteriores caem
     ESTADO.filtros = {};
-    atualizarRotuloPeriodo();
 
     await Cosultar_Qualidade();
     await Consultar_Motivos(campoBusca);
@@ -537,14 +536,6 @@ const formatDateToDDMMYYYY = (date) => {
     const [ano, mes, dia] = date.split('-');
     return `${dia}/${mes}/${ano}`;
 };
-
-function atualizarRotuloPeriodo() {
-    const inicio = $('#dataInicio').val();
-    const fim = $('#dataFim').val();
-    if (!inicio || !fim) return;
-
-    $('#rotuloPeriodo').text(`${formatDateToDDMMYYYY(inicio)} a ${formatDateToDDMMYYYY(fim)}`);
-}
 
 const percentual = (valor) => valor.toFixed(2).replace('.', ',') + '%';
 

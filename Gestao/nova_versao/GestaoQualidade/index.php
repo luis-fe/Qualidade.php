@@ -15,25 +15,6 @@ include_once('../../../templates/headerGestao.php');
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- ============================================================
-     Cabeçalho da tela
-     ============================================================ -->
-<div class="col-12">
-  <header class="cabecalho-tela">
-    <div class="cabecalho-identidade">
-      <span class="cabecalho-icone"><i class="bi bi-clipboard2-check-fill"></i></span>
-      <div>
-        <h1>Gestão da Qualidade</h1>
-        <p>Índice de 2ª qualidade e análise de defeitos por origem</p>
-      </div>
-    </div>
-    <div class="cabecalho-periodo">
-      <span class="cabecalho-periodo-rotulo">Período</span>
-      <span class="cabecalho-periodo-valor" id="rotuloPeriodo">—</span>
-    </div>
-  </header>
-</div>
-
-<!-- ============================================================
      Frame 1 — Indicadores e filtro de período
      ============================================================ -->
 <div class="col-12">
