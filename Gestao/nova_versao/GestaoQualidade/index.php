@@ -4,15 +4,9 @@ include_once("../../../templates/LoadingGestao.php");
 include_once('../../../templates/headerGestao.php');
 ?>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<!-- jQuery, Bootstrap, DataTables (+ Buttons/jszip) e ApexCharts vêm de
+     headerGestao.php e footerGestao.php, como nas demais telas -->
 <link rel="stylesheet" href="style.css">
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- ============================================================
      Frame 1 — Indicadores e filtro de período
@@ -79,18 +73,7 @@ include_once('../../../templates/headerGestao.php');
 
   <div class="grafico-container mt-3">
 
-    <!-- Esquerda: Defeitos por Motivo -->
-    <div class="grafico">
-      <div class="painel-titulo">
-        <i class="bi bi-bar-chart-fill"></i>
-        <h2>Defeitos por Motivo</h2>
-      </div>
-      <div class="card-body p-2 rolagem-suave" style="overflow-x: auto;">
-        <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
-      </div>
-    </div>
-
-    <!-- Direita: índice de 2ª Qualidade, medidor limitado pela meta -->
+    <!-- Esquerda: índice de 2ª Qualidade, medidor limitado pela meta -->
     <section class="grafico frame-indice">
       <div class="painel-titulo">
         <i class="bi bi-speedometer2"></i>
@@ -124,10 +107,7 @@ include_once('../../../templates/headerGestao.php');
       </div>
     </section>
 
-  </div>
-
-  <div class="grafico-container mt-3">
-
+    <!-- Direita: Defeitos por Origem -->
     <div class="grafico">
       <div class="painel-titulo">
         <i class="bi bi-diagram-3-fill"></i>
@@ -135,6 +115,20 @@ include_once('../../../templates/headerGestao.php');
       </div>
       <div class="card-body p-2">
         <div id="graficoOrigemAgrupado" style="width: 100%;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="grafico-container mt-3">
+
+    <div class="grafico">
+      <div class="painel-titulo">
+        <i class="bi bi-bar-chart-fill"></i>
+        <h2>Defeitos por Motivo</h2>
+      </div>
+      <div class="card-body p-2 rolagem-suave" style="overflow-x: auto;">
+        <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
       </div>
     </div>
 
@@ -212,7 +206,7 @@ include_once('../../../templates/headerGestao.php');
 </div>
 
 <?php
-include_once('../../templates/footer.php');
+include_once('../../../templates/footerGestao.php');
 ?>
 
 <script src="script.js"></script>
