@@ -115,9 +115,11 @@ label {
 }
 
 .busca-avancada .icone-busca {
+  position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
+  line-height: 1;
   color: var(--azul-claro);
   cursor: pointer;
   transition: color var(--transicao);
@@ -126,6 +128,13 @@ label {
 .busca-avancada {
   flex: 1 1 190px;
   max-width: 240px;
+}
+
+/* O ícone é posicionado sobre o input, não sobre o bloco inteiro —
+   senão o label acima empurra o centro para baixo. */
+.busca-campo {
+  position: relative;
+  display: block;
 }
 
 .busca-avancada .icone-busca:hover {
@@ -139,28 +148,28 @@ label {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
-  padding: 10px 18px 14px;
+  gap: 16px;
+  padding: 8px 16px 14px;
 }
 
 .medidor {
-  flex: 0 0 260px;
+  flex: 1 1 200px;
   max-width: 100%;
   display: grid;
   place-items: center;
 }
 
+/* Cards empilhados, um embaixo do outro, ao lado do medidor */
 .leituras {
-  flex: 1 1 320px;
+  flex: 0 1 170px;
   display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 12px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
 }
 
 .leitura {
-  flex: 1 1 130px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border: 1px solid var(--borda);
   border-radius: var(--raio-sm);
   background: var(--azul-nevoa);
@@ -195,32 +204,6 @@ label {
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
   text-decoration-color: var(--azul-claro-2);
-}
-
-.leitura--status {
-  display: grid;
-  place-items: center;
-  background: var(--branco);
-}
-
-.situacao {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: var(--azul-suave);
-  border: 1px solid var(--azul-claro-3);
-  color: var(--azul-escuro);
-  font-size: .74rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-.situacao--acima {
-  background: var(--azul-escuro);
-  border-color: var(--azul-escuro);
-  color: var(--branco);
 }
 
 /* Botão principal */

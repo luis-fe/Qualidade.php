@@ -253,12 +253,14 @@ function realce(dados, dim, opcoes) {
         },
         dataLabels: {
             ...opcoes.dataLabels,
+            // Atenção: no ApexCharts, background.foreColor é o PREENCHIMENTO
+            // da caixa; a cor do texto vem de style.colors. Os dois iguais
+            // deixam o número invisível.
             style: { ...opcoes.dataLabels.style, colors: [CORES.azulEscuro] },
             background: {
                 enabled: true,
-                foreColor: CORES.azulEscuro,
-                color: CORES.branco,
-                borderColor: CORES.borda,
+                foreColor: CORES.branco,
+                borderColor: CORES.azulClaro3,
                 borderWidth: 1,
                 borderRadius: 4,
                 padding: 3,
@@ -280,12 +282,29 @@ const ESTADOS_APEX = {
 const paraCampoData = (data) =>
     `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
 
+/**
+ * O atributo max fecha o seletor de calendário em hoje, mas em vários
+ * navegadores ainda dá para digitar uma data futura. Aqui ela é trazida
+ * de volta antes de consultar. Comparação direta funciona no formato ISO.
+ */
+function limitarDatasAoDiaDeHoje() {
+    const hoje = paraCampoData(new Date());
+
+    ['#dataInicio', '#dataFim'].forEach((campo) => {
+        if ($(campo).val() > hoje) $(campo).val(hoje);
+    });
+}
+
 $(document).ready(async () => {
     // Período padrão: do primeiro dia do mês corrente até hoje
     const hoje = new Date();
     const inicioDoMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
     $('#dataInicio').val(paraCampoData(inicioDoMes));
     $('#dataFim').val(paraCampoData(hoje));
+
+    // O calendário não abre datas futuras. Definido aqui, e não no HTML,
+    // para o limite acompanhar a virada do dia sem reeditar a página.
+    $('#dataInicio, #dataFim').attr('max', paraCampoData(hoje));
 
     // Delegado: sobrevive à recriação dos chips a cada filtro
     $(document).on('click', '.chip-filtro', function () {
@@ -297,6 +316,8 @@ $(document).ready(async () => {
 });
 
 async function atualizar(){
+    limitarDatasAoDiaDeHoje();
+
     // Exibe no campo, mas mantém um valor oculto para manipulação correta
     let campoBusca = document.getElementById("campoBusca").value
         .toUpperCase()
@@ -560,9 +581,6 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
     $('#indiceDesvio')
         .text((desvio >= 0 ? '+' : '−') + Math.abs(desvio).toFixed(2).replace('.', ',') + ' p.p.')
         .toggleClass('leitura-valor--acima', acimaDaMeta);
-    $('#indiceSituacao')
-        .text(acimaDaMeta ? 'Acima da meta' : 'Dentro da meta')
-        .toggleClass('situacao--acima', acimaDaMeta);
 
     if (pecas2Qualidade === 0 && totalPecas === 0) {
         montarGrafico('#graficoDonut', [], {}); // sem dados: cai no estado vazio
@@ -970,13 +988,12 @@ async function renderizarGraficoOrigemAgrupado(dados) {
             dropShadow: { enabled: false },
             background: {
                 enabled: true,
-                foreColor: CORES.branco, // cor do texto dentro do fundo
+                foreColor: CORES.azulEscuro, // 👈 preenchimento da caixa, não o texto
                 borderRadius: 4,
                 padding: 3,
                 opacity: 1,
                 borderWidth: 0,
-                borderColor: CORES.azulEscuro,
-                color: CORES.azulEscuro // 👈 fundo em azul escuro
+                borderColor: CORES.azulEscuro
             }
         }
     });
