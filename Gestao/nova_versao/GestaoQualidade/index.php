@@ -14,171 +14,127 @@ include_once('../../../templates/headerGestao.php');
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<style>
-  label {
-    color: black !important;
-  }
+<div class="col-12" style="margin-top: 2px;">
+  <div class="barra-filtros d-flex flex-wrap gap-3 align-items-end">
 
-  .grafico-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .grafico {
-    flex: 1 1 45%;
-    min-width: 50px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin: auto;
-    text-align: center;
-  }
-
-  /* Defina esta classe no seu arquivo de estilos (.css) */
-  .tabela-fonte-pequena td {
-    font-size: 12px; /* Ajuste o tamanho em pixels (ex: 10px, 12px) */
-    /* font-size: 0.85rem; /* Ou em rem (ex: 0.85rem) */
-  }
-
-  .tabela-fonte-pequena th {
-    font-size: 12px; /* Ajuste o tamanho em pixels (ex: 10px, 12px) */
-    /* font-size: 0.85rem; /* Ou em rem (ex: 0.85rem) */
-    background: #008FFB;
-    color: #e0e8eeff;
-  }
-
-  /* Seletor para diminuir o padding e a fonte dos botões de paginação */
-  .dataTables_wrapper .dataTables_paginate .paginate_button {
-    /* Diminui o padding interno da caixa */
-    padding: 0.25em 0.5em !important; 
-    
-    /* Diminui o tamanho da fonte */
-    font-size: 12px !important; 
-    
-    /* Garante que o ícone interno também seja menor */
-    line-height: 1.2; 
-  }
-
-  /* Opcional: Se os botões de Anterior/Próximo estiverem grandes */
-  .dataTables_wrapper .dataTables_paginate .paginate_button i {
-    font-size: 12px !important; /* Ajusta o tamanho do ícone Font Awesome */
-  }
-
-  /* Opcional: Diminuir a margem entre os botões */
-  .dataTables_wrapper .dataTables_paginate .paginate_button:not(.disabled) {
-    margin-left: 1px;
-    margin-right: 1px;
-  }
-</style>
-
-<div class="col-12" style="margin-top: 2px;">    
-  <div class="d-flex flex-wrap gap-3 align-items-end p-0">
-
-    <div class="position-relative">
+    <div class="campo-filtro">
+      <label for="dataInicio">Data Inicial</label>
       <div class="input-group">
         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
         <input type="date" id="dataInicio" class="form-control">
       </div>
     </div>
 
-    <div class="position-relative">
+    <div class="campo-filtro">
+      <label for="dataFim">Data Final</label>
       <div class="input-group">
         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
         <input type="date" id="dataFim" class="form-control">
       </div>
     </div>
 
-    <button type="button" class="btn btn-geral" style="margin-bottom: 0;" onclick="atualizar();">
-        <i class="fas fa-sync-alt"></i> Atualizar
+    <div class="busca-avancada position-relative" style="max-width: 240px; flex: 1 1 200px;">
+      <label for="campoBusca">Busca Avançada</label>
+      <input type="text"
+             class="form-control"
+             id="campoBusca"
+             placeholder="Filtrar por termo...">
+      <i class="bi bi-search icone-busca position-absolute"
+         title="Aplicar busca"
+         onclick="atualizar()"></i>
+    </div>
+
+    <button type="button" class="btn btn-geral" onclick="atualizar();">
+      <i class="fas fa-sync-alt"></i> Atualizar
     </button>
 
-    <div class="card text-center" style="min-width: 100px;">
-      <div class="card-body p-1">
-        <h6 class="card-title mb-1">Total de Peças</h6>
-        <h5 class="card-text fw-bold text-primary" id="totalPecas"></h5>
+    <div class="d-flex flex-wrap gap-3 ms-auto">
+      <div class="kpi kpi--claro">
+        <span class="kpi-rotulo">Total de Peças</span>
+        <span class="kpi-valor kpi-valor--destaque" id="totalPecas">—</span>
       </div>
-    </div>
 
-    <div class="card text-center" style="min-width: 100px;">
-      <div class="card-body p-1">
-        <h6 class="card-title mb-1">Total 2ª Qualidade</h6>
-        <h5 class="card-text fw-bold text-danger" id="totalPecas2Qualidade"></h5>
+      <div class="kpi kpi--escuro">
+        <span class="kpi-rotulo">Total 2ª Qualidade</span>
+        <span class="kpi-valor" id="totalPecas2Qualidade">—</span>
       </div>
-    </div>
-
-    <div class="position-relative" style="max-width: 220px;">
-      <input type="text" 
-            class="form-control pe-5" 
-            id="campoBusca" 
-            placeholder="Busca Avançada...">
-      <i class="bi bi-search position-absolute" 
-         style="right: 10px; top: 50%; transform: translateY(-50%); color: #6c757d; cursor: pointer;"
-         onclick="atualizar()"></i>
     </div>
 
   </div>
 </div>
 
-<div class="col-12 mt-2">
-  <div class="col-12 mt-0 p-0 grafico-container" 
-        style="max-height: 250px; overflow-y: auto;">
+<div class="col-12 mt-3">
+  <div class="grafico-container rolagem-suave"
+       style="max-height: 260px; overflow-y: auto;">
 
-    <div class="grafico card mb-0" style="width: 100%;">
-        <div class="card-header pt-0">
-            <h2 class="h6 mb-0">% 2ª Qualidade</h2>
-        </div>
-        <div class="card-body p-0 d-flex justify-content-center align-items-center" 
-            style="overflow: hidden;"> 
-            <div id="graficoDonut">
-            </div>
-        </div>
+    <div class="grafico mb-0">
+      <div class="painel-titulo">
+        <i class="bi bi-pie-chart-fill"></i>
+        <h2>% 2ª Qualidade</h2>
+      </div>
+      <div class="card-body p-0 d-flex justify-content-center align-items-center"
+           style="overflow: hidden;">
+        <div id="graficoDonut"></div>
+      </div>
     </div>
 
-    <div class="grafico card" style="width: 100%;">
-            <div class="card-header p-0">
-                <h2 class="h6 mb-0">Defeitos por Origem</h2>
-            </div>
-            <div class="card-body p-2 d-flex" 
-                style="width: 100%; height: 100%;"> 
-                <div id="graficoOrigemAgrupado" ></div>
-            </div>
+    <div class="grafico">
+      <div class="painel-titulo">
+        <i class="bi bi-diagram-3-fill"></i>
+        <h2>Defeitos por Origem</h2>
+      </div>
+      <div class="card-body p-2 d-flex" style="width: 100%;">
+        <div id="graficoOrigemAgrupado" style="width: 100%;"></div>
+      </div>
     </div>
 
   </div>
-  
-  <div class="col-12 mt-2">
-    <div class="row mt-1 p-3 grafico-container">
-        
-        <div class="col-md-6 grafico">
-            <h2>Defeitos por terceirizados</h2>
-            <div id="graficoTerceirizados" style="width: 100%; height: 300px;"></div>
-        </div>
 
-        <div class="col-md-6 grafico"> 
-            <h2>Defeitos por Fornecedor</h2>
-            <div id="graficoFornecedores" style="width: 100%; height: 300px;"></div>
-        </div>
+  <div class="grafico-container mt-3">
 
+    <div class="grafico">
+      <div class="painel-titulo">
+        <i class="bi bi-people-fill"></i>
+        <h2>Defeitos por Terceirizados</h2>
+      </div>
+      <div class="card-body p-2">
+        <div id="graficoTerceirizados" style="width: 100%; height: 300px;"></div>
+      </div>
     </div>
+
+    <div class="grafico">
+      <div class="painel-titulo">
+        <i class="bi bi-truck"></i>
+        <h2>Defeitos por Fornecedor</h2>
+      </div>
+      <div class="card-body p-2">
+        <div id="graficoFornecedores" style="width: 100%; height: 300px;"></div>
+      </div>
+    </div>
+
   </div>
 
-   <div class="row mt-1 p-3 grafico-container">
-    <div class="col-md-6 grafico">
-      <h2>Defeitos por Motivo</h2>
-      <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
-    </div>
-   </div>
+  <div class="grafico-container mt-3">
 
-    <div class="row mt-1 p-3 tabela-container">
-        <div class="col-12">
-            <h2>Análise Detalha por OP/Motivo</h2>
-            <table id="tabela_detalhamento" class="table table-hover table-bordered mt-1 tabela-fonte-pequena">
+    <div class="grafico">
+      <div class="painel-titulo">
+        <i class="bi bi-bar-chart-fill"></i>
+        <h2>Defeitos por Motivo</h2>
+      </div>
+      <div class="card-body p-2 rolagem-suave" style="overflow-x: auto;">
+        <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+    <div class="tabela-container mt-3">
+        <div class="painel-titulo">
+            <i class="bi bi-table"></i>
+            <h2>Análise Detalhada por OP / Motivo</h2>
+        </div>
+        <div class="p-0">
+            <table id="tabela_detalhamento" class="table table-hover table-bordered mb-0 tabela-fonte-pequena">
                 <thead>
                     <tr>
                         <th>Ordem<br>Prod.</th>
@@ -204,10 +160,15 @@ include_once('../../../templates/headerGestao.php');
         </div>
     </div>
 
-    <div class="row mt-1 p-3 grafico-container">
-        <div class="col-md-6 grafico"> 
-            <h2>Defeitos por Base Tecido</h2>
-            <div id="graficoBaseTecido" style="width: 100%; height: 300px;"></div>
+    <div class="grafico-container mt-3 mb-3">
+        <div class="grafico">
+            <div class="painel-titulo">
+                <i class="bi bi-layers-fill"></i>
+                <h2>Defeitos por Base Tecido</h2>
+            </div>
+            <div class="card-body p-2 rolagem-suave" style="overflow-x: auto;">
+                <div id="graficoBaseTecido" style="width: 100%; height: 300px;"></div>
+            </div>
         </div>
     </div>
 

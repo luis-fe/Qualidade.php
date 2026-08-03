@@ -1,3 +1,49 @@
+/* ============================================================
+   Paleta da tela — Azul Escuro | Azul Claro | Branco
+   ============================================================ */
+const CORES = {
+    azulEscuro: '#10045a',
+    azulEscuro2: '#2a1aa0',
+    azulClaro: '#008ffb',
+    azulClaro2: '#00d4ff',
+    azulClaro3: '#6fc5ff',
+    azulSuave: '#e8f1fd',
+    branco: '#ffffff',
+    texto: '#1c2434',
+    textoSuave: '#5f6f8a',
+    grade: '#e6edf8'
+};
+
+// Degradê padrão das barras: azul claro -> azul escuro
+const FILL_BARRA = {
+    type: 'gradient',
+    gradient: {
+        shade: 'dark',
+        type: 'vertical',
+        shadeIntensity: .25,
+        gradientToColors: [CORES.azulEscuro],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: .95,
+        stops: [0, 100]
+    }
+};
+
+const FILL_BARRA_HORIZONTAL = {
+    ...FILL_BARRA,
+    gradient: { ...FILL_BARRA.gradient, type: 'horizontal' }
+};
+
+// Base de tema aplicada a todos os gráficos
+const TEMA_BASE = {
+    fontFamily: 'Segoe UI, system-ui, -apple-system, Arial, sans-serif',
+    foreColor: CORES.textoSuave
+};
+
+// Marcação de estado vazio padronizada
+const semDados = (mensagem = 'Nenhum dado a ser exibido') =>
+    `<div class="sem-dados"><i class="bi bi-bar-chart-line"></i>${mensagem}</div>`;
+
 $(document).ready(async () => {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; // Obtém a data de hoje no formato 'aaaa-mm-dd'
@@ -47,7 +93,7 @@ const Cosultar_Qualidade = async () => {
         });
 
         if (data[0]["1- Peças com Motivo de 2Qual."] === 0) {
-            $('#graficoDonut').html('<p>Nenhum dado a ser exibido</p>');
+            $('#graficoDonut').html(semDados());
         } else {
             $('#graficoDonut').html('');
             renderizarGrafico(data[0]["1- Peças com Motivo de 2Qual."], data[0]["2- Total Peças Baixadas periodo"]);
@@ -60,7 +106,7 @@ const Cosultar_Qualidade = async () => {
             Number(data[0]['1- Peças com Motivo de 2Qual.']).toLocaleString('pt-BR'));
     } catch (error) {
         console.error('Erro ao consultar qualidade:', error);
-        $('#graficoDonut').html('<p>Erro ao carregar os dados de qualidade</p>');
+        $('#graficoDonut').html(semDados('Erro ao carregar os dados de qualidade'));
     } finally {
         $('#loadingModal').modal('hide');
     }
@@ -86,7 +132,7 @@ const Consultar_Motivos = async (campoBusca) => {
 
         // Verifica se os dados estão vazios
         if (data.length === 0) {
-            $('#graficoBarras').html('<p>Nenhum dado a ser exibido</p>');
+            $('#graficoBarras').html(semDados());
         } else {
             $('#graficoBarras').html('');
             renderizarGraficoBarras(data);
@@ -120,7 +166,7 @@ const Consultar_defeito_baseTecido = async (campoBusca) => {
 
         // Verifica se os dados estão vazios
         if (data.length === 0) {
-            $('#graficoBaseTecido').html('<p>Nenhum dado a ser exibido</p>');
+            $('#graficoBaseTecido').html(semDados());
         } else {
             $('#graficoBaseTecido').html('');
             renderizarGraficoBarras_baseTecido(data);
@@ -155,7 +201,7 @@ const Cosultar_Origem_faccionista = async (campoBusca) => {
 
         // Verifica se os dados estão vazios
         if (data === null) {
-            $('#graficoTerceirizados').html('<p>Nenhum dado a ser exibido</p>');
+            $('#graficoTerceirizados').html(semDados());
         } else {
             $('#graficoTerceirizados').html('');
             renderizarGraficoTerceirizados(data);
@@ -189,7 +235,7 @@ const Cosultar_Origem_fornecedor = async (campoBusca) => {
 
         // Verifica se os dados estão vazios
         if (data === null) {
-            $('#graficoFornecedores').html('<p>Nenhum dado a ser exibido</p>');
+            $('#graficoFornecedores').html(semDados());
         } else {
             $('#graficoFornecedores').html('');
             renderizarGraficoFornecedor(data);
@@ -222,7 +268,7 @@ const Cosultar_Origem = async (campoBusca) => {
 
         // Verifica se os dados estão vazios
         if (data === null) {
-            $('#graficoOrigemAgrupado').html('<p>Nenhum dado a ser exibido</p>');
+            $('#graficoOrigemAgrupado').html(semDados());
         } else {
             $('#graficoOrigemAgrupado').html('');
             renderizarGraficoOrigemAgrupado(data);
@@ -288,23 +334,29 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
 
     var optionsDonut = {
         chart: {
+            ...TEMA_BASE,
             type: 'donut',
-            // Você provavelmente vai querer remover ou diminuir esse 'height: 350' para caber no seu container de 100px.
-            // Para caber nos 80px/100px que você definiu no HTML, você pode remover o 'height' aqui, 
-            // ou defini-lo como 'height: 80', desde que o div pai também esteja limitado.
-            height: '90%' // Usar 100% ou um valor menor (ex: 80) para respeitar o container de 80px/100px
+            height: '90%'
         },
         series: [porcentagem2Qualidade, porcentagemDiferenca],
         labels: ["Peças com Motivo 2Qual.", "Peças Sem Defeito"],
-        colors: ['#FF4560', '#008FFB'],
+        // Azul escuro destaca o índice de 2ª qualidade; azul claro é o restante
+        colors: [CORES.azulEscuro, CORES.azulClaro3],
+        stroke: {
+            width: 2,
+            colors: [CORES.branco]
+        },
         dataLabels: {
             enabled: true,
             formatter: function (val) {
                 return val.toFixed(2) + "%"; // Exibe o percentual com 2 casas decimais
             },
             style: {
-                fontSize: '10px'
-            }
+                fontSize: '10px',
+                fontWeight: 600,
+                colors: [CORES.branco, CORES.azulEscuro]
+            },
+            dropShadow: { enabled: false }
         },
         plotOptions: {
             pie: {
@@ -314,16 +366,25 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
                         show: true,
                         total: {
                             show: true,
-                            label: 'indice 2º.',
-                            fontSize: '14px',
-                            color: '#333',
+                            label: 'Índice 2ª',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            color: CORES.textoSuave,
                             formatter: function () {
                                 return porcentagem2Qualidade.toFixed(2) + '%';
                             }
+                        },
+                        value: {
+                            fontSize: '18px',
+                            fontWeight: 700,
+                            color: CORES.azulEscuro
                         }
                     }
                 }
             }
+        },
+        tooltip: {
+            y: { formatter: (val) => val.toFixed(2) + '%' }
         },
         // >>> CONFIGURAÇÃO PARA REMOVER A LEGENDA <<<
         legend: {
@@ -342,6 +403,7 @@ async function renderizarGraficoBarras(data) {
 
     const chartOptions = {
         chart: {
+            ...TEMA_BASE,
             type: 'bar',
             height: 350,
             width: `${chartWidth}px`, // Mantém a largura dinâmica
@@ -352,26 +414,36 @@ async function renderizarGraficoBarras(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
+        colors: [CORES.azulClaro],
+        fill: FILL_BARRA,
         xaxis: {
             categories: data.map(item => item.motivo2Qualidade),
+            axisBorder: { color: CORES.grade },
+            axisTicks: { color: CORES.grade },
             labels: {
                 rotate: -90, // Rotaciona totalmente para evitar sobreposição
                 trim: false, // Garante que o texto não seja cortado
                 style: {
                     fontSize: '10px',
-                    // whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                    colors: CORES.textoSuave
                 }
             }
+        },
+        yaxis: {
+            labels: { style: { fontSize: '10px', colors: CORES.textoSuave } }
         },
         plotOptions: {
             bar: {
                 borderRadius: 4,
+                borderRadiusApplication: 'end',
                 barHeight: '75%', // Ajusta a altura das barras
-                // Para rótulos de dados dentro da barra (opcional):
-                // dataLabels: { position: 'top' } 
+                columnWidth: '60%'
             }
         },
         grid: {
+            borderColor: CORES.grade,
+            strokeDashArray: 4,
+            xaxis: { lines: { show: false } },
             padding: {
                 bottom: 60 // Dá mais espaço para a legenda não ser cortada
             }
@@ -381,10 +453,11 @@ async function renderizarGraficoBarras(data) {
             enabled: true, // É importante que esteja 'true'
             style: {
                 fontSize: '10px', // Altere para o tamanho desejado
-                fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
-                fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
-                // color: '#000000' // Opcional: para mudar a cor do texto
-            }
+                fontWeight: '600', // Altere para o peso desejado (ex: 'bold')
+                colors: [CORES.branco]
+            },
+            dropShadow: { enabled: false },
+            background: { enabled: false }
         }
     };
 
@@ -397,6 +470,7 @@ async function renderizarGraficoBarras_baseTecido(data) {
 
     const chartOptions = {
         chart: {
+            ...TEMA_BASE,
             type: 'bar',
             height: 350,
             width: `${chartWidth}px`,  // Mantém a largura dinâmica
@@ -407,24 +481,45 @@ async function renderizarGraficoBarras_baseTecido(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
+        colors: [CORES.azulClaro],
+        fill: FILL_BARRA,
         xaxis: {
             categories: data.map(item => item.nomeItem),
+            axisBorder: { color: CORES.grade },
+            axisTicks: { color: CORES.grade },
             labels: {
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
-                    fontSize: '12px',
-                  //  whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                    fontSize: '11px',
+                    colors: CORES.textoSuave
                 }
             }
+        },
+        yaxis: {
+            labels: { style: { fontSize: '10px', colors: CORES.textoSuave } }
         },
         plotOptions: {
             bar: {
                 borderRadius: 3,
+                borderRadiusApplication: 'end',
                 barHeight: '80%', // Ajusta a altura das barras
+                columnWidth: '60%'
             }
         },
+        dataLabels: {
+            enabled: true,
+            style: {
+                fontSize: '10px',
+                fontWeight: '600',
+                colors: [CORES.branco]
+            },
+            dropShadow: { enabled: false }
+        },
         grid: {
+            borderColor: CORES.grade,
+            strokeDashArray: 4,
+            xaxis: { lines: { show: false } },
             padding: {
                 bottom: 50 // Dá mais espaço para a legenda não ser cortada
             }
@@ -442,6 +537,7 @@ async function renderizarGraficoTerceirizados(data) {
 
     const chartOptions = {
         chart: {
+            ...TEMA_BASE,
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',  // Mantém a largura dinâmica
@@ -452,26 +548,35 @@ async function renderizarGraficoTerceirizados(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
+        colors: [CORES.azulClaro],
+        fill: FILL_BARRA_HORIZONTAL,
         xaxis: {
             categories: data.map(item => item.nomeFaccicionista),
+            axisBorder: { show: false },
+            axisTicks: { show: false },
             labels: {
                 show: false,
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '10px',
-                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                    colors: CORES.textoSuave
                 }
             }
+        },
+        yaxis: {
+            labels: { style: { fontSize: '10px', colors: CORES.textoSuave } }
         },
         plotOptions: {
             bar: {
                 borderRadius: 4,
+                borderRadiusApplication: 'end',
                 barHeight: '95%',
                 horizontal: true,
             }
         },
         grid: {
+                    borderColor: CORES.grade,
                     xaxis: { lines: { show: false } },
                     yaxis: { lines: { show: false } },
                     padding: { bottom: 0 }
@@ -479,12 +584,13 @@ async function renderizarGraficoTerceirizados(data) {
                  // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
+            formatter: (val) => Number(val).toLocaleString('pt-BR'),
             style: {
                 fontSize: '11px', // Altere para o tamanho desejado
-                fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
-                fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
-                // color: '#000000' // Opcional: para mudar a cor do texto
-            }
+                fontWeight: '600', // Altere para o peso desejado (ex: 'bold')
+                colors: [CORES.branco]
+            },
+            dropShadow: { enabled: false }
         }
     };
 
@@ -499,6 +605,7 @@ async function renderizarGraficoFornecedor(data) {
 
     const chartOptions = {
         chart: {
+            ...TEMA_BASE,
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',  // Mantém a largura dinâmica
@@ -509,26 +616,38 @@ async function renderizarGraficoFornecedor(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
+        colors: [CORES.azulEscuro2],
+        fill: {
+            ...FILL_BARRA_HORIZONTAL,
+            gradient: { ...FILL_BARRA_HORIZONTAL.gradient, gradientToColors: [CORES.azulClaro] }
+        },
         xaxis: {
             categories: data.map(item => item.fornencedorPreferencial),
+            axisBorder: { show: false },
+            axisTicks: { show: false },
             labels: {
                 show: false,
                 rotate: -90,  // Rotaciona totalmente para evitar sobreposição
                 trim: false,  // Garante que o texto não seja cortado
                 style: {
                     fontSize: '10px',
-                    //whiteSpace: 'break-spaces' // Faz a legenda quebrar linha
+                    colors: CORES.textoSuave
                 }
             }
+        },
+        yaxis: {
+            labels: { style: { fontSize: '10px', colors: CORES.textoSuave } }
         },
         plotOptions: {
             bar: {
                 borderRadius: 4,
+                borderRadiusApplication: 'end',
                 barHeight: '95%',
                 horizontal: true,
             }
         },
         grid: {
+                    borderColor: CORES.grade,
                     xaxis: { lines: { show: false } },
                     yaxis: { lines: { show: false } },
                     padding: { bottom: 0 }
@@ -536,12 +655,13 @@ async function renderizarGraficoFornecedor(data) {
                  // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
+            formatter: (val) => Number(val).toLocaleString('pt-BR'),
             style: {
                 fontSize: '11px', // Altere para o tamanho desejado
-                fontFamily: 'Arial, sans-serif', // Altere para a fonte desejada
-                fontWeight: '500', // Altere para o peso desejado (ex: 'bold')
-                // color: '#000000' // Opcional: para mudar a cor do texto
-            }
+                fontWeight: '600', // Altere para o peso desejado (ex: 'bold')
+                colors: [CORES.branco]
+            },
+            dropShadow: { enabled: false }
         }
     };
 
@@ -557,6 +677,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
 
     const chartOptions = {
         chart: {
+            ...TEMA_BASE,
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',
@@ -567,6 +688,8 @@ async function renderizarGraficoOrigemAgrupado(data) {
             name: 'Quantidade',
             data: data.map(item => item.qtd)
         }],
+        colors: [CORES.azulClaro],
+        fill: FILL_BARRA,
        xaxis: {
     categories: data.map(item => item.nomeOrigem),
     labels: {
@@ -578,6 +701,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
         style: {
             fontSize: '10px',
             fontWeight: 'normal',
+            colors: CORES.textoSuave,
             textAlign: 'center' // 👈 Centraliza o texto!
         }
     },
@@ -591,17 +715,20 @@ async function renderizarGraficoOrigemAgrupado(data) {
     },
             labels: {
                 show: false,
-                style: { fontSize: '10px' }
+                style: { fontSize: '10px', colors: CORES.textoSuave }
             }
         },
         plotOptions: {
             bar: {
                 borderRadius: 4,
+                borderRadiusApplication: 'end',
                 horizontal: false, // 👈 Agora as barras ficam verticais
                 columnWidth: '50%' // 👈 Ajusta a espessura das barras
             }
         },
         grid: {
+            borderColor: CORES.grade,
+            strokeDashArray: 4,
             xaxis: { lines: { show: false } },
             yaxis: { lines: { show: true } },
             padding: { bottom: 0 }
@@ -613,19 +740,20 @@ async function renderizarGraficoOrigemAgrupado(data) {
         // 👇 transforma 1200 em "1.200"
         return val.toLocaleString('pt-BR');},
             style: {
-                colors: ['#fff'], // texto branco
-                fontSize: '12px',
+                colors: [CORES.branco], // texto branco
+                fontSize: '11px',
                 fontWeight: 'bold'
             },
+            dropShadow: { enabled: false },
             background: {
                 enabled: true,
-                foreColor: '#1d0202ff', // cor do texto dentro do fundo
-                borderRadius: 3,
-                padding: 2,
+                foreColor: CORES.branco, // cor do texto dentro do fundo
+                borderRadius: 4,
+                padding: 3,
                 opacity: 1,
                 borderWidth: 0,
-                borderColor: '#000',
-                color: '#000' // 👈 cor de fundo preta
+                borderColor: CORES.azulEscuro,
+                color: CORES.azulEscuro // 👈 fundo em azul escuro
             }
         }
     };
