@@ -7,8 +7,10 @@ const CORES = {
     azulClaro: '#008ffb',
     azulClaro2: '#00d4ff',
     azulClaro3: '#6fc5ff',
+    azulApagado: '#c3d9f2',
     azulSuave: '#e8f1fd',
     branco: '#ffffff',
+    borda: '#dfe7f3',
     texto: '#1c2434',
     textoSuave: '#5f6f8a',
     grade: '#e6edf8'
@@ -44,12 +46,254 @@ const TEMA_BASE = {
 const semDados = (mensagem = 'Nenhum dado a ser exibido') =>
     `<div class="sem-dados"><i class="bi bi-bar-chart-line"></i>${mensagem}</div>`;
 
-$(document).ready(async () => {
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0]; // Obtém a data de hoje no formato 'aaaa-mm-dd'
-    await $('#dataInicio, #dataFim').val(formattedDate);
-    atualizar();
 
+/* ============================================================
+   Cruzamento de filtros (cross-filter)
+
+   Os painéis de Motivo, Origem, Faccionista e Fornecedor são
+   agregações do mesmo conjunto devolvido por 'detalha_defeitos'.
+   Com isso o cruzamento é feito no navegador, sem nova requisição.
+
+   Ficam de fora, por não existirem no grão do detalhe:
+     - Base Tecido  -> a API do detalhe não devolve 'nomeItem'
+     - Total de Peças Baixadas (denominador do donut) -> é do período
+   ============================================================ */
+const DIMENSOES = {
+    motivo:      { campo: 'nome',                    rotulo: 'Motivo' },
+    origem:      { campo: 'nomeOrigem',              rotulo: 'Origem' },
+    faccionista: { campo: 'nomeFaccicionista',       rotulo: 'Faccionista' },
+    fornecedor:  { campo: 'fornencedorPreferencial', rotulo: 'Fornecedor' }
+};
+
+const SEM_VALOR = '(não informado)';
+
+// Meta do índice de 2ª qualidade, em %. É o limite de preenchimento do medidor.
+const META_2QUALIDADE = 1.5;
+
+const ESTADO = {
+    detalhe: [],   // linhas cruas de detalha_defeitos
+    base: {},      // agregados vindos da API — retrato sem nenhum filtro
+    totais: { pecas: 0, segundaQualidade: 0 },
+    filtros: {},   // dimensao -> Set de valores selecionados
+    graficos: {}   // seletor -> instância ApexCharts em tela
+};
+
+// Mesma regra de conversão usada no rodapé da tabela, para os totais baterem
+const numero = (valor) => {
+    if (typeof valor === 'number') return valor;
+    if (valor === null || valor === undefined) return 0;
+    const n = parseInt(String(valor).replace(/[^0-9-]/g, ''), 10);
+    return isNaN(n) ? 0 : n;
+};
+
+const escaparHtml = (texto) => String(texto).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[c]));
+
+const valorDim = (linha, dim) => {
+    const bruto = linha[DIMENSOES[dim].campo];
+    const texto = (bruto === null || bruto === undefined) ? '' : String(bruto).trim();
+    return texto === '' ? SEM_VALOR : texto;
+};
+
+const temFiltro = () => Object.keys(ESTADO.filtros).length > 0;
+
+/**
+ * Linhas do detalhe após aplicar os filtros ativos.
+ * `exceto` deixa a própria dimensão de fora do filtro para que o painel
+ * continue exibindo os itens irmãos — senão sobraria só a barra clicada.
+ */
+function linhasFiltradas(exceto) {
+    const dims = Object.keys(ESTADO.filtros);
+    if (dims.length === 0) return ESTADO.detalhe;
+
+    return ESTADO.detalhe.filter((linha) =>
+        dims.every((dim) => dim === exceto || ESTADO.filtros[dim].has(valorDim(linha, dim)))
+    );
+}
+
+// Agrupa as linhas por dimensão somando a quantidade, do maior para o menor
+function agregar(linhas, dim) {
+    const mapa = new Map();
+
+    linhas.forEach((linha) => {
+        const chave = valorDim(linha, dim);
+        mapa.set(chave, (mapa.get(chave) || 0) + numero(linha.qtd));
+    });
+
+    return [...mapa.entries()]
+        .map(([rotulo, qtd]) => ({ rotulo, qtd }))
+        .sort((a, b) => b.qtd - a.qtd);
+}
+
+function alternarFiltro(dim, valor) {
+    const selecao = ESTADO.filtros[dim];
+
+    if (selecao && selecao.has(valor)) {
+        selecao.delete(valor);
+        if (selecao.size === 0) delete ESTADO.filtros[dim];
+    } else if (selecao) {
+        selecao.add(valor);
+    } else {
+        ESTADO.filtros[dim] = new Set([valor]);
+    }
+
+    aplicarFiltros();
+}
+
+function limparFiltros() {
+    ESTADO.filtros = {};
+    aplicarFiltros();
+}
+
+// Redesenha todos os painéis conforme os filtros ativos
+function aplicarFiltros() {
+    const ativo = temFiltro();
+    document.body.classList.toggle('com-filtro', ativo);
+    renderizarChips();
+
+    renderizarGraficoBarras(ativo ? agregar(linhasFiltradas('motivo'), 'motivo') : ESTADO.base.motivo);
+    renderizarGraficoOrigemAgrupado(ativo ? agregar(linhasFiltradas('origem'), 'origem') : ESTADO.base.origem);
+    renderizarGraficoTerceirizados(ativo ? agregar(linhasFiltradas('faccionista'), 'faccionista') : ESTADO.base.faccionista);
+    renderizarGraficoFornecedor(ativo ? agregar(linhasFiltradas('fornecedor'), 'fornecedor') : ESTADO.base.fornecedor);
+
+    const linhas = linhasFiltradas(null);
+    const total2Qualidade = ativo
+        ? linhas.reduce((soma, linha) => soma + numero(linha.qtd), 0)
+        : ESTADO.totais.segundaQualidade;
+
+    $('#totalPecas').text(ESTADO.totais.pecas.toLocaleString('pt-BR'));
+    $('#totalPecas2Qualidade').text(total2Qualidade.toLocaleString('pt-BR'));
+
+    renderizarGrafico(total2Qualidade, ESTADO.totais.pecas);
+    Tabela_detalha_defeitos(linhas);
+}
+
+function renderizarChips() {
+    const caixa = $('#chipsFiltros');
+    if (!caixa.length) return;
+
+    const chips = [];
+    Object.keys(ESTADO.filtros).forEach((dim) => {
+        ESTADO.filtros[dim].forEach((valor) => {
+            chips.push(
+                `<span class="chip-filtro" data-dim="${dim}" data-valor="${escaparHtml(valor)}" title="Remover este filtro">
+                    <strong>${DIMENSOES[dim].rotulo}:</strong> ${escaparHtml(valor)}
+                    <i class="bi bi-x-lg"></i>
+                 </span>`
+            );
+        });
+    });
+
+    if (chips.length) {
+        chips.push('<button type="button" class="chip-limpar" id="limparFiltros"><i class="bi bi-eraser"></i> Limpar tudo</button>');
+    }
+
+    caixa.html(chips.join(''));
+}
+
+
+/* ============================================================
+   Ciclo de vida dos gráficos
+   ============================================================ */
+function montarGrafico(seletor, dados, opcoes) {
+    const elemento = document.querySelector(seletor);
+    if (!elemento) return;
+
+    // Sempre destrói a instância anterior: os painéis são remontados
+    // a cada clique no cruzamento de filtros
+    if (ESTADO.graficos[seletor]) {
+        ESTADO.graficos[seletor].destroy();
+        delete ESTADO.graficos[seletor];
+    }
+
+    elemento.innerHTML = '';
+
+    if (!dados || dados.length === 0) {
+        $(elemento).html(semDados());
+        return;
+    }
+
+    const grafico = new ApexCharts(elemento, opcoes);
+    ESTADO.graficos[seletor] = grafico;
+    grafico.render();
+}
+
+// Série no formato {x, y}: dispensa xaxis.categories e mantém o mesmo
+// formato com e sem realce
+const serieDe = (dados) => [{
+    name: 'Quantidade',
+    data: dados.map((item) => ({ x: item.rotulo, y: item.qtd }))
+}];
+
+const cliqueNaBarra = (dim, dados) => ({
+    dataPointSelection: (evento, contexto, config) => {
+        const item = dados[config.dataPointIndex];
+        if (item) alternarFiltro(dim, item.rotulo);
+    }
+});
+
+/**
+ * Aplica o realce da seleção: o que está selecionado fica azul escuro,
+ * o restante em azul apagado. Os rótulos ganham fundo branco para
+ * continuarem legíveis sobre os dois tons.
+ */
+function realce(dados, dim, opcoes) {
+    const selecao = ESTADO.filtros[dim];
+    if (!selecao) return opcoes;
+
+    return {
+        ...opcoes,
+        colors: dados.map((item) => (selecao.has(item.rotulo) ? CORES.azulEscuro : CORES.azulApagado)),
+        fill: { type: 'solid', opacity: 1 },
+        legend: { show: false },
+        plotOptions: {
+            ...opcoes.plotOptions,
+            bar: { ...opcoes.plotOptions.bar, distributed: true }
+        },
+        dataLabels: {
+            ...opcoes.dataLabels,
+            style: { ...opcoes.dataLabels.style, colors: [CORES.azulEscuro] },
+            background: {
+                enabled: true,
+                foreColor: CORES.azulEscuro,
+                color: CORES.branco,
+                borderColor: CORES.borda,
+                borderWidth: 1,
+                borderRadius: 4,
+                padding: 3,
+                opacity: 1
+            }
+        }
+    };
+}
+
+// Desliga o realce próprio do ApexCharts para não brigar com o nosso
+const ESTADOS_APEX = {
+    active: { filter: { type: 'none' } },
+    hover: { filter: { type: 'lighten', value: .08 } }
+};
+
+
+// Formata no fuso local. toISOString() converte para UTC e, no horário
+// de Brasília, devolveria o dia anterior.
+const paraCampoData = (data) =>
+    `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
+
+$(document).ready(async () => {
+    // Período padrão: do primeiro dia do mês corrente até hoje
+    const hoje = new Date();
+    const inicioDoMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+    $('#dataInicio').val(paraCampoData(inicioDoMes));
+    $('#dataFim').val(paraCampoData(hoje));
+
+    // Delegado: sobrevive à recriação dos chips a cada filtro
+    $(document).on('click', '.chip-filtro', function () {
+        alternarFiltro($(this).attr('data-dim'), $(this).attr('data-valor'));
+    });
+    $(document).on('click', '#limparFiltros', limparFiltros);
+
+    atualizar();
 });
 
 async function atualizar(){
@@ -57,8 +301,11 @@ async function atualizar(){
     let campoBusca = document.getElementById("campoBusca").value
         .toUpperCase()
         .replace(/ /g, "%20");
-    console.log(`teste input avançado: ${campoBusca}`)
-    // Certifique-se de que o gráfico só será renderizado após o DOM estar completamente carregado
+
+    // Nova consulta = novo conjunto de dados: os cruzamentos anteriores caem
+    ESTADO.filtros = {};
+    atualizarRotuloPeriodo();
+
     await Cosultar_Qualidade();
     await Consultar_Motivos(campoBusca);
     await Consultar_defeito_baseTecido(campoBusca);
@@ -66,6 +313,9 @@ async function atualizar(){
     await Cosultar_Origem_fornecedor(campoBusca);
     await Cosultar_Origem(campoBusca);
     await detalha_defeitos(campoBusca);
+
+    aplicarFiltros();
+
       // 👇 força o navegador a redesenhar os gráficos
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'));
@@ -76,11 +326,8 @@ const Cosultar_Qualidade = async () => {
     $('#loadingModal').modal('show');
     const dataInicial = $('#dataInicio').val();
     const dataFinal = $('#dataFim').val();
-    console.log(`${dataInicial} e ${dataFinal}`);
 
     try {
-        // Pega os valores das datas no formato yyyy-mm-dd e formata para dd/mm/yyyy
-
         const data = await $.ajax({
             type: 'GET',
             url: 'requests.php',
@@ -92,20 +339,11 @@ const Cosultar_Qualidade = async () => {
             }
         });
 
-        if (data[0]["1- Peças com Motivo de 2Qual."] === 0) {
-            $('#graficoDonut').html(semDados());
-        } else {
-            $('#graficoDonut').html('');
-            renderizarGrafico(data[0]["1- Peças com Motivo de 2Qual."], data[0]["2- Total Peças Baixadas periodo"]);
-        }
-
-            $('#totalPecas').text(
-                Number(data[0]['2- Total Peças Baixadas periodo']).toLocaleString('pt-BR')
-            );        
-        $('#totalPecas2Qualidade').text(
-            Number(data[0]['1- Peças com Motivo de 2Qual.']).toLocaleString('pt-BR'));
+        ESTADO.totais.pecas = numero(data[0]['2- Total Peças Baixadas periodo']);
+        ESTADO.totais.segundaQualidade = numero(data[0]['1- Peças com Motivo de 2Qual.']);
     } catch (error) {
         console.error('Erro ao consultar qualidade:', error);
+        ESTADO.totais = { pecas: 0, segundaQualidade: 0 };
         $('#graficoDonut').html(semDados('Erro ao carregar os dados de qualidade'));
     } finally {
         $('#loadingModal').modal('hide');
@@ -130,16 +368,10 @@ const Consultar_Motivos = async (campoBusca) => {
             }
         });
 
-        // Verifica se os dados estão vazios
-        if (data.length === 0) {
-            $('#graficoBarras').html(semDados());
-        } else {
-            $('#graficoBarras').html('');
-            renderizarGraficoBarras(data);
-        }
-
+        ESTADO.base.motivo = normalizar(data, 'motivo2Qualidade');
     } catch (error) {
         console.error('Erro ao consultar motivos:', error);
+        ESTADO.base.motivo = [];
     } finally {
         $('#loadingModal').modal('hide');
     }
@@ -164,16 +396,12 @@ const Consultar_defeito_baseTecido = async (campoBusca) => {
             }
         });
 
-        // Verifica se os dados estão vazios
-        if (data.length === 0) {
-            $('#graficoBaseTecido').html(semDados());
-        } else {
-            $('#graficoBaseTecido').html('');
-            renderizarGraficoBarras_baseTecido(data);
-        }
-
+        // Fora do cruzamento: o detalhe não traz 'nomeItem', então este painel
+        // continua refletindo apenas o período e a busca avançada.
+        renderizarGraficoBarras_baseTecido(normalizar(data, 'nomeItem'));
     } catch (error) {
-        console.error('Erro ao consultar motivos:', error);
+        console.error('Erro ao consultar base tecido:', error);
+        renderizarGraficoBarras_baseTecido([]);
     } finally {
         $('#loadingModal').modal('hide');
     }
@@ -199,16 +427,10 @@ const Cosultar_Origem_faccionista = async (campoBusca) => {
             }
         });
 
-        // Verifica se os dados estão vazios
-        if (data === null) {
-            $('#graficoTerceirizados').html(semDados());
-        } else {
-            $('#graficoTerceirizados').html('');
-            renderizarGraficoTerceirizados(data);
-        }
-
+        ESTADO.base.faccionista = normalizar(data, 'nomeFaccicionista');
     } catch (error) {
-        console.error('Erro ao consultar motivos:', error);
+        console.error('Erro ao consultar faccionistas:', error);
+        ESTADO.base.faccionista = [];
     } finally {
         $('#loadingModal').modal('hide');
     }
@@ -233,16 +455,10 @@ const Cosultar_Origem_fornecedor = async (campoBusca) => {
             }
         });
 
-        // Verifica se os dados estão vazios
-        if (data === null) {
-            $('#graficoFornecedores').html(semDados());
-        } else {
-            $('#graficoFornecedores').html('');
-            renderizarGraficoFornecedor(data);
-        }
-
+        ESTADO.base.fornecedor = normalizar(data, 'fornencedorPreferencial');
     } catch (error) {
-        console.error('Erro ao consultar motivos:', error);
+        console.error('Erro ao consultar fornecedores:', error);
+        ESTADO.base.fornecedor = [];
     } finally {
         $('#loadingModal').modal('hide');
     }
@@ -266,16 +482,10 @@ const Cosultar_Origem = async (campoBusca) => {
             }
         });
 
-        // Verifica se os dados estão vazios
-        if (data === null) {
-            $('#graficoOrigemAgrupado').html(semDados());
-        } else {
-            $('#graficoOrigemAgrupado').html('');
-            renderizarGraficoOrigemAgrupado(data);
-        }
-
+        ESTADO.base.origem = normalizar(data, 'nomeOrigem');
     } catch (error) {
-        console.error('Erro ao consultar motivos:', error);
+        console.error('Erro ao consultar origens:', error);
+        ESTADO.base.origem = [];
     } finally {
         $('#loadingModal').modal('hide');
     }
@@ -300,16 +510,27 @@ const detalha_defeitos = async (campoBusca) => {
             }
         });
 
-
-        Tabela_detalha_defeitos(data);
-
-
+        ESTADO.detalhe = Array.isArray(data) ? data : [];
     } catch (error) {
-        console.error('Erro ao consultar motivos:', error);
+        console.error('Erro ao consultar o detalhamento:', error);
+        ESTADO.detalhe = [];
     } finally {
         $('#loadingModal').modal('hide');
     }
 };
+
+// Converte a resposta agregada da API para o formato {rotulo, qtd} dos gráficos
+function normalizar(lista, campo) {
+    if (!Array.isArray(lista)) return [];
+
+    return lista
+        .map((item) => {
+            const bruto = item[campo];
+            const texto = (bruto === null || bruto === undefined) ? '' : String(bruto).trim();
+            return { rotulo: texto === '' ? SEM_VALOR : texto, qtd: numero(item.qtd) };
+        })
+        .sort((a, b) => b.qtd - a.qtd);
+}
 
 // Função para formatar a data de yyyy-mm-dd para dd/mm/yyyy
 const formatDateToDDMMYYYY = (date) => {
@@ -317,107 +538,124 @@ const formatDateToDDMMYYYY = (date) => {
     return `${dia}/${mes}/${ano}`;
 };
 
-// Função para renderizar o gráfico de donuts ApexCharts
+function atualizarRotuloPeriodo() {
+    const inicio = $('#dataInicio').val();
+    const fim = $('#dataFim').val();
+    if (!inicio || !fim) return;
+
+    $('#rotuloPeriodo').text(`${formatDateToDDMMYYYY(inicio)} a ${formatDateToDDMMYYYY(fim)}`);
+}
+
+const percentual = (valor) => valor.toFixed(2).replace('.', ',') + '%';
+
+/**
+ * Medidor do índice de 2ª qualidade.
+ * O preenchimento tem como limite a META: 1,5% equivale ao arco cheio,
+ * então 0,75% preenche metade. Acima da meta o arco satura em 100% e o
+ * medidor troca para azul escuro.
+ */
 const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
-    const chartElementDonut = document.querySelector("#graficoDonut");
-    if (!chartElementDonut) {
-        console.error('Elemento #graficoDonut não encontrado.');
+    const totalPecas = numero(totalPecasBaixadas);
+    const pecas2Qualidade = numero(pecasComMotivo);
+
+    // Evita divisão por zero
+    const indice = totalPecas > 0 ? (pecas2Qualidade / totalPecas) * 100 : 0;
+    const acimaDaMeta = indice > META_2QUALIDADE;
+    const preenchimento = Math.min((indice / META_2QUALIDADE) * 100, 100);
+    const desvio = indice - META_2QUALIDADE;
+
+    $('#indiceRealizado').text(percentual(indice));
+    $('#indiceMeta').text(percentual(META_2QUALIDADE));
+    $('#indiceDesvio')
+        .text((desvio >= 0 ? '+' : '−') + Math.abs(desvio).toFixed(2).replace('.', ',') + ' p.p.')
+        .toggleClass('leitura-valor--acima', acimaDaMeta);
+    $('#indiceSituacao')
+        .text(acimaDaMeta ? 'Acima da meta' : 'Dentro da meta')
+        .toggleClass('situacao--acima', acimaDaMeta);
+
+    if (pecas2Qualidade === 0 && totalPecas === 0) {
+        montarGrafico('#graficoDonut', [], {}); // sem dados: cai no estado vazio
         return;
     }
 
-    const totalPecas = parseFloat(totalPecasBaixadas) || 0;
-    const pecas2Qualidade = parseFloat(pecasComMotivo) || 0;
+    const corBase = acimaDaMeta ? CORES.azulEscuro : CORES.azulClaro;
+    const corTopo = acimaDaMeta ? CORES.azulEscuro2 : CORES.azulClaro2;
 
-    // Evita divisão por zero
-    const porcentagem2Qualidade = totalPecas > 0 ? (pecas2Qualidade / totalPecas) * 100 : 0;
-    const porcentagemDiferenca = 100 - porcentagem2Qualidade;
-
-    var optionsDonut = {
+    var optionsMedidor = {
         chart: {
             ...TEMA_BASE,
-            type: 'donut',
-            height: '90%'
+            type: 'radialBar',
+            height: 240,
+            offsetY: -8,
+            sparkline: { enabled: false }
         },
-        series: [porcentagem2Qualidade, porcentagemDiferenca],
-        labels: ["Peças com Motivo 2Qual.", "Peças Sem Defeito"],
-        // Azul escuro destaca o índice de 2ª qualidade; azul claro é o restante
-        colors: [CORES.azulEscuro, CORES.azulClaro3],
-        stroke: {
-            width: 2,
-            colors: [CORES.branco]
+        series: [preenchimento],
+        labels: [`Meta ${percentual(META_2QUALIDADE)}`],
+        colors: [corBase],
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: .2,
+                gradientToColors: [corTopo],
+                stops: [0, 100]
+            }
         },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                return val.toFixed(2) + "%"; // Exibe o percentual com 2 casas decimais
-            },
-            style: {
-                fontSize: '10px',
-                fontWeight: 600,
-                colors: [CORES.branco, CORES.azulEscuro]
-            },
-            dropShadow: { enabled: false }
-        },
+        stroke: { lineCap: 'round' },
         plotOptions: {
-            pie: {
-                donut: {
-                    size: '70%', // Ajusta o tamanho do buraco do donut
-                    labels: {
-                        show: true,
-                        total: {
-                            show: true,
-                            label: 'Índice 2ª',
-                            fontSize: '12px',
-                            fontWeight: 600,
-                            color: CORES.textoSuave,
-                            formatter: function () {
-                                return porcentagem2Qualidade.toFixed(2) + '%';
-                            }
-                        },
-                        value: {
-                            fontSize: '18px',
-                            fontWeight: 700,
-                            color: CORES.azulEscuro
-                        }
+            radialBar: {
+                startAngle: -135,
+                endAngle: 135,
+                hollow: { size: '62%' },
+                track: {
+                    background: CORES.azulSuave,
+                    strokeWidth: '100%',
+                    margin: 6
+                },
+                dataLabels: {
+                    name: {
+                        offsetY: 26,
+                        color: CORES.textoSuave,
+                        fontSize: '11px',
+                        fontWeight: 600
+                    },
+                    value: {
+                        offsetY: -14,
+                        color: CORES.azulEscuro,
+                        fontSize: '28px',
+                        fontWeight: 700,
+                        // Mostra o índice real, não o quanto o arco foi preenchido
+                        formatter: () => percentual(indice)
                     }
                 }
             }
-        },
-        tooltip: {
-            y: { formatter: (val) => val.toFixed(2) + '%' }
-        },
-        // >>> CONFIGURAÇÃO PARA REMOVER A LEGENDA <<<
-        legend: {
-            show: false // Propriedade que desabilita a exibição da legenda
         }
     };
 
-    var chartDonut = new ApexCharts(chartElementDonut, optionsDonut);
-    chartDonut.render();
-  //  chartDonut.resize();
-
+    montarGrafico('#graficoDonut', optionsMedidor.series, optionsMedidor);
 };
 
-async function renderizarGraficoBarras(data) {
-    const chartWidth = Math.max(350, data.length * 40);
+async function renderizarGraficoBarras(dados) {
+    dados = dados || [];
+    const chartWidth = Math.max(350, dados.length * 40);
 
-    const chartOptions = {
+    const chartOptions = realce(dados, 'motivo', {
         chart: {
             ...TEMA_BASE,
             type: 'bar',
             height: 350,
             width: `${chartWidth}px`, // Mantém a largura dinâmica
             toolbar: { show: false },
-            dropShadow: { enabled: false }
+            dropShadow: { enabled: false },
+            events: cliqueNaBarra('motivo', dados)
         },
-        series: [{
-            name: 'Quantidade',
-            data: data.map(item => item.qtd)
-        }],
+        states: ESTADOS_APEX,
+        series: serieDe(dados),
         colors: [CORES.azulClaro],
         fill: FILL_BARRA,
         xaxis: {
-            categories: data.map(item => item.motivo2Qualidade),
+            type: 'category',
             axisBorder: { color: CORES.grade },
             axisTicks: { color: CORES.grade },
             labels: {
@@ -448,25 +686,26 @@ async function renderizarGraficoBarras(data) {
                 bottom: 60 // Dá mais espaço para a legenda não ser cortada
             }
         },
+        tooltip: { y: { formatter: (val) => Number(val).toLocaleString('pt-BR') } },
         // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
+            formatter: (val) => Number(val).toLocaleString('pt-BR'),
             style: {
                 fontSize: '10px', // Altere para o tamanho desejado
                 fontWeight: '600', // Altere para o peso desejado (ex: 'bold')
                 colors: [CORES.branco]
             },
-            dropShadow: { enabled: false },
-            background: { enabled: false }
+            dropShadow: { enabled: false }
         }
-    };
+    });
 
-    const chart = new ApexCharts(document.querySelector("#graficoBarras"), chartOptions);
-    chart.render();
+    montarGrafico('#graficoBarras', dados, chartOptions);
 }
 
-async function renderizarGraficoBarras_baseTecido(data) {
-    const chartWidth = Math.max(350, data.length * 35);
+async function renderizarGraficoBarras_baseTecido(dados) {
+    dados = dados || [];
+    const chartWidth = Math.max(350, dados.length * 35);
 
     const chartOptions = {
         chart: {
@@ -477,14 +716,11 @@ async function renderizarGraficoBarras_baseTecido(data) {
             toolbar: { show: false },
             dropShadow: { enabled: false }
         },
-        series: [{
-            name: 'Quantidade',
-            data: data.map(item => item.qtd)
-        }],
+        series: serieDe(dados),
         colors: [CORES.azulClaro],
         fill: FILL_BARRA,
         xaxis: {
-            categories: data.map(item => item.nomeItem),
+            type: 'category',
             axisBorder: { color: CORES.grade },
             axisTicks: { color: CORES.grade },
             labels: {
@@ -509,6 +745,7 @@ async function renderizarGraficoBarras_baseTecido(data) {
         },
         dataLabels: {
             enabled: true,
+            formatter: (val) => Number(val).toLocaleString('pt-BR'),
             style: {
                 fontSize: '10px',
                 fontWeight: '600',
@@ -516,6 +753,7 @@ async function renderizarGraficoBarras_baseTecido(data) {
             },
             dropShadow: { enabled: false }
         },
+        tooltip: { y: { formatter: (val) => Number(val).toLocaleString('pt-BR') } },
         grid: {
             borderColor: CORES.grade,
             strokeDashArray: 4,
@@ -526,32 +764,29 @@ async function renderizarGraficoBarras_baseTecido(data) {
         }
     };
 
-    const chart = new ApexCharts(document.querySelector("#graficoBaseTecido"), chartOptions);
-    chart.render();
-    //chart.resize();
-
+    montarGrafico('#graficoBaseTecido', dados, chartOptions);
 }
 
-async function renderizarGraficoTerceirizados(data) {
-    const chartHeight = Math.max(250, data.length * 25);
+async function renderizarGraficoTerceirizados(dados) {
+    dados = dados || [];
+    const chartHeight = Math.max(250, dados.length * 25);
 
-    const chartOptions = {
+    const chartOptions = realce(dados, 'faccionista', {
         chart: {
             ...TEMA_BASE,
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',  // Mantém a largura dinâmica
             toolbar: { show: false },
-            dropShadow: { enabled: false }
+            dropShadow: { enabled: false },
+            events: cliqueNaBarra('faccionista', dados)
         },
-        series: [{
-            name: 'Quantidade',
-            data: data.map(item => item.qtd)
-        }],
+        states: ESTADOS_APEX,
+        series: serieDe(dados),
         colors: [CORES.azulClaro],
         fill: FILL_BARRA_HORIZONTAL,
         xaxis: {
-            categories: data.map(item => item.nomeFaccicionista),
+            type: 'category',
             axisBorder: { show: false },
             axisTicks: { show: false },
             labels: {
@@ -581,6 +816,7 @@ async function renderizarGraficoTerceirizados(data) {
                     yaxis: { lines: { show: false } },
                     padding: { bottom: 0 }
                 },
+        tooltip: { y: { formatter: (val) => Number(val).toLocaleString('pt-BR') } },
                  // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
@@ -592,37 +828,34 @@ async function renderizarGraficoTerceirizados(data) {
             },
             dropShadow: { enabled: false }
         }
-    };
+    });
 
-    const chart = new ApexCharts(document.querySelector("#graficoTerceirizados"), chartOptions);
-    chart.render();
-   // chart.resize();
-
+    montarGrafico('#graficoTerceirizados', dados, chartOptions);
 }
 
-async function renderizarGraficoFornecedor(data) {
-    const chartHeight = Math.max(250, data.length * 25);
+async function renderizarGraficoFornecedor(dados) {
+    dados = dados || [];
+    const chartHeight = Math.max(250, dados.length * 25);
 
-    const chartOptions = {
+    const chartOptions = realce(dados, 'fornecedor', {
         chart: {
             ...TEMA_BASE,
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',  // Mantém a largura dinâmica
             toolbar: { show: false },
-            dropShadow: { enabled: false }
+            dropShadow: { enabled: false },
+            events: cliqueNaBarra('fornecedor', dados)
         },
-        series: [{
-            name: 'Quantidade',
-            data: data.map(item => item.qtd)
-        }],
+        states: ESTADOS_APEX,
+        series: serieDe(dados),
         colors: [CORES.azulEscuro2],
         fill: {
             ...FILL_BARRA_HORIZONTAL,
             gradient: { ...FILL_BARRA_HORIZONTAL.gradient, gradientToColors: [CORES.azulClaro] }
         },
         xaxis: {
-            categories: data.map(item => item.fornencedorPreferencial),
+            type: 'category',
             axisBorder: { show: false },
             axisTicks: { show: false },
             labels: {
@@ -652,6 +885,7 @@ async function renderizarGraficoFornecedor(data) {
                     yaxis: { lines: { show: false } },
                     padding: { bottom: 0 }
                 },
+        tooltip: { y: { formatter: (val) => Number(val).toLocaleString('pt-BR') } },
                  // 🌟 CONFIGURAÇÃO PARA ALTERAR A FONTE DO RÓTULO DE DADOS 🌟
         dataLabels: {
             enabled: true, // É importante que esteja 'true'
@@ -663,35 +897,32 @@ async function renderizarGraficoFornecedor(data) {
             },
             dropShadow: { enabled: false }
         }
-    };
+    });
 
-    const chart = new ApexCharts(document.querySelector("#graficoFornecedores"), chartOptions);
-    chart.render();
-   // chart.resize();
-
+    montarGrafico('#graficoFornecedores', dados, chartOptions);
 }
 
 
-async function renderizarGraficoOrigemAgrupado(data) {
+async function renderizarGraficoOrigemAgrupado(dados) {
+    dados = dados || [];
     const chartHeight = 180; // altura fixa mais apropriada para barras verticais
 
-    const chartOptions = {
+    const chartOptions = realce(dados, 'origem', {
         chart: {
             ...TEMA_BASE,
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',
             toolbar: { show: false },
-            dropShadow: { enabled: false }
+            dropShadow: { enabled: false },
+            events: cliqueNaBarra('origem', dados)
         },
-        series: [{
-            name: 'Quantidade',
-            data: data.map(item => item.qtd)
-        }],
+        states: ESTADOS_APEX,
+        series: serieDe(dados),
         colors: [CORES.azulClaro],
         fill: FILL_BARRA,
        xaxis: {
-    categories: data.map(item => item.nomeOrigem),
+    type: 'category',
     labels: {
         show: true,
         rotate: -45,
@@ -733,6 +964,7 @@ async function renderizarGraficoOrigemAgrupado(data) {
             yaxis: { lines: { show: true } },
             padding: { bottom: 0 }
         },
+        tooltip: { y: { formatter: (val) => Number(val).toLocaleString('pt-BR') } },
         // 👇 Aqui vem a mágica
         dataLabels: {
             enabled: true,
@@ -756,11 +988,9 @@ async function renderizarGraficoOrigemAgrupado(data) {
                 color: CORES.azulEscuro // 👈 fundo em azul escuro
             }
         }
-    };
+    });
 
-    const chart = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
-    chart.render();
-   //     chart.resize();
+    montarGrafico('#graficoOrigemAgrupado', dados, chartOptions);
 }
 
 
@@ -780,7 +1010,7 @@ function Tabela_detalha_defeitos(lista) {
         lengthChange: false,
         info: false,
         pageLength: 12,
-        data: lista,
+        data: lista || [],
         dom: 'Bfrtip',
         buttons: {
             buttons: [
@@ -820,11 +1050,11 @@ function Tabela_detalha_defeitos(lista) {
             emptyTable: "Nenhum dado disponível na tabela",
             zeroRecords: "Nenhum registro encontrado"
         },
-        
+
         // 2. 🚀 Mover a lógica de pesquisa para initComplete (executado apenas uma vez)
      initComplete: function () {
-            var tabelaApi = this.api(); 
-            
+            var tabelaApi = this.api();
+
             function atualizarTotal() {
                 var coluna_qtd_indice = 8;
 
@@ -845,8 +1075,10 @@ function Tabela_detalha_defeitos(lista) {
                     .css('font-weight', 'bold');
             }
 
-            // Atualiza o total a cada filtro
-            $('.search-input-defeitos').on('input', function () {
+            // Atualiza o total a cada filtro.
+            // O .off() evita empilhar handlers: a tabela é remontada a cada
+            // clique no cruzamento de filtros.
+            $('.search-input-defeitos').off('input.defeitos').on('input.defeitos', function () {
                 const input = $(this);
                 clearTimeout(searchTimeout);
 
@@ -860,11 +1092,23 @@ function Tabela_detalha_defeitos(lista) {
                 }, 500);
             });
 
+            // A tabela é remontada a cada cruzamento: reaplica o que já estava
+            // digitado nos campos de busca do cabeçalho
+            let reaplicar = false;
+            $('.search-input-defeitos').each(function () {
+                const valor = $(this).val();
+                if (valor) {
+                    tabelaApi.column($(this).closest('th').index()).search(valor);
+                    reaplicar = true;
+                }
+            });
+            if (reaplicar) tabelaApi.draw();
+
             // Chama 1x ao iniciar
             atualizarTotal();
         },
 
-        
+
        footerCallback: function (row, data, start, end, display) {
     var api = this.api();
     var coluna_qtd_indice = 8;
@@ -890,4 +1134,3 @@ function Tabela_detalha_defeitos(lista) {
 
     });
 }
-
