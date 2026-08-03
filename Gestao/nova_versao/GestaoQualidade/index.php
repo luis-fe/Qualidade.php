@@ -73,8 +73,8 @@ include_once('../../../templates/headerGestao.php');
 
   <div class="grafico-container mt-3">
 
-    <!-- Esquerda: índice de 2ª Qualidade, medidor limitado pela meta -->
-    <section class="grafico frame-indice">
+    <!-- Esquerda (40%): índice de 2ª Qualidade, medidor limitado pela meta -->
+    <section class="grafico grafico--40 frame-indice">
       <div class="painel-titulo">
         <i class="bi bi-speedometer2"></i>
         <h2>2ª Qualidade</h2>
@@ -107,8 +107,8 @@ include_once('../../../templates/headerGestao.php');
       </div>
     </section>
 
-    <!-- Direita: Defeitos por Origem -->
-    <div class="grafico">
+    <!-- Direita (60%): Defeitos por Origem -->
+    <div class="grafico grafico--60">
       <div class="painel-titulo">
         <i class="bi bi-diagram-3-fill"></i>
         <h2>Defeitos por Origem</h2>
