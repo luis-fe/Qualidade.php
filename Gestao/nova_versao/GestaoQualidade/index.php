@@ -122,7 +122,7 @@ include_once('../../../templates/headerGestao.php');
 
   <div class="grafico-container mt-3">
 
-    <div class="grafico">
+    <div class="grafico grafico--40">
       <div class="painel-titulo">
         <i class="bi bi-bar-chart-fill"></i>
         <h2>Defeitos por Motivo</h2>
@@ -132,7 +132,7 @@ include_once('../../../templates/headerGestao.php');
       </div>
     </div>
 
-    <div class="grafico">
+    <div class="grafico grafico--60">
       <div class="painel-titulo">
         <i class="bi bi-people-fill"></i>
         <h2>Defeitos por Terceirizados</h2>
@@ -146,7 +146,7 @@ include_once('../../../templates/headerGestao.php');
 
   <div class="grafico-container mt-3">
 
-    <div class="grafico">
+    <div class="grafico grafico--40">
       <div class="painel-titulo">
         <i class="bi bi-truck"></i>
         <h2>Defeitos por Fornecedor</h2>
@@ -156,7 +156,7 @@ include_once('../../../templates/headerGestao.php');
       </div>
     </div>
 
-    <div class="grafico">
+    <div class="grafico grafico--60">
       <div class="painel-titulo">
         <i class="bi bi-layers-fill"></i>
         <h2>Defeitos por Base Tecido</h2>
