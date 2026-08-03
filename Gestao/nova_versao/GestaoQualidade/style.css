@@ -423,6 +423,16 @@ body.com-filtro .selo {
   box-shadow: var(--sombra-md);
 }
 
+/* Painel que originou o filtro ativo */
+.grafico--selecionado {
+  border-color: var(--azul-claro);
+  box-shadow: 0 0 0 2px rgba(0, 143, 251, .2), var(--sombra-md);
+}
+
+.grafico--selecionado .painel-titulo {
+  background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-claro) 140%);
+}
+
 /* Proporção 40/60 numa linha de dois painéis. O gap é descontado da
    largura antes de repartir, senão a soma estoura e a linha quebra. */
 .grafico--40 {

@@ -59,10 +59,10 @@ const semDados = (mensagem = 'Nenhum dado a ser exibido') =>
      - Total de Peças Baixadas (denominador do donut) -> é do período
    ============================================================ */
 const DIMENSOES = {
-    motivo:      { campo: 'nome',                    rotulo: 'Motivo' },
-    origem:      { campo: 'nomeOrigem',              rotulo: 'Origem' },
-    faccionista: { campo: 'nomeFaccicionista',       rotulo: 'Faccionista' },
-    fornecedor:  { campo: 'fornencedorPreferencial', rotulo: 'Fornecedor' }
+    motivo:      { campo: 'nome',                    rotulo: 'Motivo',      alvo: '#graficoBarras' },
+    origem:      { campo: 'nomeOrigem',              rotulo: 'Origem',      alvo: '#graficoOrigemAgrupado' },
+    faccionista: { campo: 'nomeFaccicionista',       rotulo: 'Faccionista', alvo: '#graficoTerceirizados' },
+    fornecedor:  { campo: 'fornencedorPreferencial', rotulo: 'Fornecedor',  alvo: '#graficoFornecedores' }
 };
 
 const SEM_VALOR = '(não informado)';
@@ -157,6 +157,14 @@ function aplicarFiltros() {
     renderizarGraficoTerceirizados(ativo ? agregar(linhasFiltradas('faccionista'), 'faccionista') : ESTADO.base.faccionista);
     renderizarGraficoFornecedor(ativo ? agregar(linhasFiltradas('fornecedor'), 'fornecedor') : ESTADO.base.fornecedor);
 
+    // Marca o painel que originou cada filtro, para ficar claro de onde
+    // veio o recorte que os demais estão exibindo
+    Object.keys(DIMENSOES).forEach((dim) => {
+        $(DIMENSOES[dim].alvo)
+            .closest('.grafico')
+            .toggleClass('grafico--selecionado', Boolean(ESTADO.filtros[dim]));
+    });
+
     const linhas = linhasFiltradas(null);
     const total2Qualidade = ativo
         ? linhas.reduce((soma, linha) => soma + numero(linha.qtd), 0)
@@ -203,7 +211,11 @@ function montarGrafico(seletor, dados, opcoes) {
     // Sempre destrói a instância anterior: os painéis são remontados
     // a cada clique no cruzamento de filtros
     if (ESTADO.graficos[seletor]) {
-        ESTADO.graficos[seletor].destroy();
+        try {
+            ESTADO.graficos[seletor].destroy();
+        } catch (erro) {
+            console.warn(`Falha ao destruir o gráfico ${seletor}:`, erro);
+        }
         delete ESTADO.graficos[seletor];
     }
 
@@ -229,7 +241,19 @@ const serieDe = (dados) => [{
 const cliqueNaBarra = (dim, dados) => ({
     dataPointSelection: (evento, contexto, config) => {
         const item = dados[config.dataPointIndex];
-        if (item) alternarFiltro(dim, item.rotulo);
+        if (!item) return;
+
+        // Sai do handler antes de redesenhar. aplicarFiltros() destrói e
+        // remonta os gráficos — inclusive este, que ainda está no meio do
+        // processamento do próprio clique dentro do ApexCharts.
+        setTimeout(() => alternarFiltro(dim, item.rotulo), 0);
+    },
+    // Clique no rótulo do eixo seleciona a mesma categoria
+    xAxisLabelClick: (evento, contexto, config) => {
+        const item = dados[config.labelIndex];
+        if (!item) return;
+
+        setTimeout(() => alternarFiltro(dim, item.rotulo), 0);
     }
 });
 
