@@ -43,6 +43,52 @@ include_once('../../templates/headerGarantia.php');
     text-align: center;
   }
 
+  /* ---------- Frame do topo (% 2ª Qualidade + Defeitos por Origem) ----------
+     O frame tem altura definida para que os painéis possam esticar (height:100%)
+     e o gráfico vertical aproveite toda a altura livre do card. */
+  .frame-topo {
+    height: 260px;
+    align-items: stretch;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .frame-topo > .grafico {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .frame-topo > .grafico > .card-header {
+    flex: 0 0 auto;
+  }
+
+  /* min-height:0 evita que o conteúdo do flex item force o card a crescer */
+  .frame-topo > .grafico > .card-body {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  #graficoOrigemAgrupado {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* Em telas estreitas os painéis empilham, cada um com sua própria altura */
+  @media (max-width: 767.98px) {
+    .frame-topo {
+      height: auto;
+    }
+
+    .frame-topo > .grafico {
+      flex: 1 1 100%;
+      height: 240px;
+    }
+  }
+
 
   /* Defina esta classe no seu arquivo de estilos (.css) */
 .tabela-fonte-pequena td {
@@ -141,8 +187,7 @@ include_once('../../templates/headerGarantia.php');
 
 <!-- ==================== GRÁFICOS ==================== -->
 <div class="col-12 mt-2">
-  <div class="col-12 mt-0 p-0 grafico-container" 
-        style="max-height: 250px; overflow-y: auto;">
+  <div class="col-12 mt-0 p-0 grafico-container frame-topo">
 
     <div class="grafico card mb-0" style="width: 100%;">
         <div class="card-header pt-0">
@@ -159,9 +204,8 @@ include_once('../../templates/headerGarantia.php');
             <div class="card-header p-0">
                 <h2 class="h6 mb-0">Defeitos por Origem</h2>
             </div>
-            <div class="card-body p-2 d-flex" 
-                style="width: 100%; height: 100%;"> 
-                <div id="graficoOrigemAgrupado" ></div>
+            <div class="card-body p-1 d-flex" style="width: 100%;">
+                <div id="graficoOrigemAgrupado"></div>
             </div>
     </div>
 

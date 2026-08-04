@@ -552,14 +552,27 @@ async function renderizarGraficoFornecedor(data) {
 }
 
 
+let chartOrigemAgrupado = null;
+
+// Altura disponível dentro do card: o div é um flex item que estica,
+// então o clientHeight já é todo o espaço livre do frame.
+function alturaGraficoOrigem() {
+    const el = document.querySelector("#graficoOrigemAgrupado");
+    if (!el) return 180;
+    const livre = el.clientHeight || (el.parentElement ? el.parentElement.clientHeight : 0);
+    return Math.max(livre, 180); // 180px é o piso, caso o frame ainda não tenha altura
+}
+
 async function renderizarGraficoOrigemAgrupado(data) {
-    const chartHeight = 180; // altura fixa mais apropriada para barras verticais
+    const chartHeight = alturaGraficoOrigem();
 
     const chartOptions = {
         chart: {
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',
+            parentHeightOffset: 0, // remove o respiro extra do Apex no topo
+            offsetY: 0,
             toolbar: { show: false },
             dropShadow: { enabled: false }
         },
@@ -598,13 +611,14 @@ async function renderizarGraficoOrigemAgrupado(data) {
             bar: {
                 borderRadius: 4,
                 horizontal: false, // 👈 Agora as barras ficam verticais
-                columnWidth: '50%' // 👈 Ajusta a espessura das barras
+                columnWidth: '60%' // 👈 Ajusta a espessura das barras
             }
         },
         grid: {
             xaxis: { lines: { show: false } },
             yaxis: { lines: { show: true } },
-            padding: { bottom: 0 }
+            // padding enxuto para as barras subirem até o topo do card
+            padding: { top: 0, right: 4, bottom: 0, left: 4 }
         },
         // 👇 Aqui vem a mágica
         dataLabels: {
@@ -630,10 +644,30 @@ async function renderizarGraficoOrigemAgrupado(data) {
         }
     };
 
-    const chart = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
-    chart.render();
-   //     chart.resize();
+    if (chartOrigemAgrupado) {
+        chartOrigemAgrupado.destroy();
+    }
+
+    chartOrigemAgrupado = new ApexCharts(document.querySelector("#graficoOrigemAgrupado"), chartOptions);
+    chartOrigemAgrupado.render();
 }
+
+// Reaproveita toda a altura do frame quando a janela muda de tamanho
+let redimensionamentoOrigem = null;
+window.addEventListener('resize', () => {
+    // só atualiza se o gráfico ainda está desenhado (o container pode ter sido
+    // substituído pela mensagem de "nenhum dado")
+    if (!chartOrigemAgrupado) return;
+    if (!document.querySelector("#graficoOrigemAgrupado .apexcharts-canvas")) return;
+    clearTimeout(redimensionamentoOrigem);
+    redimensionamentoOrigem = setTimeout(() => {
+        chartOrigemAgrupado.updateOptions(
+            { chart: { height: `${alturaGraficoOrigem()}px` } },
+            false,
+            false
+        );
+    }, 150);
+});
 
 
 
