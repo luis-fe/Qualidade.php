@@ -237,114 +237,73 @@ function defeitos_porOrigem($empresa, $dataInicial, $dataFinal,$textoAvancado)
     return json_decode($apiResponse, true);
 }
 
-// Em funções, e não em const: o switch do topo do arquivo é executado antes
-// destas linhas e termina em exit, então uma const daqui nunca seria declarada.
-function metaMeses()
-{
-    return [
-        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-    ];
-}
-
-// 1,50% — mesmo valor exibido no painel de índice
-function metaPadrao()
-{
-    return 0.015;
-}
-
-// Enquanto não existe backend, o que o usuário salva fica neste arquivo,
-// no formato { "2026": [0.015, 0.015, ...] }
-function arquivoMetasProvisorias()
-{
-    return __DIR__ . '/metas_provisorias.json';
-}
-
-function lerMetasProvisorias()
-{
-    $arquivo = arquivoMetasProvisorias();
-    if (!file_exists($arquivo)) return [];
-
-    $conteudo = json_decode(file_get_contents($arquivo), true);
-    return is_array($conteudo) ? $conteudo : [];
-}
-
 /**
- * PROVISÓRIO — meta mensal de 2ª Qualidade.
- * Ainda não existe endpoint no backend, então os valores saem do arquivo
- * local e, na falta dele, do padrão de 1,50%. Quando a API oficial subir,
- * trocar o corpo desta função pelo curl (mesmo padrão das demais)
- * mantendo o formato de retorno.
+ * Meta mensal de 2ª Qualidade — tabela pcp."MetaQualide".
+ * Retorno: AnoMeta (int), Meses (12 nomes) e Meta (12 frações, 0.015 = 1,50%).
  */
 function ConsultarMeta($empresa, $ano)
 {
     $ano = (int) $ano;
-    $meses = metaMeses();
-    $salvas = lerMetasProvisorias();
-    $doAno = $salvas[(string) $ano] ?? null;
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/api/MetaQualidade?ano={$ano}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
 
-    $metas = (is_array($doAno) && count($doAno) === count($meses))
-        ? array_map('floatval', $doAno)
-        : array_fill(0, count($meses), metaPadrao());
+    $apiResponse = curl_exec($ch);
 
-    return [
-        'AnoMeta' => $ano,
-        'Meses'   => $meses,
-        'Meta'    => $metas
-    ];
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+
+    return json_decode($apiResponse, true);
 }
 
 /**
- * PROVISÓRIO — grava as metas do ano no arquivo local.
- * Espera $dados no mesmo formato devolvido por ConsultarMeta:
- * AnoMeta (int), Meses (12 nomes) e Meta (12 frações, 0.015 = 1,50%).
+ * Grava as metas do ano. Espera $dados no mesmo formato devolvido por
+ * ConsultarMeta e repassa o objeto tal como veio da tela.
+ * Retorno: status (bool), message (string) e dados (formato do ConsultarMeta).
  */
 function SalvarMeta($empresa, $dados)
 {
-    $ano = (int) ($dados['AnoMeta'] ?? 0);
-    $metas = $dados['Meta'] ?? null;
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/api/MetaQualidade";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dados));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
 
-    if ($ano < 2000 || $ano > 2100) {
-        return ['status' => false, 'message' => 'Ano inválido.'];
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+        curl_close($ch);
+
+        return ['status' => false, 'message' => 'Não foi possível gravar as metas: falha de comunicação com a API.'];
     }
 
-    if (!is_array($metas) || count($metas) !== count(metaMeses())) {
-        return ['status' => false, 'message' => 'É esperada uma meta para cada um dos 12 meses.'];
+    curl_close($ch);
+
+    $resposta = json_decode($apiResponse, true);
+
+    // A tela só aceita o salvamento quando status === true, então uma resposta
+    // fora do formato precisa virar erro explícito e não um "salvo" silencioso
+    if (!is_array($resposta) || !isset($resposta['status'])) {
+        error_log('Resposta inesperada da API de metas: ' . $apiResponse, 0);
+
+        return ['status' => false, 'message' => 'Resposta inesperada da API ao gravar as metas.'];
     }
 
-    $normalizadas = [];
-    foreach ($metas as $valor) {
-        if (!is_numeric($valor)) {
-            return ['status' => false, 'message' => 'Meta inválida: informe apenas números.'];
-        }
-
-        $valor = (float) $valor;
-        if ($valor < 0 || $valor > 1) {
-            return ['status' => false, 'message' => 'A meta deve ficar entre 0 e 1 (0,015 = 1,50%).'];
-        }
-
-        $normalizadas[] = round($valor, 6);
-    }
-
-    $todas = lerMetasProvisorias();
-    $todas[(string) $ano] = $normalizadas;
-
-    $gravou = file_put_contents(
-        arquivoMetasProvisorias(),
-        json_encode($todas, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
-        LOCK_EX
-    );
-
-    if ($gravou === false) {
-        error_log('Falha ao gravar as metas provisorias em ' . arquivoMetasProvisorias(), 0);
-        return ['status' => false, 'message' => 'Não foi possível gravar as metas. Verifique a permissão de escrita da pasta.'];
-    }
-
-    return [
-        'status'  => true,
-        'message' => 'Metas salvas.',
-        'dados'   => ConsultarMeta($empresa, $ano)
-    ];
+    return $resposta;
 }
 
 function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal,$textoAvancado)

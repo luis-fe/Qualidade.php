@@ -128,22 +128,40 @@ function agregar(linhas, dim) {
         .sort((a, b) => b.qtd - a.qtd);
 }
 
-function alternarFiltro(dim, valor) {
+/**
+ * Regras de seleção, como no Power BI:
+ *   clique simples  -> substitui o cruzamento pelo valor clicado
+ *   clicar de novo  -> desfaz todos os filtros
+ *   Ctrl + clique   -> combina valores, somando ao que já está selecionado
+ *                      (e, no valor já selecionado, tira só ele)
+ */
+function alternarFiltro(dim, valor, acumular = false) {
     const selecao = ESTADO.filtros[dim];
+    const jaSelecionado = Boolean(selecao && selecao.has(valor));
 
-    // Como no Power BI: clicar de novo no que já está selecionado desfaz o
-    // cruzamento inteiro, e não apenas o filtro daquela dimensão
-    if (selecao && selecao.has(valor)) {
+    if (acumular) {
+        if (jaSelecionado) {
+            removerFiltro(dim, valor);
+            return;
+        }
+
+        if (selecao) {
+            selecao.add(valor);
+        } else {
+            ESTADO.filtros[dim] = new Set([valor]);
+        }
+
+        aplicarFiltros();
+        return;
+    }
+
+    if (jaSelecionado) {
         limparFiltros();
         return;
     }
 
-    if (selecao) {
-        selecao.add(valor);
-    } else {
-        ESTADO.filtros[dim] = new Set([valor]);
-    }
-
+    // Sem Ctrl não há combinação: o que havia antes é descartado
+    ESTADO.filtros = { [dim]: new Set([valor]) };
     aplicarFiltros();
 }
 
@@ -478,22 +496,40 @@ const serieDe = (dados) => [{
     data: dados.map((item) => ({ x: item.rotulo, y: item.qtd }))
 }];
 
+/**
+ * Estado do Ctrl no último clique. O ApexCharts não garante repassar o
+ * evento nativo para todos os seus callbacks, então o mousedown na fase de
+ * captura é a fonte confiável — e é lido antes do setTimeout, senão o
+ * usuário já teria soltado a tecla.
+ */
+let ctrlNoUltimoClique = false;
+document.addEventListener('mousedown', (evento) => {
+    ctrlNoUltimoClique = Boolean(evento.ctrlKey || evento.metaKey);
+}, true);
+
+const comCtrl = (evento) =>
+    Boolean((evento && (evento.ctrlKey || evento.metaKey)) || ctrlNoUltimoClique);
+
 const cliqueNaBarra = (dim, dados) => ({
     dataPointSelection: (evento, contexto, config) => {
         const item = dados[config.dataPointIndex];
         if (!item) return;
 
+        const acumular = comCtrl(evento);
+
         // Sai do handler antes de redesenhar. aplicarFiltros() destrói e
         // remonta os gráficos — inclusive este, que ainda está no meio do
         // processamento do próprio clique dentro do ApexCharts.
-        setTimeout(() => alternarFiltro(dim, item.rotulo), 0);
+        setTimeout(() => alternarFiltro(dim, item.rotulo, acumular), 0);
     },
     // Clique no rótulo do eixo seleciona a mesma categoria
     xAxisLabelClick: (evento, contexto, config) => {
         const item = dados[config.labelIndex];
         if (!item) return;
 
-        setTimeout(() => alternarFiltro(dim, item.rotulo), 0);
+        const acumular = comCtrl(evento);
+
+        setTimeout(() => alternarFiltro(dim, item.rotulo, acumular), 0);
     }
 });
 

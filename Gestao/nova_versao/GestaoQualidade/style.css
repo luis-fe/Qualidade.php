@@ -509,7 +509,7 @@ label {
 
 /* Dica só enquanto nenhum filtro está aplicado */
 .chips-filtros:empty::before {
-  content: "Dica: clique nas barras dos gráficos para cruzar os filtros.";
+  content: "Dica: clique numa barra para filtrar. Ctrl + clique combina mais de um valor.";
   font-size: .75rem;
   color: var(--texto-suave);
   font-style: italic;
