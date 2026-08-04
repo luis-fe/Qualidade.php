@@ -96,7 +96,17 @@ include_once('../../../templates/headerGestao.php');
           </div>
           <div class="leitura">
             <span class="leitura-rotulo">Meta</span>
-            <span class="leitura-valor leitura-valor--meta" id="indiceMeta">1,50%</span>
+            <div class="leitura-linha">
+              <span class="leitura-valor leitura-valor--meta" id="indiceMeta">1,50%</span>
+              <button type="button"
+                      class="btn-meta"
+                      id="btnAbrirMetas"
+                      title="Informar as metas mensais"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalMetas">
+                <i class="bi bi-card-checklist"></i>
+              </button>
+            </div>
           </div>
           <div class="leitura">
             <span class="leitura-rotulo">Desvio</span>
@@ -124,21 +134,21 @@ include_once('../../../templates/headerGestao.php');
 
     <div class="grafico grafico--40">
       <div class="painel-titulo">
-        <i class="bi bi-bar-chart-fill"></i>
-        <h2>Defeitos por Motivo</h2>
-      </div>
-      <div class="card-body p-2 rolagem-suave" style="overflow-x: auto;">
-        <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
-      </div>
-    </div>
-
-    <div class="grafico grafico--60">
-      <div class="painel-titulo">
         <i class="bi bi-people-fill"></i>
         <h2>Defeitos por Terceirizados</h2>
       </div>
       <div class="card-body p-2">
         <div id="graficoTerceirizados" style="width: 100%; height: 300px;"></div>
+      </div>
+    </div>
+
+    <div class="grafico grafico--60">
+      <div class="painel-titulo">
+        <i class="bi bi-bar-chart-fill"></i>
+        <h2>Defeitos por Motivo</h2>
+      </div>
+      <div class="card-body p-2 rolagem-suave" style="overflow-x: auto;">
+        <div id="graficoBarras" style="width: 100%; height: 300px;"></div>
       </div>
     </div>
 
@@ -203,6 +213,59 @@ include_once('../../../templates/headerGestao.php');
         </div>
     </div>
 
+</div>
+
+<!-- ============================================================
+     Modal — metas mensais de 2ª Qualidade
+     Os meses são desenhados pelo script a partir do retorno da API,
+     então a lista de meses vem sempre do backend.
+     ============================================================ -->
+<div class="modal fade" id="modalMetas" tabindex="-1" aria-labelledby="modalMetasTitulo" aria-hidden="true">
+  <!-- sem modal-dialog-scrollable: o <form> envolve corpo e rodapé e quebraria
+       o cálculo de altura do Bootstrap, cortando os campos em telas baixas -->
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content modal-metas">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalMetasTitulo">
+          <i class="bi bi-card-checklist"></i> Metas de 2ª Qualidade
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <form id="formMetas" novalidate>
+
+        <div class="modal-body">
+
+          <div class="metas-topo">
+            <div class="campo-filtro">
+              <label for="metaAno">Ano</label>
+              <select id="metaAno" class="form-select"></select>
+            </div>
+            <p class="metas-ajuda">
+              Informe a meta de cada mês em percentual. Ex.: <strong>1,50</strong> para 1,50%.
+            </p>
+          </div>
+
+          <div class="metas-grade" id="metasGrade"></div>
+
+          <p class="metas-aviso" id="metasAviso" role="alert"></p>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancelar" data-bs-dismiss="modal">
+            <i class="bi bi-x-lg"></i> Cancelar
+          </button>
+          <button type="submit" class="btn btn-geral" id="btnSalvarMetas">
+            <i class="bi bi-check2"></i> Salvar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
 </div>
 
 <?php

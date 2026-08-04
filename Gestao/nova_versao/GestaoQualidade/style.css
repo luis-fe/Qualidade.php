@@ -209,6 +209,126 @@ label {
   text-decoration-color: var(--azul-claro-2);
 }
 
+/* Valor da meta + atalho para o formulário de metas mensais */
+.leitura-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn-meta {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-sm);
+  background: var(--branco);
+  color: var(--azul-claro);
+  font-size: .9rem;
+  line-height: 1;
+  transition: color var(--transicao), border-color var(--transicao), transform var(--transicao);
+}
+
+.btn-meta:hover,
+.btn-meta:focus-visible {
+  color: var(--azul-escuro);
+  border-color: var(--azul-claro-3);
+  transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------
+   Modal das metas mensais
+   ------------------------------------------------------------ */
+.modal-metas {
+  border: none;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-md);
+}
+
+.modal-metas .modal-header {
+  border-bottom: 1px solid var(--borda);
+  background: var(--azul-nevoa);
+  border-radius: var(--raio) var(--raio) 0 0;
+}
+
+.modal-metas .modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--azul-escuro);
+}
+
+.modal-metas .modal-title i {
+  margin-right: 6px;
+  color: var(--azul-claro);
+}
+
+.modal-metas .modal-footer {
+  border-top: 1px solid var(--borda);
+}
+
+.metas-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.metas-topo .campo-filtro {
+  flex: 0 0 130px;
+}
+
+.metas-ajuda {
+  flex: 1 1 220px;
+  margin: 0 0 4px;
+  font-size: .78rem;
+  color: var(--texto-suave);
+}
+
+/* Quatro colunas em telas largas; o auto-fit reduz sozinho no celular */
+.metas-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.meta-mes label {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.metas-aviso {
+  margin: 12px 0 0;
+  min-height: 1rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #b02a37;
+}
+
+.btn-cancelar {
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-sm);
+  background: var(--branco);
+  color: var(--texto-suave);
+  padding: .5rem 1.1rem;
+  font-size: .875rem;
+  font-weight: 600;
+}
+
+.btn-cancelar:hover,
+.btn-cancelar:focus {
+  color: var(--azul-escuro);
+  border-color: var(--azul-claro-3);
+}
+
+.btn-cancelar i {
+  margin-right: 4px;
+}
+
 /* Botão principal */
 .btn-geral {
   background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-escuro-3) 100%);

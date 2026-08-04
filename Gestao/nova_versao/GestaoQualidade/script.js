@@ -68,6 +68,7 @@ const DIMENSOES = {
 const SEM_VALOR = '(não informado)';
 
 // Meta do índice de 2ª qualidade, em %. É o limite de preenchimento do medidor.
+// Usada enquanto a API de metas não devolve nada para o mês em tela.
 const META_2QUALIDADE = 1.5;
 
 const ESTADO = {
@@ -75,7 +76,8 @@ const ESTADO = {
     base: {},      // agregados vindos da API — retrato sem nenhum filtro
     totais: { pecas: 0, segundaQualidade: 0 },
     filtros: {},   // dimensao -> Set de valores selecionados
-    graficos: {}   // seletor -> instância ApexCharts em tela
+    graficos: {},  // seletor -> instância ApexCharts em tela
+    metas: null    // { ano, meses: [...], valores: [...] } — frações, 0.015 = 1,50%
 };
 
 // Mesma regra de conversão usada no rodapé da tabela, para os totais baterem
@@ -198,6 +200,181 @@ function renderizarChips() {
     }
 
     caixa.html(chips.join(''));
+}
+
+
+/* ============================================================
+   Metas mensais de 2ª Qualidade
+
+   A API guarda a meta como fração (0.015 = 1,50%); na tela e no
+   formulário o valor aparece em percentual, que é como a área usa.
+   O medidor considera a meta do mês da data final do período.
+   ============================================================ */
+const anoDaDataFim = () => {
+    const fim = $('#dataFim').val();
+    return fim ? Number(fim.slice(0, 4)) : new Date().getFullYear();
+};
+
+const mesDaDataFim = () => {
+    const fim = $('#dataFim').val();
+    return fim ? Number(fim.slice(5, 7)) - 1 : new Date().getMonth();
+};
+
+// Meta em % aplicada ao medidor. Cai no padrão se o ano em tela não
+// for o carregado ou se a API não trouxer o mês.
+function metaVigente() {
+    const metas = ESTADO.metas;
+    if (!metas || metas.ano !== anoDaDataFim()) return META_2QUALIDADE;
+
+    const valor = metas.valores[mesDaDataFim()];
+    return typeof valor === 'number' && !isNaN(valor) ? valor * 100 : META_2QUALIDADE;
+}
+
+// Aceita "1,50" e "1.50": os campos são de texto justamente para não
+// depender do separador decimal que cada navegador aceita no type=number
+const paraNumero = (texto) => {
+    const limpo = String(texto).trim().replace(',', '.');
+    if (limpo === '') return NaN;
+    return Number(limpo);
+};
+
+const paraCampoPercentual = (fracao) =>
+    (Number(fracao) * 100).toFixed(2).replace('.', ',');
+
+const Consultar_Meta = async (ano) => {
+    try {
+        const data = await $.ajax({
+            type: 'GET',
+            url: 'requests.php',
+            dataType: 'json',
+            data: { acao: 'Consultar_Meta', ano: ano }
+        });
+
+        ESTADO.metas = {
+            ano: Number(data.AnoMeta),
+            meses: Array.isArray(data.Meses) ? data.Meses : [],
+            valores: Array.isArray(data.Meta) ? data.Meta.map(Number) : []
+        };
+    } catch (error) {
+        console.error('Erro ao consultar as metas:', error);
+        ESTADO.metas = null;
+    }
+
+    return ESTADO.metas;
+};
+
+// Anos oferecidos no formulário: o anterior, o corrente e o seguinte
+function preencherAnosMeta() {
+    const atual = anoDaDataFim();
+    const opcoes = [atual - 1, atual, atual + 1]
+        .map((ano) => `<option value="${ano}">${ano}</option>`)
+        .join('');
+
+    $('#metaAno').html(opcoes).val(String(atual));
+}
+
+function avisoMetas(mensagem) {
+    $('#metasAviso').text(mensagem || '');
+}
+
+function renderizarCamposMeta(metas) {
+    if (!metas || !metas.meses.length) {
+        $('#metasGrade').html(semDados('Não foi possível carregar as metas'));
+        return;
+    }
+
+    const campos = metas.meses.map((mes, indice) => `
+        <div class="meta-mes">
+          <label for="meta-${indice}">${escaparHtml(mes)}</label>
+          <div class="input-group input-group-sm">
+            <input type="text"
+                   class="form-control campo-meta"
+                   id="meta-${indice}"
+                   inputmode="decimal"
+                   autocomplete="off"
+                   data-mes="${escaparHtml(mes)}"
+                   value="${paraCampoPercentual(metas.valores[indice] ?? 0)}">
+            <span class="input-group-text">%</span>
+          </div>
+        </div>`).join('');
+
+    $('#metasGrade').html(campos);
+}
+
+// Carrega o ano escolhido e desenha os 12 campos
+async function carregarFormularioMetas(ano) {
+    avisoMetas('');
+    $('#metasGrade').html('<div class="sem-dados"><i class="bi bi-hourglass-split"></i>Carregando…</div>');
+    renderizarCamposMeta(await Consultar_Meta(ano));
+}
+
+async function salvarMetas(evento) {
+    evento.preventDefault();
+
+    const ano = Number($('#metaAno').val());
+    const meses = [];
+    const valores = [];
+    let erro = '';
+
+    $('#metasGrade .campo-meta').each(function () {
+        const percentual = paraNumero($(this).val());
+
+        if (isNaN(percentual) || percentual < 0 || percentual > 100) {
+            erro = erro || `Meta inválida em ${$(this).attr('data-mes')}: informe um percentual entre 0 e 100.`;
+            return;
+        }
+
+        meses.push($(this).attr('data-mes'));
+        valores.push(percentual / 100);
+    });
+
+    if (erro) {
+        avisoMetas(erro);
+        return;
+    }
+
+    if (valores.length !== 12) {
+        avisoMetas('Preencha a meta dos 12 meses.');
+        return;
+    }
+
+    const botao = $('#btnSalvarMetas').prop('disabled', true);
+
+    try {
+        const resposta = await $.ajax({
+            type: 'POST',
+            url: 'requests.php',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                acao: 'Salvar_Meta',
+                dados: { AnoMeta: ano, Meses: meses, Meta: valores }
+            })
+        });
+
+        if (!resposta || resposta.status !== true) {
+            avisoMetas((resposta && resposta.message) || 'Não foi possível salvar as metas.');
+            return;
+        }
+
+        // Usa o que o backend confirmou, não o que foi digitado
+        const salvas = resposta.dados || {};
+        ESTADO.metas = {
+            ano: Number(salvas.AnoMeta ?? ano),
+            meses: Array.isArray(salvas.Meses) ? salvas.Meses : meses,
+            valores: Array.isArray(salvas.Meta) ? salvas.Meta.map(Number) : valores
+        };
+
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('modalMetas')).hide();
+
+        // Redesenha o medidor com a meta do mês em tela
+        renderizarGrafico(numero($('#totalPecas2Qualidade').text()), ESTADO.totais.pecas);
+    } catch (error) {
+        console.error('Erro ao salvar as metas:', error);
+        avisoMetas('Erro de comunicação ao salvar as metas.');
+    } finally {
+        botao.prop('disabled', false);
+    }
 }
 
 
@@ -336,6 +513,16 @@ $(document).ready(async () => {
     });
     $(document).on('click', '#limparFiltros', limparFiltros);
 
+    // Formulário de metas mensais
+    $('#modalMetas').on('show.bs.modal', async () => {
+        preencherAnosMeta();
+        await carregarFormularioMetas($('#metaAno').val());
+    });
+    $('#metaAno').on('change', function () {
+        carregarFormularioMetas($(this).val());
+    });
+    $('#formMetas').on('submit', salvarMetas);
+
     atualizar();
 });
 
@@ -350,6 +537,7 @@ async function atualizar(){
     // Nova consulta = novo conjunto de dados: os cruzamentos anteriores caem
     ESTADO.filtros = {};
 
+    await Consultar_Meta(anoDaDataFim());
     await Cosultar_Qualidade();
     await Consultar_Motivos(campoBusca);
     await Consultar_defeito_baseTecido(campoBusca);
@@ -594,14 +782,17 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
     const totalPecas = numero(totalPecasBaixadas);
     const pecas2Qualidade = numero(pecasComMotivo);
 
+    // Meta do mês da data final; na falta dela, a meta padrão da tela
+    const meta = metaVigente();
+
     // Evita divisão por zero
     const indice = totalPecas > 0 ? (pecas2Qualidade / totalPecas) * 100 : 0;
-    const acimaDaMeta = indice > META_2QUALIDADE;
-    const preenchimento = Math.min((indice / META_2QUALIDADE) * 100, 100);
-    const desvio = indice - META_2QUALIDADE;
+    const acimaDaMeta = indice > meta;
+    const preenchimento = meta > 0 ? Math.min((indice / meta) * 100, 100) : 0;
+    const desvio = indice - meta;
 
     $('#indiceRealizado').text(percentual(indice));
-    $('#indiceMeta').text(percentual(META_2QUALIDADE));
+    $('#indiceMeta').text(percentual(meta));
     $('#indiceDesvio')
         .text((desvio >= 0 ? '+' : '−') + Math.abs(desvio).toFixed(2).replace('.', ',') + ' p.p.')
         .toggleClass('leitura-valor--acima', acimaDaMeta);
@@ -623,7 +814,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
             sparkline: { enabled: false }
         },
         series: [preenchimento],
-        labels: [`Meta ${percentual(META_2QUALIDADE)}`],
+        labels: [`Meta ${percentual(meta)}`],
         colors: [corBase],
         fill: {
             type: 'gradient',

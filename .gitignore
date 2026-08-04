@@ -1,1 +1,4 @@
 /ambiente.env
+
+# Metas de 2a Qualidade gravadas em tempo de execucao (armazenamento provisorio)
+/Gestao/nova_versao/GestaoQualidade/metas_provisorias.json
