@@ -246,6 +246,7 @@ include_once('../../../templates/headerGestao.php');
             </div>
             <p class="metas-ajuda">
               Informe a meta de cada mês em percentual. Ex.: <strong>1,50</strong> para 1,50%.
+              A <strong>média acumulada</strong> é calculada de janeiro até o mês e não é gravada.
             </p>
           </div>
 

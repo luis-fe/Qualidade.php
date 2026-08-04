@@ -290,11 +290,13 @@ label {
 }
 
 /* Duas colunas por semestre: janeiro a junho à esquerda, julho a dezembro
-   à direita. O auto-flow em coluna é o que preenche na vertical. */
+   à direita. O auto-flow em coluna é o que preenche na vertical.
+   São 7 linhas — 6 meses mais o cabeçalho da coluna; o script reescreve
+   grid-template-rows caso a API mude a quantidade de meses. */
 .metas-grade {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(6, auto);
+  grid-template-rows: repeat(7, auto);
   grid-auto-flow: column;
   gap: 8px 18px;
 }
@@ -317,7 +319,43 @@ label {
 }
 
 .meta-mes .input-group {
-  flex: 0 0 108px;
+  flex: 0 0 104px;
+}
+
+/* Média acumulada: leitura, não campo */
+.meta-acumulada {
+  flex: 0 0 68px;
+  text-align: right;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--azul-escuro);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Títulos das colunas, um por semestre */
+.meta-mes--cabecalho {
+  padding-top: 0;
+  padding-bottom: 2px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.meta-titulo {
+  flex: 1 1 auto;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.meta-titulo--campo {
+  flex: 0 0 104px;
+}
+
+.meta-titulo--acumulada {
+  flex: 0 0 68px;
+  text-align: right;
 }
 
 .meta-mes .form-control {

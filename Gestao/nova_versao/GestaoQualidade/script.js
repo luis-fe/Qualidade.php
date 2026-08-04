@@ -277,6 +277,37 @@ function avisoMetas(mensagem) {
     $('#metasAviso').text(mensagem || '');
 }
 
+const CABECALHO_META = `
+    <div class="meta-mes meta-mes--cabecalho">
+      <span class="meta-titulo">Mês</span>
+      <span class="meta-titulo meta-titulo--campo">Meta</span>
+      <span class="meta-titulo meta-titulo--acumulada">Média acum.</span>
+    </div>`;
+
+/**
+ * Média acumulada de janeiro até cada mês. Mês em branco ou inválido não
+ * entra na conta e aparece como "—", senão uma linha vazia derrubaria a
+ * média de todos os meses seguintes.
+ */
+function atualizarMediasAcumuladas() {
+    let soma = 0;
+    let contados = 0;
+
+    $('#metasGrade .campo-meta').each(function (indice) {
+        const valor = paraNumero($(this).val());
+        const alvo = $(`#meta-acum-${indice}`);
+
+        if (isNaN(valor) || valor < 0) {
+            alvo.text('—');
+            return;
+        }
+
+        soma += valor;
+        contados += 1;
+        alvo.text(percentual(soma / contados));
+    });
+}
+
 function renderizarCamposMeta(metas) {
     if (!metas || !metas.meses.length) {
         $('#metasGrade').html(semDados('Não foi possível carregar as metas'));
@@ -296,9 +327,26 @@ function renderizarCamposMeta(metas) {
                    value="${paraCampoPercentual(metas.valores[indice] ?? 0)}">
             <span class="input-group-text">%</span>
           </div>
-        </div>`).join('');
+          <span class="meta-acumulada"
+                id="meta-acum-${indice}"
+                title="Média das metas de ${escaparHtml(metas.meses[0])} até ${escaparHtml(mes)}">—</span>
+        </div>`);
 
-    $('#metasGrade').html(campos);
+    // Um cabeçalho por coluna: o grid é preenchido na vertical, então a
+    // primeira célula de cada coluna é o título dos campos daquele semestre
+    const metade = Math.ceil(campos.length / 2);
+    const celulas = [
+        CABECALHO_META,
+        ...campos.slice(0, metade),
+        CABECALHO_META,
+        ...campos.slice(metade)
+    ];
+
+    $('#metasGrade')
+        .css('grid-template-rows', `repeat(${metade + 1}, auto)`)
+        .html(celulas.join(''));
+
+    atualizarMediasAcumuladas();
 }
 
 // Carrega o ano escolhido e desenha os 12 campos
@@ -521,6 +569,8 @@ $(document).ready(async () => {
     $('#metaAno').on('change', function () {
         carregarFormularioMetas($(this).val());
     });
+    // Delegado: os campos são recriados a cada troca de ano
+    $(document).on('input', '#metasGrade .campo-meta', atualizarMediasAcumuladas);
     $('#formMetas').on('submit', salvarMetas);
 
     atualizar();
@@ -1187,6 +1237,10 @@ async function renderizarGraficoOrigemAgrupado(dados) {
             width: '100%',
             parentHeightOffset: 0, // sem o respiro extra do Apex, o gráfico fecha no frame
             toolbar: { show: false },
+            // Esconder a barra de ferramentas não desliga o arraste: sem estes
+            // dois, o clique-e-arraste sobre as barras dá zoom no eixo
+            zoom: { enabled: false },
+            selection: { enabled: false },
             dropShadow: { enabled: false },
             events: cliqueNaBarra('origem', dados)
         },
