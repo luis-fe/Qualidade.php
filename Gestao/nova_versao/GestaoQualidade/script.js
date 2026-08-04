@@ -1127,9 +1127,57 @@ async function renderizarGraficoFornecedor(dados) {
 }
 
 
+/**
+ * Altura livre do cartão de Origem. O div é um flex item que estica
+ * (.grafico--preenche), então o clientHeight já é a sobra do frame.
+ * O piso de 180px cobre o caso do painel ainda não ter sido medido.
+ */
+function alturaGraficoOrigem() {
+    const elemento = document.querySelector('#graficoOrigemAgrupado');
+    if (!elemento) return 180;
+
+    const livre = elemento.clientHeight || (elemento.parentElement ? elemento.parentElement.clientHeight : 0);
+    return Math.max(livre, 180);
+}
+
+/**
+ * Quebra rótulos longos em várias linhas: o ApexCharts desenha uma linha
+ * por item quando o texto do rótulo é um array. Assim "ORIGEM NÃO
+ * IDENTIFICADA" aparece empilhado em vez de inclinado e cortado.
+ */
+function quebrarRotulo(texto, limite = 13, maxLinhas = 3) {
+    const palavras = String(texto).trim().split(/\s+/).filter(Boolean);
+    if (palavras.length === 0) return [''];
+
+    const linhas = [];
+    let atual = '';
+
+    palavras.forEach((palavra) => {
+        const candidata = atual ? `${atual} ${palavra}` : palavra;
+
+        // Palavra sozinha maior que o limite fica inteira na linha
+        if (candidata.length <= limite || !atual) {
+            atual = candidata;
+        } else {
+            linhas.push(atual);
+            atual = palavra;
+        }
+    });
+
+    if (atual) linhas.push(atual);
+
+    if (linhas.length > maxLinhas) {
+        const cortadas = linhas.slice(0, maxLinhas);
+        cortadas[maxLinhas - 1] = `${cortadas[maxLinhas - 1]}…`;
+        return cortadas;
+    }
+
+    return linhas;
+}
+
 async function renderizarGraficoOrigemAgrupado(dados) {
     dados = dados || [];
-    const chartHeight = 180; // altura fixa mais apropriada para barras verticais
+    const chartHeight = alturaGraficoOrigem();
 
     const chartOptions = realce(dados, 'origem', {
         chart: {
@@ -1137,6 +1185,7 @@ async function renderizarGraficoOrigemAgrupado(dados) {
             type: 'bar',
             height: `${chartHeight}px`,
             width: '100%',
+            parentHeightOffset: 0, // sem o respiro extra do Apex, o gráfico fecha no frame
             toolbar: { show: false },
             dropShadow: { enabled: false },
             events: cliqueNaBarra('origem', dados)
@@ -1145,25 +1194,26 @@ async function renderizarGraficoOrigemAgrupado(dados) {
         series: serieDe(dados),
         colors: [CORES.azulClaro],
         fill: FILL_BARRA,
-       xaxis: {
-    type: 'category',
-    labels: {
-        show: true,
-        rotate: -45,
-        rotateAlways: true,
-        trim: false,
-        hideOverlappingLabels: false,
-        style: {
-            fontSize: '10px',
-            fontWeight: 'normal',
-            colors: CORES.textoSuave,
-            textAlign: 'center' // 👈 Centraliza o texto!
-        }
-    },
-    tickPlacement: 'on',
-    axisTicks: { show: false },
-    axisBorder: { show: false }
-},
+        xaxis: {
+            type: 'category',
+            labels: {
+                show: true,
+                // Sem inclinação: o rótulo longo é quebrado em linhas
+                rotate: 0,
+                rotateAlways: false,
+                trim: false,
+                hideOverlappingLabels: false,
+                style: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                    colors: CORES.textoSuave
+                },
+                formatter: (valor) => quebrarRotulo(valor)
+            },
+            tickPlacement: 'on',
+            axisTicks: { show: false },
+            axisBorder: { show: false }
+        },
         yaxis: {
             title: {
         text: undefined // 👈 remove o título do eixo Y
@@ -1188,7 +1238,19 @@ async function renderizarGraficoOrigemAgrupado(dados) {
             yaxis: { lines: { show: true } },
             padding: { bottom: 0 }
         },
-        tooltip: { y: { formatter: (val) => Number(val).toLocaleString('pt-BR') } },
+        tooltip: {
+            // Sem um formatter próprio, o título do tooltip herdaria o do eixo
+            // e mostraria o array de linhas em vez do nome da origem
+            x: {
+                formatter: (valor, opcoes) => {
+                    const indice = (opcoes && typeof opcoes.dataPointIndex === 'number') ? opcoes.dataPointIndex : -1;
+                    const item = dados[indice];
+                    if (item) return item.rotulo;
+                    return Array.isArray(valor) ? valor.join(' ') : valor;
+                }
+            },
+            y: { formatter: (val) => Number(val).toLocaleString('pt-BR') }
+        },
         // 👇 Aqui vem a mágica
         dataLabels: {
             enabled: true,
@@ -1215,6 +1277,18 @@ async function renderizarGraficoOrigemAgrupado(dados) {
 
     montarGrafico('#graficoOrigemAgrupado', dados, chartOptions);
 }
+
+// A altura do painel de Origem vem do frame, então acompanha o redimensionamento
+let ajusteAlturaOrigem = null;
+window.addEventListener('resize', () => {
+    const grafico = ESTADO.graficos['#graficoOrigemAgrupado'];
+    if (!grafico) return;
+
+    clearTimeout(ajusteAlturaOrigem);
+    ajusteAlturaOrigem = setTimeout(() => {
+        grafico.updateOptions({ chart: { height: `${alturaGraficoOrigem()}px` } }, false, false);
+    }, 200);
+});
 
 
 

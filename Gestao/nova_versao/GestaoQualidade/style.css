@@ -289,16 +289,53 @@ label {
   color: var(--texto-suave);
 }
 
-/* Quatro colunas em telas largas; o auto-fit reduz sozinho no celular */
+/* Duas colunas por semestre: janeiro a junho à esquerda, julho a dezembro
+   à direita. O auto-flow em coluna é o que preenche na vertical. */
 .metas-grade {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  gap: 8px 18px;
+}
+
+/* Rótulo à esquerda e campo à direita: em célula larga, o rótulo em cima
+   deixaria o campo esticado e a lista desalinhada */
+.meta-mes {
+  display: flex;
+  align-items: center;
   gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-sm);
+  background: var(--azul-nevoa);
 }
 
 .meta-mes label {
-  display: block;
-  margin-bottom: 2px;
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+.meta-mes .input-group {
+  flex: 0 0 108px;
+}
+
+.meta-mes .form-control {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Estados de carregando/erro ocupam a linha inteira, não uma célula */
+.metas-grade .sem-dados {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 575.98px) {
+  .metas-grade {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
 }
 
 .metas-aviso {
@@ -599,6 +636,32 @@ h2 {
 
 .grafico .card-body {
   background: var(--branco);
+}
+
+/* Painel cujo gráfico deve ocupar toda a altura do frame. A linha já é
+   esticada pelo flex do container; aqui o corpo herda essa sobra em vez
+   de deixar espaço vazio embaixo do gráfico.
+   min-height:0 impede que o conteúdo force o cartão a crescer. */
+.grafico--preenche {
+  display: flex;
+  flex-direction: column;
+}
+
+.grafico--preenche > .painel-titulo,
+.grafico--preenche > .card-header {
+  flex: 0 0 auto;
+}
+
+.grafico--preenche > .card-body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.grafico--preenche > .card-body > div {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
 }
 
 /* Barra de rolagem discreta nos painéis */

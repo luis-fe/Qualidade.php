@@ -117,14 +117,16 @@ include_once('../../../templates/headerGestao.php');
       </div>
     </section>
 
-    <!-- Direita (60%): Defeitos por Origem -->
-    <div class="grafico grafico--60">
+    <!-- Direita (60%): Defeitos por Origem.
+         grafico--preenche faz o corpo esticar até o fim do frame, para o
+         gráfico aproveitar toda a altura da linha. -->
+    <div class="grafico grafico--60 grafico--preenche">
       <div class="painel-titulo">
         <i class="bi bi-diagram-3-fill"></i>
         <h2>Defeitos por Origem</h2>
       </div>
       <div class="card-body p-2">
-        <div id="graficoOrigemAgrupado" style="width: 100%;"></div>
+        <div id="graficoOrigemAgrupado"></div>
       </div>
     </div>
 
