@@ -77,7 +77,7 @@ const ESTADO = {
     totais: { pecas: 0, segundaQualidade: 0 },
     filtros: {},   // dimensao -> Set de valores selecionados
     graficos: {},  // seletor -> instância ApexCharts em tela
-    metas: null    // { ano, meses: [...], valores: [...] } — frações, 0.015 = 1,50%
+    metas: {}      // ano -> { meses: [...], valores: [...] } — frações, 0.015 = 1,50%
 };
 
 // Mesma regra de conversão usada no rodapé da tabela, para os totais baterem
@@ -241,26 +241,82 @@ function renderizarChips() {
 
    A API guarda a meta como fração (0.015 = 1,50%); na tela e no
    formulário o valor aparece em percentual, que é como a área usa.
-   O medidor considera a meta do mês da data final do período.
+   A meta do medidor acompanha o período filtrado: um mês só usa a meta
+   daquele mês; vários meses usam a média das metas dos meses cobertos.
    ============================================================ */
 const anoDaDataFim = () => {
     const fim = $('#dataFim').val();
     return fim ? Number(fim.slice(0, 4)) : new Date().getFullYear();
 };
 
-const mesDaDataFim = () => {
-    const fim = $('#dataFim').val();
-    return fim ? Number(fim.slice(5, 7)) - 1 : new Date().getMonth();
+// Teto de meses considerados: uma data inicial digitada muito antiga
+// geraria uma requisição por ano até o presente
+const MAX_MESES_PERIODO = 60;
+
+const mesDeCampo = (valor, padrao) => {
+    if (!valor) return padrao;
+    return { ano: Number(valor.slice(0, 4)), mes: Number(valor.slice(5, 7)) - 1 };
 };
 
-// Meta em % aplicada ao medidor. Cai no padrão se o ano em tela não
-// for o carregado ou se a API não trouxer o mês.
-function metaVigente() {
-    const metas = ESTADO.metas;
-    if (!metas || metas.ano !== anoDaDataFim()) return META_2QUALIDADE;
+/**
+ * Meses cobertos pelo período, do mais antigo ao mais recente, cada um
+ * como { ano, mes } (mes de 0 a 11). Contar em (ano * 12 + mes) resolve
+ * sozinho o período que atravessa a virada do ano.
+ */
+function mesesDoPeriodo() {
+    const hoje = new Date();
+    const padrao = { ano: hoje.getFullYear(), mes: hoje.getMonth() };
 
-    const valor = metas.valores[mesDaDataFim()];
-    return typeof valor === 'number' && !isNaN(valor) ? valor * 100 : META_2QUALIDADE;
+    const inicio = mesDeCampo($('#dataInicio').val(), padrao);
+    const fim = mesDeCampo($('#dataFim').val(), padrao);
+
+    // Período invertido não deve devolver lista vazia
+    const de = Math.min(inicio.ano * 12 + inicio.mes, fim.ano * 12 + fim.mes);
+    const ate = Math.max(inicio.ano * 12 + inicio.mes, fim.ano * 12 + fim.mes);
+
+    const meses = [];
+    for (let indice = de; indice <= ate && meses.length < MAX_MESES_PERIODO; indice++) {
+        meses.push({ ano: Math.floor(indice / 12), mes: indice % 12 });
+    }
+
+    return meses;
+}
+
+const metaDoMes = (ano, mes) => {
+    const doAno = ESTADO.metas[ano];
+    const valor = doAno ? doAno.valores[mes] : undefined;
+    return (typeof valor === 'number' && !isNaN(valor)) ? valor : null;
+};
+
+// Meses do período que têm meta carregada
+const mesesComMeta = () =>
+    mesesDoPeriodo().filter(({ ano, mes }) => metaDoMes(ano, mes) !== null);
+
+/**
+ * Meta em % aplicada ao medidor: a do mês filtrado ou a média das metas
+ * dos meses do período. Sem nenhuma meta carregada, usa o padrão da tela.
+ */
+function metaVigente() {
+    const meses = mesesComMeta();
+    if (meses.length === 0) return META_2QUALIDADE;
+
+    const soma = meses.reduce((total, { ano, mes }) => total + metaDoMes(ano, mes) * 100, 0);
+    return soma / meses.length;
+}
+
+// Texto do tooltip da leitura de meta, deixando claro o que compõe o valor
+function descricaoMetaVigente() {
+    const meses = mesesComMeta();
+
+    if (meses.length === 0) {
+        return `Nenhum mês do período tem meta cadastrada. Exibindo o padrão de ${percentual(META_2QUALIDADE)}.`;
+    }
+
+    const nomes = meses.map(({ ano, mes }) => `${ESTADO.metas[ano].meses[mes] || mes + 1}/${ano}`);
+
+    return nomes.length === 1
+        ? `Meta de ${nomes[0]}.`
+        : `Média das metas de ${nomes.join(', ')}.`;
 }
 
 // Aceita "1,50" e "1.50": os campos são de texto justamente para não
@@ -283,17 +339,27 @@ const Consultar_Meta = async (ano) => {
             data: { acao: 'Consultar_Meta', ano: ano }
         });
 
-        ESTADO.metas = {
-            ano: Number(data.AnoMeta),
+        const chave = Number(data.AnoMeta) || Number(ano);
+        ESTADO.metas[chave] = {
             meses: Array.isArray(data.Meses) ? data.Meses : [],
             valores: Array.isArray(data.Meta) ? data.Meta.map(Number) : []
         };
+
+        return { ano: chave, ...ESTADO.metas[chave] };
     } catch (error) {
         console.error('Erro ao consultar as metas:', error);
-        ESTADO.metas = null;
+        delete ESTADO.metas[Number(ano)];
+        return null;
     }
+};
 
-    return ESTADO.metas;
+// Carrega as metas de todos os anos que o período atravessa
+const Consultar_Metas_Periodo = async () => {
+    const anos = [...new Set(mesesDoPeriodo().map(({ ano }) => ano))];
+
+    for (const ano of anos) {
+        await Consultar_Meta(ano);
+    }
 };
 
 // Anos oferecidos no formulário: o anterior, o corrente e o seguinte
@@ -440,8 +506,7 @@ async function salvarMetas(evento) {
 
         // Usa o que o backend confirmou, não o que foi digitado
         const salvas = resposta.dados || {};
-        ESTADO.metas = {
-            ano: Number(salvas.AnoMeta ?? ano),
+        ESTADO.metas[Number(salvas.AnoMeta ?? ano)] = {
             meses: Array.isArray(salvas.Meses) ? salvas.Meses : meses,
             valores: Array.isArray(salvas.Meta) ? salvas.Meta.map(Number) : valores
         };
@@ -638,7 +703,7 @@ async function atualizar(){
     // Nova consulta = novo conjunto de dados: os cruzamentos anteriores caem
     ESTADO.filtros = {};
 
-    await Consultar_Meta(anoDaDataFim());
+    await Consultar_Metas_Periodo();
     await Cosultar_Qualidade();
     await Consultar_Motivos(campoBusca);
     await Consultar_defeito_baseTecido(campoBusca);
@@ -883,7 +948,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
     const totalPecas = numero(totalPecasBaixadas);
     const pecas2Qualidade = numero(pecasComMotivo);
 
-    // Meta do mês da data final; na falta dela, a meta padrão da tela
+    // Meta do período filtrado; na falta dela, a meta padrão da tela
     const meta = metaVigente();
 
     // Evita divisão por zero
@@ -893,7 +958,7 @@ const renderizarGrafico = (pecasComMotivo, totalPecasBaixadas) => {
     const desvio = indice - meta;
 
     $('#indiceRealizado').text(percentual(indice));
-    $('#indiceMeta').text(percentual(meta));
+    $('#indiceMeta').text(percentual(meta)).attr('title', descricaoMetaVigente());
     $('#indiceDesvio')
         .text((desvio >= 0 ? '+' : '−') + Math.abs(desvio).toFixed(2).replace('.', ',') + ' p.p.')
         .toggleClass('leitura-valor--acima', acimaDaMeta);
