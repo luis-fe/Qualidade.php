@@ -131,14 +131,29 @@ function agregar(linhas, dim) {
 function alternarFiltro(dim, valor) {
     const selecao = ESTADO.filtros[dim];
 
+    // Como no Power BI: clicar de novo no que já está selecionado desfaz o
+    // cruzamento inteiro, e não apenas o filtro daquela dimensão
     if (selecao && selecao.has(valor)) {
-        selecao.delete(valor);
-        if (selecao.size === 0) delete ESTADO.filtros[dim];
-    } else if (selecao) {
+        limparFiltros();
+        return;
+    }
+
+    if (selecao) {
         selecao.add(valor);
     } else {
         ESTADO.filtros[dim] = new Set([valor]);
     }
+
+    aplicarFiltros();
+}
+
+// Usada pelos chips: tira só aquele valor, sem mexer nos outros recortes
+function removerFiltro(dim, valor) {
+    const selecao = ESTADO.filtros[dim];
+    if (!selecao) return;
+
+    selecao.delete(valor);
+    if (selecao.size === 0) delete ESTADO.filtros[dim];
 
     aplicarFiltros();
 }
@@ -557,7 +572,7 @@ $(document).ready(async () => {
 
     // Delegado: sobrevive à recriação dos chips a cada filtro
     $(document).on('click', '.chip-filtro', function () {
-        alternarFiltro($(this).attr('data-dim'), $(this).attr('data-valor'));
+        removerFiltro($(this).attr('data-dim'), $(this).attr('data-valor'));
     });
     $(document).on('click', '#limparFiltros', limparFiltros);
 
