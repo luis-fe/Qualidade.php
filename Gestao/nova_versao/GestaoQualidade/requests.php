@@ -61,6 +61,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $textoAvancado = $_GET['campoBusca'];
                     jsonResponse(defeitos_porOrigem('1', $dataInicial, $dataFinal,$textoAvancado));
                     break;
+                case 'Consultar_Meta':
+                    $ano = $_GET['ano'] ?? date('Y');
+                    jsonResponse(ConsultarMeta('1', $ano));
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -228,6 +232,28 @@ function defeitos_porOrigem($empresa, $dataInicial, $dataFinal,$textoAvancado)
     curl_close($ch);
 
     return json_decode($apiResponse, true);
+}
+
+/**
+ * PROVISÓRIO — meta mensal de 2ª Qualidade.
+ * Ainda não existe endpoint no backend, então os valores são gerados aqui.
+ * Quando a API oficial subir, trocar o corpo desta função pelo curl
+ * (mesmo padrão das demais) mantendo o formato de retorno.
+ */
+function ConsultarMeta($empresa, $ano)
+{
+    $meses = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+
+    $metaPadrao = 0.015; // 1,50% — mesmo valor exibido no painel de índice
+
+    return [
+        'AnoMeta' => (int) $ano,
+        'Meses'   => $meses,
+        'Meta'    => array_fill(0, count($meses), $metaPadrao)
+    ];
 }
 
 function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal,$textoAvancado)
