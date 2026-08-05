@@ -19,6 +19,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (isset($_GET["acao"])) {
             $acao = $_GET["acao"];
             switch ($acao) {
+                case 'Consultar_Motivos':
+                    jsonResponse(ConsultarMotivos('1'));
+                    break;
                 case 'Consultar_Apontamentos':
                     $dataInicial = $_GET['dataInicial'] ?? date('Y-m-d');
                     $dataFinal = $_GET['dataFinal'] ?? date('Y-m-d');
@@ -51,23 +54,28 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 }
 
 /**
- * Grava o apontamento de qualidade da OP.
- * Espera em $dados: op (string), dataApontamento (Y-m-d), responsavel
- * (string) e fotos (lista de data URLs "data:image/jpeg;base64,...",
- * pode vir vazia).
+ * Grava um apontamento de qualidade.
+ * Espera em $dados: tipo ('TAG' ou 'OP'), identificacao (a tag lida ou a
+ * OP/referência digitada), dataApontamento (Y-m-d), responsavel (string)
+ * e fotos — cada uma com imagem (data URL), motivo e observacao.
  * Retorno: status (bool) e message (string).
  */
 function ApontarQualidade($empresa, $dados)
 {
-    $op = trim((string) ($dados['op'] ?? ''));
+    $tipo = mb_strtoupper(trim((string) ($dados['tipo'] ?? '')), 'UTF-8');
+    $identificacao = mb_strtoupper(trim((string) ($dados['identificacao'] ?? '')), 'UTF-8');
     $dataApontamento = (string) ($dados['dataApontamento'] ?? '');
     // A tela já envia em caixa alta; aqui é garantia de que o nome grave
     // sempre no mesmo formato, venha de onde vier
     $responsavel = mb_strtoupper(trim((string) ($dados['responsavel'] ?? '')), 'UTF-8');
     $fotos = $dados['fotos'] ?? [];
 
-    if ($op === '') {
-        return ['status' => false, 'message' => 'OP não informada.'];
+    if (!in_array($tipo, ['TAG', 'OP'], true)) {
+        return ['status' => false, 'message' => 'Tipo de apontamento inválido.'];
+    }
+
+    if ($identificacao === '') {
+        return ['status' => false, 'message' => $tipo === 'TAG' ? 'Tag não informada.' : 'OP / Referência não informada.'];
     }
 
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dataApontamento)) {
@@ -82,20 +90,35 @@ function ApontarQualidade($empresa, $dados)
         $fotos = [];
     }
 
-    // A tela já envia JPEG reduzido; aqui só o prefixo do data URL é retirado,
-    // para a API receber base64 puro
+    // A tela já envia JPEG reduzido; aqui só o prefixo do data URL é
+    // retirado, para a API receber base64 puro
     $imagens = [];
     foreach ($fotos as $foto) {
-        if (!is_string($foto) || $foto === '') {
+        $imagem = is_array($foto) ? (string) ($foto['imagem'] ?? '') : '';
+
+        if ($imagem === '') {
             continue;
         }
 
-        $imagens[] = preg_replace('#^data:image/[a-z+.-]+;base64,#i', '', $foto);
+        $imagens[] = [
+            'imagem' => preg_replace('#^data:image/[a-z+.-]+;base64,#i', '', $imagem),
+            'motivo' => trim((string) ($foto['motivo'] ?? '')),
+            'observacao' => trim((string) ($foto['observacao'] ?? '')),
+        ];
+    }
+
+    if (count($imagens) === 0) {
+        return ['status' => false, 'message' => 'Nenhuma foto no apontamento.'];
     }
 
     $payload = [
         'empresa' => $empresa,
-        'op' => $op,
+        'tipo' => $tipo,
+        'identificacao' => $identificacao,
+        // Repetido no campo próprio de cada tipo para a API não precisar
+        // interpretar o 'tipo' antes de gravar
+        'tag' => $tipo === 'TAG' ? $identificacao : '',
+        'op' => $tipo === 'OP' ? $identificacao : '',
         'data_apontamento' => $dataApontamento,
         'responsavel' => $responsavel,
         'fotos' => $imagens,
@@ -134,6 +157,71 @@ function ApontarQualidade($empresa, $dados)
     }
 
     return $resposta;
+}
+
+/**
+ * Motivos de 2ª qualidade oferecidos na hora de capturar a foto.
+ * Vem da mesma API que alimenta o painel "Defeitos por Motivo" da Gestão
+ * da Qualidade, que é agregada por período — por isso a janela larga de
+ * 12 meses: motivo que não ocorreu nesse intervalo não aparece na lista.
+ * Retorno: lista de {motivo, qtd}, do mais frequente para o menos.
+ */
+function ConsultarMotivos($empresa)
+{
+    $dataFinal = date('Y-m-d');
+    $dataInicial = date('Y-m-d', strtotime('-12 months'));
+
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/api/MotivosAgrupado?textoAvancado=&data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+        curl_close($ch);
+
+        return ['status' => false, 'message' => 'Não foi possível carregar os motivos.', 'dados' => []];
+    }
+
+    curl_close($ch);
+
+    $lista = json_decode($apiResponse, true);
+
+    if (!is_array($lista)) {
+        return ['status' => false, 'message' => 'Resposta inesperada da API de motivos.', 'dados' => []];
+    }
+
+    // O mesmo motivo pode voltar repetido na agregação; aqui vira lista
+    // única de nomes, somando as quantidades
+    $motivos = [];
+    foreach ($lista as $item) {
+        $nome = trim((string) ($item['motivo2Qualidade'] ?? ''));
+
+        if ($nome === '') {
+            continue;
+        }
+
+        $chave = mb_strtoupper($nome, 'UTF-8');
+
+        if (!isset($motivos[$chave])) {
+            $motivos[$chave] = ['motivo' => $nome, 'qtd' => 0];
+        }
+
+        $motivos[$chave]['qtd'] += (int) ($item['qtd'] ?? 0);
+    }
+
+    $motivos = array_values($motivos);
+    usort($motivos, function ($a, $b) {
+        return $b['qtd'] <=> $a['qtd'];
+    });
+
+    return ['status' => true, 'dados' => $motivos];
 }
 
 function ConsultarApontamentos($empresa, $dataInicial, $dataFinal)

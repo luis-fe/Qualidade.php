@@ -199,10 +199,9 @@ body {
   }
 }
 
-#campoOp {
+#campoIdentificacao {
   font-weight: 700;
   letter-spacing: 1px;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Campo inválido depois de tentar apontar */
@@ -299,6 +298,27 @@ body {
   white-space: nowrap;
 }
 
+.sessao-reler {
+  margin-left: auto;
+  border: 1px solid var(--azul-claro-3);
+  border-radius: 999px;
+  background: var(--azul-suave);
+  color: var(--azul-escuro);
+  padding: .35rem .85rem;
+  font-size: .76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sessao-reler i {
+  margin-right: 4px;
+}
+
+/* Com o "Outra tag" presente é ele que empurra; sem ele, o Encerrar */
+.sessao-reler:not(.oculto) ~ .sessao-encerrar {
+  margin-left: 0;
+}
+
 .sessao-encerrar {
   margin-left: auto;
   border: 1px solid var(--borda);
@@ -344,30 +364,30 @@ body {
 /* ------------------------------------------------------------
    Modal do responsável
    ------------------------------------------------------------ */
-.modal-responsavel {
+.modal-claro {
   border: none;
   border-radius: var(--raio);
   box-shadow: var(--sombra-md);
 }
 
-.modal-responsavel .modal-header {
+.modal-claro .modal-header {
   border-bottom: 1px solid var(--borda);
   background: var(--azul-nevoa);
   border-radius: var(--raio) var(--raio) 0 0;
 }
 
-.modal-responsavel .modal-title {
+.modal-claro .modal-title {
   font-size: .95rem;
   font-weight: 700;
   color: var(--azul-escuro);
 }
 
-.modal-responsavel .modal-title i {
+.modal-claro .modal-title i {
   margin-right: 6px;
   color: var(--azul-claro);
 }
 
-.modal-responsavel label {
+.modal-claro label {
   display: block;
   margin-bottom: 5px;
   color: var(--azul-escuro);
@@ -376,7 +396,7 @@ body {
   letter-spacing: .2px;
 }
 
-.modal-responsavel .form-control {
+.modal-claro .form-control {
   border: 1px solid var(--borda);
   color: var(--texto);
   font-size: 16px;
@@ -384,7 +404,7 @@ body {
   box-shadow: none;
 }
 
-.modal-responsavel .form-control:focus {
+.modal-claro .form-control:focus {
   border-color: var(--azul-claro);
   box-shadow: 0 0 0 .18rem rgba(0, 143, 251, .18);
 }
@@ -397,8 +417,145 @@ body {
   letter-spacing: .5px;
 }
 
-.modal-responsavel .modal-footer {
+.modal-claro .modal-footer {
   border-top: 1px solid var(--borda);
+}
+
+/* Opções do "Como deseja apontar?": alvos grandes, empilhados no
+   celular e lado a lado quando há largura */
+.opcoes-modo {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 480px) {
+  .opcoes-modo {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.opcao-modo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 12px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--azul-nevoa);
+  text-align: center;
+  transition: border-color var(--transicao), background var(--transicao), transform var(--transicao);
+}
+
+.opcao-modo:hover,
+.opcao-modo:focus-visible {
+  border-color: var(--azul-claro);
+  background: var(--azul-suave);
+}
+
+.opcao-modo:active {
+  transform: scale(.98);
+}
+
+.opcao-modo > i {
+  font-size: 1.9rem;
+  color: var(--azul-claro);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.opcao-modo-titulo {
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--azul-escuro);
+}
+
+.opcao-modo-ajuda {
+  font-size: .74rem;
+  line-height: 1.3;
+  color: var(--texto-suave);
+}
+
+/* ------------------------------------------------------------
+   Modal do defeito
+   ------------------------------------------------------------ */
+.previa-foto {
+  display: block;
+  width: 100%;
+  max-height: 130px;
+  object-fit: cover;
+  border-radius: var(--raio-sm);
+  margin-bottom: 12px;
+  background: var(--palco);
+}
+
+.rotulo-observacao {
+  margin-top: 12px;
+}
+
+/* Rolagem própria: a lista de motivos pode passar de trinta itens e não
+   pode empurrar a observação para fora da tela */
+.lista-motivos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 34vh;
+  overflow-y: auto;
+  margin-top: 8px;
+  padding-right: 2px;
+}
+
+.motivo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-sm);
+  background: var(--branco);
+  color: var(--texto);
+  font-size: .86rem;
+  font-weight: 600;
+  text-align: left;
+  transition: border-color var(--transicao), background var(--transicao);
+}
+
+.motivo:hover {
+  border-color: var(--azul-claro-3);
+  background: var(--azul-nevoa);
+}
+
+.motivo.escolhido {
+  border-color: var(--azul-claro);
+  background: var(--azul-suave);
+  color: var(--azul-escuro);
+}
+
+.motivo-nome {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* O check só aparece no item escolhido */
+.motivo::before {
+  content: "\2713";
+  flex: 0 0 auto;
+  width: 18px;
+  color: transparent;
+  font-weight: 700;
+}
+
+.motivo.escolhido::before {
+  color: var(--azul-claro);
+}
+
+.motivo-qtd {
+  flex: 0 0 auto;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
 }
 
 .modal-ajuda {
@@ -605,6 +762,58 @@ body {
   box-shadow: none;
 }
 
+/* ------------------------------------------------------------
+   Mira da leitura de QR Code (só no modo Tag)
+   ------------------------------------------------------------ */
+.mira {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  /* Escurece o vídeo em volta sem escondê-lo: o operador precisa ver
+     o enquadramento para acertar o QR */
+  background: rgba(0, 0, 0, .35);
+}
+
+.mira-alvo {
+  width: min(38vw, 130px);
+  aspect-ratio: 1;
+  border: 3px solid var(--azul-claro-2);
+  border-radius: 14px;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .28);
+  animation: pulsarMira 1.4s ease-in-out infinite;
+}
+
+@keyframes pulsarMira {
+  50% { border-color: var(--branco); }
+}
+
+.mira-texto {
+  margin: 0;
+  color: var(--branco);
+  font-size: .8rem;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+.mira-digitar {
+  border: 1px solid rgba(255, 255, 255, .5);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .45);
+  color: var(--branco);
+  padding: .4rem 1rem;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.mira-digitar i {
+  margin-right: 5px;
+}
+
 /* Piscada branca a cada foto tirada */
 .camera-palco.piscou::after {
   content: "";
@@ -653,11 +862,44 @@ body {
   overflow: hidden;
 }
 
+.foto {
+  width: 84px;
+  height: 84px;
+}
+
 .foto img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Motivo na própria miniatura: é o que diferencia uma foto da outra
+   quando são cinco do mesmo lote */
+.foto-motivo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2px 4px;
+  background: rgba(0, 0, 0, .68);
+  color: var(--branco);
+  font-size: .56rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sem-motivos {
+  margin: 0;
+  padding: 14px 8px;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--texto-suave);
 }
 
 .foto-remover {

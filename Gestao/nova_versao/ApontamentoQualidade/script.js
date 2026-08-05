@@ -14,6 +14,32 @@ const QUALIDADE_JPEG = 0.72;
 const CHAVE_RESPONSAVEL = 'apontamentoQualidade:responsavel';
 const MINIMO_NOME = 3;
 
+// Modos de identificação da peça. Só o Tag usa a câmera para ler QR Code;
+// em OP/Referência a câmera serve apenas para fotografar.
+const MODOS = {
+    TAG: {
+        rotulo: 'Informe a Tag',
+        curto: 'Tag',
+        icone: 'bi-qr-code-scan',
+        exemplo: 'Leia o QR Code ou digite',
+        leQrCode: true
+    },
+    OP: {
+        rotulo: 'Informe a OP / Referência',
+        curto: 'OP / Ref.',
+        icone: 'bi-upc-scan',
+        exemplo: 'Ex.: 123456',
+        leQrCode: false
+    }
+};
+
+// Intervalo entre tentativas de leitura do QR. Abaixo disso o jsQR ocupa
+// a thread e a prévia da câmera engasga nos aparelhos mais fracos.
+const INTERVALO_LEITURA = 160;
+// Largura em que o quadro é analisado: o QR é lido de sobra e o custo
+// por tentativa cai muito em relação ao quadro cheio
+const LARGURA_LEITURA = 480;
+
 const video = document.getElementById('cameraVideo');
 const canvas = document.getElementById('cameraCanvas');
 const palco = document.querySelector('.camera-palco');
@@ -27,11 +53,25 @@ const btnLimpar = document.getElementById('btnLimparFotos');
 const btnIniciar = document.getElementById('btnIniciarApontamento');
 const btnGravar = document.getElementById('btnGravarApontamento');
 const btnEncerrar = document.getElementById('btnEncerrarSessao');
+const btnRelerTag = document.getElementById('btnRelerTag');
 const blocoSessao = document.getElementById('sessao');
-const sessaoOp = document.getElementById('sessaoOp');
+const sessaoTipo = document.getElementById('sessaoTipo');
+const sessaoIdentificacao = document.getElementById('sessaoIdentificacao');
 const sessaoData = document.getElementById('sessaoData');
 const sessaoGravados = document.getElementById('sessaoGravados');
-const campoOp = document.getElementById('campoOp');
+const campoIdentificacao = document.getElementById('campoIdentificacao');
+const rotuloIdentificacao = document.getElementById('rotuloIdentificacao');
+const iconeIdentificacao = document.getElementById('iconeIdentificacao');
+const mira = document.getElementById('mira');
+const btnDigitarTag = document.getElementById('btnDigitarTag');
+const elementoModalModo = document.getElementById('modalModo');
+const elementoModalMotivo = document.getElementById('modalMotivo');
+const formMotivo = document.getElementById('formMotivo');
+const previaFoto = document.getElementById('previaFoto');
+const buscaMotivo = document.getElementById('buscaMotivo');
+const listaMotivos = document.getElementById('listaMotivos');
+const campoObservacao = document.getElementById('campoObservacao');
+const motivoAviso = document.getElementById('motivoAviso');
 const campoData = document.getElementById('campoData');
 const campoArquivo = document.getElementById('campoArquivo');
 const contador = document.getElementById('cameraContador');
@@ -54,6 +94,21 @@ let fotos = [];
 // e o responsável ficam travados e cada "Gravar apontamento" registra mais
 // um apontamento na mesma OP.
 let sessao = null;
+
+let modalModo = null;
+let resolverModo = null;
+let modoConfirmado = '';
+
+let modalMotivo = null;
+let resolverMotivo = null;
+let motivoConfirmado = null;
+let motivos = [];
+let motivoEscolhido = '';
+
+// Leitura de QR: canvas próprio para não brigar com o canvas da captura,
+// que é redimensionado a cada foto
+const canvasLeitura = document.createElement('canvas');
+let temporizadorLeitura = null;
 
 let modalResponsavel = null;
 let responsavelGravado = '';
@@ -186,6 +241,125 @@ async function garantirResponsavel() {
 }
 
 /* ------------------------------------------------------------
+   Modo de apontamento
+   ------------------------------------------------------------ */
+
+// Perguntado a cada início: a forma de identificar a peça muda de uma
+// série para outra, então não faz sentido lembrar a escolha anterior
+function perguntarModo() {
+    return new Promise(resolve => {
+        resolverModo = resolve;
+        modoConfirmado = '';
+
+        modalModo.show();
+    });
+}
+
+function aplicarModo(modo) {
+    const config = MODOS[modo];
+
+    rotuloIdentificacao.textContent = config.rotulo;
+    campoIdentificacao.placeholder = config.exemplo;
+    iconeIdentificacao.className = `bi ${config.icone}`;
+}
+
+/* ------------------------------------------------------------
+   Leitura de QR Code — só no modo Tag
+   ------------------------------------------------------------ */
+
+function pararLeitura() {
+    if (temporizadorLeitura) {
+        clearInterval(temporizadorLeitura);
+        temporizadorLeitura = null;
+    }
+
+    mira.classList.add('oculto');
+}
+
+// Um quadro reduzido do vídeo é suficiente para o jsQR e sai muito mais
+// barato que analisar a resolução cheia da câmera
+function lerQrCodeDoQuadro() {
+    if (!stream || !video.videoWidth) return null;
+
+    const escala = Math.min(1, LARGURA_LEITURA / video.videoWidth);
+
+    canvasLeitura.width = Math.round(video.videoWidth * escala);
+    canvasLeitura.height = Math.round(video.videoHeight * escala);
+
+    const contexto = canvasLeitura.getContext('2d', { willReadFrequently: true });
+    contexto.drawImage(video, 0, 0, canvasLeitura.width, canvasLeitura.height);
+
+    const quadro = contexto.getImageData(0, 0, canvasLeitura.width, canvasLeitura.height);
+    const achado = jsQR(quadro.data, quadro.width, quadro.height, { inversionAttempts: 'dontInvert' });
+
+    return achado && achado.data ? achado.data.trim() : null;
+}
+
+function iniciarLeitura() {
+    pararLeitura();
+
+    if (typeof jsQR !== 'function') {
+        // Sem a biblioteca sobra digitar; a leitura é conveniência, não requisito
+        Mensagem('Leitor de QR Code indisponível. Digite a tag.', 'warning');
+        perguntarTagDigitada();
+        return;
+    }
+
+    mira.classList.remove('oculto');
+    // Fotografar antes de saber a tag gravaria a foto na peça errada
+    btnCapturar.disabled = true;
+
+    temporizadorLeitura = setInterval(() => {
+        let lido = null;
+
+        try {
+            lido = lerQrCodeDoQuadro();
+        } catch (erro) {
+            console.log(erro);
+        }
+
+        if (lido) {
+            confirmarIdentificacao(lido);
+        }
+    }, INTERVALO_LEITURA);
+}
+
+// Fecha a leitura e libera a captura das fotos daquela tag
+function confirmarIdentificacao(valor) {
+    if (!sessao) return;
+
+    pararLeitura();
+
+    sessao.identificacao = valor;
+    sessaoIdentificacao.textContent = valor;
+    btnCapturar.disabled = false;
+
+    // Feedback tátil: no chão de fábrica nem sempre dá para olhar a tela
+    if (navigator.vibrate) {
+        navigator.vibrate(60);
+    }
+
+    Mensagem_Canto(`Tag ${valor} lida.`, 'success');
+}
+
+async function perguntarTagDigitada() {
+    const resposta = await Swal.fire({
+        title: 'Digitar a tag',
+        input: 'text',
+        inputPlaceholder: 'Tag da peça',
+        inputAttributes: { autocapitalize: 'characters', autocomplete: 'off' },
+        showCancelButton: true,
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Voltar a ler',
+        inputValidator: valor => (valor && valor.trim() ? undefined : 'Informe a tag.')
+    });
+
+    if (resposta.isConfirmed) {
+        confirmarIdentificacao(resposta.value.trim().toUpperCase());
+    }
+}
+
+/* ------------------------------------------------------------
    Câmera
    ------------------------------------------------------------ */
 
@@ -200,7 +374,9 @@ function mostrarCortina(icone, texto, comBotao) {
 
 function esconderCortina() {
     cortina.classList.add('oculto');
-    btnCapturar.disabled = false;
+    // Enquanto a tag não foi lida a captura continua bloqueada, senão a
+    // foto entraria no apontamento sem peça identificada
+    btnCapturar.disabled = temporizadorLeitura !== null;
 }
 
 function cameraDisponivel() {
@@ -268,6 +444,73 @@ async function virarCamera() {
 }
 
 /* ------------------------------------------------------------
+   Tipo de defeito — perguntado a cada captura
+   ------------------------------------------------------------ */
+
+// A mesma lista que alimenta o painel "Defeitos por Motivo" da Gestão da
+// Qualidade. Carregada uma vez: não muda no meio de um turno.
+async function carregarMotivos() {
+    try {
+        const resposta = await fetch('requests.php?acao=Consultar_Motivos');
+        const retorno = await resposta.json();
+
+        motivos = retorno && retorno.status && Array.isArray(retorno.dados) ? retorno.dados : [];
+    } catch (erro) {
+        console.log(erro);
+        motivos = [];
+    }
+}
+
+function renderizarMotivos(filtro) {
+    const termo = (filtro || '').trim().toUpperCase();
+    const visiveis = termo
+        ? motivos.filter(item => item.motivo.toUpperCase().includes(termo))
+        : motivos;
+
+    listaMotivos.innerHTML = '';
+
+    if (visiveis.length === 0) {
+        const vazio = document.createElement('p');
+        vazio.className = 'sem-motivos';
+        vazio.textContent = motivos.length === 0
+            ? 'Não foi possível carregar os motivos. Descreva o defeito na observação.'
+            : 'Nenhum motivo encontrado para o filtro.';
+        listaMotivos.appendChild(vazio);
+        return;
+    }
+
+    visiveis.forEach(item => {
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.className = 'motivo' + (item.motivo === motivoEscolhido ? ' escolhido' : '');
+        botao.dataset.motivo = item.motivo;
+        botao.innerHTML = `
+            <span class="motivo-nome"></span>
+            <span class="motivo-qtd">${item.qtd}</span>`;
+        // textContent para o nome não injetar marcação vinda da API
+        botao.querySelector('.motivo-nome').textContent = item.motivo;
+        listaMotivos.appendChild(botao);
+    });
+}
+
+// Devolve {motivo, observacao} ou null quando o operador descarta a foto
+function pedirMotivo(imagem) {
+    return new Promise(resolve => {
+        resolverMotivo = resolve;
+        motivoConfirmado = null;
+        motivoEscolhido = '';
+
+        previaFoto.src = imagem;
+        buscaMotivo.value = '';
+        campoObservacao.value = '';
+        motivoAviso.textContent = '';
+        renderizarMotivos('');
+
+        modalMotivo.show();
+    });
+}
+
+/* ------------------------------------------------------------
    Fotos
    ------------------------------------------------------------ */
 
@@ -277,12 +520,15 @@ function renderizarFotos() {
     fotos.forEach((foto, indice) => {
         const item = document.createElement('div');
         item.className = 'foto';
+        item.title = foto.observacao ? `${foto.motivo} — ${foto.observacao}` : foto.motivo;
         item.innerHTML = `
             <img src="${foto.imagem}" alt="Foto ${indice + 1} do apontamento">
+            <span class="foto-motivo"></span>
             <button type="button" class="foto-remover" data-indice="${indice}"
                     title="Remover foto" aria-label="Remover foto ${indice + 1}">
                 <i class="bi bi-x-lg"></i>
             </button>`;
+        item.querySelector('.foto-motivo').textContent = foto.motivo;
         listaFotos.appendChild(item);
     });
 
@@ -302,22 +548,38 @@ function reduzirParaJpeg(fonte, larguraFonte, alturaFonte) {
     return canvas.toDataURL('image/jpeg', QUALIDADE_JPEG);
 }
 
-function capturar() {
+// A foto só entra na lista depois de classificada: registro fotográfico
+// sem tipo de defeito não serve para a análise depois
+async function registrarFoto(imagem, origem) {
+    const defeito = await pedirMotivo(imagem);
+
+    if (!defeito) return;
+
+    fotos.push({
+        imagem: imagem,
+        origem: origem,
+        motivo: defeito.motivo,
+        observacao: defeito.observacao
+    });
+
+    renderizarFotos();
+}
+
+async function capturar() {
     if (!stream || !video.videoWidth) {
         Mensagem('Ative a câmera antes de capturar.', 'warning');
         return;
     }
 
-    fotos.push({
-        imagem: reduzirParaJpeg(video, video.videoWidth, video.videoHeight),
-        origem: 'camera'
-    });
-
-    renderizarFotos();
+    // O quadro é extraído antes do modal abrir, senão a foto seria o que a
+    // câmera estava vendo depois da classificação, não no clique
+    const imagem = reduzirParaJpeg(video, video.videoWidth, video.videoHeight);
 
     // Piscada de confirmação, como o obturador da câmera do celular
     palco.classList.add('piscou');
     setTimeout(() => palco.classList.remove('piscou'), 300);
+
+    await registrarFoto(imagem, 'camera');
 }
 
 // Caminho alternativo: foto tirada pelo aplicativo do celular ou da galeria
@@ -330,13 +592,10 @@ function carregarArquivos(arquivos) {
         leitor.onload = () => {
             const img = new Image();
 
-            img.onload = () => {
-                fotos.push({
-                    imagem: reduzirParaJpeg(img, img.naturalWidth, img.naturalHeight),
-                    origem: 'galeria'
-                });
-                renderizarFotos();
-            };
+            img.onload = () => registrarFoto(
+                reduzirParaJpeg(img, img.naturalWidth, img.naturalHeight),
+                'galeria'
+            );
 
             img.src = leitor.result;
         };
@@ -383,7 +642,7 @@ function formatarData(data) {
 // Campos travados enquanto a sessão está aberta: trocar a OP no meio da
 // série gravaria o apontamento seguinte na OP errada
 function travarCampos(travado) {
-    campoOp.disabled = travado;
+    campoIdentificacao.disabled = travado;
     campoData.disabled = travado;
     btnIniciar.disabled = travado;
     // Fecha também a troca de responsável pelo cabeçalho
@@ -391,12 +650,23 @@ function travarCampos(travado) {
 }
 
 async function iniciarApontamento() {
-    const op = campoOp.value.trim();
+    // A pergunta vem antes de tudo: é ela que define o que vai ser cobrado
+    // no campo de identificação
+    const modo = await perguntarModo();
+
+    if (!modo) return;
+
+    aplicarModo(modo);
+
+    const config = MODOS[modo];
+    const identificacao = campoIdentificacao.value.trim().toUpperCase();
     const data = campoData.value;
 
-    if (!op) {
-        Mensagem('Informe a OP para iniciar.', 'warning');
-        marcarInvalido(campoOp);
+    // No modo Tag a identificação vem do QR Code, então o campo pode estar
+    // vazio; nos demais ela é obrigatória para começar
+    if (!config.leQrCode && !identificacao) {
+        Mensagem(`${config.rotulo} para iniciar.`, 'warning');
+        marcarInvalido(campoIdentificacao);
         return;
     }
 
@@ -414,11 +684,19 @@ async function iniciarApontamento() {
         return;
     }
 
-    sessao = { op: op, data: data, responsavel: responsavel, gravados: 0 };
+    sessao = {
+        modo: modo,
+        identificacao: identificacao,
+        data: data,
+        responsavel: responsavel,
+        gravados: 0
+    };
 
-    sessaoOp.textContent = op;
+    sessaoTipo.textContent = config.curto;
+    sessaoIdentificacao.textContent = identificacao || '—';
     sessaoData.textContent = formatarData(data);
     sessaoGravados.textContent = '0';
+    btnRelerTag.classList.toggle('oculto', !config.leQrCode);
 
     travarCampos(true);
     blocoSessao.classList.remove('oculto');
@@ -429,6 +707,12 @@ async function iniciarApontamento() {
     // A câmera só existe a partir daqui, e este clique é o gesto do usuário
     // que o navegador exige para liberar o pedido de permissão
     await ligarCamera();
+
+    // Sem tag lida a câmera entra em leitura; com ela, ou em OP/Referência,
+    // já vale fotografar
+    if (config.leQrCode && !identificacao) {
+        iniciarLeitura();
+    }
 
     blocoSessao.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -448,6 +732,7 @@ async function encerrarSessao() {
         if (!confirmacao.isConfirmed) return;
     }
 
+    pararLeitura();
     pararCamera();
 
     sessao = null;
@@ -459,12 +744,32 @@ async function encerrarSessao() {
     travarCampos(false);
 
     // Data mantida: a série seguinte costuma ser no mesmo dia
-    campoOp.value = '';
-    campoOp.focus();
+    campoIdentificacao.value = '';
+    campoIdentificacao.focus();
+}
+
+// Volta a ler: a próxima peça da série tem outra tag
+function relerTag() {
+    if (!sessao || !MODOS[sessao.modo].leQrCode) return;
+
+    if (fotos.length > 0) {
+        Mensagem('Grave ou descarte as fotos antes de ler outra tag.', 'warning');
+        return;
+    }
+
+    sessao.identificacao = '';
+    sessaoIdentificacao.textContent = '—';
+
+    iniciarLeitura();
 }
 
 async function gravarApontamento() {
     if (!sessao) return;
+
+    if (!sessao.identificacao) {
+        Mensagem('Leia a tag antes de gravar o apontamento.', 'warning');
+        return;
+    }
 
     if (fotos.length === 0) {
         Mensagem('Capture ao menos uma foto para gravar o apontamento.', 'warning');
@@ -481,10 +786,11 @@ async function gravarApontamento() {
             body: JSON.stringify({
                 acao: 'Apontar_Qualidade',
                 dados: {
-                    op: sessao.op,
+                    tipo: sessao.modo,
+                    identificacao: sessao.identificacao,
                     dataApontamento: sessao.data,
                     responsavel: sessao.responsavel,
-                    fotos: fotos.map(foto => foto.imagem)
+                    fotos: fotos.map(foto => ({ imagem: foto.imagem, motivo: foto.motivo }))
                 }
             })
         });
@@ -501,7 +807,7 @@ async function gravarApontamento() {
             renderizarFotos();
 
             Mensagem_Canto(
-                retorno.message || `Apontamento ${sessao.gravados} gravado na OP ${sessao.op}.`,
+                retorno.message || `Apontamento ${sessao.gravados} gravado em ${sessao.identificacao}.`,
                 'success'
             );
         } else {
@@ -527,6 +833,86 @@ btnLimpar.addEventListener('click', limparFotos);
 btnIniciar.addEventListener('click', iniciarApontamento);
 btnGravar.addEventListener('click', gravarApontamento);
 btnEncerrar.addEventListener('click', encerrarSessao);
+btnRelerTag.addEventListener('click', relerTag);
+btnDigitarTag.addEventListener('click', perguntarTagDigitada);
+
+/* --- Modo de apontamento --- */
+
+elementoModalModo.querySelectorAll('.opcao-modo').forEach(opcao => {
+    opcao.addEventListener('click', () => {
+        modoConfirmado = opcao.dataset.modo;
+        modalModo.hide();
+    });
+});
+
+elementoModalModo.addEventListener('hidden.bs.modal', () => {
+    if (!resolverModo) return;
+
+    const resolver = resolverModo;
+    resolverModo = null;
+    resolver(modoConfirmado);
+});
+
+/* --- Tipo de defeito --- */
+
+buscaMotivo.addEventListener('input', () => renderizarMotivos(buscaMotivo.value));
+
+// Delegação: a lista é redesenhada a cada filtro
+listaMotivos.addEventListener('click', evento => {
+    const botao = evento.target.closest('.motivo');
+    if (!botao) return;
+
+    motivoEscolhido = botao.dataset.motivo;
+    motivoAviso.textContent = '';
+
+    listaMotivos.querySelectorAll('.motivo').forEach(item => {
+        item.classList.toggle('escolhido', item === botao);
+    });
+});
+
+formMotivo.addEventListener('submit', evento => {
+    evento.preventDefault();
+
+    const observacao = campoObservacao.value.trim();
+
+    // Sem motivos carregados a observação vira o registro do defeito, senão
+    // a falha da API travaria o apontamento inteiro
+    if (!motivoEscolhido && motivos.length > 0) {
+        motivoAviso.textContent = 'Escolha o tipo de defeito.';
+        return;
+    }
+
+    if (!motivoEscolhido && !observacao) {
+        motivoAviso.textContent = 'Descreva o defeito na observação.';
+        campoObservacao.focus();
+        return;
+    }
+
+    motivoConfirmado = {
+        motivo: motivoEscolhido || 'NÃO INFORMADO',
+        observacao: observacao
+    };
+
+    modalMotivo.hide();
+});
+
+// Um único ponto de saída: confirmar, descartar, Esc ou toque fora
+elementoModalMotivo.addEventListener('hidden.bs.modal', () => {
+    if (!resolverMotivo) return;
+
+    const resolver = resolverMotivo;
+    resolverMotivo = null;
+    resolver(motivoConfirmado);
+});
+
+// Delegação: as miniaturas são redesenhadas a cada foto
+listaFotos.addEventListener('click', evento => {
+    const botao = evento.target.closest('.foto-remover');
+    if (!botao) return;
+
+    fotos.splice(Number(botao.dataset.indice), 1);
+    renderizarFotos();
+});
 
 campoArquivo.addEventListener('change', evento => {
     carregarArquivos(evento.target.files);
@@ -584,10 +970,12 @@ elementoModal.addEventListener('hidden.bs.modal', () => {
 
 elementoModal.addEventListener('shown.bs.modal', () => campoResponsavel.focus());
 
-campoOp.addEventListener('keydown', evento => {
+// Leitor de código de barras costuma mandar Enter no fim da leitura;
+// aqui isso apenas fecha o teclado, sem submeter nada
+campoIdentificacao.addEventListener('keydown', evento => {
     if (evento.key === 'Enter') {
         evento.preventDefault();
-        campoOp.blur();
+        campoIdentificacao.blur();
     }
 });
 
@@ -611,6 +999,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCapturar.disabled = true;
 
     modalResponsavel = new bootstrap.Modal(elementoModal);
+    modalModo = new bootstrap.Modal(elementoModalModo);
+    modalMotivo = new bootstrap.Modal(elementoModalMotivo);
+
     usuarioIdentificado = detectarUsuarioDaPagina();
     responsavelGravado = lerResponsavelGravado();
     renderizarResponsavel();
@@ -619,4 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Já avisa antes do toque: em http o botão de ativar nunca funcionaria
         ligarCamera();
     }
+
+    // Em segundo plano: a lista só é necessária na primeira captura
+    carregarMotivos();
 });

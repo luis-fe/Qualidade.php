@@ -28,14 +28,15 @@ include_once('../../../templates/headerGestao.php');
     <!-- O responsável não ocupa espaço aqui: aparece no cabeçalho, ao lado
          do ícone de usuário, e é trocado clicando nele -->
 
+    <!-- Rótulo, ícone e placeholder mudam conforme o modo escolhido em
+         "Iniciar Apontamento": o mesmo campo recebe a Tag ou a OP/Referência -->
     <div class="campo">
-      <label for="campoOp">Informe a OP</label>
+      <label for="campoIdentificacao" id="rotuloIdentificacao">Informe a OP / Referência</label>
       <div class="input-group">
-        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+        <span class="input-group-text"><i class="bi bi-upc-scan" id="iconeIdentificacao"></i></span>
         <input type="text"
-               id="campoOp"
+               id="campoIdentificacao"
                class="form-control"
-               inputmode="numeric"
                autocomplete="off"
                enterkeyhint="done"
                placeholder="Ex.: 123456">
@@ -67,8 +68,8 @@ include_once('../../../templates/headerGestao.php');
 
     <div class="sessao-barra">
       <div class="sessao-info">
-        <span class="sessao-rotulo">OP</span>
-        <span class="sessao-valor" id="sessaoOp"></span>
+        <span class="sessao-rotulo" id="sessaoTipo">OP</span>
+        <span class="sessao-valor" id="sessaoIdentificacao"></span>
       </div>
       <div class="sessao-info">
         <span class="sessao-rotulo">Data</span>
@@ -78,6 +79,9 @@ include_once('../../../templates/headerGestao.php');
         <span class="sessao-rotulo">Gravados</span>
         <span class="sessao-valor" id="sessaoGravados">0</span>
       </div>
+      <button type="button" class="sessao-reler oculto" id="btnRelerTag">
+        <i class="bi bi-qr-code-scan"></i> Outra tag
+      </button>
       <button type="button" class="sessao-encerrar" id="btnEncerrarSessao">
         <i class="bi bi-box-arrow-right"></i> Encerrar
       </button>
@@ -109,6 +113,16 @@ include_once('../../../templates/headerGestao.php');
         </button>
 
         <span class="camera-contador oculto" id="cameraContador">0</span>
+
+        <!-- Mira da leitura de QR Code. Só no modo Tag: em OP/Referência
+             a câmera serve apenas para fotografar. -->
+        <div class="mira oculto" id="mira">
+          <div class="mira-alvo"></div>
+          <p class="mira-texto">Aponte para o QR Code da tag</p>
+          <button type="button" class="mira-digitar" id="btnDigitarTag">
+            <i class="bi bi-keyboard"></i> Digitar a tag
+          </button>
+        </div>
       </div>
 
       <!-- Capturar logo abaixo do retângulo da câmera, entre a galeria
@@ -144,12 +158,109 @@ include_once('../../../templates/headerGestao.php');
 </main>
 
 <!-- ============================================================
+     Modal do modo — perguntado a cada "Iniciar Apontamento", porque a
+     forma de identificar a peça muda de uma série para outra.
+     ============================================================ -->
+<div class="modal fade" id="modalModo" tabindex="-1" aria-labelledby="modalModoTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-claro">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalModoTitulo">
+          <i class="bi bi-signpost-split"></i> Como deseja apontar?
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="opcoes-modo">
+
+          <button type="button" class="opcao-modo" data-modo="TAG">
+            <i class="bi bi-qr-code-scan"></i>
+            <span class="opcao-modo-titulo">Por Tag</span>
+            <span class="opcao-modo-ajuda">Leia ou digite a tag da peça</span>
+          </button>
+
+          <button type="button" class="opcao-modo" data-modo="OP">
+            <i class="bi bi-upc-scan"></i>
+            <span class="opcao-modo-titulo">Por OP / Referência</span>
+            <span class="opcao-modo-ajuda">Informe a OP ou a referência do produto</span>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Modal do defeito — abre a cada captura. A foto só entra no
+     apontamento depois de classificada.
+     ============================================================ -->
+<div class="modal fade" id="modalMotivo" tabindex="-1" aria-labelledby="modalMotivoTitulo" aria-hidden="true">
+  <!-- sem modal-dialog-scrollable: o <form> envolve corpo e rodapé e
+       quebraria o cálculo de altura do Bootstrap, cortando os campos em
+       telas baixas. A lista de motivos rola por conta própria. -->
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-claro">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalMotivoTitulo">
+          <i class="bi bi-clipboard2-x"></i> Tipo de defeito
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <form id="formMotivo" novalidate>
+
+        <div class="modal-body">
+
+          <img id="previaFoto" class="previa-foto" alt="Prévia da foto capturada">
+
+          <label for="buscaMotivo">Motivo do defeito</label>
+          <input type="search"
+                 id="buscaMotivo"
+                 class="form-control"
+                 autocomplete="off"
+                 placeholder="Filtrar motivo...">
+
+          <div class="lista-motivos" id="listaMotivos"></div>
+
+          <label for="campoObservacao" class="rotulo-observacao">Observação do defeito</label>
+          <input type="text"
+                 id="campoObservacao"
+                 class="form-control"
+                 autocomplete="off"
+                 maxlength="200"
+                 placeholder="Detalhe o defeito (opcional)">
+
+          <p class="modal-aviso" id="motivoAviso" role="alert"></p>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancelar" data-bs-dismiss="modal">
+            <i class="bi bi-trash3"></i> Descartar foto
+          </button>
+          <button type="submit" class="btn btn-geral">
+            <i class="bi bi-check2"></i> Confirmar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
      Modal do responsável — só aparece quando não há usuário
      identificado na página nem nome guardado de um apontamento anterior.
      ============================================================ -->
 <div class="modal fade" id="modalResponsavel" tabindex="-1" aria-labelledby="modalResponsavelTitulo" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-responsavel">
+    <div class="modal-content modal-claro">
 
       <div class="modal-header">
         <h5 class="modal-title" id="modalResponsavelTitulo">
@@ -199,4 +310,6 @@ include_once('../../../templates/headerGestao.php');
 include_once('../../../templates/footerGestao.php');
 ?>
 
+<!-- Leitura de QR Code do quadro da câmera, usada só no modo Tag -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="script.js"></script>
