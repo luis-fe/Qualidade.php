@@ -790,7 +790,7 @@ async function gravarApontamento() {
                     identificacao: sessao.identificacao,
                     dataApontamento: sessao.data,
                     responsavel: sessao.responsavel,
-                    fotos: fotos.map(foto => ({ imagem: foto.imagem, motivo: foto.motivo }))
+                    fotos: fotos.map(foto => ({ imagem: foto.imagem, motivo: foto.motivo, observacao: foto.observacao }))
                 }
             })
         });
@@ -811,6 +811,13 @@ async function gravarApontamento() {
                 'success'
             );
         } else {
+            // Falha parcial: as fotos que a API já aceitou saem da lista, senão
+            // o próximo "Gravar" as reenviaria e duplicaria o apontamento
+            if (Array.isArray(retorno.gravadas) && retorno.gravadas.length > 0) {
+                fotos = fotos.filter((foto, indice) => !retorno.gravadas.includes(indice));
+                renderizarFotos();
+            }
+
             Mensagem(retorno.message || 'Não foi possível gravar o apontamento.', 'error');
         }
     } catch (erro) {

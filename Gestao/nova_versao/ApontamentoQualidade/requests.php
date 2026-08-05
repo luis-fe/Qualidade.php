@@ -54,11 +54,21 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 }
 
 /**
- * Grava um apontamento de qualidade.
+ * Grava um apontamento de qualidade na API do Módulo PCP
+ * (POST /api/ApontamentoDefeito — tabela pcp."ApntamentoDefeito").
+ *
  * Espera em $dados: tipo ('TAG' ou 'OP'), identificacao (a tag lida ou a
  * OP/referência digitada), dataApontamento (Y-m-d), responsavel (string)
  * e fotos — cada uma com imagem (data URL), motivo e observacao.
- * Retorno: status (bool) e message (string).
+ *
+ * A API grava UMA imagem por chamada (o arquivo se chama
+ * <codTag|op>_<motivoDefeito>.jpeg, com sufixo _2, _3... quando a mesma
+ * chave + motivo se repete), então cada foto vira uma requisição.
+ * Cor e tamanho não são enviados — ficam com o default '-' da API.
+ *
+ * Retorno: status (bool), message (string) e, em falha parcial, gravadas
+ * (índices das fotos que a API aceitou) — a tela remove essas da lista para
+ * o reenvio não duplicar apontamento.
  */
 function ApontarQualidade($empresa, $dados)
 {
@@ -91,9 +101,11 @@ function ApontarQualidade($empresa, $dados)
     }
 
     // A tela já envia JPEG reduzido; aqui só o prefixo do data URL é
-    // retirado, para a API receber base64 puro
+    // retirado, para a API receber base64 puro em imagemBase64.
+    // A posição original em $fotos é preservada: é ela que volta em
+    // 'gravadas' para a tela saber o que remover da lista.
     $imagens = [];
-    foreach ($fotos as $foto) {
+    foreach ($fotos as $posicao => $foto) {
         $imagem = is_array($foto) ? (string) ($foto['imagem'] ?? '') : '';
 
         if ($imagem === '') {
@@ -101,6 +113,7 @@ function ApontarQualidade($empresa, $dados)
         }
 
         $imagens[] = [
+            'posicao' => (int) $posicao,
             'imagem' => preg_replace('#^data:image/[a-z+.-]+;base64,#i', '', $imagem),
             'motivo' => trim((string) ($foto['motivo'] ?? '')),
             'observacao' => trim((string) ($foto['observacao'] ?? '')),
@@ -111,52 +124,90 @@ function ApontarQualidade($empresa, $dados)
         return ['status' => false, 'message' => 'Nenhuma foto no apontamento.'];
     }
 
-    $payload = [
-        'empresa' => $empresa,
-        'tipo' => $tipo,
-        'identificacao' => $identificacao,
-        // Repetido no campo próprio de cada tipo para a API não precisar
-        // interpretar o 'tipo' antes de gravar
-        'tag' => $tipo === 'TAG' ? $identificacao : '',
-        'op' => $tipo === 'OP' ? $identificacao : '',
-        'data_apontamento' => $dataApontamento,
-        'responsavel' => $responsavel,
-        'fotos' => $imagens,
-    ];
-
     $baseUrl = 'http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/api/ApontamentoQualidade";
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        "Authorization: a44pcp22",
-    ]);
+    $apiUrl = "{$baseUrl}/api/ApontamentoDefeito";
 
-    $apiResponse = curl_exec($ch);
+    // Uma requisição por foto. Como cada gravação vira um arquivo/registro
+    // novos (sufixo _2, _3...), reenviar foto já gravada DUPLICA — por isso a
+    // resposta informa em 'gravadas' os índices aceitos, e a tela os remove da
+    // lista antes do operador tentar de novo.
+    $gravadas = [];
+    $falhas = [];
 
-    if (!$apiResponse) {
-        error_log("Erro na requisição: " . curl_error($ch), 0);
+    foreach ($imagens as $foto) {
+        $payload = [
+            'tipoInformacao' => $tipo === 'TAG' ? 'porTag' : 'porOP',
+            'dataApontamento' => $dataApontamento,
+            'usuario' => $responsavel,
+            'motivoDefeito' => $foto['motivo'] !== '' ? $foto['motivo'] : '-',
+            'detalhamento' => $foto['observacao'] !== '' ? $foto['observacao'] : '-',
+            'imagemBase64' => $foto['imagem'],
+        ];
+
+        if ($tipo === 'TAG') {
+            $payload['codTag'] = $identificacao;
+        } else {
+            $payload['op'] = $identificacao;
+        }
+
+        $ch = curl_init($apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            "Authorization: a44pcp22",
+        ]);
+
+        $apiResponse = curl_exec($ch);
+
+        if (!$apiResponse) {
+            error_log("Erro na requisição: " . curl_error($ch), 0);
+            curl_close($ch);
+
+            $falhas[] = sprintf('foto %d (%s): falha de comunicação com a API', $foto['posicao'] + 1, $foto['motivo']);
+            continue;
+        }
+
         curl_close($ch);
 
-        return ['status' => false, 'message' => 'Não foi possível apontar: falha de comunicação com a API.'];
+        $resposta = json_decode($apiResponse, true);
+
+        // A tela só limpa as fotos quando status === true, então uma resposta
+        // fora do formato precisa virar erro explícito e não um "apontado"
+        // silencioso
+        if (!is_array($resposta) || !isset($resposta['status'])) {
+            error_log('Resposta inesperada da API de apontamento: ' . $apiResponse, 0);
+
+            $falhas[] = sprintf('foto %d (%s): resposta inesperada da API', $foto['posicao'] + 1, $foto['motivo']);
+            continue;
+        }
+
+        if (!$resposta['status']) {
+            $falhas[] = sprintf('foto %d (%s): %s', $foto['posicao'] + 1, $foto['motivo'], (string) ($resposta['message'] ?? 'erro não informado'));
+            continue;
+        }
+
+        $gravadas[] = $foto['posicao'];
     }
 
-    curl_close($ch);
-
-    $resposta = json_decode($apiResponse, true);
-
-    // A tela só limpa as fotos quando status === true, então uma resposta fora
-    // do formato precisa virar erro explícito e não um "apontado" silencioso
-    if (!is_array($resposta) || !isset($resposta['status'])) {
-        error_log('Resposta inesperada da API de apontamento: ' . $apiResponse, 0);
-
-        return ['status' => false, 'message' => 'Resposta inesperada da API ao apontar.'];
+    if (count($falhas) > 0) {
+        return [
+            'status' => false,
+            'message' => sprintf(
+                '%d de %d foto(s) gravada(s). Falhas: %s. Toque em gravar novamente para reenviar as que faltaram.',
+                count($gravadas),
+                count($imagens),
+                implode('; ', $falhas)
+            ),
+            'gravadas' => $gravadas,
+        ];
     }
 
-    return $resposta;
+    return [
+        'status' => true,
+        'message' => sprintf('%d defeito(s) apontado(s) em %s.', count($gravadas), $identificacao),
+    ];
 }
 
 /**
@@ -224,10 +275,16 @@ function ConsultarMotivos($empresa)
     return ['status' => true, 'dados' => $motivos];
 }
 
+/**
+ * Consulta os apontamentos gravados no período (filtro por dataApontamento).
+ * Retorno: lista com dataHora, dataApontamento, op, codTag, usuario,
+ * motivoDefeito, detalhamento, caminhoImg, nomeArquivo e imagemDisponivel,
+ * do mais recente para o mais antigo.
+ */
 function ConsultarApontamentos($empresa, $dataInicial, $dataFinal)
 {
     $baseUrl = 'http://10.162.0.53:9000';
-    $apiUrl = "{$baseUrl}/api/ApontamentoQualidade?data_inicio={$dataInicial}&data_fim={$dataFinal}";
+    $apiUrl = "{$baseUrl}/api/ApontamentoDefeito?data_inicio={$dataInicial}&data_fim={$dataFinal}";
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
