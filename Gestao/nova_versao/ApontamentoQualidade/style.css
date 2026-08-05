@@ -106,11 +106,28 @@ body {
   overflow: hidden;
 }
 
+/* OP e data lado a lado já no celular, para sobrar altura à câmera.
+   A data recebe a coluna maior porque o campo nativo precisa caber
+   "dd/mm/aaaa" mais o ícone do calendário do navegador.
+   align-items: end mantém os dois campos alinhados por baixo caso um
+   rótulo quebre em duas linhas. */
 .frame-apontamento {
   display: grid;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: end;
+  gap: 10px 10px;
   border-top: 3px solid var(--azul-escuro);
   padding: 14px;
+}
+
+.responsavel,
+.btn-apontar {
+  grid-column: 1 / -1;
+}
+
+.campo {
+  /* Sem isso o input-group estoura a coluna em vez de encolher */
+  min-width: 0;
 }
 
 /* Faixa com o responsável corrente */
@@ -200,6 +217,21 @@ body {
 .campo .form-control:focus {
   border-color: var(--azul-claro);
   box-shadow: 0 0 0 .18rem rgba(0, 143, 251, .18);
+}
+
+/* Em duas colunas num celular estreito cada campo fica com ~150px; o
+   respiro padrão do Bootstrap comeria a metade disso. A fonte do campo
+   continua em 16px para o iOS não dar zoom ao focar. */
+@media (max-width: 575.98px) {
+  .campo .input-group-text {
+    padding: 0 .5rem;
+    font-size: .85rem;
+  }
+
+  .campo .form-control {
+    padding-left: .45rem;
+    padding-right: .35rem;
+  }
 }
 
 #campoOp {
@@ -356,10 +388,15 @@ body {
   overflow: hidden;
 }
 
-/* Retrato 3:4, o enquadramento natural da câmera do celular */
+/* Retrato 3:4 encurtado em 20%: a altura sai de 1,333x para 1,067x a
+   largura, o que dá a proporção 15:16. O object-fit do vídeo continua
+   em cover, então o corte é só no enquadramento, sem tarja. */
 .camera-palco {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 15 / 16;
+  /* Piso para aparelhos antigos sem aspect-ratio: sem ele o palco
+     colapsaria e o vídeo sumiria da tela */
+  min-height: 240px;
   background: var(--palco);
   overflow: hidden;
 }
@@ -614,16 +651,12 @@ body {
    ------------------------------------------------------------ */
 @media (min-width: 576px) {
   .frame-apontamento {
-    grid-template-columns: 1fr 1fr;
-    align-items: end;
+    gap: 12px;
   }
 
-  .responsavel,
-  .btn-apontar {
-    grid-column: 1 / -1;
-  }
-
+  /* Paisagem 4:3 encurtada nos mesmos 20%: 0,75x da largura vira 0,60x,
+     ou seja, a proporção 5:3 */
   .camera-palco {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 5 / 3;
   }
 }
