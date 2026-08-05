@@ -65,6 +65,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $ano = $_GET['ano'] ?? date('Y');
                     jsonResponse(ConsultarMeta('1', $ano));
                     break;
+                case 'Ver_Imagem':
+                    VerImagem('1', $_GET['caminho'] ?? '');
+                    break;
                 default:
                     jsonResponse(['status' => false, 'message' => 'Ação GET não reconhecida.']);
                     break;
@@ -304,6 +307,55 @@ function SalvarMeta($empresa, $dados)
     }
 
     return $resposta;
+}
+
+/**
+ * Devolve a foto de um apontamento de defeito (JPEG) a partir do caminho
+ * gravado em pcp."ApntamentoDefeito" — o mesmo que vem na coluna "imagens"
+ * do detalhamento. Faz o papel de proxy do GET /api/ApontamentoDefeitoImagem,
+ * que valida o caminho (só aceita arquivos dentro do /dados do servidor).
+ */
+function VerImagem($empresa, $caminho)
+{
+    $caminho = trim((string) $caminho);
+
+    if ($caminho === '') {
+        http_response_code(404);
+        jsonResponse(['status' => false, 'message' => 'Caminho da imagem não informado.']);
+    }
+
+    $baseUrl = 'http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/api/ApontamentoDefeitoImagem?caminhoImg=" . urlencode($caminho);
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+    $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+        curl_close($ch);
+
+        http_response_code(502);
+        jsonResponse(['status' => false, 'message' => 'Falha de comunicação com a API de imagens.']);
+    }
+
+    curl_close($ch);
+
+    if ($httpCode !== 200) {
+        http_response_code(404);
+        jsonResponse(['status' => false, 'message' => 'Imagem não encontrada.']);
+    }
+
+    header('Content-Type: image/jpeg');
+    // A foto de um apontamento não muda (trocar = excluir e gravar outra),
+    // então o navegador pode guardar em cache ao navegar entre as imagens
+    header('Cache-Control: private, max-age=3600');
+    echo $apiResponse;
+    exit;
 }
 
 function Cosultar_Fornecedor($empresa, $dataInicial, $dataFinal,$textoAvancado)

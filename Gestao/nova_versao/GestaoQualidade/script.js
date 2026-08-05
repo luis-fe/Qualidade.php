@@ -1506,7 +1506,31 @@ function Tabela_detalha_defeitos(lista) {
             { data: 'nome', width: '25%' },
             { data: 'nomeFaccicionista', width: '15%' },
             { data: 'fornencedorPreferencial', width: '15%' },
-            { data: 'qtd', width: '10%' }
+            { data: 'qtd', width: '10%' },
+            {
+                // Fotos dos apontamentos de defeito da OP (left join feito na
+                // API). data: null porque respostas antigas podem não trazer a
+                // coluna 'imagens' — o render trata como lista vazia.
+                data: null,
+                width: '5%',
+                orderable: false,
+                searchable: false,
+                className: 'coluna-imagens',
+                render: function (linha, tipo) {
+                    const fotos = Array.isArray(linha.imagens) ? linha.imagens : [];
+
+                    if (tipo !== 'display') return fotos.length;
+
+                    if (fotos.length === 0) {
+                        return '<span class="sem-imagens" title="OP ainda sem foto de defeito">—</span>';
+                    }
+
+                    return '<button type="button" class="btn-ver-imagens" title="Ver imagens do defeito">'
+                        + '<i class="bi bi-images"></i>'
+                        + '<span class="badge-imagens">' + fotos.length + '</span>'
+                        + '</button>';
+                }
+            }
         ],
         language: {
             paginate: {
@@ -1576,6 +1600,18 @@ function Tabela_detalha_defeitos(lista) {
         },
 
 
+       // Abre a modal de fotos pelo ícone da coluna Imagens. Delegado ao tbody
+       // (as linhas trocam a cada paginação/filtro) e com .off() porque a
+       // tabela é remontada a cada cruzamento de filtros.
+       drawCallback: function () {
+            const tabelaApi = this.api();
+
+            $('#tabela_detalhamento tbody').off('click.imagens').on('click.imagens', '.btn-ver-imagens', function () {
+                const linha = tabelaApi.row($(this).closest('tr')).data();
+                if (linha) abrirModalImagens(linha);
+            });
+       },
+
        footerCallback: function (row, data, start, end, display) {
     var api = this.api();
     var coluna_qtd_indice = 8;
@@ -1601,3 +1637,78 @@ function Tabela_detalha_defeitos(lista) {
 
     });
 }
+
+
+/* ------------------------------------------------------------
+   Modal de fotos dos apontamentos de defeito (coluna Imagens)
+   As fotos vêm no left join do detalhamento: linha.imagens é a
+   lista de { caminho, motivo } da OP. A imagem em si é servida
+   por requests.php?acao=Ver_Imagem, que faz proxy da API.
+   ------------------------------------------------------------ */
+
+const IMAGENS_MODAL = { fotos: [], indice: 0 };
+
+function abrirModalImagens(linha) {
+    IMAGENS_MODAL.fotos = Array.isArray(linha.imagens) ? linha.imagens : [];
+    IMAGENS_MODAL.indice = 0;
+
+    if (IMAGENS_MODAL.fotos.length === 0) return;
+
+    $('#imagensOP').text(linha.numeroOP || '—');
+
+    mostrarImagemAtual();
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImagens')).show();
+}
+
+function mostrarImagemAtual() {
+    const total = IMAGENS_MODAL.fotos.length;
+    const foto = IMAGENS_MODAL.fotos[IMAGENS_MODAL.indice];
+    const imagem = document.getElementById('imagemDefeito');
+
+    // Recomeça do estado "carregando": o erro só aparece se o onerror disparar
+    $('#imagemErro').addClass('oculto');
+    $(imagem).removeClass('oculto');
+
+    imagem.src = 'requests.php?acao=Ver_Imagem&caminho=' + encodeURIComponent(foto.caminho);
+
+    $('#imagemMotivo').text(foto.motivo && foto.motivo !== '-' ? foto.motivo : 'Motivo não informado');
+    $('#imagemContador').text((IMAGENS_MODAL.indice + 1) + ' / ' + total);
+
+    // Com uma única foto as setas não têm o que navegar
+    $('#btnImagemAnterior, #btnImagemProxima').toggleClass('oculto', total <= 1);
+}
+
+// Navegação circular: da última volta para a primeira e vice-versa
+function trocarImagem(passo) {
+    const total = IMAGENS_MODAL.fotos.length;
+    if (total <= 1) return;
+
+    IMAGENS_MODAL.indice = (IMAGENS_MODAL.indice + passo + total) % total;
+    mostrarImagemAtual();
+}
+
+$('#btnImagemAnterior').on('click', () => trocarImagem(-1));
+$('#btnImagemProxima').on('click', () => trocarImagem(1));
+
+// Setas do teclado enquanto a modal estiver aberta
+$(document).on('keydown.imagens', (evento) => {
+    if (!$('#modalImagens').hasClass('show')) return;
+
+    if (evento.key === 'ArrowLeft') trocarImagem(-1);
+    if (evento.key === 'ArrowRight') trocarImagem(1);
+});
+
+// Foto que não carregou (arquivo removido do volume, API fora) vira aviso
+document.getElementById('imagemDefeito').addEventListener('error', function () {
+    if (!this.src) return;
+
+    $(this).addClass('oculto');
+    $('#imagemErro').removeClass('oculto');
+});
+
+// Solta o src ao fechar para não segurar a imagem na memória nem disparar
+// onerror com src vazio na próxima abertura
+$('#modalImagens').on('hidden.bs.modal', () => {
+    document.getElementById('imagemDefeito').removeAttribute('src');
+});

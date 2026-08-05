@@ -201,6 +201,7 @@ include_once('../../../templates/headerGestao.php');
                         <th>Faccionista<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>
                         <th>Fornecedor<br><input type="search" class="search-input search-input-defeitos" style="min-width: 2px;"></th>
                         <th>Qtd:</th>
+                        <th>Imagens</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -209,12 +210,59 @@ include_once('../../../templates/headerGestao.php');
                     <tr>
                         <th colspan="8" style="text-align: right;">Total:</th>
                         <th id="total-quantidade"></th>
+                        <th></th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 
+</div>
+
+<!-- ============================================================
+     Modal — fotos dos apontamentos de defeito da OP.
+     Aberta pelo ícone da coluna "Imagens" do detalhamento; quando a OP
+     tem mais de uma foto, as setas navegam entre elas.
+     ============================================================ -->
+<div class="modal fade" id="modalImagens" tabindex="-1" aria-labelledby="modalImagensTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content modal-metas">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalImagensTitulo">
+          <i class="bi bi-images"></i> Fotos do defeito — OP <span id="imagensOP"></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body imagens-corpo">
+
+        <div class="imagens-palco">
+          <button type="button" class="imagens-seta" id="btnImagemAnterior" title="Foto anterior" aria-label="Foto anterior">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <div class="imagens-quadro">
+            <img id="imagemDefeito" alt="Foto do defeito apontado">
+            <p class="imagens-erro oculto" id="imagemErro">
+              <i class="bi bi-exclamation-triangle"></i> Não foi possível carregar esta foto.
+            </p>
+          </div>
+
+          <button type="button" class="imagens-seta" id="btnImagemProxima" title="Próxima foto" aria-label="Próxima foto">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="imagens-legenda">
+          <span class="imagens-motivo" id="imagemMotivo"></span>
+          <span class="imagens-contador" id="imagemContador"></span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!-- ============================================================

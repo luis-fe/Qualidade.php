@@ -952,3 +952,122 @@ table.tabela-fonte-pequena {
     max-width: 100% !important;
   }
 }
+
+/* ------------------------------------------------------------
+   Coluna Imagens + modal de fotos do defeito
+   ------------------------------------------------------------ */
+
+.oculto {
+  display: none !important;
+}
+
+#tabela_detalhamento .coluna-imagens {
+  text-align: center;
+  white-space: nowrap;
+}
+
+#tabela_detalhamento .sem-imagens {
+  color: var(--texto-suave, #8a94a6);
+}
+
+/* Ícone com o contador de fotos da OP */
+.btn-ver-imagens {
+  position: relative;
+  border: 1px solid var(--azul-claro-3);
+  background: var(--azul-nevoa);
+  color: var(--azul-escuro);
+  border-radius: 6px;
+  padding: 2px 8px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.btn-ver-imagens:hover {
+  background: var(--azul-suave);
+  border-color: var(--azul-claro);
+}
+
+.btn-ver-imagens .badge-imagens {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--azul-claro);
+  color: var(--branco, #fff);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+
+/* Palco da foto: setas nas laterais, imagem centralizada */
+.imagens-corpo {
+  padding-top: 0.75rem;
+}
+
+.imagens-palco {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.imagens-quadro {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  max-height: 65vh;
+  background: var(--azul-nevoa);
+  border: 1px solid var(--azul-suave);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imagens-quadro img {
+  max-width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+}
+
+.imagens-erro {
+  margin: 0;
+  color: var(--texto-suave, #8a94a6);
+  text-align: center;
+}
+
+.imagens-seta {
+  flex: 0 0 auto;
+  border: none;
+  background: transparent;
+  color: var(--azul-escuro);
+  font-size: 1.75rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.imagens-seta:hover {
+  color: var(--azul-claro);
+}
+
+/* Motivo à esquerda, contador "2 / 5" à direita */
+.imagens-legenda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  gap: 1rem;
+}
+
+.imagens-motivo {
+  font-weight: 600;
+  color: var(--azul-escuro);
+}
+
+.imagens-contador {
+  color: var(--texto-suave, #8a94a6);
+  white-space: nowrap;
+}
