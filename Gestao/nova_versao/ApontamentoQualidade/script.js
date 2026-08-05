@@ -24,16 +24,23 @@ const btnLigar = document.getElementById('btnLigarCamera');
 const btnVirar = document.getElementById('btnVirarCamera');
 const btnCapturar = document.getElementById('btnCapturar');
 const btnLimpar = document.getElementById('btnLimparFotos');
-const btnApontar = document.getElementById('btnApontar');
+const btnIniciar = document.getElementById('btnIniciarApontamento');
+const btnGravar = document.getElementById('btnGravarApontamento');
+const btnEncerrar = document.getElementById('btnEncerrarSessao');
+const blocoSessao = document.getElementById('sessao');
+const sessaoOp = document.getElementById('sessaoOp');
+const sessaoData = document.getElementById('sessaoData');
+const sessaoGravados = document.getElementById('sessaoGravados');
 const campoOp = document.getElementById('campoOp');
 const campoData = document.getElementById('campoData');
 const campoArquivo = document.getElementById('campoArquivo');
 const contador = document.getElementById('cameraContador');
 const listaFotos = document.getElementById('fotos');
 
-const blocoResponsavel = document.getElementById('blocoResponsavel');
-const responsavelNome = document.getElementById('responsavelNome');
-const btnTrocarResponsavel = document.getElementById('btnTrocarResponsavel');
+// Área de usuário do headerGestao.php, reaproveitada para o responsável
+const infoUsuario = document.getElementById('info-usuario-logado');
+const headerNome = document.getElementById('header-nome-usuario');
+const headerRotulo = document.getElementById('header-matricula-usuario');
 const elementoModal = document.getElementById('modalResponsavel');
 const formResponsavel = document.getElementById('formResponsavel');
 const campoResponsavel = document.getElementById('campoResponsavel');
@@ -43,8 +50,14 @@ let stream = null;
 let cameraTraseira = true;
 let fotos = [];
 
+// Sessão aberta pelo "Iniciar Apontamento". Enquanto existir, a OP, a data
+// e o responsável ficam travados e cada "Gravar apontamento" registra mais
+// um apontamento na mesma OP.
+let sessao = null;
+
 let modalResponsavel = null;
 let responsavelGravado = '';
+let usuarioIdentificado = '';
 // Preenchidos enquanto o modal está aberto: quem pediu o nome fica esperando
 // o fechamento, seja por confirmar, cancelar, Esc ou toque fora
 let resolverResponsavel = null;
@@ -91,23 +104,22 @@ function normalizarNome(valor) {
 
 // Usuário já identificado na página pelo login do próprio sistema.
 // Existindo, o modal nunca é aberto — o nome vem de quem entrou.
-function usuarioDaPagina() {
+// Lido uma única vez no início: depois disso o cabeçalho passa a exibir o
+// responsável, e reler dali devolveria o nome que a própria tela escreveu.
+function detectarUsuarioDaPagina() {
     if (window.usuarioAtivo && window.usuarioAtivo.nome) {
         return normalizarNome(window.usuarioAtivo.nome);
     }
 
-    const info = document.getElementById('info-usuario-logado');
-    const nome = document.getElementById('header-nome-usuario');
-
-    if (info && !info.classList.contains('d-none') && nome) {
-        return normalizarNome(nome.textContent);
+    if (infoUsuario && !infoUsuario.classList.contains('d-none') && headerNome) {
+        return normalizarNome(headerNome.textContent);
     }
 
     return '';
 }
 
 function responsavelAtual() {
-    return usuarioDaPagina() || responsavelGravado;
+    return usuarioIdentificado || responsavelGravado;
 }
 
 // localStorage pode estar bloqueado (navegação privada, política do
@@ -133,14 +145,21 @@ function gravarResponsavel(nome) {
     renderizarResponsavel();
 }
 
+// O nome vai para a área de usuário do cabeçalho, ao lado do ícone: é
+// informação de contexto, não campo de formulário, e no cabeçalho não
+// disputa altura com a câmera
 function renderizarResponsavel() {
     const atual = responsavelAtual();
+    const podeTrocar = usuarioIdentificado === '' && sessao === null;
 
-    responsavelNome.textContent = atual;
-    blocoResponsavel.classList.toggle('oculto', atual === '');
+    headerNome.textContent = atual;
+    // O rótulo avisa que o nome é tocável, sem depender de fonte de ícone
+    headerRotulo.textContent = atual ? (podeTrocar ? 'Responsável · trocar' : 'Responsável') : '';
+    infoUsuario.classList.toggle('d-none', atual === '');
 
-    // Quem veio do login da página não é trocado por aqui
-    btnTrocarResponsavel.classList.toggle('oculto', usuarioDaPagina() !== '');
+    // Quem veio do login da página, ou está no meio de uma sessão, não troca
+    infoUsuario.classList.toggle('trocavel', podeTrocar);
+    infoUsuario.title = podeTrocar ? 'Trocar responsável' : '';
 }
 
 function pedirResponsavel() {
@@ -346,7 +365,7 @@ async function limparFotos() {
 }
 
 /* ------------------------------------------------------------
-   Apontamento
+   Sessão da OP
    ------------------------------------------------------------ */
 
 function marcarInvalido(campo) {
@@ -355,12 +374,28 @@ function marcarInvalido(campo) {
     campo.addEventListener('input', () => campo.classList.remove('invalido'), { once: true });
 }
 
-async function apontar() {
+function formatarData(data) {
+    const [ano, mes, dia] = data.split('-');
+
+    return `${dia}/${mes}/${ano}`;
+}
+
+// Campos travados enquanto a sessão está aberta: trocar a OP no meio da
+// série gravaria o apontamento seguinte na OP errada
+function travarCampos(travado) {
+    campoOp.disabled = travado;
+    campoData.disabled = travado;
+    btnIniciar.disabled = travado;
+    // Fecha também a troca de responsável pelo cabeçalho
+    renderizarResponsavel();
+}
+
+async function iniciarApontamento() {
     const op = campoOp.value.trim();
     const data = campoData.value;
 
     if (!op) {
-        Mensagem('Informe a OP para apontar.', 'warning');
+        Mensagem('Informe a OP para iniciar.', 'warning');
         marcarInvalido(campoOp);
         return;
     }
@@ -375,25 +410,68 @@ async function apontar() {
     const responsavel = await garantirResponsavel();
 
     if (!responsavel) {
-        Mensagem('Informe o responsável para apontar.', 'warning');
+        Mensagem('Informe o responsável para iniciar.', 'warning');
         return;
     }
 
-    // Apontar sem foto é permitido, mas nunca por descuido
-    if (fotos.length === 0) {
+    sessao = { op: op, data: data, responsavel: responsavel, gravados: 0 };
+
+    sessaoOp.textContent = op;
+    sessaoData.textContent = formatarData(data);
+    sessaoGravados.textContent = '0';
+
+    travarCampos(true);
+    blocoSessao.classList.remove('oculto');
+
+    fotos = [];
+    renderizarFotos();
+
+    // A câmera só existe a partir daqui, e este clique é o gesto do usuário
+    // que o navegador exige para liberar o pedido de permissão
+    await ligarCamera();
+
+    blocoSessao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function encerrarSessao() {
+    if (fotos.length > 0) {
         const confirmacao = await Swal.fire({
-            title: 'Nenhuma foto capturada',
-            text: 'Deseja apontar a OP sem registro fotográfico?',
-            icon: 'question',
+            title: 'Encerrar sem gravar?',
+            text: `${fotos.length} foto(s) capturada(s) ainda não foram gravadas e serão perdidas.`,
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Apontar assim',
-            cancelButtonText: 'Voltar e capturar'
+            confirmButtonText: 'Encerrar assim',
+            cancelButtonText: 'Voltar',
+            confirmButtonColor: '#b02a37'
         });
 
         if (!confirmacao.isConfirmed) return;
     }
 
-    btnApontar.disabled = true;
+    pararCamera();
+
+    sessao = null;
+    fotos = [];
+    renderizarFotos();
+
+    blocoSessao.classList.add('oculto');
+    mostrarCortina('bi-camera-fill', 'Ative a câmera para registrar a peça.', true);
+    travarCampos(false);
+
+    // Data mantida: a série seguinte costuma ser no mesmo dia
+    campoOp.value = '';
+    campoOp.focus();
+}
+
+async function gravarApontamento() {
+    if (!sessao) return;
+
+    if (fotos.length === 0) {
+        Mensagem('Capture ao menos uma foto para gravar o apontamento.', 'warning');
+        return;
+    }
+
+    btnGravar.disabled = true;
     $('#loadingModal').modal('show');
 
     try {
@@ -403,9 +481,9 @@ async function apontar() {
             body: JSON.stringify({
                 acao: 'Apontar_Qualidade',
                 dados: {
-                    op: op,
-                    dataApontamento: data,
-                    responsavel: responsavel,
+                    op: sessao.op,
+                    dataApontamento: sessao.data,
+                    responsavel: sessao.responsavel,
                     fotos: fotos.map(foto => foto.imagem)
                 }
             })
@@ -414,23 +492,27 @@ async function apontar() {
         const retorno = await resposta.json();
 
         if (retorno.status) {
-            Mensagem(retorno.message || 'Apontamento registrado.', 'success');
+            sessao.gravados += 1;
+            sessaoGravados.textContent = sessao.gravados;
 
-            // A tela fica pronta para a próxima OP; a data é mantida porque
-            // o apontamento costuma ser feito em série no mesmo dia
+            // A sessão continua aberta e a câmera ligada: a mesma OP recebe
+            // o próximo apontamento sem redigitar nada
             fotos = [];
             renderizarFotos();
-            campoOp.value = '';
-            campoOp.focus();
+
+            Mensagem_Canto(
+                retorno.message || `Apontamento ${sessao.gravados} gravado na OP ${sessao.op}.`,
+                'success'
+            );
         } else {
-            Mensagem(retorno.message || 'Não foi possível apontar.', 'error');
+            Mensagem(retorno.message || 'Não foi possível gravar o apontamento.', 'error');
         }
     } catch (erro) {
         console.log(erro);
-        Mensagem('Falha de comunicação ao apontar.', 'error');
+        Mensagem('Falha de comunicação ao gravar o apontamento.', 'error');
     } finally {
         $('#loadingModal').modal('hide');
-        btnApontar.disabled = false;
+        btnGravar.disabled = false;
     }
 }
 
@@ -442,7 +524,9 @@ btnLigar.addEventListener('click', ligarCamera);
 btnVirar.addEventListener('click', virarCamera);
 btnCapturar.addEventListener('click', capturar);
 btnLimpar.addEventListener('click', limparFotos);
-btnApontar.addEventListener('click', apontar);
+btnIniciar.addEventListener('click', iniciarApontamento);
+btnGravar.addEventListener('click', gravarApontamento);
+btnEncerrar.addEventListener('click', encerrarSessao);
 
 campoArquivo.addEventListener('change', evento => {
     carregarArquivos(evento.target.files);
@@ -481,7 +565,10 @@ formResponsavel.addEventListener('submit', evento => {
     modalResponsavel.hide();
 });
 
-btnTrocarResponsavel.addEventListener('click', async () => {
+// Trocar o responsável pelo próprio cabeçalho, onde o nome é exibido
+infoUsuario.addEventListener('click', async () => {
+    if (!infoUsuario.classList.contains('trocavel')) return;
+
     await pedirResponsavel();
 });
 
@@ -524,6 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCapturar.disabled = true;
 
     modalResponsavel = new bootstrap.Modal(elementoModal);
+    usuarioIdentificado = detectarUsuarioDaPagina();
     responsavelGravado = lerResponsavelGravado();
     renderizarResponsavel();
 

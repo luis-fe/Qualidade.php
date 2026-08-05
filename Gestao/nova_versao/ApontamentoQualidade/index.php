@@ -25,17 +25,8 @@ include_once('../../../templates/headerGestao.php');
        ============================================================ -->
   <section class="frame frame-apontamento">
 
-    <!-- Quem está apontando. Fica visível o tempo todo para ninguém apontar
-         no nome de outra pessoa sem perceber. -->
-    <div class="responsavel oculto" id="blocoResponsavel">
-      <i class="bi bi-person-badge"></i>
-      <span class="responsavel-rotulo">Responsável</span>
-      <span class="responsavel-nome" id="responsavelNome"></span>
-      <button type="button" class="responsavel-trocar" id="btnTrocarResponsavel"
-              title="Trocar responsável" aria-label="Trocar responsável">
-        <i class="bi bi-pencil"></i>
-      </button>
-    </div>
+    <!-- O responsável não ocupa espaço aqui: aparece no cabeçalho, ao lado
+         do ícone de usuário, e é trocado clicando nele -->
 
     <div class="campo">
       <label for="campoOp">Informe a OP</label>
@@ -59,66 +50,94 @@ include_once('../../../templates/headerGestao.php');
       </div>
     </div>
 
-    <button type="button" class="btn btn-geral btn-apontar" id="btnApontar">
-      <i class="bi bi-check2-circle"></i> Apontar
+    <!-- Abre a sessão da OP: trava os campos, mostra a câmera e permite
+         gravar vários apontamentos seguidos sem redigitar a OP -->
+    <button type="button" class="btn btn-geral btn-iniciar" id="btnIniciarApontamento">
+      <i class="bi bi-play-circle"></i> Iniciar Apontamento
     </button>
 
   </section>
 
   <!-- ============================================================
-       Retângulo da câmera — no formato da câmera do WhatsApp:
-       palco escuro com o vídeo ao vivo e a barra de controles logo
-       abaixo, com o obturador ao centro.
+       Sessão da OP — só aparece depois de "Iniciar Apontamento".
+       Enquanto estiver aberta, a mesma OP recebe quantos apontamentos
+       forem necessários, um a cada "Gravar apontamento".
        ============================================================ -->
-  <section class="camera">
+  <section class="sessao oculto" id="sessao">
 
-    <div class="camera-palco">
-      <!-- playsinline evita o player em tela cheia do iOS -->
-      <video id="cameraVideo" playsinline muted autoplay></video>
+    <div class="sessao-barra">
+      <div class="sessao-info">
+        <span class="sessao-rotulo">OP</span>
+        <span class="sessao-valor" id="sessaoOp"></span>
+      </div>
+      <div class="sessao-info">
+        <span class="sessao-rotulo">Data</span>
+        <span class="sessao-valor" id="sessaoData"></span>
+      </div>
+      <div class="sessao-info">
+        <span class="sessao-rotulo">Gravados</span>
+        <span class="sessao-valor" id="sessaoGravados">0</span>
+      </div>
+      <button type="button" class="sessao-encerrar" id="btnEncerrarSessao">
+        <i class="bi bi-box-arrow-right"></i> Encerrar
+      </button>
+    </div>
 
-      <!-- Fora da tela: só serve para extrair o quadro capturado -->
-      <canvas id="cameraCanvas" class="camera-canvas"></canvas>
+    <!-- Retângulo da câmera, no formato da câmera do WhatsApp -->
+    <div class="camera">
 
-      <!-- Estado inicial / erro de permissão. A câmera só liga por toque,
-           porque o navegador exige gesto do usuário para pedir permissão. -->
-      <div class="camera-cortina" id="cameraCortina">
-        <i class="bi bi-camera-fill" id="cameraCortinaIcone"></i>
-        <p id="cameraCortinaTexto">Ative a câmera para registrar a peça.</p>
-        <button type="button" class="btn-ligar" id="btnLigarCamera">
-          <i class="bi bi-camera-video-fill"></i> Ativar câmera
+      <div class="camera-palco">
+        <!-- playsinline evita o player em tela cheia do iOS -->
+        <video id="cameraVideo" playsinline muted autoplay></video>
+
+        <!-- Fora da tela: só serve para extrair o quadro capturado -->
+        <canvas id="cameraCanvas" class="camera-canvas"></canvas>
+
+        <!-- Estado inicial / erro de permissão. A câmera só liga por toque,
+             porque o navegador exige gesto do usuário para pedir permissão. -->
+        <div class="camera-cortina" id="cameraCortina">
+          <i class="bi bi-camera-fill" id="cameraCortinaIcone"></i>
+          <p id="cameraCortinaTexto">Ative a câmera para registrar a peça.</p>
+          <button type="button" class="btn-ligar" id="btnLigarCamera">
+            <i class="bi bi-camera-video-fill"></i> Ativar câmera
+          </button>
+        </div>
+
+        <!-- Alternar frontal/traseira -->
+        <button type="button" class="camera-virar oculto" id="btnVirarCamera" title="Alternar câmera" aria-label="Alternar câmera">
+          <i class="bi bi-arrow-repeat"></i>
         </button>
+
+        <span class="camera-contador oculto" id="cameraContador">0</span>
       </div>
 
-      <!-- Alternar frontal/traseira -->
-      <button type="button" class="camera-virar oculto" id="btnVirarCamera" title="Alternar câmera" aria-label="Alternar câmera">
-        <i class="bi bi-arrow-repeat"></i>
-      </button>
+      <!-- Capturar logo abaixo do retângulo da câmera, entre a galeria
+           (alternativa quando a câmera ao vivo não abre) e o descarte -->
+      <div class="camera-controles">
 
-      <span class="camera-contador oculto" id="cameraContador">0</span>
-    </div>
+        <label class="camera-acao" for="campoArquivo" title="Escolher da galeria">
+          <i class="bi bi-images"></i>
+          <input type="file" id="campoArquivo" accept="image/*" capture="environment" multiple hidden>
+        </label>
 
-    <div class="camera-controles">
+        <button type="button" class="btn-capturar" id="btnCapturar">
+          <i class="bi bi-camera-fill"></i> Capturar
+        </button>
 
-      <!-- Alternativa quando a câmera ao vivo não está disponível
-           (http sem TLS, permissão negada, navegador antigo) -->
-      <label class="camera-acao" for="campoArquivo" title="Escolher da galeria">
-        <i class="bi bi-images"></i>
-        <input type="file" id="campoArquivo" accept="image/*" capture="environment" multiple hidden>
-      </label>
+        <button type="button" class="camera-acao" id="btnLimparFotos" title="Descartar todas as fotos" aria-label="Descartar todas as fotos">
+          <i class="bi bi-trash3"></i>
+        </button>
 
-      <button type="button" class="btn-capturar" id="btnCapturar">
-        <span class="btn-capturar-anel"></span>
-        <span class="btn-capturar-texto">Capturar</span>
-      </button>
+      </div>
 
-      <button type="button" class="camera-acao" id="btnLimparFotos" title="Descartar todas as fotos" aria-label="Descartar todas as fotos">
-        <i class="bi bi-trash3"></i>
-      </button>
+      <!-- Miniaturas do que já foi capturado -->
+      <div class="fotos" id="fotos"></div>
 
     </div>
 
-    <!-- Miniaturas do que já foi capturado -->
-    <div class="fotos" id="fotos"></div>
+    <button type="button" class="btn btn-geral btn-gravar" id="btnGravarApontamento">
+      <i class="bi bi-check2-circle"></i> Gravar apontamento
+    </button>
 
   </section>
 
