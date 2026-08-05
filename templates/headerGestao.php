@@ -164,7 +164,19 @@
       <li><a href="../Procedimentos" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Procedimentos</a></li>
       <li><a href="../Automacao" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Controle Automação</a></li>
       <li><a href="../GestaoQualidade" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i>Gestao da Qualidade</a></li>
-      <li><a href="../ApontamentoQualidade" class="nav-link"><i class="bi bi-caret-right-fill icon-main"></i> Apontamento Qualidade</a></li>
+      <li class="nav-item">
+        <a href="#submenuApontamento" data-bs-toggle="collapse" class="nav-link justify-content-between" aria-expanded="false">
+          <span><i class="bi bi-caret-right-fill icon-main"></i> Apontamento Qualidade</span>
+          <i class="bi bi-chevron-down rotate-icon"></i>
+        </a>
+
+        <div class="collapse" id="submenuApontamento">
+          <ul class="submenu-list">
+            <li><a href="../ApontamentoQualidade" class="nav-link"><i class="bi bi-caret-right me-2"></i> Apontamento</a></li>
+            <li><a href="../ConsultaApontamento" class="nav-link"><i class="bi bi-caret-right me-2"></i> Consulta Apontamento</a></li>
+          </ul>
+        </div>
+      </li>
 
       <li class="nav-item">
         <a href="#submenuAlmoxarifado" data-bs-toggle="collapse" class="nav-link justify-content-between" aria-expanded="false">
