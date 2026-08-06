@@ -607,15 +607,21 @@ function realce(dados, dim, opcoes) {
     const selecao = ESTADO.filtros[dim];
     if (!selecao) return opcoes;
 
+    // Cada barra carrega a própria cor via `fillColor` no ponto de dado, em
+    // vez de `distributed: true` + array `colors`. O modo distributed, com os
+    // dados no formato {x, y} sobre eixo de categoria, reordena e chega a
+    // sumir com barras no ApexCharts; o fillColor por ponto é estável e
+    // mantém a série única, sem mexer no plotOptions.
+    const corDe = (item) => (selecao.has(item.rotulo) ? CORES.azulEscuro : CORES.azulApagado);
+
     return {
         ...opcoes,
-        colors: dados.map((item) => (selecao.has(item.rotulo) ? CORES.azulEscuro : CORES.azulApagado)),
+        series: [{
+            name: 'Quantidade',
+            data: dados.map((item) => ({ x: item.rotulo, y: item.qtd, fillColor: corDe(item) }))
+        }],
         fill: { type: 'solid', opacity: 1 },
         legend: { show: false },
-        plotOptions: {
-            ...opcoes.plotOptions,
-            bar: { ...opcoes.plotOptions.bar, distributed: true }
-        },
         dataLabels: {
             ...opcoes.dataLabels,
             // Atenção: no ApexCharts, background.foreColor é o PREENCHIMENTO
