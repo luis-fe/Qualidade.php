@@ -66,6 +66,7 @@ const mira = document.getElementById('mira');
 const btnDigitarTag = document.getElementById('btnDigitarTag');
 const elementoModalModo = document.getElementById('modalModo');
 const elementoModalMotivo = document.getElementById('modalMotivo');
+const elementoModalLiberar = document.getElementById('modalLiberarCamera');
 const formMotivo = document.getElementById('formMotivo');
 const previaFoto = document.getElementById('previaFoto');
 const buscaMotivo = document.getElementById('buscaMotivo');
@@ -98,6 +99,8 @@ let sessao = null;
 let modalModo = null;
 let resolverModo = null;
 let modoConfirmado = '';
+
+let modalLiberar = null;
 
 let modalMotivo = null;
 let resolverMotivo = null;
@@ -381,6 +384,52 @@ function esconderCortina() {
 
 function cameraDisponivel() {
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+}
+
+// Verdadeiro quando a página está em http fora de localhost: é aqui que o
+// navegador bloqueia a câmera ao vivo e não mostra o popup nativo de permissão
+function contextoInseguro() {
+    return location.protocol !== 'https:' &&
+           location.hostname !== 'localhost' &&
+           location.hostname !== '127.0.0.1';
+}
+
+// Copia texto para a área de transferência. navigator.clipboard só existe em
+// contexto seguro; em http caímos no textarea + execCommand, que ainda funciona
+async function copiarTexto(texto) {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(texto);
+            return true;
+        }
+    } catch (_) { /* cai no fallback abaixo */ }
+
+    try {
+        const area = document.createElement('textarea');
+        area.value = texto;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(area);
+        return ok;
+    } catch (_) {
+        return false;
+    }
+}
+
+// Popup de liberação: abre sozinho ao carregar em http. Em https/localhost a
+// câmera funciona direto e este popup nunca aparece.
+function abrirLiberacaoCamera() {
+    if (!elementoModalLiberar) return;
+
+    const campoOrigem = document.getElementById('origemPagina');
+    if (campoOrigem) campoOrigem.value = location.origin;
+
+    if (!modalLiberar) modalLiberar = new bootstrap.Modal(elementoModalLiberar);
+    modalLiberar.show();
 }
 
 function pararCamera() {
@@ -835,6 +884,27 @@ async function gravarApontamento() {
 
 btnLigar.addEventListener('click', ligarCamera);
 btnVirar.addEventListener('click', virarCamera);
+
+// Botões "copiar" do popup de liberação (endereço da flag e origem da página)
+document.querySelectorAll('#modalLiberarCamera [data-copiar]').forEach((botao) => {
+    botao.addEventListener('click', async () => {
+        const alvo = document.querySelector(botao.getAttribute('data-copiar'));
+        if (!alvo) return;
+
+        const ok = await copiarTexto(alvo.value);
+        const icone = botao.querySelector('i');
+        if (icone && ok) {
+            const antes = icone.className;
+            icone.className = 'bi bi-check-lg';
+            setTimeout(() => { icone.className = antes; }, 1500);
+        }
+    });
+});
+
+// "Já liberei, recarregar": após habilitar a flag e reabrir, recarrega para
+// o navegador reavaliar o contexto como seguro
+const btnJaLiberei = document.getElementById('btnJaLiberei');
+if (btnJaLiberei) btnJaLiberei.addEventListener('click', () => location.reload());
 btnCapturar.addEventListener('click', capturar);
 btnLimpar.addEventListener('click', limparFotos);
 btnIniciar.addEventListener('click', iniciarApontamento);
@@ -1016,6 +1086,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!cameraDisponivel()) {
         // Já avisa antes do toque: em http o botão de ativar nunca funcionaria
         ligarCamera();
+
+        // Em http o popup nativo de permissão nunca aparece; abrimos o nosso
+        // já na carga, com o passo a passo para liberar a origem no Chrome
+        if (contextoInseguro()) abrirLiberacaoCamera();
     }
 
     // Em segundo plano: a lista só é necessária na primeira captura

@@ -306,6 +306,71 @@ include_once('../../../templates/headerGestao.php');
   </div>
 </div>
 
+<!-- ============================================================
+     Modal de liberação da câmera — abre sozinho quando a página é
+     servida por http (sem TLS). O navegador bloqueia a câmera ao vivo
+     em contexto inseguro e NÃO exibe o popup nativo de permissão; este
+     popup guia a liberação única da origem no Chrome do Android.
+     ============================================================ -->
+<div class="modal fade" id="modalLiberarCamera" tabindex="-1" aria-labelledby="modalLiberarCameraTitulo" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-claro">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLiberarCameraTitulo">
+          <i class="bi bi-shield-lock"></i> Liberar a câmera neste aparelho
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-ajuda">
+          Esta página é aberta por <strong>http</strong>, e o navegador bloqueia a
+          câmera ao vivo (e a leitura de QR) fora de conexões seguras. Faça a
+          liberação abaixo <strong>uma vez</strong> neste celular:
+        </p>
+
+        <ol class="passos-liberar">
+          <li>No Chrome, cole este endereço na barra e abra:
+            <div class="campo-copiar">
+              <input type="text" id="flagUrl" readonly
+                     value="chrome://flags/#unsafely-treat-insecure-origin-as-secure">
+              <button type="button" class="btn btn-copiar" data-copiar="#flagUrl" title="Copiar">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </li>
+          <li>No campo da flag, cole a <strong>origem</strong> desta página:
+            <div class="campo-copiar">
+              <input type="text" id="origemPagina" readonly>
+              <button type="button" class="btn btn-copiar" data-copiar="#origemPagina" title="Copiar">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </li>
+          <li>Mude a flag para <strong>Enabled</strong> e toque em <strong>Relaunch</strong>.</li>
+          <li>Reabra esta página — a câmera passa a funcionar.</li>
+        </ol>
+
+        <p class="modal-aviso" id="liberarAvisoSafari">
+          <i class="bi bi-apple"></i> No iPhone (Safari) essa opção não existe.
+          Use o botão da galeria para fotografar, ou acesse por https.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancelar" data-bs-dismiss="modal">
+          Usar a galeria por enquanto
+        </button>
+        <button type="button" class="btn btn-geral" id="btnJaLiberei">
+          <i class="bi bi-arrow-clockwise"></i> Já liberei, recarregar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <?php
 include_once('../../../templates/footerGestao.php');
 ?>
