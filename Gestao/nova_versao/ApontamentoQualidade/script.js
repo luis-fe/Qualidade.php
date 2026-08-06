@@ -786,11 +786,16 @@ async function iniciarApontamento() {
     // que o navegador exige para liberar o pedido de permissão
     await ligarCamera();
 
-    // Modo Tag sem tag lida: entra em bipagem (funciona em http). Se a câmera
-    // tiver aberto, também lê o QR pelo vídeo em paralelo
+    // Modo Tag sem tag lida: com a câmera aberta, ela procura o QR direto
+    // (sem focar o campo, que abriria o teclado sobre a imagem). Sem câmera
+    // (http), cai na bipagem por campo focado. O botão "Digitar tag" continua
+    // como saída manual nos dois casos.
     if (aguardandoTag) {
-        iniciarBipagem();
-        if (stream) iniciarLeitura();
+        if (stream) {
+            iniciarLeitura();
+        } else {
+            iniciarBipagem();
+        }
     }
 
     blocoSessao.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -840,8 +845,12 @@ function relerTag() {
     sessao.identificacao = '';
     sessaoIdentificacao.textContent = '—';
 
-    iniciarBipagem();
-    if (stream) iniciarLeitura();
+    // Com câmera, volta a procurar o QR; sem câmera (http), volta à bipagem
+    if (stream) {
+        iniciarLeitura();
+    } else {
+        iniciarBipagem();
+    }
 }
 
 async function gravarApontamento() {
