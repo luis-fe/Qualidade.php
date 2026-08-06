@@ -302,6 +302,43 @@ function lerQrCodeDoQuadro() {
     return achado && achado.data ? achado.data.trim() : null;
 }
 
+// Detector nativo do Chrome (Android): lê o QR direto do vídeo, sem depender
+// do jsQR via CDN, e é mais robusto. Criado uma vez, sob demanda.
+let detectorNativo = null;
+let detectorNativoIndisponivel = false;
+
+function obterDetectorNativo() {
+    if (detectorNativo || detectorNativoIndisponivel) return detectorNativo;
+
+    if (typeof window.BarcodeDetector === 'undefined') {
+        detectorNativoIndisponivel = true;
+        return null;
+    }
+
+    try {
+        detectorNativo = new BarcodeDetector({ formats: ['qr_code'] });
+    } catch (_) {
+        detectorNativoIndisponivel = true;
+    }
+
+    return detectorNativo;
+}
+
+// Leitura unificada: tenta o detector nativo e cai no jsQR quando não houver.
+// Devolve o texto do QR ou null.
+async function lerQrCode() {
+    if (!stream || !video.videoWidth) return null;
+
+    const detector = obterDetectorNativo();
+    if (detector) {
+        const codigos = await detector.detect(video);
+        const achado = codigos.find(c => c.rawValue && c.rawValue.trim());
+        return achado ? achado.rawValue.trim() : null;
+    }
+
+    return typeof jsQR === 'function' ? lerQrCodeDoQuadro() : null;
+}
+
 // Bipagem: em http a câmera não abre, então a tag é lida pelo leitor de
 // código de barras/QR direto no campo, como no conferencia. O Enter do leitor
 // confirma a tag (ver o keydown de campoIdentificacao). A câmera, quando
@@ -321,28 +358,32 @@ function iniciarLeitura() {
     pararLeitura();
     aguardandoTag = true;
 
-    if (typeof jsQR !== 'function') {
-        // Sem a biblioteca sobra digitar; a leitura é conveniência, não requisito
-        Mensagem('Leitor de QR Code indisponível. Digite a tag.', 'warning');
-        perguntarTagDigitada();
-        return;
-    }
-
+    // A mira aparece já, independentemente do decodificador: o operador vê o
+    // enquadramento e tem o botão "Digitar tag" como saída manual
     mira.classList.remove('oculto');
     // Fotografar antes de saber a tag gravaria a foto na peça errada
     btnCapturar.disabled = true;
 
-    temporizadorLeitura = setInterval(() => {
-        let lido = null;
+    if (!obterDetectorNativo() && typeof jsQR !== 'function') {
+        // Nenhum leitor disponível: mantém a mira e o "Digitar tag"
+        Mensagem('Leitor de QR indisponível neste navegador. Use "Digitar tag".', 'warning');
+        return;
+    }
+
+    // detect() é assíncrono; o guarda evita disparar uma leitura sobre a outra
+    let lendo = false;
+
+    temporizadorLeitura = setInterval(async () => {
+        if (lendo || !aguardandoTag) return;
+        lendo = true;
 
         try {
-            lido = lerQrCodeDoQuadro();
+            const lido = await lerQrCode();
+            if (lido && aguardandoTag) confirmarIdentificacao(lido);
         } catch (erro) {
             console.log(erro);
-        }
-
-        if (lido) {
-            confirmarIdentificacao(lido);
+        } finally {
+            lendo = false;
         }
     }, INTERVALO_LEITURA);
 }
