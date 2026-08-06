@@ -318,60 +318,53 @@ include_once('../../../templates/headerGestao.php');
 
       <div class="modal-header">
         <h5 class="modal-title" id="modalLiberarCameraTitulo">
-          <i class="bi bi-camera-fill"></i> Tirar foto da peça
+          <i class="bi bi-camera-video-fill"></i> Ativar a câmera neste navegador
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
 
       <div class="modal-body">
         <p class="modal-ajuda modal-ajuda--destaque">
-          Toque no botão abaixo para abrir a câmera do celular e registrar a peça.
+          Esta página abre em conexão <strong>não segura</strong>, e o navegador
+          só libera a câmera depois que você autoriza a página. Faça isso
+          <strong>uma vez</strong> no Chrome do Android:
         </p>
 
-        <button type="button" class="btn btn-geral btn-bloco" id="btnUsarCameraCelular">
-          <i class="bi bi-camera"></i> Usar a câmera do celular
+        <ol class="passos-liberar">
+          <li>Abra este endereço na barra do Chrome:
+            <div class="campo-copiar">
+              <input type="text" id="flagUrl" readonly
+                     value="chrome://flags/#unsafely-treat-insecure-origin-as-secure">
+              <button type="button" class="btn btn-copiar" data-copiar="#flagUrl" title="Copiar">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </li>
+          <li>Cole a <strong>origem</strong> desta página no campo da flag:
+            <div class="campo-copiar">
+              <input type="text" id="origemPagina" readonly>
+              <button type="button" class="btn btn-copiar" data-copiar="#origemPagina" title="Copiar">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </li>
+          <li>Mude para <strong>Enabled</strong> e toque em <strong>Relaunch</strong>.</li>
+        </ol>
+
+        <button type="button" class="btn btn-geral btn-bloco" id="btnJaLiberei">
+          <i class="bi bi-arrow-clockwise"></i> Já liberei — recarregar e usar a câmera
         </button>
 
-        <!-- Passos técnicos escondidos: só quem precisa da leitura de QR
-             (câmera ao vivo) abre este bloco -->
-        <details class="liberar-avancado">
-          <summary>Ativar câmera ao vivo e leitura de QR (avançado)</summary>
+        <p class="modal-aviso">
+          <i class="bi bi-apple"></i> No iPhone (Safari) essa opção não existe;
+          acesse por HTTPS para usar a câmera.
+        </p>
 
-          <p class="modal-ajuda">
-            Uma vez por celular, no Chrome do Android:
-          </p>
-
-          <ol class="passos-liberar">
-            <li>Abra este endereço na barra do Chrome:
-              <div class="campo-copiar">
-                <input type="text" id="flagUrl" readonly
-                       value="chrome://flags/#unsafely-treat-insecure-origin-as-secure">
-                <button type="button" class="btn btn-copiar" data-copiar="#flagUrl" title="Copiar">
-                  <i class="bi bi-clipboard"></i>
-                </button>
-              </div>
-            </li>
-            <li>Cole a <strong>origem</strong> desta página no campo da flag:
-              <div class="campo-copiar">
-                <input type="text" id="origemPagina" readonly>
-                <button type="button" class="btn btn-copiar" data-copiar="#origemPagina" title="Copiar">
-                  <i class="bi bi-clipboard"></i>
-                </button>
-              </div>
-            </li>
-            <li>Mude para <strong>Enabled</strong> e toque em <strong>Relaunch</strong>.</li>
-            <li>Volte aqui e toque em <strong>Já liberei, recarregar</strong>.</li>
-          </ol>
-
-          <button type="button" class="btn btn-cancelar btn-bloco" id="btnJaLiberei">
-            <i class="bi bi-arrow-clockwise"></i> Já liberei, recarregar
-          </button>
-
-          <p class="modal-aviso">
-            <i class="bi bi-apple"></i> No iPhone (Safari) essa opção não existe —
-            use a câmera do celular acima.
-          </p>
-        </details>
+        <!-- Saída de emergência, sem destaque: se não der para liberar agora,
+             ainda dá para registrar a peça pela câmera nativa do aparelho -->
+        <button type="button" class="btn-link-discreto" id="btnUsarCameraCelular">
+          Não consigo liberar agora — usar a câmera do celular
+        </button>
       </div>
 
     </div>

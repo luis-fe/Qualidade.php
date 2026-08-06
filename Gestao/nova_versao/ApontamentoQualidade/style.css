@@ -594,6 +594,25 @@ body {
   font-weight: 700;
 }
 
+/* Link discreto de saída de emergência (usar câmera nativa) */
+.btn-link-discreto {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 4px;
+  font-size: .78rem;
+  color: var(--texto-suave);
+  text-align: center;
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+
+.btn-link-discreto:hover,
+.btn-link-discreto:focus {
+  color: var(--azul-escuro);
+}
+
 /* Bloco "avançado" recolhido: some da vista até o usuário abrir */
 .liberar-avancado {
   margin-top: 16px;
