@@ -901,6 +901,14 @@ document.querySelectorAll('#modalLiberarCamera [data-copiar]').forEach((botao) =
     });
 });
 
+// Botão principal do popup: abre a câmera nativa do celular (funciona em
+// http) e fecha o popup, deixando o usuário prosseguir com a foto
+const btnUsarCameraCelular = document.getElementById('btnUsarCameraCelular');
+if (btnUsarCameraCelular) btnUsarCameraCelular.addEventListener('click', () => {
+    if (modalLiberar) modalLiberar.hide();
+    campoArquivo.click();
+});
+
 // "Já liberei, recarregar": após habilitar a flag e reabrir, recarrega para
 // o navegador reavaliar o contexto como seguro
 const btnJaLiberei = document.getElementById('btnJaLiberei');
