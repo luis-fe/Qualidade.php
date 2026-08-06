@@ -113,6 +113,10 @@ let motivoEscolhido = '';
 const canvasLeitura = document.createElement('canvas');
 let temporizadorLeitura = null;
 
+// Verdadeiro no modo Tag enquanto a peça ainda não foi identificada: segura a
+// captura até a tag ser bipada (ou lida pela câmera, quando disponível)
+let aguardandoTag = false;
+
 let modalResponsavel = null;
 let responsavelGravado = '';
 let usuarioIdentificado = '';
@@ -298,8 +302,24 @@ function lerQrCodeDoQuadro() {
     return achado && achado.data ? achado.data.trim() : null;
 }
 
+// Bipagem: em http a câmera não abre, então a tag é lida pelo leitor de
+// código de barras/QR direto no campo, como no conferencia. O Enter do leitor
+// confirma a tag (ver o keydown de campoIdentificacao). A câmera, quando
+// disponível, roda em paralelo e também confirma pela leitura do vídeo.
+function iniciarBipagem() {
+    aguardandoTag = true;
+    mira.classList.add('oculto');
+    btnCapturar.disabled = true;
+
+    campoIdentificacao.disabled = false;
+    campoIdentificacao.value = '';
+    campoIdentificacao.placeholder = 'Aguardando leitura…';
+    campoIdentificacao.focus();
+}
+
 function iniciarLeitura() {
     pararLeitura();
+    aguardandoTag = true;
 
     if (typeof jsQR !== 'function') {
         // Sem a biblioteca sobra digitar; a leitura é conveniência, não requisito
@@ -332,10 +352,13 @@ function confirmarIdentificacao(valor) {
     if (!sessao) return;
 
     pararLeitura();
+    aguardandoTag = false;
 
     sessao.identificacao = valor;
     sessaoIdentificacao.textContent = valor;
-    btnCapturar.disabled = false;
+    campoIdentificacao.value = valor;   // deixa a tag lida visível no campo
+    // Só há o que capturar com a câmera ligada; em http a foto vem da galeria
+    btnCapturar.disabled = !stream;
 
     // Feedback tátil: no chão de fábrica nem sempre dá para olhar a tela
     if (navigator.vibrate) {
@@ -379,7 +402,7 @@ function esconderCortina() {
     cortina.classList.add('oculto');
     // Enquanto a tag não foi lida a captura continua bloqueada, senão a
     // foto entraria no apontamento sem peça identificada
-    btnCapturar.disabled = temporizadorLeitura !== null;
+    btnCapturar.disabled = aguardandoTag;
 }
 
 function cameraDisponivel() {
@@ -691,7 +714,10 @@ function formatarData(data) {
 // Campos travados enquanto a sessão está aberta: trocar a OP no meio da
 // série gravaria o apontamento seguinte na OP errada
 function travarCampos(travado) {
-    campoIdentificacao.disabled = travado;
+    // No modo Tag o campo recebe a bipagem de cada peça durante a sessão, por
+    // isso não é travado; em OP/Referência a identificação é fixa na série
+    const bipando = travado && sessao && MODOS[sessao.modo].leQrCode;
+    campoIdentificacao.disabled = travado && !bipando;
     campoData.disabled = travado;
     btnIniciar.disabled = travado;
     // Fecha também a troca de responsável pelo cabeçalho
@@ -753,14 +779,18 @@ async function iniciarApontamento() {
     fotos = [];
     renderizarFotos();
 
+    // Sem tag prévia no modo Tag, a captura fica bloqueada até a leitura
+    aguardandoTag = config.leQrCode && !identificacao;
+
     // A câmera só existe a partir daqui, e este clique é o gesto do usuário
     // que o navegador exige para liberar o pedido de permissão
     await ligarCamera();
 
-    // Sem tag lida a câmera entra em leitura; com ela, ou em OP/Referência,
-    // já vale fotografar
-    if (config.leQrCode && !identificacao) {
-        iniciarLeitura();
+    // Modo Tag sem tag lida: entra em bipagem (funciona em http). Se a câmera
+    // tiver aberto, também lê o QR pelo vídeo em paralelo
+    if (aguardandoTag) {
+        iniciarBipagem();
+        if (stream) iniciarLeitura();
     }
 
     blocoSessao.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -783,6 +813,7 @@ async function encerrarSessao() {
 
     pararLeitura();
     pararCamera();
+    aguardandoTag = false;
 
     sessao = null;
     fotos = [];
@@ -809,7 +840,8 @@ function relerTag() {
     sessao.identificacao = '';
     sessaoIdentificacao.textContent = '—';
 
-    iniciarLeitura();
+    iniciarBipagem();
+    if (stream) iniciarLeitura();
 }
 
 async function gravarApontamento() {
@@ -1055,13 +1087,24 @@ elementoModal.addEventListener('hidden.bs.modal', () => {
 
 elementoModal.addEventListener('shown.bs.modal', () => campoResponsavel.focus());
 
-// Leitor de código de barras costuma mandar Enter no fim da leitura;
-// aqui isso apenas fecha o teclado, sem submeter nada
+// Leitor de código de barras manda Enter no fim da leitura. Numa sessão Tag
+// ativa, cada Enter é uma bipagem: confirma a tag lida. Fora disso, apenas
+// fecha o teclado sem submeter nada.
 campoIdentificacao.addEventListener('keydown', evento => {
-    if (evento.key === 'Enter') {
-        evento.preventDefault();
-        campoIdentificacao.blur();
+    if (evento.key !== 'Enter') return;
+    evento.preventDefault();
+
+    if (sessao && MODOS[sessao.modo].leQrCode) {
+        // Só confirma quando está de fato aguardando a peça; depois de lida, a
+        // próxima tag passa pelo "Reler tag", que trava se houver foto pendente
+        if (aguardandoTag) {
+            const valor = campoIdentificacao.value.trim().toUpperCase();
+            if (valor) confirmarIdentificacao(valor);
+        }
+        return;
     }
+
+    campoIdentificacao.blur();
 });
 
 window.addEventListener('resize', ajustarTituloFixo);
