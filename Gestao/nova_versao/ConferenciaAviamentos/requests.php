@@ -27,6 +27,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                     $codEmpresa = $_GET['codEmpresa'] ?? '';
                     jsonResponse(get_obter_itens_configurados($codEmpresa));
                     break;
+                case 'consulta_op_conferida':
+                    jsonResponse(consulta_op_conferida());
+                    break;
                 case 'get_obter_nome_material':
                     $codMaterial = $_GET['codMaterial'] ?? '';
                     jsonResponse(get_obter_nome_material($codMaterial));
@@ -383,6 +386,28 @@ function get_obter_nome_material($codMaterial)
 {
     $baseUrl ='http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/procurar_nome_item_considear?codMaterial={$codMaterial}";
+    $ch = curl_init($apiUrl);
+    
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+    return json_decode($apiResponse, true);
+}
+
+function consulta_op_conferida()
+{
+    $baseUrl ='http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/consulta_op_conferida";
     $ch = curl_init($apiUrl);
     
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

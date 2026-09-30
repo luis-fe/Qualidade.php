@@ -90,6 +90,8 @@ include_once('../../../templates/headerGestao.php');
         </div>
     </div>
 
+    <div id="container-op-conferida" class="d-flex flex-wrap gap-2 mb-3 d-none"></div>
+
     <div class="div-tabela" style="max-width: 100%; overflow: auto; max-height: 90%; border-radius: 8px;">
         <table class="table table-bordered table-striped" id="table-metas" style="width: 100%;">
             <thead style="position: sticky; top: 0; background-color: #003366; color: white; z-index: 10;">
@@ -368,6 +370,36 @@ include_once('../../../templates/headerGestao.php');
                 </button>
                 <button type="button" class="btn btn-danger px-4" onclick="excluirBipagem()">
                     <i class="bi bi-trash me-1"></i> Sim, excluir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalOpConferida" tabindex="-1" aria-labelledby="modalOpConferidaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalOpConferidaLabel">
+                    <i class="bi bi-clipboard-check me-2"></i>OP Já Conferida: <span id="spanOpConferida"></span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body p-3">
+                <table class="table table-bordered table-striped mb-0">
+                    <thead style="background-color: #003366; color: white;">
+                        <tr>
+                            <th>Numero OP</th>
+                            <th>Matricula</th>
+                            <th>Data/Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyOpConferida"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-arrow-return-left me-1"></i> Voltar
                 </button>
             </div>
         </div>

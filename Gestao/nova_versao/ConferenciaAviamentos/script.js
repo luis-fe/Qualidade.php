@@ -717,12 +717,108 @@ const ConsultarFilaConferencia = async () => {
         });
 
         Tabela(response);
+        opsConferidasCache = null; // a fila mudou, força nova consulta das OPs conferidas
     } catch (error) {
         console.error('Erro ao consultar serviço:', error);
     } finally {
         setTimeout(() => { $('#loadingModal').modal('hide'); }, 500);
     }
 };
+
+// ==========================================
+// OP JÁ CONFERIDA (quando a OP buscada não está na fila)
+// ==========================================
+
+let opsConferidasCache = null;
+let timerBuscaOpConferida = null;
+
+const ConsultarOpsConferidas = async () => {
+    if (opsConferidasCache) return opsConferidasCache;
+    const response = await $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: { acao: 'consulta_op_conferida' },
+    });
+    opsConferidasCache = Array.isArray(response) ? response : [];
+    return opsConferidasCache;
+};
+
+function escaparHtml(valor) {
+    return $('<div>').text(valor ?? '').html();
+}
+
+async function verificarOpConferida(valorBusca) {
+    const container = $('#container-op-conferida');
+    container.addClass('d-none').empty();
+
+    valorBusca = (valorBusca || '').trim();
+    if (!valorBusca || !$.fn.DataTable.isDataTable('#table-metas')) return;
+
+    // Só procura nas conferidas se a OP não aparece na fila
+    const table = $('#table-metas').DataTable();
+    if (table.rows({ search: 'applied' }).count() > 0) return;
+
+    try {
+        const conferidas = await ConsultarOpsConferidas();
+
+        // Ignora a resposta se o usuário já mudou o texto enquanto a consulta rodava
+        if ($('#filtroNumeroOP').val().trim() !== valorBusca) return;
+
+        const ops = [...new Set(
+            conferidas
+                .map(item => String(item.numeroOP ?? ''))
+                .filter(op => op.includes(valorBusca))
+        )].slice(0, 10);
+
+        if (ops.length === 0) return;
+
+        ops.forEach(op => {
+            container.append(`
+                <div class="card border-success shadow-sm card-op-conferida" role="button" data-op="${escaparHtml(op)}" style="cursor: pointer;">
+                    <div class="card-body py-2 px-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-clipboard-check text-success fs-4"></i>
+                        <div>
+                            <div class="fw-bold">OP ${escaparHtml(op)}</div>
+                            <div>OP Já conferida: <span class="text-primary text-decoration-underline">Detalhar</span></div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        });
+        container.removeClass('d-none');
+    } catch (error) {
+        console.error('Erro ao consultar OPs conferidas:', error);
+    }
+}
+
+function abrirModalOpConferida(numeroOP) {
+    const registros = (opsConferidasCache || []).filter(item => String(item.numeroOP) === String(numeroOP));
+    const tbody = $('#tbodyOpConferida').empty();
+
+    $('#spanOpConferida').text(numeroOP);
+    registros.forEach(item => {
+        tbody.append(`
+            <tr>
+                <td>${escaparHtml(item.numeroOP)}</td>
+                <td>${escaparHtml(item.matricula)}</td>
+                <td>${escaparHtml(item.dataHora)}</td>
+            </tr>
+        `);
+    });
+
+    $('#modalOpConferida').modal('show');
+}
+
+$('#filtroNumeroOP').on('keyup.opConferida', function () {
+    const valor = this.value;
+    clearTimeout(timerBuscaOpConferida);
+    timerBuscaOpConferida = setTimeout(() => verificarOpConferida(valor), 400);
+});
+
+$('#container-op-conferida').on('click', '.card-op-conferida', function () {
+    abrirModalOpConferida($(this).attr('data-op'));
+});
 
 // ==========================================
 // CARREGAR ITENS DESCONSIDERADOS E LÓGICA DO MODAL
