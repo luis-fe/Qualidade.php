@@ -767,7 +767,7 @@ async function verificarOpConferida(valorBusca) {
 
         const ops = [...new Set(
             conferidas
-                .map(item => String(item.numeroOP ?? ''))
+                .map(item => String(campoConferida(item, 'numeroOP') ?? ''))
                 .filter(op => op.includes(valorBusca))
         )].slice(0, 10);
 
@@ -792,17 +792,26 @@ async function verificarOpConferida(valorBusca) {
     }
 }
 
+// Lê um campo do registro ignorando maiúsculas/minúsculas, "_" e espaços no nome da chave
+function campoConferida(item, ...nomes) {
+    const normalizar = chave => String(chave).toLowerCase().replace(/[_\s]/g, '');
+    const alvos = nomes.map(normalizar);
+    const chave = Object.keys(item || {}).find(k => alvos.includes(normalizar(k)));
+    return chave !== undefined ? item[chave] : '';
+}
+
 function abrirModalOpConferida(numeroOP) {
-    const registros = (opsConferidasCache || []).filter(item => String(item.numeroOP) === String(numeroOP));
+    const registros = (opsConferidasCache || []).filter(item => String(campoConferida(item, 'numeroOP')) === String(numeroOP));
     const tbody = $('#tbodyOpConferida').empty();
+    console.log('Registros da OP conferida:', registros);
 
     $('#spanOpConferida').text(numeroOP);
     registros.forEach(item => {
         tbody.append(`
             <tr>
-                <td>${escaparHtml(item.numeroOP)}</td>
-                <td>${escaparHtml(item.matricula)}</td>
-                <td>${escaparHtml(item.dataHora)}</td>
+                <td>${escaparHtml(campoConferida(item, 'numeroOP'))}</td>
+                <td>${escaparHtml(campoConferida(item, 'matricula'))}</td>
+                <td>${escaparHtml(campoConferida(item, 'dataHora', 'data_hora'))}</td>
             </tr>
         `);
     });
