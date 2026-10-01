@@ -812,12 +812,97 @@ function abrirModalOpConferida(numeroOP) {
                 <td>${escaparHtml(campoConferida(item, 'numeroOP'))}</td>
                 <td>${escaparHtml(campoConferida(item, 'matricula'))}</td>
                 <td>${escaparHtml(campoConferida(item, 'dataHora', 'data_hora'))}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-primary btn-detalhar-op-conferida"
+                        data-op="${escaparHtml(campoConferida(item, 'numeroOP'))}">
+                        <i class="bi bi-list-ul"></i> Detalhar
+                    </button>
+                </td>
             </tr>
         `);
     });
 
     $('#modalOpConferida').modal('show');
 }
+
+const ConsultarItensBackupOp = async (numeroOP) => {
+    const response = await $.ajax({
+        type: 'GET',
+        url: 'requests.php',
+        dataType: 'json',
+        data: { acao: 'backup_itens_conferidos_op', numeroOP: numeroOP },
+    });
+    return Array.isArray(response) ? response : [];
+};
+
+// Abre/fecha a lista de aviamentos da OP logo abaixo da linha clicada
+async function detalharItensOpConferida(botao) {
+    const linha = $(botao).closest('tr');
+    const linhaDetalhe = linha.next('.linha-detalhe-op-conferida');
+
+    if (linhaDetalhe.length) {
+        linhaDetalhe.remove();
+        return;
+    }
+
+    const numeroOP = $(botao).attr('data-op');
+    const colunas = linha.children('td').length;
+    const novaLinha = $(`
+        <tr class="linha-detalhe-op-conferida">
+            <td colspan="${colunas}" class="bg-white">
+                <div class="text-center text-muted py-2">
+                    <span class="spinner-border spinner-border-sm me-2"></span>Carregando itens...
+                </div>
+            </td>
+        </tr>
+    `);
+    linha.after(novaLinha);
+
+    try {
+        const itens = await ConsultarItensBackupOp(numeroOP);
+        const celula = novaLinha.children('td');
+
+        if (itens.length === 0) {
+            celula.html('<div class="text-center text-muted py-2">Nenhum item encontrado no backup para esta OP.</div>');
+            return;
+        }
+
+        const linhasItens = itens.map(item => {
+            const conferido = campoConferida(item, 'statusConferido') === 'Conferido';
+            return `
+                <tr>
+                    <td>${escaparHtml(campoConferida(item, 'numeroOP'))}</td>
+                    <td>${escaparHtml(campoConferida(item, 'nomeMaterial'))}</td>
+                    <td class="text-end">${escaparHtml(campoConferida(item, 'qtdeRequisitada'))}</td>
+                    <td class="text-center">
+                        <span class="badge ${conferido ? 'bg-success' : 'bg-danger'}">${conferido ? 'Sim' : 'Não'}</span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        celula.html(`
+            <table class="table table-sm table-bordered mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>OP</th>
+                        <th>Descrição Aviamento</th>
+                        <th class="text-end">Unidade</th>
+                        <th class="text-center">Conferido</th>
+                    </tr>
+                </thead>
+                <tbody>${linhasItens}</tbody>
+            </table>
+        `);
+    } catch (error) {
+        console.error('Erro ao consultar itens da OP conferida:', error);
+        novaLinha.children('td').html('<div class="text-center text-danger py-2">Erro ao carregar os itens da OP.</div>');
+    }
+}
+
+$('#tbodyOpConferida').on('click', '.btn-detalhar-op-conferida', function () {
+    detalharItensOpConferida(this);
+});
 
 $('#filtroNumeroOP').on('keyup.opConferida', function () {
     const valor = this.value;

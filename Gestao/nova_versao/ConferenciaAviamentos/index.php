@@ -377,7 +377,7 @@ include_once('../../../templates/headerGestao.php');
 </div>
 
 <div class="modal fade" id="modalOpConferida" tabindex="-1" aria-labelledby="modalOpConferidaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-success">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="modalOpConferidaLabel">
@@ -392,6 +392,7 @@ include_once('../../../templates/headerGestao.php');
                             <th>Numero OP</th>
                             <th>Matricula</th>
                             <th>Data/Hora</th>
+                            <th class="text-center">Detalhar</th>
                         </tr>
                     </thead>
                     <tbody id="tbodyOpConferida"></tbody>

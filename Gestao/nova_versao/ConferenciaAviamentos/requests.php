@@ -30,6 +30,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 case 'consulta_op_conferida':
                     jsonResponse(consulta_op_conferida());
                     break;
+                case 'backup_itens_conferidos_op':
+                    $numeroOP = $_GET['numeroOP'] ?? '';
+                    jsonResponse(backup_itens_conferidos_op($numeroOP));
+                    break;
                 case 'get_obter_nome_material':
                     $codMaterial = $_GET['codMaterial'] ?? '';
                     jsonResponse(get_obter_nome_material($codMaterial));
@@ -409,7 +413,29 @@ function consulta_op_conferida()
     $baseUrl ='http://10.162.0.53:9000';
     $apiUrl = "{$baseUrl}/pcp/api/consulta_op_conferida";
     $ch = curl_init($apiUrl);
-    
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        "Authorization: a44pcp22",
+    ]);
+
+    $apiResponse = curl_exec($ch);
+
+    if (!$apiResponse) {
+        error_log("Erro na requisição: " . curl_error($ch), 0);
+    }
+
+    curl_close($ch);
+    return json_decode($apiResponse, true);
+}
+
+function backup_itens_conferidos_op($numeroOP)
+{
+    $baseUrl ='http://10.162.0.53:9000';
+    $apiUrl = "{$baseUrl}/pcp/api/backup_itens_conferidos_op?numeroOP=" . urlencode($numeroOP);
+    $ch = curl_init($apiUrl);
+
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
